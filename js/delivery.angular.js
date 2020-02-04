@@ -11,21 +11,23 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.delivery = {
 			id: 0,
 			date: '',
-			customer_id: '0',
+			customer_id: 0,
 			claim: '',
-			labour_id: '0',
+			labour_id: 0,
 			delivery_items: [],
-			total:'0'
+			quantity: '0',
+			total: '0'
 		};
 		$scope.delivery_item = {
 			"id": "",
 			"color_id":"",
 			"size_id": "",
 			"design_id": "",
-			"quantity": '0',
-			"extra": '0',
-			"unit_price": '0',
-			"total": '0'
+			"quantity": 0,
+			"extra": 0,
+			"unit_price": 0,
+			"total_quantity": 0,
+			"total_price": 0
 		};
 		angular.element(document).ready(function () {
 			$scope.wctAJAX( {action: 'get_customer'}, function( response ){
@@ -90,7 +92,7 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			quantity = 0;
 			for( i = 0; i < $scope.delivery.delivery_items.length; i++ ) {
 				quantity += parseFloat( $scope.delivery.delivery_items[ i ].quantity?$scope.delivery.delivery_items[ i ].quantity:0 );
-				total += parseFloat( $scope.delivery.delivery_items[ i ].unit_price ) * quantity;
+				total += parseFloat( $scope.delivery.delivery_items[ i ].total );
 			}
 			$scope.delivery.total = total;
 			$scope.delivery.quantity = quantity;

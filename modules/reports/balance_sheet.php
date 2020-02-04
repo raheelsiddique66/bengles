@@ -54,32 +54,7 @@ if(!defined("APP_START")) die("No Direct Access");
 								}
 							}
 						}
-						$sql="select * from admin where status=1 order by name";
-						$rs=doquery($sql, $dblink);
-						if( numrows($rs) > 0){
-							$sn=1;
-							while($r=dofetch($rs)){             
-								$balance = get_user_balance( $r[ "id" ] );
-								if($balance!=0){
-									if( $balance >= 0 ) {
-										$total += $balance;
-										?>
-										<tr>
-											<td><?php echo unslash($r["name"]); ?></td>
-											<td class="text-right"><?php echo curr_format( $balance ) ?></td>
-										</tr>
-										<?php 
-										$sn++;
-									}
-									else {
-										$account_payable[] = array(
-											"name" => unslash($r["name"] ),
-											"balance" => $balance
-										);
-									}
-								}
-							}
-						}
+						
 						?>
                         <tr>
                             <th>Total</th>

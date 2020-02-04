@@ -68,13 +68,13 @@ if( empty( $extra ) ) {
 <div class="panel-body table-responsive">
 	<table class="table table-hover list">
     	<?php
-		$sql="select sum(amount) as total from project_payment where status = 1 $extra";
-		$project_payment=dofetch(doquery($sql, $dblink));
+		//$sql="select sum(amount) as total from project_payment where status = 1 $extra";
+		//$project_payment=dofetch(doquery($sql, $dblink));
 		?>
-        <tr class="head">
+        <!--<tr class="head">
             <th class="text-right">Income from <?php echo $date_from?> to <?php echo $date_to?></th>
             <th class="text-right" ><?php echo curr_format($project_payment[ "total" ])?></th>
-        </tr>
+        </tr>-->
         
         <!--<tr class="bg-success">
             <th class="text-right">Revenue <?php echo $date_from?> to <?php echo $date_to?></th>
@@ -96,19 +96,19 @@ if( empty( $extra ) ) {
 				}
 			}
 		}
-		$rs = dofetch( doquery( "select sum(amount) as total from salary where status=1 and (month>='".date('m',strtotime(date_dbconvert($date_from)))."' and month<='".date('m',strtotime(date_dbconvert($date_to)))."' and year='".date('Y',strtotime(date_dbconvert($date_from)))."' or month<='".date('m',strtotime(date_dbconvert($date_to)))."' and year>'".date('Y',strtotime(date_dbconvert($date_from)))."' and year<='".date('Y',strtotime(date_dbconvert($date_to)))."')", $dblink ) );
+		//$rs = dofetch( doquery( "select sum(amount) as total from salary where status=1 and (month>='".date('m',strtotime(date_dbconvert($date_from)))."' and month<='".date('m',strtotime(date_dbconvert($date_to)))."' and year='".date('Y',strtotime(date_dbconvert($date_from)))."' or month<='".date('m',strtotime(date_dbconvert($date_to)))."' and year>'".date('Y',strtotime(date_dbconvert($date_from)))."' and year<='".date('Y',strtotime(date_dbconvert($date_to)))."')", $dblink ) );
 		?>
         <tr class="head">
             <th class="text-right">Salary</th>
-            <th class="text-right" ><?php echo curr_format($rs[ "total" ])?></th>
+            <th class="text-right" ><?php // echo curr_format($rs[ "total" ])?></th>
         </tr>
          <tr class="head">
             <th class="text-right">Total Expense</th>
-            <th class="text-right" ><?php echo curr_format($total+$rs[ "total" ])?></th>
+            <th class="text-right" ><?php echo curr_format($total)?></th>
         </tr>
         <tr class="head bg-success">
             <th class="text-right">Net Income</th>
-            <th class="text-right" ><?php echo curr_format($project_payment[ "total" ]-$total-$rs[ "total" ])?></th>
+            <th class="text-right" ><?php // echo curr_format($project_payment[ "total" ]-$total-$rs[ "total" ])?></th>
         </tr>	
   	</table>
 </div>

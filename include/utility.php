@@ -1220,20 +1220,22 @@ function convert_number_to_words($number) {
 function get_balance( $account_id ){
 	return get_account_balance( $account_id );
 }
-function get_account_balance( $account_id, $datetime = "" ){
+function get_account_balance( $account_id, $datetime = "", $project_id = "" ){
 	global $dblink;
 	if( empty( $datetime ) ) {
 		$datetime = date( "Y-m-d H:i:s" );
 	}
-	
-		$account = dofetch( doquery( "select balance from account where id='".$account_id."'", $dblink ) );
+	if( empty( $project_id ) ) {
+		$account = dofetch( doquery( "select is_petty_cash, balance from account where id='".$account_id."'", $dblink ) );
 		$balance = $account[ "balance" ];
-	
-	$balance_transactions = dofetch( doquery( "select sum(amount) as balance from (SELECT id, amount as amount FROM `transaction` a where a.account_id='".$account_id."' and datetime_added<='".$datetime."' union select id, -amount from transaction b where b.reference_id='".$account_id."' and datetime_added<='".$datetime."' as transactions", $dblink ) );
+	}
+	else {
+		$balance = 0;
+	}
+	$balance_transactions = dofetch( doquery( "select sum(amount) as balance from (SELECT id, amount as amount FROM `transaction` a where a.account_id='".$account_id."' and datetime_added<='".$datetime."' union select id, -amount from transaction b where b.reference_id='".$account_id."' and datetime_added<='".$datetime."') as transactions", $dblink ) );
 	$balance = $balance + $balance_transactions[ "balance" ];
 	$expense = dofetch( doquery( "select sum(amount) as total from expense where status=1 and account_id = '".$account_id."' and datetime_added<='".$datetime."'", $dblink ) );
 	$balance -= $expense[ "total" ];
-	$balance += $project_payment[ "total" ];
 	return $balance;
 }
 function get_account_of_type( $type ){
@@ -1305,7 +1307,7 @@ function get_customer_balance( $customer_id, $dt = 0 ){
 	$customer = doquery( "select balance from customer where id = '".$customer_id."'", $dblink );
 	if( numrows( $customer ) > 0 ) {
 		$customer = dofetch( $customer );
-		$sql="select sum(amount) as amount from (select concat( 'Sale #', id) as transaction, net_price as amount from sales where customer_id = '".$customer_id."' and date <='".$dt."' union select concat( 'Sale Return #', id) as transaction, -net_price as amount from sales_return where customer_id = '".$customer_id."' and date <='".$dt."' union select concat( 'Payment #', id) as transaction, -amount from customer_payment where customer_id = '".$customer_id."' and datetime <='".$dt."') as transactions";
+		$sql="select sum(amount) as amount from (select concat( 'Sale #', id) as transaction where customer_id = '".$customer_id."' and date <='".$dt."' union select concat( 'Payment #', id) as transaction, -amount from customer_payment where customer_id = '".$customer_id."' and datetime <='".$dt."') as transactions";
 		$balance=dofetch(doquery($sql,$dblink));
 		$balance = $customer["balance"] + $balance[ "amount" ];
 	}

@@ -20,7 +20,7 @@ if(!defined("APP_START")) die("No Direct Access");
     <li class="col-xs-12 col-lg-12 col-sm-12">
     	<div>
         	<form class="form-horizontal" action="" method="get">
-                <div class="col-sm-3 ">
+                <div class="col-sm-3">
                 	<select name="expense_category_id" id="expense_category_id" class="custom_select">
                         <option value=""<?php echo ($expense_category_id=="")? " selected":"";?>>Select Expense Category</option>
                         <?php
@@ -29,6 +29,21 @@ if(!defined("APP_START")) die("No Direct Access");
                                 while($rec=dofetch($res)){
                                 ?>
                                 <option value="<?php echo $rec["id"]?>" <?php echo($expense_category_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                            	<?php
+                                }
+                            }	
+                        ?>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                	<select name="account_id" id="account_id" class="custom_select">
+                        <option value=""<?php echo ($account_id=="")? " selected":"";?>>Select Account</option>
+                        <?php
+                            $res=doquery("select * from account order by title",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($account_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
                             	<?php
                                 }
                             }	

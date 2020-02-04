@@ -41,7 +41,6 @@ if( !empty($date_to) ){
 	$extra.=" and datetime_added<'".date("Y/m/d", strtotime(date_dbconvert($date_to))+3600*24)."'";
 	$is_search=true;
 }
-
 if(isset($_GET["expense_category_id"])){
 	$expense_category_id=slash($_GET["expense_category_id"]);
 	$_SESSION["expense"]["list"]["expense_category_id"]=$expense_category_id;
@@ -52,6 +51,18 @@ else
 	$expense_category_id="";
 if($expense_category_id!=""){
 	$extra.=" and expense_category_id='".$expense_category_id."'";
+	$is_search=true;
+}
+if(isset($_GET["account_id"])){
+	$account_id=slash($_GET["account_id"]);
+	$_SESSION["expense"]["list"]["account_id"]=$account_id;
+}
+if(isset($_SESSION["expense"]["list"]["account_id"]))
+	$account_id=$_SESSION["expense"]["list"]["account_id"];
+else
+	$account_id="";
+if($account_id!=""){
+	$extra.=" and account_id='".$account_id."'";
 	$is_search=true;
 }
 $sql="select * from expense where 1 $extra order by datetime_added desc";

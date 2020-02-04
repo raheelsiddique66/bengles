@@ -53,8 +53,6 @@ if( isset( $_SESSION["reports"]["general_journal"]["order"] ) ){
 }
 $orderby = $order_by." ".$order;
 $main_sql = array();
-$main_sql[] = "select datetime_added as date, concat( 'Paid Salary to ', name ) as details, 0 as debit, amount as credit from salary_payment a left join admin b on a.employee_id=b.id where a.status=1".(!empty($account_id)?" and account_id='".$account_id."'":"");
-$main_sql[] = "select datetime_added as date, concat( 'Payment from Project ', title ) as details, amount as debit, 0 as credit from project_payment a left join project b on a.project_id=b.id where a.status=1".(!empty($account_id)?" and account_id='".$account_id."'":"");
 $main_sql[] = "select datetime_added as date, if(details='', concat( 'Paid ', title ), concat(title, ': ', details)) as details, 0 as debit, amount as credit from expense a left join expense_category b on a.expense_category_id=b.id where a.status=1".(!empty($account_id)?" and account_id='".$account_id."'":"");
 $main_sql[] = "select datetime_added as date, if(details='', concat( 'Transfer from account ', title ), details) as details, amount as debit, 0 as credit from transaction a left join account b on a.reference_id=b.id where a.status=1".(!empty($account_id)?" and account_id='".$account_id."'":"");
 $main_sql[] = "select datetime_added as date, if(details='', concat( 'Transfer to account ', title ), concat(title, ': ', details)) as details, 0 as debit, amount as credit from transaction a left join account b on a.account_id=b.id where a.status=1".(!empty($account_id)?" and reference_id='".$account_id."'":"");

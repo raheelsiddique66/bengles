@@ -85,6 +85,7 @@ else {
                                     <th class="text-right" width="10%">Quantity</th>
                                     <th class="text-right" width="10%">Extra</th>
                                     <th class="text-right" width="10%">Unit Price</th>
+                                    <th class="text-right" width="10%">Total</th>
                                     <th class="text-center" width="10%">Actions</th>
                                 </tr>
                             </thead>
@@ -109,18 +110,19 @@ else {
                                             <option ng-repeat="design in designs" value="{{ design.id }}">{{ design.title }}</option>
                                         </select>
                                     </td>
-                                    <td class="text-right"><input type="number" ng-change="update_total( $index )" ng-model="delivery.delivery_items[$index].quantity" /></td>
-                                    <td class="text-right"><input type="number" ng-change="update_total( $index )" ng-model="delivery.delivery_items[$index].extra" /></td>
-                                    <td class="text-right"><input type="number" ng-change="update_total( $index )" ng-model="delivery.delivery_items[$index].unit_price" /></td>                        
+                                    <td class="text-right"><input type="text" ng-model="delivery.delivery_items[$index].quantity" /></td>
+                                    <td class="text-right"><input type="text" ng-model="delivery.delivery_items[$index].extra" /></td>
+                                    <td class="text-right"><input type="text" ng-model="delivery.delivery_items[$index].unit_price" /></td>                        
+                                    <td class="text-right">{{delivery.delivery_items[$index].quantity * delivery.delivery_items[$index].unit_price}}</td>
                                     <td class="text-center"><a href="" ng-click="add( $index )">Add</a> - <a href="" ng-click="remove( $index )">Delete</a></td>
                                 </tr>
                                 <tr>
-                                    <th colspan="6" class="text-right">Total Items</th>
-                                    <th class="text-right">{{ delivery.quantity }}</th>
-                                    <th class="text-right">&nbsp;</th>
+                                    <th colspan="7" class="text-right">Total Items</th>
+                                    <th class="text-right">{{delivery.quantity}}</th>
+                                    <th class="text-right"></th>
                                 </tr>
                                 <tr>
-                                    <th colspan="6" class="text-right">Total Price</th>
+                                    <th colspan="7" class="text-right">Total Price</th>
                                     <th class="text-right">{{ delivery.total }}</th>
                                     <th class="text-right">&nbsp;</th>
                                 </tr>
