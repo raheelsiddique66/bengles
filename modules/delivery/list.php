@@ -47,7 +47,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th width="10%">Claim</th>
                 <th width="20%">Labour</th>
                 <th class="text-center" width="5%">Status</th>
-                <th class="text-center" width="5%">Actions</th>
+                <th class="text-center" width="10%">Actions</th>
             </tr>
     	</thead>
     	<tbody>
@@ -87,6 +87,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td class="text-center">
                             <a href="delivery_manage.php?tab=addedit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
                             <a onclick="return confirm('Are you sure you want to delete')" href="delivery_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
+                            <a href="delivery_manage.php?tab=print_receipt&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/view.png"></a>
                         </td>
                     </tr>
                     <?php

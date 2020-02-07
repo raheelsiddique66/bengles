@@ -97,12 +97,12 @@ else {
                                             <option ng-repeat="design in designs" value="{{ design.id }}">{{ design.title }}</option>
                                         </select>
                                     </td>
-                                    <td class="text-right"><input type="text" ng-change="update_grand_total( $index )" ng-model="incoming.incoming_items[$index].quantity" /></td>                        
+                                    <td class="text-right"><input type="text" ng-model="incoming.incoming_items[$index].quantity" /></td>                        
                                     <td class="text-center"><a href="" ng-click="add( $index )">Add</a> - <a href="" ng-click="remove( $index )">Delete</a></td>
                                 </tr>
                                 <tr>
                                     <th colspan="4" class="text-right">Total Items</th>
-                                    <th class="text-right">{{ incoming.quantity }}</th>
+                                    <th class="text-right">{{ getTotalQty() }}</th>
                                     <th class="text-right">&nbsp;</th>
                                 </tr>
                             </tbody>

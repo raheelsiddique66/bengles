@@ -101,7 +101,7 @@ if(!empty($q)){
                 }
                 ?>
                 <tr>
-                    <td colspan="3" class="actions">
+                    <td colspan="4" class="actions">
                         <select name="bulk_action" class="" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
                             <option value="delete">Delete</option>
@@ -117,7 +117,7 @@ if(!empty($q)){
             else{	
                 ?>
                 <tr>
-                    <td colspan="6"  class="no-record">No Result Found</td>
+                    <td colspan="7"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

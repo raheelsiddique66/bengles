@@ -70,6 +70,13 @@ angular.module('washing', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angula
 			}
 			$scope.update_grand_total();
 		}
+		$scope.getTotalQty = function(){
+			var total = 0;
+			for(var i = 0; i < $scope.washing.washing_items.length; i++){
+				total += parseFloat( $scope.washing.washing_items[ i ].quantity?$scope.washing.washing_items[ i ].quantity:0 );
+			}
+			return total;
+		}
 		$scope.update_grand_total = function(){
 			quantity = 0;
 			for( i = 0; i < $scope.washing.washing_items.length; i++ ) {

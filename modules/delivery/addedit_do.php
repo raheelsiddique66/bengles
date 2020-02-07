@@ -99,9 +99,7 @@ if(isset($_POST["action"])){
 							"design_id" => $r1[ "design_id" ],
 							"quantity" => $r1[ "quantity" ],
 							"extra" => $r1[ "extra" ],
-							"unit_price" => $r1[ "unit_price" ],
-							"total_quantity" => $total_quantity,
-							"total_price" => $total_price,
+							"unit_price" => $r1[ "unit_price" ]
                         );
 					}
 				}

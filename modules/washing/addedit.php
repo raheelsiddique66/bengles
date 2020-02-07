@@ -89,7 +89,7 @@ else {
                                 </tr>
                                 <tr>
                                     <th colspan="4" class="text-right">Total Items</th>
-                                    <th class="text-right">{{ washing.quantity }}</th>
+                                    <th class="text-right">{{ getTotalQty() }}</th>
                                     <th class="text-right">&nbsp;</th>
                                 </tr>
                             </tbody>

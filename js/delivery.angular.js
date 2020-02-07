@@ -14,9 +14,7 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			customer_id: 0,
 			claim: '',
 			labour_id: 0,
-			delivery_items: [],
-			quantity: '0',
-			total: '0'
+			delivery_items: []
 		};
 		$scope.delivery_item = {
 			"id": "",
@@ -25,9 +23,7 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			"design_id": "",
 			"quantity": 0,
 			"extra": 0,
-			"unit_price": 0,
-			"total_quantity": 0,
-			"total_price": 0
+			"unit_price": 0
 		};
 		angular.element(document).ready(function () {
 			$scope.wctAJAX( {action: 'get_customer'}, function( response ){
@@ -84,19 +80,34 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		}
 		$scope.update_total = function( position ) {
 			var quantity = parseFloat( $scope.delivery.delivery_items[ position ].quantity?$scope.delivery.delivery_items[ position ].quantity:0 );
-			$scope.delivery.delivery_items[ position ].total = parseFloat( $scope.delivery.delivery_items[ position ].unit_price ) * quantity;
+			$scope.delivery.delivery_items[ position ].total = ( parseFloat( $scope.delivery.delivery_items[ position ].unit_price )) * quantity;
 			$scope.update_grand_total();
 		}
-		$scope.update_grand_total = function(){
+		$scope.getTotal = function(){
+			var total = 0;
+			for(var i = 0; i < $scope.delivery.delivery_items.length; i++){
+				total += (parseFloat( $scope.delivery.delivery_items[ i ].unit_price ) * parseFloat( $scope.delivery.delivery_items[ i ].quantity ));
+			}
+			return total;
+		}
+		$scope.getTotalQty = function(){
+			var total = 0;
+			for(var i = 0; i < $scope.delivery.delivery_items.length; i++){
+				total += parseFloat( $scope.delivery.delivery_items[ i ].quantity?$scope.delivery.delivery_items[ i ].quantity:0 );
+			}
+			return total;
+		}
+        $scope.update_grand_total = function(){
 			total = 0;
 			quantity = 0;
 			for( i = 0; i < $scope.delivery.delivery_items.length; i++ ) {
-				quantity += parseFloat( $scope.delivery.delivery_items[ i ].quantity?$scope.delivery.delivery_items[ i ].quantity:0 );
 				total += parseFloat( $scope.delivery.delivery_items[ i ].total );
+				quantity += parseFloat( $scope.delivery.delivery_items[ i ].quantity?$scope.delivery.delivery_items[ i ].quantity:0 );
 			}
 			$scope.delivery.total = total;
 			$scope.delivery.quantity = quantity;
 		}
+		
 		$scope.wctAJAX = function( wctData, wctCallback ) {
 			wctData.tab = 'addedit';
 			wctRequest = {

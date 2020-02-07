@@ -118,12 +118,12 @@ else {
                                 </tr>
                                 <tr>
                                     <th colspan="7" class="text-right">Total Items</th>
-                                    <th class="text-right">{{delivery.quantity}}</th>
+                                    <th class="text-right">{{ getTotalQty() }}</th>
                                     <th class="text-right"></th>
                                 </tr>
                                 <tr>
                                     <th colspan="7" class="text-right">Total Price</th>
-                                    <th class="text-right">{{ delivery.total }}</th>
+                                    <th class="text-right">{{ getTotal() }}</th>
                                     <th class="text-right">&nbsp;</th>
                                 </tr>
                             </tbody>
