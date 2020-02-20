@@ -185,8 +185,8 @@ footer {
             <tr>
                 <th width="5%">S#</th>
                 <th width="20%">Color</th>
-                <th width="20%">Size</th>
                 <th width="20%">Design</th>
+				<th width="20%">Size</th>
                 <th width="10%">Qty</th>
 				<th width="10%">Price</th>
 				<th width="10%">Total</th>
@@ -206,8 +206,8 @@ footer {
                     <tr>
                     	<td style="text-align:center"><?php echo $sn++?></td>
                         <td style="text-align:left;"><?php echo get_field($item["color_id"], "color", "title" );?></td>
-						<td style="text-align:left;"><?php echo get_field($item["size_id"], "size", "title" );?></td>
 						<td style="text-align:left;"><?php echo get_field($item["design_id"], "design", "title" );?></td>
+						<td style="text-align:left;"><?php echo get_field($item["size_id"], "size", "title" );?></td>
                         <td style="text-align:center; font-size:9px;"><?php echo $item["quantity"]?></td>
 						<td style="text-align:center; font-size:9px;"><?php echo $item["unit_price"]?></td>
 						<td style="text-align:center; font-size:9px;"><?php echo $total?></td>

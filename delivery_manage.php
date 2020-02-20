@@ -42,6 +42,18 @@ if( !empty($date_to) ){
 	$extra.=" and date<='".date("Y/m/d", strtotime(date_dbconvert($date_to))+3600*24)."'";
 	$is_search=true;
 }
+if(isset($_GET["customer_id"])){
+	$customer_id=slash($_GET["customer_id"]);
+	$_SESSION["delivery"]["list"]["customer_id"]=$customer_id;
+}
+if(isset($_SESSION["delivery"]["list"]["customer_id"]))
+	$customer_id=$_SESSION["delivery"]["list"]["customer_id"];
+else
+	$customer_id="";
+if($customer_id!=""){
+	$extra.=" and customer_id='".$customer_id."'";
+	$is_search=true;
+}
 if(isset($_GET["q"])){
 	$_SESSION["delivery"]["list"]["q"] = slash( $_GET["q"] );
 }
@@ -51,10 +63,10 @@ if(isset($_SESSION["delivery"]["list"]["q"])) {
 	$q="";
 }
 if(!empty($q)){
-	$extra.=" and (id like '%".$q."%')";
+	$extra.=" and (gatepass_id like '%".$q."%')";
 	$is_search=true;
 }
-$sql = "SELECT * FROM `delivery` WHERE 1 $extra order by date DESC ";
+$sql = "SELECT * FROM `delivery` WHERE 1 $extra  order by date DESC";
 switch($tab){
 	case 'addedit':
 		include("modules/delivery/addedit_do.php");

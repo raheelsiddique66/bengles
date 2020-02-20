@@ -7,6 +7,7 @@ angular.module('washing', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angula
 		$scope.errors = [];
 		$scope.processing = false;
 		$scope.washing_id = 0;
+		$scope.item_id = '';
 		$scope.washing = {
 			id: 0,
 			date: '',
@@ -14,11 +15,9 @@ angular.module('washing', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angula
 			washing_items: [],
 		};
 		$scope.washing_item = {
-			"id": "",
 			"color_id":"",
-			"size_id": "",
 			"design_id": "",
-			"quantity": 0,
+			"quantity": [],
 		};
 		angular.element(document).ready(function () {
 			$scope.wctAJAX( {action: 'get_customer'}, function( response ){
@@ -70,10 +69,16 @@ angular.module('washing', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angula
 			}
 			$scope.update_grand_total();
 		}
-		$scope.getTotalQty = function(){
+		$scope.getTotalQty = function( index, size_id ){
 			var total = 0;
 			for(var i = 0; i < $scope.washing.washing_items.length; i++){
-				total += parseFloat( $scope.washing.washing_items[ i ].quantity?$scope.washing.washing_items[ i ].quantity:0 );
+				if( index == -1 || index == i ){
+					for( var j = 0; j < $scope.sizes.length; j++ ){
+						if( ( size_id == -1 || size_id == $scope.sizes[j].id ) && $scope.washing.washing_items[i].quantity[$scope.sizes[j].id] ){
+							total += Number($scope.washing.washing_items[i].quantity[$scope.sizes[j].id]);
+						}
+					}
+				}
 			}
 			return total;
 		}

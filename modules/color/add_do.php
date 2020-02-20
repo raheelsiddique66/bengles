@@ -6,7 +6,7 @@ if(isset($_POST["color_add"])){
 	if(empty($title))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="INSERT INTO color (title, title_urdu) VALUES ('".slash($title)."', '".slash($title_urdu)."')";
+		$sql="INSERT INTO color (title, title_urdu, sortorder) VALUES ('".slash($title)."', '".slash($title_urdu)."', '".slash($sortorder)."')";
 		doquery($sql,$dblink);
 		unset($_SESSION["color_manage"]["add"]);
 		header('Location: color_manage.php?tab=list&msg='.url_encode("Sucessfully Added"));

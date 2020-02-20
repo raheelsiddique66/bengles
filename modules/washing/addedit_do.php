@@ -20,7 +20,7 @@ if(isset($_POST["action"])){
 			$response = $customers;
 		break;
 		case "get_color":
-			$rs = doquery( "select * from color where status=1 order by title", $dblink );
+			$rs = doquery( "select * from color where status=1 order by sortorder", $dblink );
 			$colors = array();
 			if( numrows( $rs ) > 0 ) {
 				while( $r = dofetch( $rs ) ) {
@@ -33,7 +33,7 @@ if(isset($_POST["action"])){
 			$response = $colors;
 		break;
 		case "get_size":
-			$rs = doquery( "select * from size where status=1 order by title", $dblink );
+			$rs = doquery( "select * from size where status=1 order by sortorder", $dblink );
 			$sizes = array();
 			if( numrows( $rs ) > 0 ) {
 				while( $r = dofetch( $rs ) ) {
@@ -46,7 +46,7 @@ if(isset($_POST["action"])){
 			$response = $sizes;
 		break;
 		case "get_design":
-			$rs = doquery( "select * from design where status=1 order by title", $dblink );
+			$rs = doquery( "select * from design where status=1 order by sortorder", $dblink );
 			$designs = array();
 			if( numrows( $rs ) > 0 ) {
 				while( $r = dofetch( $rs ) ) {
@@ -69,16 +69,21 @@ if(isset($_POST["action"])){
 					"customer_id" => unslash( $r[ "customer_id" ] )
 				);
 				$washing_items = array();
-				$rs1 = doquery( "select * from washing_items where washing_id='".$r[ "id" ]."'", $dblink );
+				$rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from washing_items where washing_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
 				if( numrows( $rs1 ) > 0 ) {
 					while( $r1 = dofetch( $rs1 ) ) {
+						$quantities = [];
+						foreach(explode(",", $r1["sizes"]) as $size){
+							$size = explode("x", $size);
+							$quantities[$size[0]] = $size[1];
+						}
 						$washing_items[] = array(
 							"id" => $r1["id"],
 							"washing_id" => $r1[ "washing_id" ],
 							"color_id" => $r1["color_id"],
 							"size_id" => $r1[ "size_id" ],
 							"design_id" => $r1[ "design_id" ],
-							"quantity" => $r1[ "quantity" ]
+							"quantity" => $quantities
                         );
 					}
 				}
@@ -98,7 +103,7 @@ if(isset($_POST["action"])){
 			else {
 				$i=1;
 				foreach( $washing->washing_items as $washing_item ) {
-					if( empty( $washing_item->size_id ) || empty( $washing_item->color_id ) ){
+					if( empty( $washing_item->design_id ) || empty( $washing_item->color_id ) || !isset($washing_item->quantity) || count((array)$washing_item->quantity) == 0 ){
 						$err[] = "Fill all the required fields on Row#".$i;
 					}
 					$i++;
@@ -115,13 +120,20 @@ if(isset($_POST["action"])){
 				}
 				$washing_item_ids = array();
 				foreach( $washing->washing_items as $washing_item) {
-					if( empty( $washing_item->id ) ) {
-						doquery( "insert into washing_items( washing_id, color_id, size_id, design_id, quantity ) values( '".$washing_id."', '".$washing_item->color_id."', '".$washing_item->size_id."', '".$washing_item->design_id."', '".$washing_item->quantity."')", $dblink );
-						$washing_item_ids[] = inserted_id();
-					}
-					else {
-						doquery( "update washing_items set `color_id`='".$washing_item->color_id."', `size_id`='".$washing_item->size_id."', `design_id`='".$washing_item->design_id."', `quantity`='".$washing_item->quantity."' where id='".$washing_item->id."'", $dblink );
-						$washing_item_ids[] = $washing_item->id;
+					foreach($washing_item->quantity as $size_id => $quantity){
+						$quantity = (int)$quantity;
+						if(!empty($quantity)){
+							$check = doquery("select * from washing_items where washing_id = '".$washing_id."' and color_id = '".$washing_item->color_id."' and design_id = '".$washing_item->design_id."' and size_id = '".$size_id."'",$dblink);
+							if( numrows( $check ) == 0 ) {
+								doquery( "insert into washing_items( washing_id, color_id, size_id, design_id, quantity ) values( '".$washing_id."', '".$washing_item->color_id."', '".$size_id."', '".$washing_item->design_id."', '".$quantity."')", $dblink );
+								$washing_item_ids[] = inserted_id();
+							}
+							else {
+								$check = dofetch($check);
+								doquery( "update washing_items set `quantity`='".$quantity."' where id='".$check["id"]."'", $dblink );
+								$washing_item_ids[] = $check["id"];
+							}
+						}
 					}
 				}
 				if( !empty( $washing->id ) && count( $washing_item_ids ) > 0 ) {

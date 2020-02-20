@@ -45,8 +45,11 @@ table {
 			if( !empty( $date_to ) ){
 				echo " to ".$date_to."<br>";
 			}
+			if( !empty( $customer_id ) ){
+				echo " Customer ".get_field($customer_id, "customer", "customer_name" )."<br>";
+			}
 			if( !empty( $q ) ){
-				echo "".$q."<br>";
+				echo "ID ".$q."<br>";
 			}
 			?>
         </p>
@@ -54,20 +57,75 @@ table {
 </tr>
 <tr>
     <th width="5%" align="center">S.no</th>
-    <th width="15%">Date</th>
-    <th width="15%">Customer</th>
+    <th width="10%">ID</th>
+	<th width="10%">Date</th>
+	<th width="10%">Customer</th>
+	<th width="20%">Items</th>
 </tr>
 <?php
 if( numrows( $rs ) > 0 ) {
+	$colors = [];
+	$rs2 = doquery("select * from color order by sortorder", $dblink);
+	while($r2=dofetch($rs2)){
+		$colors[$r2["id"]] = unslash($r2["title"]);
+	}
+	$designs = [];
+	$rs3 = doquery("select * from design order by sortorder", $dblink);
+	while($r3=dofetch($rs3)){
+		$designs[$r3["id"]] = unslash($r3["title"]);
+	}
+	$sizes = [];
+	$rs4 = doquery("select * from size order by sortorder", $dblink);
+	while($r4=dofetch($rs4)){
+		$sizes[$r4["id"]] = unslash($r4["title"]);
+	}
 	$sn = 1;
 	while( $r = dofetch( $rs ) ) {
 		?>
 		<tr>
-        	<td align="center"><?php echo $sn++?></td>
-           	<td><?php echo date_convert($r["date"]); ?></td>
-			<td><?php echo get_field( unslash($r["customer_id"]), "customer", "customer_name" ); ?></td>
+        	<td align="center"><?php echo $sn?></td>
+			<td><?php echo $r["id"]; ?></td>
+			<td><?php echo date_convert($r["date"]); ?></td>
+			<td><?php echo get_field($r["customer_id"], "customer", "customer_name" ); ?></td>
+			<td>
+				<table width="100%">
+					<tr>
+						<td>Color</td>
+						<td>Design</td>
+						<?php
+						foreach($sizes as $size){
+							?>
+							<th><?php echo $size;?></th>
+							<?php  
+						}
+						?>
+					</tr>
+					<?php
+					$rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from washing_items where washing_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
+					if(numrows($rs1)>0){
+						while($r1=dofetch($rs1)){
+							?>
+							<tr>
+								<td><?php echo $colors[$r1["color_id"]]?></td>
+								<td><?php echo $designs[$r1["design_id"]]?></td>
+								<?php
+								foreach(explode(",", $r1["sizes"]) as $size){
+									$size = explode("x", $size);
+									?>
+									<td><?php echo $size[1];?></td>
+									<?php  
+								}
+								?>
+							</tr>
+						<?php
+						}
+					}
+					?>
+				</table>
+			</td>
         </tr>
 		<?php
+		$sn++;
 	}
 }
 ?>

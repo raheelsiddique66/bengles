@@ -4,7 +4,7 @@ include("include/utility.php");
 include("include/session.php");
 include("include/paging.php");
 define("APP_START", 1);
-$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action");
+$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action", "report");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -24,6 +24,18 @@ else
 	$customer_id="";
 if($customer_id!=""){
 	$extra.=" and customer_id='".$customer_id."'";
+	$is_search=true;
+}
+if(isset($_GET["account_id"])){
+	$account_id=slash($_GET["account_id"]);
+	$_SESSION["customer_payment"]["list"]["account_id"]=$account_id;
+}
+if(isset($_SESSION["customer_payment"]["list"]["account_id"]))
+	$account_id=$_SESSION["customer_payment"]["list"]["account_id"];
+else
+	$account_id="";
+if($account_id!=""){
+	$extra.=" and account_id='".$account_id."'";
 	$is_search=true;
 }
 if( isset($_GET["date_from"]) ){
@@ -80,6 +92,9 @@ switch($tab){
 	break;
 	case 'bulk_action':
 		include("modules/customer_payment/bulkactions.php");
+	break;
+	case 'report':
+		include("modules/customer_payment/report.php");
 	break;
 }
 ?>

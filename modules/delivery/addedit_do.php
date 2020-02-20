@@ -33,7 +33,7 @@ if(isset($_POST["action"])){
 			$response = $labours;
 		break;
 		case "get_color":
-			$rs = doquery( "select * from color where status=1 order by title", $dblink );
+			$rs = doquery( "select * from color where status=1 order by sortorder", $dblink );
 			$colors = array();
 			if( numrows( $rs ) > 0 ) {
 				while( $r = dofetch( $rs ) ) {
@@ -46,7 +46,7 @@ if(isset($_POST["action"])){
 			$response = $colors;
 		break;
 		case "get_size":
-			$rs = doquery( "select * from size where status=1 order by title", $dblink );
+			$rs = doquery( "select * from size where status=1 order by sortorder", $dblink );
 			$sizes = array();
 			if( numrows( $rs ) > 0 ) {
 				while( $r = dofetch( $rs ) ) {
@@ -59,7 +59,7 @@ if(isset($_POST["action"])){
 			$response = $sizes;
 		break;
 		case "get_design":
-			$rs = doquery( "select * from design where status=1 order by title", $dblink );
+			$rs = doquery( "select * from design where status=1 order by sortorder", $dblink );
 			$designs = array();
 			if( numrows( $rs ) > 0 ) {
 				while( $r = dofetch( $rs ) ) {
@@ -73,33 +73,39 @@ if(isset($_POST["action"])){
 		break;
 		case "get_delivery":
 			$id = slash( $_POST[ "id" ] );
-			$rs = doquery( "select * from delivery where id='".$id."'", $dblink );
+			$rs = doquery( "select a.*, b.name from delivery a left join labour b on a.labour_id = b.id where a.id='".$id."'", $dblink );
 			if( numrows( $rs ) > 0 ) {
 				$r = dofetch( $rs );
 				$delivery = array(
 					"id" => $r[ "id" ],
+					"gatepass_id" => $r[ "gatepass_id" ],
 					"date" => date_convert( $r[ "date" ] ),
 					"customer_id" => unslash( $r[ "customer_id" ] ),
 					"claim" => unslash( $r[ "claim" ] ),
+					"labour" => array(
+						"id" => $r[ "labour_id" ],
+						"name" => $r[ "name" ]
+					),
 					"labour_id" => unslash( $r[ "labour_id" ] )
 				);
 				$delivery_items = array();
-				$rs1 = doquery( "select * from delivery_items where delivery_id='".$r[ "id" ]."'", $dblink );
-				$total_quantity = 0;
-				$total_price = 0;
+				$rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from delivery_items where delivery_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
 				if( numrows( $rs1 ) > 0 ) {
 					while( $r1 = dofetch( $rs1 ) ) {
-						$total_quantity += $r1[ "quantity" ];
-						$total_price += $r1[ "unit_price" ];
+						$quantities = [];
+						foreach(explode(",", $r1["sizes"]) as $size){
+							$size = explode("x", $size);
+							$quantities[$size[0]] = $size[1];
+						}
 						$delivery_items[] = array(
 							"id" => $r1["id"],
 							"delivery_id" => $r1[ "delivery_id" ],
 							"color_id" => $r1["color_id"],
 							"size_id" => $r1[ "size_id" ],
 							"design_id" => $r1[ "design_id" ],
-							"quantity" => $r1[ "quantity" ],
+							"quantity" => $quantities,
 							"extra" => $r1[ "extra" ],
-							"unit_price" => $r1[ "unit_price" ]
+							"unit_price" => $r1[ "unit_price" ],
                         );
 					}
 				}
@@ -119,30 +125,45 @@ if(isset($_POST["action"])){
 			else {
 				$i=1;
 				foreach( $delivery->delivery_items as $delivery_item ) {
-					if( empty( $delivery_item->size_id ) || empty( $delivery_item->color_id ) ){
+					if( empty( $delivery_item->design_id ) || empty( $delivery_item->color_id ) || !isset($delivery_item->quantity) || count((array)$delivery_item->quantity) == 0 ){
 						$err[] = "Fill all the required fields on Row#".$i;
 					}
 					$i++;
 				}
 			}
+			if( empty( $delivery->labour->id ) ) {
+				doquery( "insert into labour (name) VALUES ('".slash($delivery->labour->name)."') ", $dblink );
+				$labour_id = inserted_id();
+			}
+			else {
+				doquery("update labour set `name`='".slash($delivery->labour->name)."' where id='".$delivery->labour->id."'", $dblink);
+				$labour_id = $delivery->labour->id;
+			}
 			if( count( $err ) == 0 ) {
 				if( !empty( $delivery->id ) ) {
-					doquery( "update delivery set `date`='".slash(date_dbconvert($delivery->date))."', `customer_id`='".slash($delivery->customer_id)."', `claim`='".slash($delivery->claim)."', `labour_id`='".slash($delivery->labour_id)."' where id='".$delivery->id."'", $dblink );
+					doquery( "update delivery set `date`='".slash(date_dbconvert($delivery->date))."', `gatepass_id`='".slash($delivery->gatepass_id)."', `customer_id`='".slash($delivery->customer_id)."', `claim`='".slash($delivery->claim)."', `labour_id`='".slash($delivery->labour_id)."' where id='".$delivery->id."'", $dblink );
 					$delivery_id = $delivery->id;
 				}
 				else {
-					doquery( "insert into delivery (date, customer_id, claim, labour_id) VALUES ('".slash(date_dbconvert($delivery->date))."', '".slash($delivery->customer_id)."', '".slash($delivery->claim)."', '".slash($delivery->labour_id)."')", $dblink );
+					doquery( "insert into delivery (date, customer_id, claim, labour_id, gatepass_id) VALUES ('".slash(date_dbconvert($delivery->date))."', '".slash($delivery->customer_id)."', '".slash($delivery->claim)."', '".slash($delivery->labour_id)."', '".slash($delivery->gatepass_id)."')", $dblink );
 					$delivery_id = inserted_id();
 				}
 				$delivery_item_ids = array();
 				foreach( $delivery->delivery_items as $delivery_item) {
-					if( empty( $delivery_item->id ) ) {
-						doquery( "insert into delivery_items( delivery_id, color_id, size_id, design_id, quantity, extra, unit_price ) values( '".$delivery_id."', '".$delivery_item->color_id."', '".$delivery_item->size_id."', '".$delivery_item->design_id."', '".$delivery_item->quantity."', '".$delivery_item->extra."', '".$delivery_item->unit_price."')", $dblink );
-						$delivery_item_ids[] = inserted_id();
-					}
-					else {
-						doquery( "update delivery_items set `color_id`='".$delivery_item->color_id."', `size_id`='".$delivery_item->size_id."', `design_id`='".$delivery_item->design_id."', `quantity`='".$delivery_item->quantity."', `extra`='".$delivery_item->extra."', `unit_price`='".$delivery_item->unit_price."' where id='".$delivery_item->id."'", $dblink );
-						$delivery_item_ids[] = $delivery_item->id;
+					foreach($delivery_item->quantity as $size_id => $quantity){
+						$quantity = (int)$quantity;
+						if(!empty($quantity)){
+							$check = doquery("select * from delivery_items where delivery_id = '".$delivery_id."' and color_id = '".$delivery_item->color_id."' and design_id = '".$delivery_item->design_id."' and size_id = '".$size_id."'",$dblink);
+							if( numrows( $check ) == 0 ) {
+								doquery( "insert into delivery_items( delivery_id, color_id, size_id, design_id, quantity, extra, unit_price ) values( '".$delivery_id."', '".$delivery_item->color_id."', '".$size_id."', '".$delivery_item->design_id."', '".$quantity."', '".$delivery_item->extra."', '".$delivery_item->unit_price."')", $dblink );
+								$delivery_item_ids[] = inserted_id();
+							}
+							else {
+								$check = dofetch($check);
+								doquery( "update delivery_items set `quantity`='".$quantity."' where id='".$check["id"]."'", $dblink );
+								$delivery_item_ids[] = $check["id"];
+							}
+						}
 					}
 				}
 				if( !empty( $delivery->id ) && count( $delivery_item_ids ) > 0 ) {

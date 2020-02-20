@@ -9,19 +9,22 @@ angular.module('incoming', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.processing = false;
 		$scope.incoming_id = 0;
 		$scope.item_id = '';
+		$scope.labour = {
+			id: "",
+			name: ""
+		};
 		$scope.incoming = {
 			id: 0,
 			date: '',
 			customer_id: '0',
-			labour_id: '0',
+			gatepass_id: '',
+			labour: angular.copy($scope.labour),
 			incoming_items: [],
 		};
 		$scope.incoming_item = {
-			"id": "",
 			"color_id":"",
-			"size_id": "",
 			"design_id": "",
-			"quantity": 0,
+			"quantity": [],
 		};
 		angular.element(document).ready(function () {
 			$scope.wctAJAX( {action: 'get_customer'}, function( response ){
@@ -76,10 +79,16 @@ angular.module('incoming', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			}
 			$scope.update_grand_total();
 		}
-		$scope.getTotalQty = function(){
+		$scope.getTotalQty = function( index, size_id ){
 			var total = 0;
 			for(var i = 0; i < $scope.incoming.incoming_items.length; i++){
-				total += parseFloat( $scope.incoming.incoming_items[ i ].quantity?$scope.incoming.incoming_items[ i ].quantity:0 );
+				if( index == -1 || index == i ){
+					for( var j = 0; j < $scope.sizes.length; j++ ){
+						if( ( size_id == -1 || size_id == $scope.sizes[j].id ) && $scope.incoming.incoming_items[i].quantity[$scope.sizes[j].id] ){
+							total += Number($scope.incoming.incoming_items[i].quantity[$scope.sizes[j].id]);
+						}
+					}
+				}
 			}
 			return total;
 		}
@@ -130,6 +139,18 @@ angular.module('incoming', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 				});
 			}
 		}
+		$scope.$watch( 'incoming.labour.id', function( newValue, oldValue ){
+			if( newValue == "" ) {
+				$scope.incoming.labour.name = angular.copy($scope.labour.name);
+			}
+			else {
+				var labour = $filter('filter')($scope.labours, {id: newValue}, true );
+				if( labour.length > 0 ) {
+					labour = labour[0];
+					$scope.incoming.labour.name = labour.name;
+				}
+			}
+		})
 		
 	}
 );

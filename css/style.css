@@ -15,7 +15,7 @@
 tr.head {
     background-color: #9edb9d;
 }
-.nastaleeq, #name_in_urdu_text{font-family: 'NafeesRegular'; direction:rtl; unicode-bidi: embed; text-align:right;   }
+.nastaleeq, #name_in_urdu_text{font-family: 'NafeesRegular'; direction:rtl; unicode-bidi: embed; text-align:right; font-size: 18px;  }
 /* Color Class */
 .color1 {
   color: #37363e;

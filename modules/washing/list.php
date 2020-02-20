@@ -22,6 +22,21 @@ if(!defined("APP_START")) die("No Direct Access");
                 <div class="col-sm-2 margin-btm-5">
                     <input placeholder="Date To" type="text" title="Date To" value="<?php echo $date_to;?>" name="date_to" id="date_to" class="date-picker form-control" autocomplete="off" />
                 </div>
+                <div class="col-sm-2 col-xs-8">
+                    <select name="customer_id" id="customer_id" class="form-control">
+                        <option value=""<?php echo ($customer_id=="")? " selected":"";?>>Select Customer</option>
+                        <?php
+                            $res=doquery("select * from customer order by customer_name",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($customer_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["customer_name"])?></option>
+                                <?php
+                                }
+                            }	
+                        ?>
+                    </select>
+                </div>
                 <div class="col-sm-2">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
                 </div>
@@ -44,6 +59,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th width="5%">ID</th>
                 <th width="15%">Date</th>
                 <th width="20%">Customer</th>
+                <th width="20%">Items</th>
                 <th class="text-center" width="5%">Status</th>
                 <th class="text-center" width="5%">Actions</th>
             </tr>
@@ -52,6 +68,21 @@ if(!defined("APP_START")) die("No Direct Access");
 			<?php
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
+                $colors = [];
+                $rs2 = doquery("select * from color order by sortorder", $dblink);
+                while($r2=dofetch($rs2)){
+                    $colors[$r2["id"]] = unslash($r2["title"]);
+                }
+                $designs = [];
+                $rs3 = doquery("select * from design order by sortorder", $dblink);
+                while($r3=dofetch($rs3)){
+                    $designs[$r3["id"]] = unslash($r3["title"]);
+                }
+                $sizes = [];
+                $rs4 = doquery("select * from size order by sortorder", $dblink);
+                while($r4=dofetch($rs4)){
+                    $sizes[$r4["id"]] = unslash($r4["title"]);
+                }
                 $sn=1;
                 while($r=dofetch($rs)){
                     ?>
@@ -64,6 +95,42 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td><?php echo $r["id"]; ?></td>
                         <td><?php echo date_convert($r["date"]); ?></td>
                         <td><?php echo get_field( unslash($r["customer_id"]), "customer", "customer_name" ); ?></td>
+                        <td>
+                            <table class="table table-hover list">
+                                <tr>
+                                    <td>Color</td>
+                                    <td>Design</td>
+                                    <?php
+                                    foreach($sizes as $size){
+                                        ?>
+                                        <th><?php echo $size;?></th>
+                                        <?php  
+                                    }
+                                    ?>
+                                </tr>
+                                <?php
+                                $rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from washing_items where washing_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
+                                if(numrows($rs1)>0){
+                                    while($r1=dofetch($rs1)){
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $colors[$r1["color_id"]]?></td>
+                                            <td><?php echo $designs[$r1["design_id"]]?></td>
+                                            <?php
+                                            foreach(explode(",", $r1["sizes"]) as $size){
+                                                $size = explode("x", $size);
+                                                ?>
+                                                <td><?php echo $size[1];?></td>
+                                                <?php  
+                                            }
+                                            ?>
+                                        </tr>
+                                    <?php
+                                    }
+                                }
+                                ?>
+                            </table>
+                        </td>
                         <td class="text-center">
                             <a href="washing_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                                 <?php
@@ -90,7 +157,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 }
                 ?>
                 <tr>
-                    <td colspan="4" class="actions">
+                    <td colspan="5" class="actions">
                         <select name="bulk_action" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
                             <option value="delete">Delete</option>
@@ -106,7 +173,7 @@ if(!defined("APP_START")) die("No Direct Access");
             else{
                 ?>
                 <tr>
-                    <td colspan="7"  class="no-record">No Result Found</td>
+                    <td colspan="8"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

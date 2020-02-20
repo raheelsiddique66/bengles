@@ -48,13 +48,24 @@ else {
         <div class="form-group">
             <div class="row">
                 <div class="col-sm-2 control-label">
-                    <label class="form-label" for="labour_id">Labour *</label>
+                    <label class="form-label" for="labour_id">Labour </label>
                 </div>
                 <div class="col-sm-10">
-                    <select id="labour_id" ng-model="incoming.labour_id" chosen>
+                    <select id="labour_id" ng-model="incoming.labour.id" chosen>
                         <option value="0" selected="false">Select Labour</option>
                         <option ng-repeat="labour in labours" value="{{ labour.id }}">{{ labour.name }}</option>
                     </select>
+                    <input type="text" title="Enter Name" class="form-control" ng-model="incoming.labour.name">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-2 control-label">
+                    <label class="form-label" for="incoming.gatepass_id">Gatepass </label>
+                </div>
+                <div class="col-sm-10">
+                    <input ng-model="incoming.gatepass_id" class="form-control" />
                 </div>
             </div>
         </div>
@@ -68,12 +79,15 @@ else {
                         <table class="table table-hover list">
                             <thead>
                                 <tr>
-                                    <th width="5%" class="text-center">S.no</th>
-                                    <th width="15%">Color</th>
-                                    <th width="15%">Size</th>
-                                    <th width="15%">Design</th>
-                                    <th class="text-right" width="10%">Quantity</th>
-                                    <th class="text-center" width="10%">Actions</th>
+                                    <th width="2%" class="text-center" rowspan="2">S.no</th>
+                                    <th width="10%" rowspan="2">Color</th>
+                                    <th width="10%" rowspan="2">Design</th>
+                                    <th class="text-center" width="30%" colspan="{{ sizes.length+1 }}">Sizes</th>
+                                    <th class="text-center" width="5%">Actions</th>
+                                </tr>
+                                <tr>
+                                    <td ng-repeat="size in sizes">{{ size.title }}</td>
+                                    <td>&nbsp;</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -86,23 +100,19 @@ else {
                                         </select>
                                     </td>
                                     <td>
-                                        <select title="Choose Option" ng-model="incoming.incoming_items[$index].size_id">
-                                            <option value="">Select Size</option>
-                                            <option ng-repeat="size in sizes" value="{{ size.id }}">{{ size.title }}</option>
-                                        </select>
-                                    </td>
-                                    <td>
                                         <select title="Choose Option" ng-model="incoming.incoming_items[$index].design_id">
                                             <option value="">Select Design</option>
                                             <option ng-repeat="design in designs" value="{{ design.id }}">{{ design.title }}</option>
                                         </select>
                                     </td>
-                                    <td class="text-right"><input type="text" ng-model="incoming.incoming_items[$index].quantity" /></td>                        
+                                    <td class="text-right" ng-repeat="size in sizes"><input type="text" ng-model="incoming.incoming_items[$parent.$index].quantity[size.id]" /></td>                        
+                                    <th class="text-right" style="background: #c36868;color: #fff;">{{ getTotalQty($index,-1) }}</th>
                                     <td class="text-center"><a href="" ng-click="add( $index )">Add</a> - <a href="" ng-click="remove( $index )">Delete</a></td>
                                 </tr>
                                 <tr>
-                                    <th colspan="4" class="text-right">Total Items</th>
-                                    <th class="text-right">{{ getTotalQty() }}</th>
+                                    <th colspan="3" class="text-right">Total Items</th>
+                                    <th class="text-right" style="background: rgb(178, 219, 239);" ng-repeat="size in sizes">{{ getTotalQty(-1,size.id) }}</th>
+                                    <th class="text-right" style="background: rgba(61, 165, 145, 0.89);color: #fff;">{{ getTotalQty(-1,-1) }}</th>
                                     <th class="text-right">&nbsp;</th>
                                 </tr>
                             </tbody>

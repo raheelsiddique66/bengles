@@ -53,13 +53,14 @@ if(!empty($q)){
                     <label for="select_all"></label></div></th>
                 <th width="20%">Title</th>
                 <th width="20%">Title In Urdu</th>
+                <th width="10%" class="text-center">Sortorder</th>
                 <th width="10%" class="text-center">Status</th>
                 <th width="10%" class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
             <?php 
-            $sql="select * from color where 1 $extra order by title";
+            $sql="select * from color where 1 $extra order by sortorder";
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
@@ -73,6 +74,7 @@ if(!empty($q)){
                         </td>
                         <td><?php echo unslash($r["title"]); ?></td>
                         <td><span class="nastaleeq"><?php echo unslash($r["title_urdu"]); ?></span></td>
+                        <td class="text-center"><?php echo $r["sortorder"]; ?></td>
                         <td class="text-center">
                             <a href="color_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                                 <?php
@@ -99,7 +101,7 @@ if(!empty($q)){
                 }
                 ?>
                 <tr>
-                    <td colspan="3" class="actions">
+                    <td colspan="4" class="actions">
                         <select name="bulk_action" class="" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
                             <option value="delete">Delete</option>
@@ -115,7 +117,7 @@ if(!empty($q)){
             else{	
                 ?>
                 <tr>
-                    <td colspan="6"  class="no-record">No Result Found</td>
+                    <td colspan="7"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

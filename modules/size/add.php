@@ -5,7 +5,8 @@ if(isset($_SESSION["size_manage"]["add"])){
 }
 else{
 	$title="";
-	$title_urdu="";
+    $title_urdu="";
+    $sortorder="";
 }
 ?>
 <div class="page-header">
@@ -38,6 +39,16 @@ else{
             </div>
             <div class="col-sm-10">
                 <input type="text" title="Enter Title in Urdu" value="<?php echo $title_urdu; ?>" name="title_urdu" id="title_urdu" class="form-control nastaleeq" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+        	<div class="col-sm-2 control-label">
+            	<label class="form-label" for="sortorder">Sortorder </label>
+            </div>
+            <div class="col-sm-10">
+                <input type="text" title="Enter Sortorder" value="<?php echo $sortorder;?>" name="sortorder" id="sortorder" class="form-control" />
             </div>
         </div>
     </div>

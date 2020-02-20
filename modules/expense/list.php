@@ -5,7 +5,7 @@ if(!defined("APP_START")) die("No Direct Access");
 	<h1 class="title">Manage Expense</h1>
   	<ol class="breadcrumb">
     	<li class="active">
-        	AllExpenses
+        	All Expenses
         </li>
   	</ol>
   	<div class="right">
@@ -74,7 +74,7 @@ if(!defined("APP_START")) die("No Direct Access");
                     <label for="select_all"></label></div></th>
                 <th width="15%">Date/Time</th>
                 <th width="13%">Expense Category</th>
-                <th width="12%">Payment Account</th>
+                <th width="12%">Paid By</th>
                 <th width="20%">Details</th>
                 <th width="10%">Amount</th>
                 <th width="10%">Added By</th>

@@ -6,7 +6,7 @@ if(isset($_POST["size_edit"])){
 	if(empty($title))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="Update size set `title`='".slash($title)."', `title_urdu`='".slash($title_urdu)."' where id='".$id."'";
+		$sql="Update size set `title`='".slash($title)."', `title_urdu`='".slash($title_urdu)."', `sortorder`='".slash($sortorder)."' where id='".$id."'";
 		doquery($sql,$dblink);
 		unset($_SESSION["size_manage"]["edit"]);
 		header('Location: size_manage.php?tab=list&msg='.url_encode("Sucessfully Updated"));

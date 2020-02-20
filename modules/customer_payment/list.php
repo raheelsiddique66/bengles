@@ -10,6 +10,7 @@ if(!defined("APP_START")) die("No Direct Access");
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> 
         	<a href="customer_payment_manage.php?tab=add" class="btn btn-light editproject">Add New Record</a> <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
+            <a class="btn print-btn" href="customer_payment_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a>
         </div>
   	</div>
 </div>
@@ -57,7 +58,6 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
-                    
                 <th width="5%" class="text-center">ID</th>
                 <th>Customer Name</th>
                 <th>Datetime</th>

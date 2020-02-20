@@ -8,20 +8,25 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.errors = [];
 		$scope.processing = false;
 		$scope.delivery_id = 0;
+		$scope.item_id = '';
+		$scope.labour = {
+			id: "",
+			name: ""
+		};
 		$scope.delivery = {
 			id: 0,
 			date: '',
 			customer_id: 0,
+			gatepass_id: '',
 			claim: '',
 			labour_id: 0,
+			labour: angular.copy($scope.labour),
 			delivery_items: []
 		};
 		$scope.delivery_item = {
-			"id": "",
 			"color_id":"",
-			"size_id": "",
 			"design_id": "",
-			"quantity": 0,
+			"quantity": [],
 			"extra": 0,
 			"unit_price": 0
 		};
@@ -83,17 +88,29 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			$scope.delivery.delivery_items[ position ].total = ( parseFloat( $scope.delivery.delivery_items[ position ].unit_price )) * quantity;
 			$scope.update_grand_total();
 		}
-		$scope.getTotal = function(){
+		$scope.getTotal = function(index, size_id){
 			var total = 0;
 			for(var i = 0; i < $scope.delivery.delivery_items.length; i++){
-				total += (parseFloat( $scope.delivery.delivery_items[ i ].unit_price ) * parseFloat( $scope.delivery.delivery_items[ i ].quantity ));
+				if( index == -1 || index == i ){
+					for( var j = 0; j < $scope.sizes.length; j++ ){
+						if( ( size_id == -1 || size_id == $scope.sizes[j].id ) && $scope.delivery.delivery_items[i].quantity[$scope.sizes[j].id] ){
+							total += parseFloat( $scope.delivery.delivery_items[ i ].unit_price ) * Number($scope.delivery.delivery_items[i].quantity[$scope.sizes[j].id]);
+						}
+					}
+				}
 			}
 			return total;
 		}
-		$scope.getTotalQty = function(){
+		$scope.getTotalQty = function( index, size_id ){
 			var total = 0;
 			for(var i = 0; i < $scope.delivery.delivery_items.length; i++){
-				total += parseFloat( $scope.delivery.delivery_items[ i ].quantity?$scope.delivery.delivery_items[ i ].quantity:0 );
+				if( index == -1 || index == i ){
+					for( var j = 0; j < $scope.sizes.length; j++ ){
+						if( ( size_id == -1 || size_id == $scope.sizes[j].id ) && $scope.delivery.delivery_items[i].quantity[$scope.sizes[j].id] ){
+							total += Number($scope.delivery.delivery_items[i].quantity[$scope.sizes[j].id]);
+						}
+					}
+				}
 			}
 			return total;
 		}
@@ -147,6 +164,18 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 				});
 			}
 		}
+		$scope.$watch( 'delivery.labour.id', function( newValue, oldValue ){
+			if( newValue == "" ) {
+				$scope.delivery.labour.name = angular.copy($scope.labour.name);
+			}
+			else {
+				var labour = $filter('filter')($scope.labours, {id: newValue}, true );
+				if( labour.length > 0 ) {
+					labour = labour[0];
+					$scope.delivery.labour.name = labour.name;
+				}
+			}
+		})
 		
 	}
 );
