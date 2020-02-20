@@ -50,84 +50,61 @@ if($customer_id!=""){
     $extra.=" and customer_id='".$customer_id."'";
 }
 ?>
-<div class="page-header">
-	<h1 class="title">Reports</h1>
-  	<ol class="breadcrumb">
-    	<li class="active">Stock Report</li>
-  	</ol>
-  	<div class="right">
-    	<div class="btn-group" role="group" aria-label="..."> 
-        	<a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a> 
-            <a class="btn print-btn" href="report_manage.php?tab=stock_report_print"><i class="fa fa-print" aria-hidden="true"></i></a>
-        </div>
-  	</div>
-</div>
-<ul class="topstats clearfix search_filter" style="display: block">
-	<li class="col-xs-12 col-lg-12 col-sm-12">
-        <div>
-        	<form class="form-horizontal" action="" method="get">
-            	<input type="hidden" name="tab" value="stock_report" />
-                <div class="col-sm-2">
-                    <select name="color_id">
-                        <option value=""<?php echo ($color_id=="")? " selected":"";?>>Select Color</option>
-                    	<?php
-                        $rs=doquery( "select * from color order by sortorder", $dblink );
-						if( numrows( $rs ) > 0 ) {
-							while( $r = dofetch( $rs ) ) {
-								?>
-								<option value="<?php echo $r[ "id" ]?>"<?php echo $r[ "id" ]==$color_id?' selected':''?>><?php echo unslash( $r[ "title" ] )?></option>
-								<?php
-							}
-						}
-						?>
-                    </select>
-                </div>
-                <div class="col-sm-2">
-                    <select name="design_id">
-                        <option value=""<?php echo ($design_id=="")? " selected":"";?>>Select Design</option>
-                        <?php
-                        $rs=doquery( "select * from design order by title", $dblink );
-                        if( numrows( $rs ) > 0 ) {
-                            while( $r = dofetch( $rs ) ) {
-                                ?>
-                                <option value="<?php echo $r[ "id" ]?>"<?php echo $r[ "id" ]==$design_id?' selected':''?>><?php echo unslash( $r[ "title" ] )?></option>
-                                <?php
-                            }
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-sm-2">
-                    <select name="customer_id">
-                        <option value=""<?php echo ($customer_id=="")? " selected":"";?>>Select Customer</option>
-                        <?php
-                        $rs=doquery( "select * from customer where status=1 order by customer_name", $dblink );
-                        if( numrows( $rs ) > 0 ) {
-                            while( $r = dofetch( $rs ) ) {
-                                ?>
-                                <option value="<?php echo $r[ "id" ]?>"<?php echo $r[ "id" ]==$customer_id?' selected':''?>><?php echo unslash( $r[ "customer_name" ] )?></option>
-                                <?php
-                            }
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-sm-2">
-                    <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="" class="form-control date-picker"  value="<?php echo $date_from?>" autocomplete="off" />
-                </div>
-                <div class="col-sm-2">
-                    <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-picker"  value="<?php echo $date_to?>" autocomplete="off" />
-                </div>                
-                <div class="col-sm-2 text-left">
-                    <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
-                    <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
-                </div>
-          	</form>
-        </div>
-  	</li>
-</ul>
-<div class="panel-body table-responsive">
-	<table class="table table-hover list">
+<style>
+h1, h2, h3, p {
+    margin: 0 0 10px;
+}
+
+body {
+    margin:  0;
+    font-family:  Arial;
+    font-size:  11px;
+}
+.head th, .head td{ border:0;}
+th, td {
+    border: solid 1px #000;
+    padding: 5px 5px;
+    font-size: 11px;
+	vertical-align:top;
+}
+table table th, table table td{
+	padding:3px;
+}
+table {
+    border-collapse:  collapse;
+	max-width:1200px;
+	margin:0 auto;
+}
+.text-right{ text-align:right}
+.text-left{ text-align:left}
+.text-center{ text-align:center}
+</style>
+<table cellspacing="0" cellpadding="0">
+        <tr class="head">
+            <th colspan="40">
+                <h1><?php echo get_config( 'site_title' )?></h1>
+                <h2>Stock Report</h2>
+                <p>
+                    <?php
+                    if( !empty( $date_from ) || !empty( $date_to ) ){
+                        echo "<br />Date";
+                    }
+                    if( !empty( $date_from ) ){
+                        echo " from ".$date_from;
+                    }
+                    if( !empty( $date_to ) ){
+                        echo " to ".$date_to."<br>";
+                    }
+                    if( !empty( $color_id ) ){
+                        echo " Color: ".get_field($color_id, "color", "title" );
+                    }
+                    if( !empty( $design_id ) ){
+                        echo " Design: ".get_field($design_id, "design", "title" );
+                    }
+                    ?>
+                </p>
+            </th>
+        </tr>
         <?php
         $sizes = [];
         $rs = doquery("select * from size order by sortorder", $dblink);
@@ -138,7 +115,6 @@ if($customer_id!=""){
         }
         $colspan = count($sizes)+1;
         ?>
-    	<thead>
             <tr>
                 <th width="2%" class="text-center" rowspan="2">S.no</th>
                 <th width="10%" colspan="2" class="text-center">Item</th>
@@ -164,8 +140,6 @@ if($customer_id!=""){
                 }
                 ?>
             </tr>
-    	</thead>
-    	<tbody>
             <?php
             $totals = [];
             for($i = 0; $i < 3; $i++){
@@ -253,9 +227,7 @@ if($customer_id!=""){
                 <?php
             }
             ?>
-    	</tbody>
   	</table>
-</div>
 <style>
     .color-0{
         background-color:lightblue !important;
@@ -268,3 +240,5 @@ if($customer_id!=""){
     }
 
 </style>
+<?php
+die;

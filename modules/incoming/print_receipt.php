@@ -37,7 +37,7 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
 	clear: both;
 }
 #main {
-width:71mm;
+width:95mm;
 border:0;
 }
 a {
@@ -191,7 +191,7 @@ footer {
     	<?php $reciept_logo=get_config("reciept_logo"); if(empty($reciept_logo)) echo $site_title; else { ?><img src="<?php echo $file_upload_root;?>config/<?php echo $reciept_logo?>" /><?php }?>
     </div>
     <span class="address"><?php echo get_config("address_phone")?></span>
-    <div id="receipt" style="width: 160px">Gatepass No: <strong><?php echo $incoming["id"]; ?></div>
+    <div id="receipt" style="width: 160px">Gatepass No: <strong><?php echo $incoming["gatepass_id"]; ?></div>
     <div class="contentbox">
         <p>Date: <strong style="float:right"><?php echo date_convert($incoming["date"]); ?></strong></p>
 		<p>Customer: <strong style="float:right"><?php echo get_field($incoming["customer_id"], "customer", "customer_name" ); ?></strong></p>
@@ -260,8 +260,6 @@ footer {
             }
             ?>
         </table>
-
-		<hr style="border:0; border-top:1px solid #999">
     </div>
     <div id="signcompny">Software developed by wamtSol http://wamtsol.com/ - 0346 3891 662</div> 
 </div>

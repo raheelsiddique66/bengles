@@ -27,6 +27,9 @@ table {
 	max-width:1200px;
 	margin:0 auto;
 }
+.text-right{ text-align:right}
+.text-left{ text-align:left}
+.text-center{ text-align:center}
 </style>
 <table width="100%" cellspacing="0" cellpadding="0">
 <tr class="head">
@@ -92,39 +95,81 @@ if( numrows( $rs ) > 0 ) {
 			<td><?php echo  unslash($r["claim"]); ?></td>
 			<td><?php echo get_field($r["labour_id"], "labour", "name" ); ?></td>
 			<td>
-				<table>
+				<table width="100%">
+					<thead>
 					<tr>
 						<td>Color</td>
 						<td>Design</td>
 						<?php
 						foreach($sizes as $size){
 							?>
-							<th><?php echo $size;?></th>
+							<th class="text-center"><?php echo $size;?></th>
 							<?php  
 						}
 						?>
-						<td>Price</td>
+						<th class="color3-bg text-center">Total</th>
+						<th class="color3-bg text-center">Price</th>
+						<th class="color3-bg text-center">Total</th>
 					</tr>
+					</thead>
 					<?php
 					$rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from delivery_items where delivery_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
 					if(numrows($rs1)>0){
+						$price = 0;
+						$total_price = 0;
+						$totals = [];
+						foreach($sizes as $size_id => $size){
+							$totals[$size_id] = 0;
+						}
 						while($r1=dofetch($rs1)){
+							$price += $r1["unit_price"];
+							
+							
 							?>
 							<tr>
 								<td><?php echo $colors[$r1["color_id"]]?></td>
 								<td><?php echo $designs[$r1["design_id"]]?></td>
 								<?php
+								$quantities = [];
+								$t = 0;
 								foreach(explode(",", $r1["sizes"]) as $size){
 									$size = explode("x", $size);
-									?>
-									<td colspan="10"><?php echo $size[1];?></td>
-									<?php  
+									$quantities[$size[0]]=$size[1];
+									$t += $size[1];
 								}
+								foreach($sizes as $size_id => $size){
+									$totals[$size_id] += isset($quantities[$size_id])?$quantities[$size_id]:0;
+									?>
+									<td class="text-right"><?php echo isset($quantities[$size_id])?$quantities[$size_id]:"--";?></td>
+									<?php
+								}
+								$total_price +=  $t * $r1["unit_price"];
 								?>
-								<td><?php echo $r1["unit_price"]?></td>
+								<td class="text-right color3-bg"><?php echo $t?></td>
+								<td class="text-right color3-bg"><?php echo $r1["unit_price"]?></td>
+								<td class="text-right color3-bg"><?php echo $t * $r1["unit_price"]?></td>
 							</tr>
 						<?php
 						}
+						?>
+						<tr>
+							<td colspan="2">Total</td>
+							<?php
+							$t = 0;
+							
+							foreach($totals as $total){
+								$t += $total;
+								
+								?>
+								<td class="text-right color3-bg"><?php echo $total?></td>
+								<?php
+							}
+							?>
+							<td class="text-right color3-bg"><?php echo $t?></td>
+							<td class="text-right color3-bg"><?php echo $price?></td>
+							<td class="text-right color3-bg"><?php echo $total_price?></td>
+						</tr>
+						<?php
 					}
 					?>
 				</table>

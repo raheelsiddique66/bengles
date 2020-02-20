@@ -6,7 +6,7 @@ include("include/paging.php");
 define("APP_START", 1);
 $filename = 'report_manage.php';
 include("include/admin_type_access.php");
-$tab_array=array("general_journal", "general_journal_print", "balance_sheet", "income", "income_print", "delivery_report", "delivery_report_print", "stock_report");
+$tab_array=array("general_journal", "general_journal_print", "balance_sheet", "income", "income_print", "stock_report", "stock_report_print");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -23,8 +23,8 @@ switch($tab){
 	case 'income_print':
 		include("modules/reports/income_print.php");
 	break;
-	case 'delivery_report_print':
-		include("modules/reports/delivery_report_print.php");
+	case 'stock_report_print':
+		include("modules/reports/stock_report_print.php");
 	break;
 }
 ?>
@@ -41,9 +41,6 @@ switch($tab){
 			break;
 			case 'income':
 				include("modules/reports/income.php");
-			break;
-			case 'delivery_report':
-				include("modules/reports/delivery_report.php");
 			break;
 			case 'stock_report':
 				include("modules/reports/stock_report.php");

@@ -89,4 +89,11 @@ if( !empty($date_to) ){
             </tbody>
         </table>
     </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-10">
+                <input type="submit" value="Save Record" class="btn btn-default btn-l" name="employee_edit" title="Update Record" />
+            </div>
+        </div>
+    </div>
 </div>
