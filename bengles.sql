@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 18, 2020 at 03:18 PM
+-- Generation Time: Feb 20, 2020 at 04:39 PM
 -- Server version: 10.1.32-MariaDB
 -- PHP Version: 7.2.5
 
@@ -200,7 +200,8 @@ INSERT INTO `customer` (`id`, `customer_name`, `customer_name_urdu`, `phone`, `a
 (3, 'Sajjad Bangles', '', 0, '', 1, '2020-02-15 15:45:39'),
 (4, 'Qazi Akram', '', 0, '', 1, '2020-02-15 15:45:45'),
 (5, 'Hassan', '', 0, '', 1, '2020-02-15 15:45:50'),
-(6, 'Milan', '', 0, '', 1, '2020-02-15 15:45:57');
+(6, 'Milan', '', 0, '', 1, '2020-02-15 15:45:57'),
+(7, 'BURHAN', '', 0, '', 1, '2020-02-19 17:03:49');
 
 -- --------------------------------------------------------
 
@@ -224,7 +225,7 @@ CREATE TABLE `customer_payment` (
 --
 
 INSERT INTO `customer_payment` (`id`, `customer_id`, `datetime_added`, `amount`, `account_id`, `details`, `status`, `ts`) VALUES
-(1, 1, '2020-02-04 18:46:00', '44.00', 0, '', 1, '2020-02-04 13:46:29');
+(1, 1, '2020-02-04 18:46:00', '44.00', 1, '', 1, '2020-02-20 15:11:16');
 
 -- --------------------------------------------------------
 
@@ -248,7 +249,9 @@ CREATE TABLE `delivery` (
 --
 
 INSERT INTO `delivery` (`id`, `gatepass_id`, `date`, `customer_id`, `claim`, `labour_id`, `status`, `ts`) VALUES
-(1, 0, '2020-02-02', 1, 'aa', 1, 1, '2020-02-03 10:55:06');
+(1, 0, '2020-02-02', 1, 'aa', 1, 1, '2020-02-03 10:55:06'),
+(2, 6708, '2020-02-20', 3, '', 1, 1, '2020-02-20 14:38:34'),
+(3, 2115, '2020-02-20', 6, '', 0, 1, '2020-02-20 15:10:40');
 
 -- --------------------------------------------------------
 
@@ -274,7 +277,47 @@ CREATE TABLE `delivery_items` (
 
 INSERT INTO `delivery_items` (`id`, `delivery_id`, `color_id`, `size_id`, `design_id`, `quantity`, `extra`, `unit_price`, `ts`) VALUES
 (1, 1, 1, 1, 1, 3, 2, '6.00', '2020-02-04 13:32:30'),
-(2, 1, 2, 2, 1, 2, 2, '10.00', '2020-02-04 13:32:30');
+(2, 1, 2, 2, 1, 2, 2, '10.00', '2020-02-04 13:32:30'),
+(3, 2, 4, 1, 8, 100, 200, '150.00', '2020-02-20 14:38:34'),
+(4, 2, 4, 2, 8, 50, 200, '150.00', '2020-02-20 14:38:34'),
+(5, 2, 4, 3, 8, 300, 200, '150.00', '2020-02-20 14:38:35'),
+(6, 2, 4, 4, 8, 180, 200, '150.00', '2020-02-20 14:38:35'),
+(7, 2, 4, 5, 8, 200, 200, '150.00', '2020-02-20 14:38:35'),
+(8, 2, 4, 6, 8, 140, 200, '150.00', '2020-02-20 14:38:35'),
+(9, 2, 4, 7, 8, 40, 200, '150.00', '2020-02-20 14:38:35'),
+(10, 2, 4, 8, 8, 30, 200, '150.00', '2020-02-20 14:38:35'),
+(11, 2, 4, 9, 8, 5, 200, '150.00', '2020-02-20 14:38:35'),
+(12, 2, 4, 10, 8, 20, 200, '150.00', '2020-02-20 14:38:35'),
+(13, 2, 4, 1, 5, 50, 140, '80.00', '2020-02-20 14:38:35'),
+(14, 2, 4, 2, 5, 40, 140, '80.00', '2020-02-20 14:38:35'),
+(15, 2, 4, 3, 5, 170, 140, '80.00', '2020-02-20 14:38:35'),
+(16, 2, 4, 4, 5, 180, 140, '80.00', '2020-02-20 14:38:35'),
+(17, 2, 4, 5, 5, 90, 140, '80.00', '2020-02-20 14:38:35'),
+(18, 2, 4, 6, 5, 110, 140, '80.00', '2020-02-20 14:38:35'),
+(19, 2, 4, 7, 5, 225, 140, '80.00', '2020-02-20 14:38:35'),
+(20, 2, 4, 8, 5, 35, 140, '80.00', '2020-02-20 14:38:36'),
+(21, 2, 4, 9, 5, 60, 140, '80.00', '2020-02-20 14:38:36'),
+(22, 2, 4, 10, 5, 115, 140, '80.00', '2020-02-20 14:38:36'),
+(23, 3, 1, 1, 8, 25, 2, '140.00', '2020-02-20 15:10:40'),
+(24, 3, 1, 2, 8, 10, 2, '140.00', '2020-02-20 15:10:40'),
+(25, 3, 1, 3, 8, 30, 2, '140.00', '2020-02-20 15:10:40'),
+(26, 3, 1, 4, 8, 40, 2, '140.00', '2020-02-20 15:10:41'),
+(27, 3, 1, 5, 8, 30, 2, '140.00', '2020-02-20 15:10:41'),
+(28, 3, 1, 6, 8, 20, 2, '140.00', '2020-02-20 15:10:41'),
+(29, 3, 1, 7, 8, 10, 2, '140.00', '2020-02-20 15:10:41'),
+(30, 3, 1, 8, 8, 10, 2, '140.00', '2020-02-20 15:10:41'),
+(31, 3, 1, 9, 8, 5, 2, '140.00', '2020-02-20 15:10:41'),
+(32, 3, 1, 10, 8, 20, 2, '140.00', '2020-02-20 15:10:41'),
+(33, 3, 3, 1, 6, 22, 6, '150.00', '2020-02-20 15:10:41'),
+(34, 3, 3, 2, 6, 42, 6, '150.00', '2020-02-20 15:10:41'),
+(35, 3, 3, 3, 6, 29, 6, '150.00', '2020-02-20 15:10:41'),
+(36, 3, 3, 4, 6, 34, 6, '150.00', '2020-02-20 15:10:41'),
+(37, 3, 3, 5, 6, 33, 6, '150.00', '2020-02-20 15:10:41'),
+(38, 3, 3, 6, 6, 33, 6, '150.00', '2020-02-20 15:10:41'),
+(39, 3, 3, 7, 6, 30, 6, '150.00', '2020-02-20 15:10:41'),
+(40, 3, 3, 8, 6, 15, 6, '150.00', '2020-02-20 15:10:41'),
+(41, 3, 3, 9, 6, 18, 6, '150.00', '2020-02-20 15:10:41'),
+(42, 3, 3, 10, 6, 30, 6, '150.00', '2020-02-20 15:10:41');
 
 -- --------------------------------------------------------
 
@@ -297,11 +340,13 @@ CREATE TABLE `design` (
 
 INSERT INTO `design` (`id`, `title`, `title_urdu`, `sortorder`, `status`, `ts`) VALUES
 (1, 'Suraiya', '', 0, 1, '2020-02-15 15:42:09'),
-(2, 'Nagin', '', 0, 1, '2020-02-15 15:42:17'),
+(2, 'Nagin', 'Ã™Â†Ã˜Â§ ÃšÂ¯Ã™Â†', 0, 1, '2020-02-19 16:04:15'),
 (3, 'Noor', '', 0, 1, '2020-02-15 15:42:21'),
 (4, 'Namakpara', '', 0, 1, '2020-02-15 15:42:56'),
 (5, 'Ujala', '', 0, 1, '2020-02-15 15:43:56'),
-(6, 'Barfi', '', 0, 1, '2020-02-15 15:44:05');
+(6, 'Barfi', '', 0, 1, '2020-02-15 15:44:05'),
+(7, 'MORPANKH', 'Ã™Â…Ã™ÂˆÃ˜Â± Ã™Â¾Ã™Â†ÃšÂ©ÃšÂ¾ ', 0, 1, '2020-02-19 16:06:04'),
+(8, 'JUGNO', 'Ã˜Â¬ÃšÂ¯Ã™Â†Ã™Âˆ', 0, 1, '2020-02-19 16:03:40');
 
 -- --------------------------------------------------------
 
@@ -326,7 +371,9 @@ CREATE TABLE `employees` (
 --
 
 INSERT INTO `employees` (`id`, `name`, `father_name`, `phone_number`, `salary_type`, `salary`, `over_time_per_hour`, `status`, `ts`) VALUES
-(7, 'admin', 'yousuf', 900786019, 1, '4000.00', '40.00', 1, '2020-02-17 15:19:00');
+(7, 'Umer', 'yousuf', 900786019, 1, '4000.00', '40.00', 1, '2020-02-18 19:47:16'),
+(8, 'Zaid', 'Sharif', 0, 0, '20000.00', '20.00', 1, '2020-02-18 19:47:49'),
+(9, 'Kamran', 'Ali', 0, 2, '600.00', '10.00', 1, '2020-02-18 19:48:30');
 
 -- --------------------------------------------------------
 
@@ -346,6 +393,13 @@ CREATE TABLE `expense` (
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `expense`
+--
+
+INSERT INTO `expense` (`id`, `datetime_added`, `expense_category_id`, `account_id`, `details`, `amount`, `added_by`, `status`, `ts`) VALUES
+(1, '2020-02-19 20:12:00', '1', 1, '', '1000.00', 1, 1, '2020-02-19 15:12:48');
+
 -- --------------------------------------------------------
 
 --
@@ -358,6 +412,13 @@ CREATE TABLE `expense_category` (
   `status` int(11) NOT NULL DEFAULT '1',
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `expense_category`
+--
+
+INSERT INTO `expense_category` (`id`, `title`, `status`, `ts`) VALUES
+(1, 'Food', 1, '2020-02-19 15:12:11');
 
 -- --------------------------------------------------------
 
@@ -383,7 +444,12 @@ INSERT INTO `incoming` (`id`, `gatepass_id`, `date`, `customer_id`, `labour_id`,
 (4, 787, '2020-02-01', 2, 1, 1, '2020-02-15 17:44:27'),
 (5, 121, '2020-02-15', 5, 0, 1, '2020-02-15 18:22:32'),
 (6, 121, '2020-02-15', 5, 0, 1, '2020-02-15 18:22:40'),
-(7, 121, '2020-02-15', 5, 4, 1, '2020-02-15 18:24:40');
+(7, 121, '2020-02-15', 5, 4, 1, '2020-02-15 18:24:40'),
+(8, 6001, '2020-02-19', 6, 5, 1, '2020-02-19 16:09:07'),
+(9, 6002, '2020-02-19', 6, 6, 1, '2020-02-19 16:15:40'),
+(10, 6003, '2020-02-19', 7, 7, 1, '2020-02-19 17:04:56'),
+(11, 0, '2020-02-20', 7, 1, 1, '2020-02-20 14:42:37'),
+(12, 6689, '2020-02-20', 6, 5, 1, '2020-02-20 15:03:00');
 
 -- --------------------------------------------------------
 
@@ -442,7 +508,67 @@ INSERT INTO `incoming_items` (`id`, `incoming_id`, `color_id`, `size_id`, `desig
 (55, 7, 2, 6, 1, 19, '2020-02-15 18:24:40'),
 (56, 7, 2, 7, 1, 30, '2020-02-15 18:24:40'),
 (57, 7, 2, 8, 1, 12, '2020-02-15 18:24:40'),
-(58, 7, 2, 9, 1, 18, '2020-02-15 18:24:40');
+(58, 7, 2, 9, 1, 18, '2020-02-15 18:24:40'),
+(59, 8, 2, 1, 8, 100, '2020-02-19 16:09:07'),
+(60, 8, 2, 2, 8, 50, '2020-02-19 16:09:07'),
+(61, 8, 2, 3, 8, 25, '2020-02-19 16:09:07'),
+(62, 8, 2, 4, 8, 10, '2020-02-19 16:09:07'),
+(63, 8, 2, 5, 8, 10, '2020-02-19 16:09:08'),
+(64, 9, 1, 1, 7, 200, '2020-02-19 16:15:40'),
+(65, 9, 1, 2, 7, 200, '2020-02-19 16:15:40'),
+(66, 9, 1, 3, 7, 200, '2020-02-19 16:15:40'),
+(67, 9, 1, 4, 7, 100, '2020-02-19 16:15:40'),
+(68, 9, 1, 5, 7, 50, '2020-02-19 16:15:40'),
+(69, 10, 2, 1, 6, 100, '2020-02-19 17:04:56'),
+(70, 10, 2, 2, 6, 100, '2020-02-19 17:04:57'),
+(71, 10, 2, 3, 6, 100, '2020-02-19 17:04:57'),
+(72, 10, 2, 4, 6, 100, '2020-02-19 17:04:57'),
+(73, 10, 2, 5, 6, 100, '2020-02-19 17:04:57'),
+(74, 10, 1, 1, 2, 200, '2020-02-19 17:05:36'),
+(75, 10, 1, 2, 2, 200, '2020-02-19 17:05:36'),
+(76, 10, 1, 3, 2, 200, '2020-02-19 17:05:36'),
+(77, 10, 1, 4, 2, 200, '2020-02-19 17:05:36'),
+(78, 10, 1, 5, 2, 200, '2020-02-19 17:05:36'),
+(79, 11, 4, 1, 5, 40, '2020-02-20 14:42:38'),
+(80, 11, 4, 2, 5, 20, '2020-02-20 14:42:38'),
+(81, 11, 4, 3, 5, 90, '2020-02-20 14:42:38'),
+(82, 11, 4, 4, 5, 100, '2020-02-20 14:42:38'),
+(83, 11, 4, 5, 5, 50, '2020-02-20 14:42:38'),
+(84, 11, 4, 6, 5, 70, '2020-02-20 14:42:38'),
+(85, 11, 4, 7, 5, 200, '2020-02-20 14:42:38'),
+(86, 11, 4, 8, 5, 15, '2020-02-20 14:42:38'),
+(87, 11, 4, 9, 5, 20, '2020-02-20 14:42:38'),
+(88, 11, 4, 10, 5, 100, '2020-02-20 14:42:38'),
+(89, 11, 4, 1, 8, 40, '2020-02-20 14:42:38'),
+(90, 11, 4, 2, 8, 30, '2020-02-20 14:42:38'),
+(91, 11, 4, 3, 8, 190, '2020-02-20 14:42:38'),
+(92, 11, 4, 4, 8, 100, '2020-02-20 14:42:38'),
+(93, 11, 4, 5, 8, 150, '2020-02-20 14:42:38'),
+(94, 11, 4, 6, 8, 40, '2020-02-20 14:42:38'),
+(95, 11, 4, 7, 8, 40, '2020-02-20 14:42:38'),
+(96, 11, 4, 8, 8, 10, '2020-02-20 14:42:38'),
+(97, 11, 4, 9, 8, 5, '2020-02-20 14:42:38'),
+(98, 11, 4, 10, 8, 20, '2020-02-20 14:42:39'),
+(99, 12, 3, 1, 6, 100, '2020-02-20 15:03:00'),
+(100, 12, 3, 2, 6, 50, '2020-02-20 15:03:00'),
+(101, 12, 3, 3, 6, 170, '2020-02-20 15:03:00'),
+(102, 12, 3, 4, 6, 210, '2020-02-20 15:03:00'),
+(103, 12, 3, 5, 6, 150, '2020-02-20 15:03:00'),
+(104, 12, 3, 6, 6, 140, '2020-02-20 15:03:01'),
+(105, 12, 3, 7, 6, 140, '2020-02-20 15:03:01'),
+(106, 12, 3, 8, 6, 50, '2020-02-20 15:03:01'),
+(107, 12, 3, 9, 6, 50, '2020-02-20 15:03:01'),
+(108, 12, 3, 10, 6, 140, '2020-02-20 15:03:01'),
+(109, 12, 1, 1, 8, 180, '2020-02-20 15:03:01'),
+(110, 12, 1, 2, 8, 150, '2020-02-20 15:03:01'),
+(111, 12, 1, 3, 8, 180, '2020-02-20 15:03:01'),
+(112, 12, 1, 4, 8, 180, '2020-02-20 15:03:01'),
+(113, 12, 1, 5, 8, 200, '2020-02-20 15:03:01'),
+(114, 12, 1, 6, 8, 200, '2020-02-20 15:03:01'),
+(115, 12, 1, 7, 8, 250, '2020-02-20 15:03:01'),
+(116, 12, 1, 8, 8, 250, '2020-02-20 15:03:01'),
+(117, 12, 1, 9, 8, 250, '2020-02-20 15:03:01'),
+(118, 12, 1, 10, 8, 260, '2020-02-20 15:03:01');
 
 -- --------------------------------------------------------
 
@@ -465,7 +591,34 @@ INSERT INTO `labour` (`id`, `name`, `status`, `ts`) VALUES
 (1, 'Bilal', 1, '2020-02-01 15:52:55'),
 (2, 'Bilal', 1, '2020-02-15 23:22:32'),
 (3, 'Bilal', 1, '2020-02-15 23:22:40'),
-(4, 'Bilal', 1, '2020-02-15 23:24:40');
+(4, 'Bilal', 1, '2020-02-15 23:24:40'),
+(5, '', 1, '2020-02-19 21:09:07'),
+(6, '', 1, '2020-02-19 21:15:40'),
+(7, '', 1, '2020-02-19 22:04:56'),
+(8, '', 1, '2020-02-20 19:38:34'),
+(9, '', 1, '2020-02-20 20:10:40');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `machine`
+--
+
+CREATE TABLE `machine` (
+  `id` int(11) NOT NULL,
+  `title` varchar(250) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `machine`
+--
+
+INSERT INTO `machine` (`id`, `title`, `status`, `ts`) VALUES
+(2, 'machine', 1, '2020-02-20 15:10:45'),
+(4, 'green', 1, '2020-02-20 15:12:14'),
+(5, 'red', 1, '2020-02-20 15:12:18');
 
 -- --------------------------------------------------------
 
@@ -499,10 +652,10 @@ INSERT INTO `menu` (`id`, `title`, `url`, `parent_id`, `depth`, `sortorder`, `ic
 (24, 'General Journal', 'report_manage.php?tab=general_journal', 22, 1, 23, 'general-journal.png', 'th-large'),
 (26, 'Manage User Types', 'admin_type_manage.php', 1, 1, 5, 'admin-type.png', 'unlock-alt'),
 (30, 'Accounts', '#', 0, 0, 19, 'accounts.jpg', 'suitcase'),
-(28, 'Manage Expenses', 'expense_manage.php', 30, 1, 20, 'manage-expense.png', 'car'),
-(32, 'Manage Transactions', 'transaction_manage.php', 30, 1, 18, 'transaction.png', 'money'),
-(35, 'Manage Accounts', 'account_manage.php', 30, 1, 19, 'manage-accounts.png', 'balance-scale'),
-(40, 'Expense Category', 'expense_category_manage.php', 30, 1, 21, 'expense-category.png', 'server'),
+(28, 'Manage Expenses', 'expense_manage.php', 30, 1, 14, 'manage-expense.png', 'car'),
+(32, 'Manage Transactions', 'transaction_manage.php', 30, 1, 21, 'transaction.png', 'money'),
+(35, 'Manage Accounts', 'account_manage.php', 30, 1, 10, 'manage-accounts.png', 'balance-scale'),
+(40, 'Expense Category', 'expense_category_manage.php', 30, 1, 13, 'expense-category.png', 'server'),
 (74, 'Incoming', 'incoming_manage.php', 78, 1, 13, 'incoming.png', 'rub'),
 (75, 'Washing', 'washing_manage.php', 78, 1, 14, 'washing.png', 'eraser'),
 (76, 'Delivery', 'delivery_manage.php', 78, 1, 15, 'delivery.png', 'yelp'),
@@ -511,11 +664,14 @@ INSERT INTO `menu` (`id`, `title`, `url`, `parent_id`, `depth`, `sortorder`, `ic
 (73, 'Labour', 'labour_manage.php', 68, 1, 12, 'labour.png', 'male'),
 (70, 'Size', 'size_manage.php', 68, 1, 8, 'size.png', 'exchange'),
 (71, 'Design', 'design_manage.php', 68, 1, 9, 'design.png', 'empire'),
-(72, 'Customer', 'customer_manage.php', 30, 1, 10, 'customer.png', 'male'),
-(77, 'Customer Payment', 'customer_payment_manage.php', 30, 1, 11, 'customer-payment.png', 'random'),
+(72, 'Customer', 'customer_manage.php', 30, 1, 11, 'customer.png', 'male'),
+(77, 'Customer Payment', 'customer_payment_manage.php', 30, 1, 12, 'customer-payment.png', 'random'),
 (78, 'Bangles Manufacturing', '#', 0, 0, 7, 'bengles-manufacturing.jpg', 'map-signs'),
 (79, 'Employees', '#', 0, 0, 18, 'employees.png', 'male'),
-(80, 'Manage Employee', 'employee_manage.php', 79, 1, 27, 'manage-employee.png', 'user');
+(80, 'Manage Employee', 'employee_manage.php', 79, 1, 27, 'manage-employee.png', 'user'),
+(81, 'Delivery Report', 'report_manage.php?tab=delivery_report', 22, 1, 28, 'delivery-report.png', '500px'),
+(82, 'Stock Report', 'report_manage.php?tab=stock_report', 22, 1, 29, 'stock-report.png', 'cogs'),
+(83, 'Machine', 'machine_manage.php', 68, 1, 30, 'machine.png', 'magnet');
 
 -- --------------------------------------------------------
 
@@ -638,7 +794,10 @@ INSERT INTO `menu_2_admin_type` (`menu_id`, `admin_type_id`) VALUES
 (77, 1),
 (78, 1),
 (79, 1),
-(80, 1);
+(80, 1),
+(81, 1),
+(82, 1),
+(83, 1);
 
 -- --------------------------------------------------------
 
@@ -684,15 +843,16 @@ CREATE TABLE `size` (
 --
 
 INSERT INTO `size` (`id`, `title`, `title_urdu`, `sortorder`, `status`, `ts`) VALUES
-(1, '2=', '', 0, 1, '2020-02-15 15:39:36'),
-(2, '21', '21', 0, 1, '2020-02-15 15:39:23'),
-(3, '2', '', 0, 1, '2020-02-15 15:39:41'),
-(4, '21=', '', 0, 1, '2020-02-15 15:39:48'),
-(5, '111=', '', 0, 1, '2020-02-15 15:39:52'),
-(6, '111', '', 0, 1, '2020-02-15 16:49:53'),
-(7, '11', '', 0, 1, '2020-02-15 16:50:12'),
-(8, '1=', '', 0, 1, '2020-02-15 16:50:18'),
-(9, '1', '', 0, 1, '2020-02-15 16:50:23');
+(1, '2=', '', 2, 1, '2020-02-19 15:04:36'),
+(2, '21', '21', 1, 1, '2020-02-19 15:04:27'),
+(3, '2', '', 3, 1, '2020-02-19 15:04:44'),
+(4, '21=', '', 4, 1, '2020-02-19 15:06:05'),
+(5, '111=', '', 5, 1, '2020-02-19 15:06:11'),
+(6, '111', '', 6, 1, '2020-02-18 16:17:40'),
+(7, '11', '', 8, 1, '2020-02-19 15:06:56'),
+(8, '1=', '', 9, 1, '2020-02-19 15:07:05'),
+(9, '1', '', 10, 1, '2020-02-19 15:07:12'),
+(10, '11=', '', 7, 1, '2020-02-19 15:06:45');
 
 -- --------------------------------------------------------
 
@@ -743,7 +903,9 @@ CREATE TABLE `washing` (
 --
 
 INSERT INTO `washing` (`id`, `date`, `customer_id`, `status`, `ts`) VALUES
-(1, '2020-02-02', 2, 1, '2020-02-01 19:25:36');
+(1, '2020-02-02', 2, 1, '2020-02-01 19:25:36'),
+(2, '2020-02-20', 3, 1, '2020-02-20 14:50:24'),
+(3, '2020-02-20', 6, 1, '2020-02-20 15:05:47');
 
 -- --------------------------------------------------------
 
@@ -768,7 +930,47 @@ CREATE TABLE `washing_items` (
 INSERT INTO `washing_items` (`id`, `washing_id`, `color_id`, `size_id`, `design_id`, `quantity`, `ts`) VALUES
 (1, 1, 2, 2, 2, 40, '2020-02-01 19:25:36'),
 (2, 1, 2, 1, 2, 50, '2020-02-01 19:25:36'),
-(3, 1, 1, 1, 1, 30, '2020-02-01 19:25:36');
+(3, 1, 1, 1, 1, 30, '2020-02-01 19:25:36'),
+(4, 2, 4, 1, 8, 8, '2020-02-20 14:50:24'),
+(5, 2, 4, 2, 8, 5, '2020-02-20 14:50:24'),
+(6, 2, 4, 3, 8, 6, '2020-02-20 14:50:24'),
+(7, 2, 4, 4, 8, 14, '2020-02-20 14:50:25'),
+(8, 2, 4, 5, 8, 19, '2020-02-20 14:50:25'),
+(9, 2, 4, 6, 8, 22, '2020-02-20 14:50:25'),
+(10, 2, 4, 7, 8, 11, '2020-02-20 14:50:25'),
+(11, 2, 4, 8, 8, 4, '2020-02-20 14:50:25'),
+(12, 2, 4, 9, 8, 2, '2020-02-20 14:50:25'),
+(13, 2, 4, 10, 8, 20, '2020-02-20 14:50:25'),
+(14, 2, 4, 1, 5, 1, '2020-02-20 14:50:25'),
+(15, 2, 4, 2, 5, 3, '2020-02-20 14:50:25'),
+(16, 2, 4, 3, 5, 1, '2020-02-20 14:50:25'),
+(17, 2, 4, 4, 5, 2, '2020-02-20 14:50:25'),
+(18, 2, 4, 5, 5, 3, '2020-02-20 14:50:25'),
+(19, 2, 4, 6, 5, 2, '2020-02-20 14:50:25'),
+(20, 2, 4, 7, 5, 3, '2020-02-20 14:50:25'),
+(21, 2, 4, 8, 5, 3, '2020-02-20 14:50:25'),
+(22, 2, 4, 9, 5, 4, '2020-02-20 14:50:25'),
+(23, 2, 4, 10, 5, 2, '2020-02-20 14:50:25'),
+(24, 3, 1, 1, 8, 60, '2020-02-20 15:05:48'),
+(25, 3, 1, 2, 8, 50, '2020-02-20 15:05:48'),
+(26, 3, 1, 3, 8, 80, '2020-02-20 15:05:48'),
+(27, 3, 1, 4, 8, 70, '2020-02-20 15:05:48'),
+(28, 3, 1, 5, 8, 120, '2020-02-20 15:05:48'),
+(29, 3, 1, 6, 8, 110, '2020-02-20 15:05:48'),
+(30, 3, 1, 7, 8, 100, '2020-02-20 15:05:48'),
+(31, 3, 1, 8, 8, 100, '2020-02-20 15:05:48'),
+(32, 3, 1, 9, 8, 50, '2020-02-20 15:05:48'),
+(33, 3, 1, 10, 8, 50, '2020-02-20 15:05:48'),
+(34, 3, 3, 1, 6, 80, '2020-02-20 15:05:48'),
+(35, 3, 3, 2, 6, 20, '2020-02-20 15:05:48'),
+(36, 3, 3, 3, 6, 110, '2020-02-20 15:05:48'),
+(37, 3, 3, 4, 6, 10, '2020-02-20 15:05:48'),
+(38, 3, 3, 5, 6, 90, '2020-02-20 15:05:48'),
+(39, 3, 3, 6, 6, 40, '2020-02-20 15:05:48'),
+(40, 3, 3, 7, 6, 25, '2020-02-20 15:05:48'),
+(41, 3, 3, 8, 6, 10, '2020-02-20 15:05:48'),
+(42, 3, 3, 9, 6, 20, '2020-02-20 15:05:49'),
+(43, 3, 3, 10, 6, 25, '2020-02-20 15:05:49');
 
 --
 -- Indexes for dumped tables
@@ -877,6 +1079,12 @@ ALTER TABLE `labour`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `machine`
+--
+ALTER TABLE `machine`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `menu`
 --
 ALTER TABLE `menu`
@@ -968,7 +1176,7 @@ ALTER TABLE `config_variable`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `customer_payment`
@@ -980,61 +1188,67 @@ ALTER TABLE `customer_payment`
 -- AUTO_INCREMENT for table `delivery`
 --
 ALTER TABLE `delivery`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `delivery_items`
 --
 ALTER TABLE `delivery_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `design`
 --
 ALTER TABLE `design`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `expense`
 --
 ALTER TABLE `expense`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `expense_category`
 --
 ALTER TABLE `expense_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `incoming`
 --
 ALTER TABLE `incoming`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `incoming_items`
 --
 ALTER TABLE `incoming_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
 
 --
 -- AUTO_INCREMENT for table `labour`
 --
 ALTER TABLE `labour`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `machine`
+--
+ALTER TABLE `machine`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT for table `scheduled_transaction`
@@ -1046,7 +1260,7 @@ ALTER TABLE `scheduled_transaction`
 -- AUTO_INCREMENT for table `size`
 --
 ALTER TABLE `size`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `transaction`
@@ -1064,13 +1278,13 @@ ALTER TABLE `uploads`
 -- AUTO_INCREMENT for table `washing`
 --
 ALTER TABLE `washing`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `washing_items`
 --
 ALTER TABLE `washing_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
