@@ -23,7 +23,7 @@ if(!defined("APP_START")) die("No Direct Access");
                     <input placeholder="Date To" type="text" title="Date To" value="<?php echo $date_to;?>" name="date_to" id="date_to" class="date-picker form-control" autocomplete="off" />
                 </div>
                 <div class="col-sm-2">
-                  <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
+                  <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" placeholder="Search gatepass or labour" >
                 </div>
                 <div class="col-sm-2 col-xs-8">
                     <select name="customer_id" id="customer_id" class="form-control">
@@ -52,17 +52,17 @@ if(!defined("APP_START")) die("No Direct Access");
 	<table class="table table-hover list">
     	<thead>
             <tr>
-                <th width="5%" class="text-center">S.no</th>
-                <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
+                <th width="3%" class="text-center">S.no</th>
+                <th class="text-center" width="2%"><div class="checkbox checkbox-primary">
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
-                <th width="10%">Gatepass ID</th>
-                <th width="10%">Date</th>
-                <th width="10%">Customer</th>
+                <th width="5%">Gatepass</th>
+                <th width="7%">Date</th>
+                <th width="13%">Customer</th>
                 <th width="10%">Labour</th>
-                <th width="10%">Items</th>
-                <th class="text-center" width="5%">Status</th>
-                <th class="text-center" width="12%">Actions</th>
+                <th>Items</th>
+                <th class="text-center" width="3%">Status</th>
+                <th class="text-center" width="10%">Actions</th>
             </tr>
     	</thead>
     	<tbody>
@@ -99,37 +99,66 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td><?php echo get_field($r["labour_id"], "labour", "name" ); ?></td>
                         <td>
                             <table class="table table-hover list">
+                                <thead>
                                 <tr>
                                     <td>Color</td>
                                     <td>Design</td>
                                     <?php
                                     foreach($sizes as $size){
                                         ?>
-                                        <th><?php echo $size;?></th>
+                                        <th class="text-center"><?php echo $size;?></th>
                                         <?php  
                                     }
                                     ?>
+                                    <th class="color3-bg text-center">Total</th>
                                 </tr>
+                                </thead>
                                 <?php
                                 $rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from incoming_items where incoming_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
                                 if(numrows($rs1)>0){
+                                    $totals = [];
+                                    foreach($sizes as $size_id => $size){
+                                        $totals[$size_id] = 0;
+                                    }
                                     while($r1=dofetch($rs1)){
                                         ?>
                                         <tr>
                                             <td><?php echo $colors[$r1["color_id"]]?></td>
                                             <td><?php echo $designs[$r1["design_id"]]?></td>
                                             <?php
+                                            $quantities = [];
+                                            $t = 0;
                                             foreach(explode(",", $r1["sizes"]) as $size){
                                                 $size = explode("x", $size);
-                                                //print_r($size);
+                                                $quantities[$size[0]]=$size[1];
+                                                $t += $size[1];
+                                            }
+                                            foreach($sizes as $size_id => $size){
+                                                $totals[$size_id] += isset($quantities[$size_id])?$quantities[$size_id]:0;
                                                 ?>
-                                                <td><?php echo $size[1];?></td>
-                                                <?php  
+                                                <td class="text-right"><?php echo isset($quantities[$size_id])?$quantities[$size_id]:"--";?></td>
+                                                <?php
                                             }
                                             ?>
+                                            <td class="text-right color3-bg"><?php echo $t?></td>
                                         </tr>
                                     <?php
                                     }
+                                    ?>
+                                    <tr>
+                                        <td colspan="2">Total</td>
+                                        <?php
+                                        $t = 0;
+                                        foreach($totals as $total){
+                                            $t += $total;
+                                            ?>
+                                            <td class="text-right color3-bg"><?php echo $total?></td>
+                                            <?php
+                                        }
+                                        ?>
+                                        <td class="text-right color3-bg"><?php echo $t?></td>
+                                    </tr>
+                                    <?php
                                 }
                                 ?>
                             </table>

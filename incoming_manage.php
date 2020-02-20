@@ -63,7 +63,7 @@ if(isset($_SESSION["incoming"]["list"]["q"])) {
 	$q="";
 }
 if(!empty($q)){
-	$extra.=" and (gatepass_id like '%".$q."%')";
+	$extra.=" and (gatepass_id = '".$q."' or id = '".$q."')";
 	$is_search=true;
 }
 $sql = "SELECT * FROM `incoming` WHERE 1 $extra  order by date DESC";

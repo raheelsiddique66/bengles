@@ -1,6 +1,21 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
 if(isset($_GET["id"]) && !empty($_GET["id"])){
+    $colors = [];
+    $rs2 = doquery("select * from color order by sortorder", $dblink);
+    while($r2=dofetch($rs2)){
+        $colors[$r2["id"]] = unslash($r2["title"]);
+    }
+    $designs = [];
+    $rs3 = doquery("select * from design order by sortorder", $dblink);
+    while($r3=dofetch($rs3)){
+        $designs[$r3["id"]] = unslash($r3["title"]);
+    }
+    $sizes = [];
+    $rs4 = doquery("select * from size order by sortorder", $dblink);
+    while($r4=dofetch($rs4)){
+        $sizes[$r4["id"]] = unslash($r4["title"]);
+    }
 	$incoming=dofetch(doquery("select * from incoming where id='".slash($_GET["id"])."'", $dblink));
 	?>
 <!DOCTYPE html>
@@ -181,36 +196,72 @@ footer {
         <p>Date: <strong style="float:right"><?php echo date_convert($incoming["date"]); ?></strong></p>
 		<p>Customer: <strong style="float:right"><?php echo get_field($incoming["customer_id"], "customer", "customer_name" ); ?></strong></p>
 		<p>Labour: <strong style="float:right"><?php echo get_field( unslash($incoming["labour_id"]), "labour", "name" ); ?></strong></p>
-        <table cellpadding="0" cellspacing="0" align="center" width="800" border="0" class="items">
+        <table class="table table-hover list">
+            <thead>
             <tr>
-                <th width="5%">S#</th>
-                <th width="20%">Color</th>
-                <th width="20%">Design</th>
-				<th width="20%">Size</th>
-                <th width="10%">Qty</th>
+                <td>Color</td>
+                <td>Design</td>
+                <?php
+                foreach($sizes as $size){
+                    ?>
+                    <th class="text-center"><?php echo $size;?></th>
+                    <?php
+                }
+                ?>
+                <th class="color3-bg text-center">Total</th>
             </tr>
+            </thead>
             <?php
-            $items=doquery("select * from incoming_items where incoming_id='".$incoming["id"]."' order by id", $dblink);
-            if(numrows($items)>0){
-				$sn=1;
-				$total_quantity = 0;
-                while($item=dofetch($items)){
-					$total_quantity += $item["quantity"];
+            $rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from incoming_items where incoming_id='".$incoming[ "id" ]."' group by color_id,design_id", $dblink );
+            if(numrows($rs1)>0){
+                $totals = [];
+                foreach($sizes as $size_id => $size){
+                    $totals[$size_id] = 0;
+                }
+                while($r1=dofetch($rs1)){
                     ?>
                     <tr>
-                    	<td style="text-align:center"><?php echo $sn++?></td>
-                        <td style="text-align:left;"><?php echo get_field($item["color_id"], "color", "title" );?></td>
-						<td style="text-align:left;"><?php echo get_field($item["design_id"], "design", "title" );?></td>
-						<td style="text-align:left;"><?php echo get_field($item["size_id"], "size", "title" );?></td>
-                        <td style="text-align:center; font-size:9px;"><?php echo $item["quantity"]?></td>
+                        <td><?php echo $colors[$r1["color_id"]]?></td>
+                        <td><?php echo $designs[$r1["design_id"]]?></td>
+                        <?php
+                        $quantities = [];
+                        $t = 0;
+                        foreach(explode(",", $r1["sizes"]) as $size){
+                            $size = explode("x", $size);
+                            $quantities[$size[0]]=$size[1];
+                            $t += $size[1];
+                        }
+                        foreach($sizes as $size_id => $size){
+                            $totals[$size_id] += isset($quantities[$size_id])?$quantities[$size_id]:0;
+                            ?>
+                            <td class="text-right"><?php echo isset($quantities[$size_id])?$quantities[$size_id]:"--";?></td>
+                            <?php
+                        }
+                        ?>
+                        <td class="text-right color3-bg"><?php echo $t?></td>
                     </tr>
                     <?php
                 }
+                ?>
+                <tr>
+                    <td colspan="2">Total</td>
+                    <?php
+                    $t = 0;
+                    foreach($totals as $total){
+                        $t += $total;
+                        ?>
+                        <td class="text-right color3-bg"><?php echo $total?></td>
+                        <?php
+                    }
+                    ?>
+                    <td class="text-right color3-bg"><?php echo $t?></td>
+                </tr>
+                <?php
             }
             ?>
         </table>
+
 		<hr style="border:0; border-top:1px solid #999">
-        <p><strong>TOTAL</strong><strong style="float:right"><?php echo $total_quantity?></strong></p>
     </div>
     <div id="signcompny">Software developed by wamtSol http://wamtsol.com/ - 0346 3891 662</div> 
 </div>
