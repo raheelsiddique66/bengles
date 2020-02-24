@@ -7,6 +7,32 @@ else {
 	$id = 0;
 }
 ?>
+<style>
+    .labour-add {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        background-color: #fff;
+        border: solid 1px;
+        transform: translate(-50%,-50%);
+        z-index: 999;
+    }
+    .fancybox-close-small {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        z-index: 10;
+        cursor: pointer;
+    }
+</style>
 <div ng-app="incoming" ng-controller="incomingController" id="incomingController">
     <div style="display:none">{{incoming_id=<?php echo $id?>}}</div>
     <div class="page-header">
@@ -45,20 +71,31 @@ else {
                 </div>
             </div>
         </div>
+        <div class="labour-add" ng-show="showPopup">
+            <button data-fancybox-close="" class="fancybox-close-small popup_close" title="Close" ng-click="togglePopup()"></button>
+            <div style="padding: 20px;">
+                Labour Name: <span><input id="cursor_focus" type="text" placeholder="Enter Labour Name" ng-model="labour.name"></span>
+                <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_labour()" title="Submit Labour"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
+                <br><br><div class="alert alert-danger" ng-show="box_errors.length > 0">
+                    <p ng-repeat="error in box_errors">{{error}}</p>
+                </div>
+            </div>
+        </div>
         <div class="form-group">
             <div class="row">
                 <div class="col-sm-2 control-label">
                     <label class="form-label" for="labour_id">Labour </label>
                 </div>
                 <div class="col-sm-10">
-                    <select id="labour_id" ng-model="incoming.labour.id" chosen>
+                    <select id="labour_id" ng-model="incoming.labour_id" chosen>
                         <option value="0" selected="false">Select Labour</option>
                         <option ng-repeat="labour in labours" value="{{ labour.id }}">{{ labour.name }}</option>
                     </select>
-                    <input type="text" title="Enter Name" class="form-control" ng-model="incoming.labour.name">
+                    <a href="" class="add_customer_link" ng-click="togglePopup()">+</a>
                 </div>
             </div>
         </div>
+        
         <div class="form-group">
             <div class="row">
                 <div class="col-sm-2 control-label">

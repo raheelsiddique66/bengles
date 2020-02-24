@@ -9,16 +9,21 @@ angular.module('incoming', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.processing = false;
 		$scope.incoming_id = 0;
 		$scope.item_id = '';
+		$scope.showPopup = false;
 		$scope.labour = {
 			id: "",
 			name: ""
 		};
+        $scope.labour_placeholder = {
+            id: "",
+			name: ""
+        };
 		$scope.incoming = {
 			id: 0,
 			date: '',
 			customer_id: '0',
 			gatepass_id: '',
-			labour: angular.copy($scope.labour),
+			labour_id: '',
 			incoming_items: [],
 		};
 		$scope.incoming_item = {
@@ -139,18 +144,29 @@ angular.module('incoming', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 				});
 			}
 		}
-		$scope.$watch( 'incoming.labour.id', function( newValue, oldValue ){
-			if( newValue == "" ) {
-				$scope.incoming.labour.name = angular.copy($scope.labour.name);
-			}
-			else {
-				var labour = $filter('filter')($scope.labours, {id: newValue}, true );
-				if( labour.length > 0 ) {
-					labour = labour[0];
-					$scope.incoming.labour.name = labour.name;
-				}
-			}
-		})
+		$scope.save_labour = function () {
+            $scope.box_errors = [];
+            if( $scope.processing == false ){
+                $scope.processing = true;
+                data = {action: 'save_labour', labour: JSON.stringify( $scope.labour )};
+                $scope.wctAJAX( data, function( response ){
+                    $scope.processing = false;
+                    if( response.status == 1 ) {
+                        $scope.showPopup = !$scope.showPopup;
+                        $scope.labour = angular.copy( $scope.labour_placeholder );
+                    }
+                    else{
+                        $scope.box_errors = response.error;
+                    }
+                });
+            }
+        }
+
+        $scope.togglePopup = function() {
+            $scope.showPopup = !$scope.showPopup;
+            setTimeout(function(){focus();}, 100);
+        }
+
 		
 	}
 );

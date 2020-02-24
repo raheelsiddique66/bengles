@@ -82,10 +82,6 @@ if(isset($_POST["action"])){
 					"date" => date_convert( $r[ "date" ] ),
 					"customer_id" => unslash( $r[ "customer_id" ] ),
 					"claim" => unslash( $r[ "claim" ] ),
-					"labour" => array(
-						"id" => $r[ "labour_id" ],
-						"name" => $r[ "name" ]
-					),
 					"labour_id" => unslash( $r[ "labour_id" ] )
 				);
 				$delivery_items = array();
@@ -131,14 +127,6 @@ if(isset($_POST["action"])){
 					$i++;
 				}
 			}
-			if( empty( $delivery->labour->id ) ) {
-				doquery( "insert into labour (name) VALUES ('".slash($delivery->labour->name)."') ", $dblink );
-				$labour_id = inserted_id();
-			}
-			else {
-				doquery("update labour set `name`='".slash($delivery->labour->name)."' where id='".$delivery->labour->id."'", $dblink);
-				$labour_id = $delivery->labour->id;
-			}
 			if( count( $err ) == 0 ) {
 				if( !empty( $delivery->id ) ) {
 					doquery( "update delivery set `date`='".slash(date_dbconvert($delivery->date))."', `gatepass_id`='".slash($delivery->gatepass_id)."', `customer_id`='".slash($delivery->customer_id)."', `claim`='".slash($delivery->claim)."', `labour_id`='".slash($delivery->labour_id)."' where id='".$delivery->id."'", $dblink );
@@ -179,6 +167,30 @@ if(isset($_POST["action"])){
 				$response = array(
 					"status" => 0,
 					"error" => $err
+				);
+			}
+		break;
+		case "save_labour":
+			$box_err = array();
+			$labour = json_decode( $_POST[ "labour" ] );
+			if( empty( $labour->name ) ) {
+				$box_err[] = "Fields with * are mandatory";
+			}
+			if( count( $box_err ) == 0 ) {
+				doquery( "insert into labour (name) VALUES ('".slash($labour->name)."')", $dblink);
+				$id = inserted_id();
+				$response = array(
+					"status" => 1,
+					"labour" => array(
+						"id" => $id,
+						"name" => $labour->name,
+					)
+				);
+			}
+			else {
+				$response = array(
+					"status" => 0,
+					"error" => $box_err
 				);
 			}
 		break;

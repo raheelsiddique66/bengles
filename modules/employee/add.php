@@ -62,12 +62,10 @@ else{
             </div>
             <div class="col-sm-10">
                 <select name="salary_type" id="salary_type" chosen>
-                    <option value="0" selected="false">Select Salary Type</option>
                     <option value="0">monthly</option>
                     <option value="1">weekly</option>
                     <option value="2">daily</option>
                 </select>
-<!--                <input type="text" title="Enter Salary Type" value="--><?php //echo $salary_type; ?><!--" name="salary_type" id="salary_type" class="form-control" />-->
             </div>
         </div>
     </div>

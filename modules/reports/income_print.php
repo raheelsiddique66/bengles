@@ -79,34 +79,12 @@ table {
         </th>
     </tr>
     <?php
-	$sql="select sum(b.total_price)-sum(a.discount) as total from sales a left join sales_items b on a.id = b.sales_id where a.status = 1 $extra";
-	$sale_total=dofetch(doquery($sql, $dblink));
-	$sql="select sum(b.total_price)-sum(a.discount) as total from purchase a left join purchase_items b on a.id = b.purchase_id where a.status = 1 $extra";
-	$purchase_total=dofetch(doquery($sql, $dblink));
-	$sql="select sum(b.total_price)-sum(a.discount) as total from sales_return a left join sales_return_items b on a.id = b.sales_return_id where a.status = 1 $extra";
-	$sale_return_total=dofetch(doquery($sql, $dblink));
-	$sql="select sum(b.total_price)-sum(a.discount) as total from purchase_return a left join purchase_return_items b on a.id = b.purchase_return_id where a.status = 1 $extra";
-	$purchase_return_total=dofetch(doquery($sql, $dblink));
-    ?>
-    <tr>
-        <th align="right">Sale from <?php echo $date_from?> to <?php echo $date_to?></th>
-        <th align="right"><?php echo curr_format($sale_total[ "total" ])?></th>
-    </tr>
-    <tr>
-        <th align="right">Purchase from <?php echo $date_from?> to <?php echo $date_to?></th>
-        <th align="right"><?php echo curr_format($purchase_total[ "total" ])?></th>
-    </tr>
-    <tr>
-        <th align="right">Sale Return from <?php echo $date_from?> to <?php echo $date_to?></th>
-        <th align="right"><?php echo curr_format(-$sale_return_total[ "total" ])?></th>
-    </tr>
-    <tr >
-        <th align="right">Purchase Return from <?php echo $date_from?> to <?php echo $date_to?></th>
-        <th align="right"><?php echo curr_format($purchase_return_total[ "total" ])?></th>
-    </tr>
-    <tr>
-        <th align="right">Revenue <?php echo $date_from?> to <?php echo $date_to?></th>
-        <th align="right"><?php echo curr_format($sale_total[ "total" ]-$purchase_total[ "total" ]-$sale_return_total[ "total" ]+$purchase_return_total[ "total" ])?></th>
+		$sql=doquery("select sum(unit_price) as total from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink);
+		$payment=dofetch($sql);
+	?>
+    <tr class="head">
+        <th align="right">Income from <?php echo $date_from?> to <?php echo $date_to?></th>
+        <th align="right"><?php echo curr_format($payment[ "total" ])?></th>
     </tr>
     <?php
     $total = 0;
@@ -131,7 +109,7 @@ table {
     </tr>
     <tr class="">
         <th align="right">Net Income</th>
-        <th align="right">Rs. <?php echo curr_format($sale_total[ "total" ]-$purchase_total[ "total" ]-$sale_return_total[ "total" ]+$purchase_return_total[ "total" ]-$total)?></th>
+        <th align="right">Rs. <?php echo curr_format($payment[ "total" ]-$total)?></th>
     </tr>	
 </table>
 <?php

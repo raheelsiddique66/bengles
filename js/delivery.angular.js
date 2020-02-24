@@ -9,10 +9,15 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.processing = false;
 		$scope.delivery_id = 0;
 		$scope.item_id = '';
+		$scope.showPopup = false;
 		$scope.labour = {
 			id: "",
 			name: ""
 		};
+        $scope.labour_placeholder = {
+            id: "",
+			name: ""
+        };
 		$scope.delivery = {
 			id: 0,
 			date: '',
@@ -20,7 +25,6 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			gatepass_id: '',
 			claim: '',
 			labour_id: 0,
-			labour: angular.copy($scope.labour),
 			delivery_items: []
 		};
 		$scope.delivery_item = {
@@ -164,18 +168,28 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 				});
 			}
 		}
-		$scope.$watch( 'delivery.labour.id', function( newValue, oldValue ){
-			if( newValue == "" ) {
-				$scope.delivery.labour.name = angular.copy($scope.labour.name);
-			}
-			else {
-				var labour = $filter('filter')($scope.labours, {id: newValue}, true );
-				if( labour.length > 0 ) {
-					labour = labour[0];
-					$scope.delivery.labour.name = labour.name;
-				}
-			}
-		})
+		$scope.save_labour = function () {
+            $scope.box_errors = [];
+            if( $scope.processing == false ){
+                $scope.processing = true;
+                data = {action: 'save_labour', labour: JSON.stringify( $scope.labour )};
+                $scope.wctAJAX( data, function( response ){
+                    $scope.processing = false;
+                    if( response.status == 1 ) {
+                        $scope.showPopup = !$scope.showPopup;
+                        $scope.labour = angular.copy( $scope.labour_placeholder );
+                    }
+                    else{
+                        $scope.box_errors = response.error;
+                    }
+                });
+            }
+        }
+
+        $scope.togglePopup = function() {
+            $scope.showPopup = !$scope.showPopup;
+            setTimeout(function(){focus();}, 100);
+        }
 		
 	}
 );

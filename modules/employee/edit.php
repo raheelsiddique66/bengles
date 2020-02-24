@@ -51,13 +51,10 @@ if(!defined("APP_START")) die("No Direct Access");
                 <div class="col-sm-10">
 
                     <select name="salary_type" id="salary_type" chosen>
-                        <option value="0" selected="false">Select Salary Type</option>
                         <option value="0" <?php echo ($salary_type == 0?"selected":"") ?> >monthly</option>
                         <option value="1" <?php echo ($salary_type == 1?"selected":"") ?>>weekly</option>
                         <option value="2" <?php echo ($salary_type == 2?"selected":"") ?>>daily</option>
                     </select>
-
-<!--                    <input type="text" title="Enter Phone Number" value="--><?php //echo $salary_type; ?><!--" name="salary_type" id="salary_type" class="form-control" />-->
                 </div>
             </div>
         </div>

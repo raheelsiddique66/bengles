@@ -12,6 +12,20 @@
     font-style: normal;
 
 }
+.add_customer_link{
+  position:absolute;
+  background-color: #399bff;
+  width: 25px;
+  height: 25px;
+  z-index: 999;
+  text-align: center;
+  line-height: 25px;
+  font-size: 25px;
+  color: #fff;
+  border-radius: 50%;
+  right: 0px;
+  top: 0;
+  }
 tr.head {
     background-color: #9edb9d;
 }
@@ -4876,6 +4890,7 @@ h2.total-heading {
     width: 98%;
 }
 }
+
 .user-tabs-inline ul{
 }
 .user-tabs ul,.user-tabs-inline ul{
