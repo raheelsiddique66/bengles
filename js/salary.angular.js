@@ -29,17 +29,17 @@ angular.module('salary', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angular
 				console.log("Error in fetching data");
 			});
 		}
-		$scope.save_employee = function () {
+		$scope.save_record = function () {
             //console.log($scope.incoming.incoming_items);
 			$scope.errors = [];
 			if( $scope.processing == false ){
 				$scope.processing = true;
-				data = {action: 'save_employee', incoming: JSON.stringify( $scope.incoming )};
+				data = {action: 'save_record', incoming: JSON.stringify( $scope.incoming )};
                 console.log(data);
 				$scope.wctAJAX( data, function( response ){
 					$scope.processing = false;
 					if( response.status == 1 ) {
-						window.location.href='incoming_manage.php?tab=addedit&id='+response.id;
+						window.location.href='employee_manage.php?tab=salary&id='+response.id;
 					}
 					else{
 						$scope.errors = response.error;

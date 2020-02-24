@@ -32,6 +32,7 @@ table {
 .text-center{ text-align:center}
 </style>
 <table width="100%" cellspacing="0" cellpadding="0">
+<thead>
 <tr class="head">
 	<th colspan="8">
     	<h1><?php echo get_config( 'site_title' )?></h1>
@@ -59,12 +60,13 @@ table {
     </th>
 </tr>
 <tr>
-    <th width="5%" align="center">S.no</th>
-    <th width="10%">ID</th>
-	<th width="10%">Date</th>
+    <th width="2%" align="center">S.no</th>
+    <th width="5%">ID</th>
+	<th width="8%">Date</th>
 	<th width="10%">Customer</th>
-	<th width="20%">Items</th>
+	<th width="75%">Items</th>
 </tr>
+</thead>
 <?php
 if( numrows( $rs ) > 0 ) {
 	$colors = [];
@@ -133,23 +135,23 @@ if( numrows( $rs ) > 0 ) {
 									<?php
 								}
 								?>
-								<td class="text-right color3-bg"><?php echo $t?></td>
+								<th class="text-right color3-bg"><?php echo $t?></th>
 							</tr>
 						<?php
 						}
 						?>
 						<tr>
-							<td colspan="2">Total</td>
+							<th colspan="2" class="text-right">Total</th>
 							<?php
 							$t = 0;
 							foreach($totals as $total){
 								$t += $total;
 								?>
-								<td class="text-right color3-bg"><?php echo $total?></td>
+								<th class="text-right color3-bg"><?php echo $total?></th>
 								<?php
 							}
 							?>
-							<td class="text-right color3-bg"><?php echo $t?></td>
+							<th class="text-right color3-bg"><?php echo $t?></th>
 						</tr>
 						<?php
 					}

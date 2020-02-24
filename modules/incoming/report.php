@@ -27,8 +27,12 @@ table {
 	max-width:1200px;
 	margin:0 auto;
 }
+.text-center{ text-align:center}
+.text-left{ text-align:left}
+.text-right{ text-align:right}
 </style>
 <table width="100%" cellspacing="0" cellpadding="0">
+<thead>
 <tr class="head">
 	<th colspan="8">
     	<h1><?php echo get_config( 'site_title' )?></h1>
@@ -56,13 +60,14 @@ table {
     </th>
 </tr>
 <tr>
-    <th width="5%" align="center">S.no</th>
-    <th width="10%">Gatepass ID</th>
-	<th width="10%">Date</th>
+    <th width="2%" align="center">S.no</th>
+    <th width="6%">Gatepass ID</th>
+	<th width="8%">Date</th>
 	<th width="10%">Customer</th>
 	<th width="10%">Labour</th>
-	<th width="10%">Items</th>
+	<th width="50%">Items</th>
 </tr>
+</thead>
 <?php
 if( numrows( $rs ) > 0 ) {
 	$colors = [];
@@ -91,36 +96,66 @@ if( numrows( $rs ) > 0 ) {
 			<td><?php echo get_field($r["labour_id"], "labour", "name" ); ?></td>
 			<td>
 				<table width="100%">
+					<thead>
 					<tr>
 						<td>Color</td>
 						<td>Design</td>
 						<?php
 						foreach($sizes as $size){
 							?>
-							<th><?php echo $size;?></th>
+							<th class="text-center"><?php echo $size;?></th>
 							<?php  
 						}
 						?>
+						<th class="color3-bg text-center">Total</th>
 					</tr>
+					</thead>
 					<?php
 					$rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from incoming_items where incoming_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
 					if(numrows($rs1)>0){
+						$totals = [];
+						foreach($sizes as $size_id => $size){
+							$totals[$size_id] = 0;
+						}
 						while($r1=dofetch($rs1)){
 							?>
 							<tr>
 								<td><?php echo $colors[$r1["color_id"]]?></td>
 								<td><?php echo $designs[$r1["design_id"]]?></td>
 								<?php
+								$quantities = [];
+								$t = 0;
 								foreach(explode(",", $r1["sizes"]) as $size){
 									$size = explode("x", $size);
+									$quantities[$size[0]]=$size[1];
+									$t += $size[1];
+								}
+								foreach($sizes as $size_id => $size){
+									$totals[$size_id] += isset($quantities[$size_id])?$quantities[$size_id]:0;
 									?>
-									<td><?php echo $size[1];?></td>
-									<?php  
+									<td class="text-right"><?php echo isset($quantities[$size_id])?$quantities[$size_id]:"--";?></td>
+									<?php
 								}
 								?>
+								<th class="text-right color3-bg"><?php echo $t?></th>
 							</tr>
 						<?php
 						}
+						?>
+						<tr>
+							<th colspan="2" class="text-right">Total</th>
+							<?php
+							$t = 0;
+							foreach($totals as $total){
+								$t += $total;
+								?>
+								<th class="text-right color3-bg"><?php echo $total?></th>
+								<?php
+							}
+							?>
+							<th class="text-right color3-bg"><?php echo $t?></th>
+						</tr>
+						<?php
 					}
 					?>
 				</table>

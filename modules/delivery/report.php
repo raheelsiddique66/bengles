@@ -59,13 +59,13 @@ table {
     </th>
 </tr>
 <tr>
-    <th width="5%" align="center">S.no</th>
-    <th width="10%">Gatepass ID</th>
-	<th width="10%">Date</th>
+    <th width="2%" align="center">S.no</th>
+    <th width="8%">Gatepass ID</th>
+	<th width="8%">Date</th>
 	<th width="10%">Customer</th>
 	<th width="8%">Claim</th>
 	<th width="10%">Labour</th>
-	<th width="20%">Items</th>
+	<th width="60%">Items</th>
 </tr>
 <?php
 if( numrows( $rs ) > 0 ) {
@@ -145,7 +145,7 @@ if( numrows( $rs ) > 0 ) {
 								}
 								$total_price +=  $t * $r1["unit_price"];
 								?>
-								<td class="text-right color3-bg"><?php echo $t?></td>
+								<th class="text-right color3-bg"><?php echo $t?></th>
 								<td class="text-right color3-bg"><?php echo $r1["unit_price"]?></td>
 								<td class="text-right color3-bg"><?php echo $t * $r1["unit_price"]?></td>
 							</tr>
@@ -153,7 +153,7 @@ if( numrows( $rs ) > 0 ) {
 						}
 						?>
 						<tr>
-							<td colspan="2">Total</td>
+							<td colspan="2" class="text-right">Total</td>
 							<?php
 							$t = 0;
 							

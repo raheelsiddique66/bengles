@@ -101,6 +101,9 @@ table {
                     if( !empty( $design_id ) ){
                         echo " Design: ".get_field($design_id, "design", "title" );
                     }
+                    if( !empty( $customer_id ) ){
+                        echo " Customer: ".get_field($customer_id, "customer", "customer_name" );
+                    }
                     ?>
                 </p>
             </th>
