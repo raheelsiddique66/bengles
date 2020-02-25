@@ -119,8 +119,9 @@ else {
                                     <th width="2%" class="text-center" rowspan="2">S.no</th>
                                     <th width="10%" rowspan="2">Color</th>
                                     <th width="10%" rowspan="2">Design</th>
-                                    <th class="text-center" width="30%" colspan="{{ sizes.length+1 }}">Sizes</th>
-                                    <th class="text-center" width="5%">Actions</th>
+                                    <th width="10%" rowspan="2">Machine</th>
+                                    <th class="text-center" width="64%" colspan="{{ sizes.length+1 }}">Sizes</th>
+                                    <th class="text-center" width="6%">Actions</th>
                                 </tr>
                                 <tr>
                                     <td ng-repeat="size in sizes">{{ size.title }}</td>
@@ -142,12 +143,18 @@ else {
                                             <option ng-repeat="design in designs" value="{{ design.id }}">{{ design.title }}</option>
                                         </select>
                                     </td>
+                                    <td>
+                                        <select title="Choose Option" ng-model="incoming.incoming_items[$index].machine_id">
+                                            <option value="0">Select Machine</option>
+                                            <option ng-repeat="machine in machines" value="{{ machine.id }}">{{ machine.title }}</option>
+                                        </select>
+                                    </td>
                                     <td class="text-right" ng-repeat="size in sizes"><input type="text" ng-model="incoming.incoming_items[$parent.$index].quantity[size.id]" /></td>                        
                                     <th class="text-right" style="background: #c36868;color: #fff;">{{ getTotalQty($index,-1) }}</th>
                                     <td class="text-center"><a href="" ng-click="add( $index )">Add</a> - <a href="" ng-click="remove( $index )">Delete</a></td>
                                 </tr>
                                 <tr>
-                                    <th colspan="3" class="text-right">Total Items</th>
+                                    <th colspan="4" class="text-right">Total Items</th>
                                     <th class="text-right" style="background: rgb(178, 219, 239);" ng-repeat="size in sizes">{{ getTotalQty(-1,size.id) }}</th>
                                     <th class="text-right" style="background: rgba(61, 165, 145, 0.89);color: #fff;">{{ getTotalQty(-1,-1) }}</th>
                                     <th class="text-right">&nbsp;</th>

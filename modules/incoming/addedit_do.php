@@ -71,6 +71,19 @@ if(isset($_POST["action"])){
 			}
 			$response = $designs;
 		break;
+		case "get_machines":
+			$rs = doquery( "select * from machine where status=1 order by title", $dblink );
+			$machines = array();
+			if( numrows( $rs ) > 0 ) {
+				while( $r = dofetch( $rs ) ) {
+					$machines[] = array(
+						"id" => $r[ "id" ],
+						"title" => unslash($r[ "title" ]),
+					);
+				}
+			}
+			$response = $machines;
+		break;
 		case "get_incoming":
 			$id = slash( $_POST[ "id" ] );
 			$rs = doquery( "select a.*, b.name from incoming a left join labour b on a.labour_id = b.id where a.id='".$id."'", $dblink );
@@ -95,6 +108,7 @@ if(isset($_POST["action"])){
 						$incoming_items[] = array(
 							"id" => $r1["id"],
 							"incoming_id" => $r1[ "incoming_id" ],
+							"machine_id" => $r1[ "machine_id" ],
 							"color_id" => $r1["color_id"],
 							"size_id" => $r1[ "size_id" ],
 							"design_id" => $r1[ "design_id" ],
@@ -138,9 +152,9 @@ if(isset($_POST["action"])){
 					foreach($incoming_item->quantity as $size_id => $quantity){
 						$quantity = (int)$quantity;
 						if(!empty($quantity)){
-							$check = doquery("select * from incoming_items where incoming_id = '".$incoming_id."' and color_id = '".$incoming_item->color_id."' and design_id = '".$incoming_item->design_id."' and size_id = '".$size_id."'",$dblink);
+							$check = doquery("select * from incoming_items where incoming_id = '".$incoming_id."' and machine_id = '".$incoming_item->machine_id."' and color_id = '".$incoming_item->color_id."' and design_id = '".$incoming_item->design_id."' and size_id = '".$size_id."'",$dblink);
 							if( numrows( $check ) == 0 ) {
-								doquery( "insert into incoming_items( incoming_id, color_id, size_id, design_id, quantity ) values( '".$incoming_id."', '".$incoming_item->color_id."', '".$size_id."', '".$incoming_item->design_id."', '".$quantity."')", $dblink );
+								doquery( "insert into incoming_items( incoming_id, machine_id, color_id, size_id, design_id, quantity ) values( '".$incoming_id."', '".$incoming_item->machine_id."', '".$incoming_item->color_id."', '".$size_id."', '".$incoming_item->design_id."', '".$quantity."')", $dblink );
 								$incoming_item_ids[] = inserted_id();
 							}
 							else {

@@ -5,6 +5,7 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.colors = [];
 		$scope.sizes = [];
 		$scope.designs = [];
+		$scope.machines = [];
 		$scope.errors = [];
 		$scope.processing = false;
 		$scope.delivery_id = 0;
@@ -49,6 +50,9 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			});
 			$scope.wctAJAX( {action: 'get_design'}, function( response ){
 				$scope.designs = response;
+			});
+			$scope.wctAJAX( {action: 'get_machines'}, function( response ){
+				$scope.machines = response;
 			});
 			if( $scope.delivery_id > 0 ) {
 				$scope.wctAJAX( {action: 'get_delivery', id: $scope.delivery_id}, function( response ){

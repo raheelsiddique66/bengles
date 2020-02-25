@@ -137,14 +137,14 @@ if(!defined("APP_START")) die("No Direct Access");
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "expense", $sql, $pageNum)?></td>
+                    <td colspan="5" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "expense", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="9"  class="no-record">No Result Found</td>
+                    <td colspan="10"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

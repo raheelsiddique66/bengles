@@ -1,6 +1,7 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
 $rs = doquery( $sql, $dblink );
+$total_amount = 0;
 ?>
 <style>
 h1, h2, h3, p {
@@ -63,13 +64,14 @@ table {
     <th width="15%">Expense Category</th>
     <th width="15%">Paid By</th>
     <th width="20%">Details</th>
-    <th width="10%">Amount</th>
+    <th width="10%" align="right">Amount</th>
     <th width="10%">Added By</th>
 </tr>
 <?php
 if( numrows( $rs ) > 0 ) {
 	$sn = 1;
 	while( $r = dofetch( $rs ) ) {
+        $total_amount += $r["amount"];
 		?>
 		<tr>
         	<td align="center"><?php echo $sn++?></td>
@@ -77,13 +79,18 @@ if( numrows( $rs ) > 0 ) {
             <td><?php echo get_field( unslash($r["expense_category_id"]), "expense_category", "title" ); ?></td>
             <td><?php echo get_field( unslash($r["account_id"]), "account", "title" ); ?></td>
             <td><?php echo unslash($r["details"]); ?></td>
-            <td><?php echo curr_format(unslash($r["amount"])); ?></td>
+            <td align="right"><?php echo curr_format($r["amount"]); ?></td>
             <td><?php echo get_field( unslash($r["added_by"]), "admin", "username" ); ?></td>
         </tr>
 		<?php
 	}
 }
 ?>
+<tr>
+    <th align="right" colspan="5">Total</th>
+    <th align="right"><?php echo $total_amount?></th>
+    <th></th>
+</tr>
 </table>
 <?php
 die;
