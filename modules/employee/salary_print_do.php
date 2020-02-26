@@ -11,7 +11,9 @@ if(!defined("APP_START")) die("No Direct Access");
             <th width="8%">Name</th>
             <th width="3%" data-ng-repeat="date in dates" class="text-center">{{ date.date }}</th>
             <th width="5%" class="text-center">Hours</th>
+            <th width="5%" class="text-center">Amount</th>
             <th width="5%" class="text-center">Salary</th>
+            <th width="5%" class="text-center">Total</th>
             <th class="text-center">Advance</th>
             <th class="text-center">Remaining</th>
             <th class="text-center">Payment</th>
@@ -24,6 +26,8 @@ if(!defined("APP_START")) die("No Direct Access");
             <td>{{employee.name}} {{ employee.father_name }}</td>
             <td data-ng-repeat="date in dates" class="text-center" data-ng-class="{'greyed': employee.attendance[date.value]=='A'||employee.attendance[date.value]=='F'}">{{ employee.attendance[date.value] }}</td>
             <td class="text-right">{{ get_total($index).hours|currency:'':0 }}</td>
+            <td class="text-right">{{ get_total($index).hours*employee.over_time_rate|currency:'':0 }}</td>
+            <td class="text-right">{{ employee.calculated_salary-get_total($index).hours*employee.over_time_rate|currency:'':0 }}</td>
             <td class="text-right">{{ employee.calculated_salary|currency:'':0 }}</td>
             <td class="text-right">{{employee.balance|currency:'':0}}</td>
             <td class="text-right">{{employee.calculated_salary-employee.balance|currency:'':0}}</td>
@@ -31,7 +35,7 @@ if(!defined("APP_START")) die("No Direct Access");
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td colspan="{{ dates.length+3 }}" class="text-right">Total</td>
+            <td colspan="{{ dates.length+5 }}" class="text-right">Total</td>
             <td class="text-right">{{ sum(employees, 'calculated_salary')|currency:'':0 }}</td>
             <td class="text-right">{{ sum(employees, 'balance')|currency:'':0 }}</td>
             <td class="text-right">{{ sum(employees, 'calculated_salary')-sum(employees, 'balance')|currency:'':0 }}</td>
