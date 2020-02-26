@@ -92,6 +92,29 @@ if(isset($_POST["action"])){
             );
 		break;
         case "save_record":
+            $dates = array();
+            $start = strtotime(date_dbconvert($_SESSION["manage_salary"]["salary_date"]));
+            $salary_type = $_SESSION["manage_salary"]["salary_type"];
+            if($salary_type == 0){
+                $date = date("Y-m-01", $start);
+                $end = strtotime ( '+1 month' , strtotime ( $date ) ) ;
+            }
+            else if($salary_type == 1){
+                $end = strtotime("next Thursday", $start);
+            }
+            else{
+                $end = strtotime("tomorrow", $start);
+            }
+            $currentdate = $start;
+            while($currentdate < $end)
+            {
+                $dates[] = array(
+                    "date" => date('D d', $currentdate),
+                    "value" => date('Ymd', $currentdate),
+                    "formatted" => date('d/m/Y', $currentdate),
+                );
+                $currentdate = strtotime('+1 day', $currentdate);
+            }
             $employees = json_decode(stripslashes($_POST["employees"]));
             foreach($employees as $employee){
                 foreach($employee->attendance as $date => $attendance){
@@ -104,6 +127,7 @@ if(isset($_POST["action"])){
                         doquery("insert into employee_attendance(employee_id, date, attendance) values('".$employee->id."', '".date("Y-m-d", strtotime($date))."', '".$attendance."')", $dblink);
                     }
                 }
+                $date = $dates[count($dates)-1];
                 $ch = doquery("select * from employee_salary where employee_id='".$employee->id."' and date='".date("Y-m-d", strtotime($date))."'", $dblink);
                 if(numrows($ch)>0){
                     $ch = dofetch($ch);
