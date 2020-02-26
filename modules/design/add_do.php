@@ -6,7 +6,7 @@ if(isset($_POST["design_add"])){
 	if(empty($title))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="INSERT INTO design (title, title_urdu) VALUES ('".slash($title)."', '".slash($title_urdu)."')";
+		$sql="INSERT INTO design (title, title_urdu, sortorder) VALUES ('".slash($title)."', '".slash($title_urdu)."', '".slash($sortorder)."')";
 		doquery($sql,$dblink);
 		unset($_SESSION["design_manage"]["add"]);
 		header('Location: design_manage.php?tab=list&msg='.url_encode("Sucessfully Added"));

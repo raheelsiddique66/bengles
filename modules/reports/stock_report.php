@@ -141,16 +141,18 @@ if($customer_id!=""){
     	<thead>
             <tr>
                 <th width="2%" class="text-center" rowspan="2">S.no</th>
-                <th width="10%" colspan="2" class="text-center">Item</th>
                 <th width="5%" rowspan="2">Date</th>
+                <th width="10%" colspan="2" class="text-center">Item</th>
+                <?php if(!isset($_GET["customer_id"])){?>
                 <th width="11%" rowspan="2">Customer</th>
+                <?php }?>
                 <th width="24%" colspan="<?php echo $colspan?>" class="text-center">Received</th>
                 <th width="24%" colspan="<?php echo $colspan?>" class="text-center">Sent</th>
                 <th width="24%" colspan="<?php echo $colspan?>" class="text-center">Balance</th>
             </tr>
             <tr>
-                <td>Design</td>
                 <td>Color</td>
+                <td>Design</td>
                 <?php
                 for($i = 0; $i < 3; $i++){
                     foreach($sizes as $size){
@@ -184,11 +186,13 @@ if($customer_id!=""){
                             ?>
                             <tr>
                                 <td class="text-center"><?php echo $sn; ?></td>
-                                <td><?php echo unslash($r["title"]) ?></td>
-                                <td><?php echo unslash($r["color"])?></td>
                                 <td><?php echo date_convert($record["date"]); ?></td>
+                                <td><?php echo unslash($r["color"])?></td>
+                                <td><?php echo unslash($r["title"]) ?></td>
+                                <?php if(!isset($_GET["customer_id"])){?>
                                 <td><?php echo get_field($record["customer_id"], "customer", "customer_name" ); ?></td>
                                 <?php
+                                }
                                 $incoming = [];
                                 $outgoing = [];
                                 for($i = 0; $i < 2; $i++){
@@ -236,7 +240,7 @@ if($customer_id!=""){
                 }
                 ?>
                 <tr>
-                    <th class="text-right" colspan="5">Total</th>
+                    <th class="text-right" colspan="<?php if(!isset($_GET["customer_id"])) echo "5"; else echo "4";?>">Total</th>
                     <?php
                     for($i = 0; $i < 3; $i++){
                         foreach($sizes as $size_id => $size){

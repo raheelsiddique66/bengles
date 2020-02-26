@@ -23,6 +23,7 @@
 <script src="js/bootstrap-datetimepicker.min.js"></script>
 <script>
 $(document).ready(function(){
+	if($(".select_multiple").length>0) $(".select_multiple").chosen();
 	$('.date-picker').daterangepicker({ singleDatePicker: true, format: 'DD/MM/YYYY'});
 	$('.fancybox_iframe').fancybox({type: 'iframe', width: '90%'});
 	$('.fancybox-btn a.fancybox_inline').fancybox({type: 'inline'});

@@ -6,7 +6,7 @@ if(isset($_POST["design_edit"])){
 	if(empty($title))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="Update design set `title`='".slash($title)."', `title_urdu`='".slash($title_urdu)."' where id='".$id."'";
+		$sql="Update design set `title`='".slash($title)."', `title_urdu`='".slash($title_urdu)."', `sortorder`='".slash($sortorder)."' where id='".$id."'";
 		doquery($sql,$dblink);
 		unset($_SESSION["design_manage"]["edit"]);
 		header('Location: design_manage.php?tab=list&msg='.url_encode("Sucessfully Updated"));
