@@ -166,6 +166,9 @@ if( numrows( $rs ) > 0 ) {
 	}
 }
 ?>
+<tr>
+	<th colspan="5" class="text-right">Final Total</th>
+</tr>
 </table>
 <?php
 die;

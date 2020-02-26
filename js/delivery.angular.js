@@ -33,7 +33,7 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			"design_id": "",
 			"quantity": [],
 			"extra": 0,
-			"unit_price": 0
+			"unit_price": 105
 		};
 		angular.element(document).ready(function () {
 			$scope.wctAJAX( {action: 'get_customer'}, function( response ){

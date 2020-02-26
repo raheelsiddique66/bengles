@@ -5,7 +5,7 @@ if(isset($_SESSION["employee_payment_manage"]["add"])){
 }
 else{
     $employee_id="";
-    $date="";
+    $date=date("d/m/Y");
     $amount="";
     $account_id="";
 }
@@ -29,7 +29,7 @@ else{
             	<label class="form-label" for="title">Employee Name </label>
             </div>
             <div class="col-sm-10">
-                <select name="employee_id" title="Choose Option">
+                <select name="employee_id" title="Choose Option" class="select_multiple">
                     <option value="0">Select Employee</option>
                     <?php
                     $res=doquery("select * from employees where status=1 order by id", $dblink);
@@ -71,7 +71,7 @@ else{
                 <label class="form-label" for="title">Accounts </label>
             </div>
             <div class="col-sm-10">
-                <select name="account_id" title="Choose Option">
+                <select name="account_id" title="Choose Option"class="select_multiple">
                     <option value="0">Select Account</option>
                     <?php
                     $res=doquery("select * from account where status=1 order by id", $dblink);
