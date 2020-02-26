@@ -1,33 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$extra='';
-$is_search=false;
-if( isset($_GET["date_from"]) ){
-	$_SESSION["employee"]["salary"]["date_from"] = $_GET["date_from"];
-}
-if(isset($_SESSION["employee"]["salary"]["date_from"]) && !empty($_SESSION["employee"]["salary"]["date_from"])){
-	$date_from = $_SESSION["employee"]["salary"]["date_from"];
-}
-else{
-	$date_from = "";
-}
-if( !empty($date_from) ){
-	$extra.=" and date>='".date("Y/m/d H:i:s", strtotime(date_dbconvert($date_from)))."'";
-	$is_search=true;
-}
-if( isset($_GET["date_to"]) ){
-	$_SESSION["employee"]["salary"]["date_to"] = $_GET["date_to"];
-}
-if(isset($_SESSION["employee"]["salary"]["date_to"]) && !empty($_SESSION["employee"]["salary"]["date_to"])){
-	$date_to = $_SESSION["employee"]["salary"]["date_to"];
-}
-else{
-	$date_to = "";
-}
-if( !empty($date_to) ){
-	$extra.=" and date<='".date("Y/m/d", strtotime(date_dbconvert($date_to))+3600*24)."'";
-	$is_search=true;
-}
+$is_search=true;
 ?>
 <div ng-app="salary" ng-controller="salaryController" id="salaryController">
     <div class="page-header">
@@ -45,19 +18,19 @@ if( !empty($date_to) ){
     <ul class="topstats clearfix search_filter" style="display: block">
         <li class="col-xs-12 col-lg-12 col-sm-12">
             <div>
-                <form class="form-horizontal" action="" method="get">
-                    <input type="hidden" name="tab" value="salary" />
-                    <div class="col-sm-3">
-                        <input type="text" title="Enter String" value="<?php echo $date_from?>" name="date_from" id="search" class="form-control date-picker" autocomplete="off" />  
-                    </div>
-                    <div class="col-sm-3">
-                        <input type="text" title="Enter String" value="<?php echo $date_to?>" name="date_to" id="search" class="form-control date-picker" autocomplete="off" />  
-                    </div>
-                    <div class="col-sm-3 text-left">
-                        <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
-                        <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
-                    </div>
-                </form>
+                <div class="col-sm-3">
+                    <select data-ng-model="salary_type">
+                        <option value="1">Weekly</option>
+                        <option value="2">Daily</option>
+                        <option value="0">Monthly</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" title="Enter Date" value="" class="form-control date-picker" autocomplete="off" data-ng-model="salary_date" />
+                </div>
+                <div class="col-sm-3 text-left">
+                    <input type="button" data-ng-click="get_records()" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
+                </div>
             </div>
         </li>
     </ul>
@@ -65,14 +38,16 @@ if( !empty($date_to) ){
         <table class="table table-hover list">
             <thead>
                 <tr>
-                    <th width="5%" class="text-center">S.No</th>
-                    <th width="15%">Employee Name</th>
-                    <th width="15%">Father Name</th>
-                    <th width="10%">01/02/2020</th>
-                    <th width="10%">01/02/2020</th>
-                    <th width="10%">01/02/2020</th>
-                    <th width="10%">01/02/2020</th>
-                    <th width="10%">01/02/2020</th>
+                    <th width="2%" class="text-center" rowspan="2">S.No</th>
+                    <th width="8%" rowspan="2">Employee Name</th>
+                    <th width="8%" rowspan="2">Father Name</th>
+                    <th width="5%" data-ng-repeat="date in dates"  rowspan="2" class="text-center">{{ date.date }}</th>
+                    <th width="5%" colspan="2" class="text-center">Salary</th>
+                    <th width="5%" rowspan="2" class="text-center">Payment</th>
+                </tr>
+                <tr>
+                    <th class="text-center">Salary</th>
+                    <th class="text-center">Calculated</th>
                 </tr>
             </thead>
             <tbody>
@@ -80,11 +55,10 @@ if( !empty($date_to) ){
                     <td class="text-center">{{ $index+1 }}</td>
                     <td>{{employee.name}}</td>
                     <td>{{employee.father_name}}</td>
-                    <td><input type="text" /></td>
-                    <td><input type="text" /></td>
-                    <td><input type="text" /></td>
-                    <td><input type="text" /></td>
-                    <td><input type="text" /></td>
+                    <td data-ng-repeat="date in dates" class="text-center"><input type="text" style="width: 30px;" data-ng-model="employee.attendance[date.value]" data-ng-change="update_caculated($parent.$index)" /></td>
+                    <td class="text-center"><input type="text" style="width: 60px;" data-ng-model="employee.salary" /></td>
+                    <td class="text-center"><input type="text" style="width: 60px;" data-ng-model="employee.calculated_salary" /></td>
+                    <td class="text-center"><input type="text" style="width: 60px;" data-ng-model="employee.payment" /></td>
                 </tr>  
             </tbody>
         </table>
@@ -92,7 +66,7 @@ if( !empty($date_to) ){
     <div class="form-group">
         <div class="row">
             <div class="col-sm-10">
-                <input type="submit" value="Save Record" class="btn btn-default btn-l" name="save_record" title="Update Record" />
+                <input type="submit" value="Save Record" class="btn btn-default btn-l" name="save_record" data-ng-click="save_record()" title="Update Record" />
             </div>
         </div>
     </div>

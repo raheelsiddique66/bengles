@@ -1329,13 +1329,9 @@ function get_supplier_balance( $supplier_id, $dt = 0 ){
 	}
 	return $balance;
 }
-function get_user_balance( $employee_id ){
-	$total = get_user_salary_total( $employee_id );
-	return $total[ "balance" ];
-}
-function get_user_salary_total( $employee_id ){
+function get_employee_balance( $employee_id, $date ){
 	global $dblink;
-	$sql = "SELECT id, employee_id, CONCAT(LAST_DAY(CONCAT(year,'-',month+1,'-01')),' 00:00:00') as dt, concat( MONTHNAME(LAST_DAY(CONCAT(year,'-',month+1,'-01'))), ' ', year, ' salary') as details, 0 as debit, amount as credit FROM salary where status=1 and employee_id = '".$employee_id."' union select a.id, employee_id, a.datetime_added as dt, concat(a.details, if(a.details='','', ' - '),'Paid by ', b.title), amount as debit, 0 as credit from salary_payment a left join account b on a.account_id = b.id where a.status=1 and employee_id = '".$employee_id."' order by dt";
-	$balance = dofetch( doquery( "select sum(debit) as total_debit, sum(credit) as total_credit, sum(debit)-sum(credit) balance from (".$sql.") as a", $dblink ));
-	return $balance;
+	$salary = dofetch(doquery("select sum(total_amount) as total from employee_salary where id = '".$employee_id."' and date <= '".$date."'", $dblink));
+    $payment = dofetch(doquery("select sum(amount) as total from employee_payment where id = '".$employee_id."' and date <= '".$date."'", $dblink));
+    return $payment[ "total" ] - $salary[ "total" ];
 }
