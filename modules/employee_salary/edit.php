@@ -55,7 +55,7 @@ if(!defined("APP_START")) die("No Direct Access");
             </div>
         </div>
     </div>
-        <div class="form-group">
+    <div class="form-group">
         <div class="row">
         	<div class="col-sm-2 control-label">
             	<label class="form-label" for="over_time_rate">Over Time Rate </label>
@@ -65,7 +65,7 @@ if(!defined("APP_START")) die("No Direct Access");
             </div>
         </div>
     </div>
-        <div class="form-group">
+    <div class="form-group">
         <div class="row">
         	<div class="col-sm-2 control-label">
             	<label class="form-label" for="calculated_salary">Calculated Salary </label>
@@ -74,27 +74,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <input type="text" title="Enter Calculated Salary" value="<?php echo $calculated_salary; ?>" name="calculated_salary" id="calculated_salary" class="form-control" />
             </div>
         </div>
-    </div><div class="form-group">
-        <div class="row">
-        	<div class="col-sm-2 control-label">
-            	<label class="form-label" for="over_time">Over Time </label>
-            </div>
-            <div class="col-sm-10">
-                <input type="text" title="Enter Over Time" value="<?php echo $over_time; ?>" name="over_time" id="over_time" class="form-control" />
-            </div>
-        </div>
     </div>
-        <div class="form-group">
-        <div class="row">
-        	<div class="col-sm-2 control-label">
-            	<label class="form-label" for="total_amount">Total Amount </label>
-            </div>
-            <div class="col-sm-10">
-                <input type="text" title="Enter Total Amount" value="<?php echo $total_amount; ?>" name="total_amount" id="total_amount" class="form-control" />
-            </div>
-        </div>
-    </div>
-        
     <div class="form-group">
     	<div class="row">
             <div class="col-sm-2 control-label">

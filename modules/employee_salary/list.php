@@ -56,8 +56,6 @@ if(!empty($q)){
                 <th width="10%">Salary Rate</th>
                 <th width="10%">Over Time rate</th>
                 <th width="15%">Calculated Salary</th>
-                <th width="10%">Over Time</th>
-                <th width="15%">Total Amount</th>
                 <th width="10%" class="text-center">Actions</th>
             </tr>
         </thead>
@@ -80,8 +78,6 @@ if(!empty($q)){
                         <td><?php echo unslash($r["salary_rate"]); ?></td>
                         <td><?php echo unslash($r["over_time_rate"]); ?></td>
                         <td><?php echo unslash($r["calculated_salary"]); ?></td>
-                        <td><?php echo unslash($r["over_time"]); ?></td>
-                        <td><?php echo unslash($r["total_amount"]); ?></td>
                         <td class="text-center">
                             <a href="employee_salary_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
                             <a onclick="return confirm('Are you sure you want to delete')" href="employee_salary_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
@@ -92,7 +88,7 @@ if(!empty($q)){
                 }
                 ?>
                 <tr>
-                    <td colspan="7" class="actions">
+                    <td colspan="5" class="actions">
                         <select name="bulk_action" class="" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
                             <option value="delete">Delete</option>
@@ -108,7 +104,7 @@ if(!empty($q)){
             else{	
                 ?>
                 <tr>
-                    <td colspan="9"  class="no-record">No Result Found</td>
+                    <td colspan="7"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }
