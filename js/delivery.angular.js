@@ -5,6 +5,7 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.colors = [];
 		$scope.sizes = [];
 		$scope.designs = [];
+		$scope.machines = [];
 		$scope.errors = [];
 		$scope.processing = false;
 		$scope.delivery_id = 0;
@@ -49,6 +50,9 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			});
 			$scope.wctAJAX( {action: 'get_design'}, function( response ){
 				$scope.designs = response;
+			});
+			$scope.wctAJAX( {action: 'get_machines'}, function( response ){
+				$scope.machines = response;
 			});
 			if( $scope.delivery_id > 0 ) {
 				$scope.wctAJAX( {action: 'get_delivery', id: $scope.delivery_id}, function( response ){
@@ -176,11 +180,12 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
                 $scope.wctAJAX( data, function( response ){
                     $scope.processing = false;
                     if( response.status == 1 ) {
+						$scope.labours.push(response.labour);
                         $scope.showPopup = !$scope.showPopup;
-                        $scope.labour = angular.copy( $scope.labour_placeholder );
+						$scope.labour = angular.copy( $scope.labour_placeholder );
                     }
                     else{
-                        $scope.box_errors = response.error;
+						$scope.box_errors = response.error;
                     }
                 });
             }
@@ -188,7 +193,7 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 
         $scope.togglePopup = function() {
             $scope.showPopup = !$scope.showPopup;
-            setTimeout(function(){focus();}, 100);
+			setTimeout(function(){focus();}, 100);
         }
 		
 	}

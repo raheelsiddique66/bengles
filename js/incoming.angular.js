@@ -5,6 +5,7 @@ angular.module('incoming', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.colors = [];
 		$scope.sizes = [];
 		$scope.designs = [];
+		$scope.machines = [];
 		$scope.errors = [];
 		$scope.processing = false;
 		$scope.incoming_id = 0;
@@ -29,6 +30,7 @@ angular.module('incoming', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.incoming_item = {
 			"color_id":"",
 			"design_id": "",
+			"machine_id": 0,
 			"quantity": [],
 		};
 		angular.element(document).ready(function () {
@@ -46,6 +48,9 @@ angular.module('incoming', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			});
 			$scope.wctAJAX( {action: 'get_design'}, function( response ){
 				$scope.designs = response;
+			});
+			$scope.wctAJAX( {action: 'get_machines'}, function( response ){
+				$scope.machines = response;
 			});
 			if( $scope.incoming_id > 0 ) {
 				$scope.wctAJAX( {action: 'get_incoming', id: $scope.incoming_id}, function( response ){
@@ -152,6 +157,7 @@ angular.module('incoming', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
                 $scope.wctAJAX( data, function( response ){
                     $scope.processing = false;
                     if( response.status == 1 ) {
+						$scope.labours.push(response.labour);
                         $scope.showPopup = !$scope.showPopup;
                         $scope.labour = angular.copy( $scope.labour_placeholder );
                     }

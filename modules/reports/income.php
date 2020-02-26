@@ -40,6 +40,7 @@ if( empty( $extra ) ) {
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> 
         	<a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
+			<a class="btn print-btn" href="report_manage.php?tab=income_print"><i class="fa fa-print" aria-hidden="true"></i></a>
         </div>
   	</div>
 </div>
@@ -68,8 +69,10 @@ if( empty( $extra ) ) {
 <div class="panel-body table-responsive">
 	<table class="table table-hover list">
     	<?php
-		$sql=doquery("select sum(unit_price) as total from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink);
+		$sql=doquery("select sum(unit_price) as total, sum(quantity) as quantity from delivery_items a inner join delivery b on a.delivery_id = b.id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."' ",$dblink);
+		//$sql = doquery( "select *, group_concat(concat(quantity)) as quantity from delivery_items a left join delivery b on a.delivery_id = b.id where b.status = 1 and b.date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and b.date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."' group by color_id,design_id", $dblink );
 		$payment=dofetch($sql);
+		//print_r($payment);
 		?>
         <tr class="head">
             <th class="text-right">Income from <?php echo $date_from?> to <?php echo $date_to?></th>

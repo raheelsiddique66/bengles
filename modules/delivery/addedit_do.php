@@ -71,6 +71,19 @@ if(isset($_POST["action"])){
 			}
 			$response = $designs;
 		break;
+		case "get_machines":
+			$rs = doquery( "select * from machine where status=1 order by title", $dblink );
+			$machines = array();
+			if( numrows( $rs ) > 0 ) {
+				while( $r = dofetch( $rs ) ) {
+					$machines[] = array(
+						"id" => $r[ "id" ],
+						"title" => unslash($r[ "title" ]),
+					);
+				}
+			}
+			$response = $machines;
+		break;
 		case "get_delivery":
 			$id = slash( $_POST[ "id" ] );
 			$rs = doquery( "select a.*, b.name from delivery a left join labour b on a.labour_id = b.id where a.id='".$id."'", $dblink );
@@ -99,6 +112,7 @@ if(isset($_POST["action"])){
 							"color_id" => $r1["color_id"],
 							"size_id" => $r1[ "size_id" ],
 							"design_id" => $r1[ "design_id" ],
+							"machine_id" => $r1[ "machine_id" ],
 							"quantity" => $quantities,
 							"extra" => $r1[ "extra" ],
 							"unit_price" => $r1[ "unit_price" ],
@@ -141,9 +155,9 @@ if(isset($_POST["action"])){
 					foreach($delivery_item->quantity as $size_id => $quantity){
 						$quantity = (int)$quantity;
 						if(!empty($quantity)){
-							$check = doquery("select * from delivery_items where delivery_id = '".$delivery_id."' and color_id = '".$delivery_item->color_id."' and design_id = '".$delivery_item->design_id."' and size_id = '".$size_id."'",$dblink);
+							$check = doquery("select * from delivery_items where delivery_id = '".$delivery_id."' and color_id = '".$delivery_item->color_id."' and design_id = '".$delivery_item->design_id."' and size_id = '".$size_id."' and machine_id = '".$delivery_item->machine_id."'",$dblink);
 							if( numrows( $check ) == 0 ) {
-								doquery( "insert into delivery_items( delivery_id, color_id, size_id, design_id, quantity, extra, unit_price ) values( '".$delivery_id."', '".$delivery_item->color_id."', '".$size_id."', '".$delivery_item->design_id."', '".$quantity."', '".$delivery_item->extra."', '".$delivery_item->unit_price."')", $dblink );
+								doquery( "insert into delivery_items( delivery_id, color_id, size_id, design_id, machine_id, quantity, extra, unit_price ) values( '".$delivery_id."', '".$delivery_item->color_id."', '".$size_id."', '".$delivery_item->design_id."', '".$delivery_item->machine_id."', '".$quantity."', '".$delivery_item->extra."', '".$delivery_item->unit_price."')", $dblink );
 								$delivery_item_ids[] = inserted_id();
 							}
 							else {

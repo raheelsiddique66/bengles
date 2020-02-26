@@ -23,7 +23,7 @@ if(!defined("APP_START")) die("No Direct Access");
                     <input placeholder="Date To" type="text" title="Date To" value="<?php echo $date_to;?>" name="date_to" id="date_to" class="date-picker form-control" autocomplete="off" />
                 </div>
                 <div class="col-sm-2">
-                  <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" placeholder="Search gatepass or labour" >
+                  <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" placeholder="Search gatepass" >
                 </div>
                 <div class="col-sm-2 col-xs-8">
                     <select name="customer_id" id="customer_id" class="form-control">
