@@ -127,7 +127,7 @@ if(isset($_POST["action"])){
                         doquery("insert into employee_attendance(employee_id, date, attendance) values('".$employee->id."', '".date("Y-m-d", strtotime($date))."', '".$attendance."')", $dblink);
                     }
                 }
-                $date = $dates[count($dates)-1].value;
+                $date = $dates[count($dates)-1]["value"];
                 $ch = doquery("select * from employee_salary where employee_id='".$employee->id."' and date='".date("Y-m-d", strtotime($date))."'", $dblink);
                 if(numrows($ch)>0){
                     $ch = dofetch($ch);
