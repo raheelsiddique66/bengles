@@ -143,7 +143,7 @@ if($customer_id!=""){
                 <th width="2%" class="text-center" rowspan="2">S.no</th>
                 <th width="5%" rowspan="2">Date</th>
                 <th width="10%" colspan="2" class="text-center">Item</th>
-                <?php if(!isset($_GET["customer_id"])){?>
+                <?php if(empty($_GET["customer_id"])){?>
                 <th width="11%" rowspan="2">Customer</th>
                 <?php }?>
                 <th width="24%" colspan="<?php echo $colspan?>" class="text-center">Received</th>
@@ -189,7 +189,7 @@ if($customer_id!=""){
                                 <td><?php echo date_convert($record["date"]); ?></td>
                                 <td><?php echo unslash($r["color"])?></td>
                                 <td><?php echo unslash($r["title"]) ?></td>
-                                <?php if(!isset($_GET["customer_id"])){?>
+                                <?php if(empty($_GET["customer_id"])){?>
                                 <td><?php echo get_field($record["customer_id"], "customer", "customer_name" ); ?></td>
                                 <?php
                                 }
@@ -240,7 +240,7 @@ if($customer_id!=""){
                 }
                 ?>
                 <tr>
-                    <th class="text-right" colspan="<?php if(!isset($_GET["customer_id"])) echo "5"; else echo "4";?>">Total</th>
+                    <th class="text-right" colspan="<?php if(empty($_GET["customer_id"])) echo "5"; else echo "4";?>">Total</th>
                     <?php
                     for($i = 0; $i < 3; $i++){
                         foreach($sizes as $size_id => $size){
