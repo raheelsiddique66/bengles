@@ -5,7 +5,7 @@ if(isset($_SESSION["employee_salary_manage"]["add"])){
 }
 else{
     $employee_id="";
-    $date="";
+    $date=date("d/m/Y");
     $salary_rate="";
     $over_time_rate="";
     $calculated_salary="";
@@ -30,7 +30,7 @@ else{
             	<label class="form-label" for="title">Employee Name </label>
             </div>
             <div class="col-sm-10">
-                <select name="employee_id" title="Choose Option">
+                <select name="employee_id" title="Choose Option" class="select_multiple">
                     <option value="0">Select Employee</option>
                     <?php
                     $res=doquery("select * from employees where status=1 order by id", $dblink);
