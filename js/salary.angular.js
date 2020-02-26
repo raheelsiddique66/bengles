@@ -19,7 +19,7 @@ angular.module('salary', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angular
 			});
 		}
 		$scope.update_caculated = function(index){
-			$scope.employees[index].calculated_salary = Math.round(Number(($scope.employees[index].salary/$scope.get_total().total_days) * $scope.get_total().days + $scope.employees[index].over_time_rate * $scope.get_total().hours));
+			$scope.employees[index].calculated_salary = Math.round(Number(($scope.employees[index].salary/$scope.get_total(index).total_days) * $scope.get_total(index).days + $scope.employees[index].over_time_rate * $scope.get_total(index).hours));
 		}
 		$scope.get_total = function(index){
 			var days = 0;
