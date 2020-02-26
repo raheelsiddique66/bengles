@@ -12,7 +12,7 @@ if(!defined("APP_START")) die("No Direct Access");
             <th width="3%" data-ng-repeat="date in dates" class="text-center">{{ date.date }}</th>
             <th width="5%" class="text-center">Hours</th>
             <th width="5%" class="text-center">Salary</th>
-            <th class="text-center">Balance</th>
+            <th class="text-center">Advance</th>
             <th class="text-center">Remaining</th>
             <th class="text-center">Payment</th>
             <th class="text-center">Signature</th>

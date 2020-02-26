@@ -2,7 +2,7 @@
 if(!defined("APP_START")) die("No Direct Access");
 $is_search=true;
 ?>
-<div ng-app="salary" ng-controller="salaryController" id="salaryController">
+    <div ng-app="salary" ng-controller="salaryController" id="salaryController">
     <div class="page-header">
         <h1 class="title">Employees</h1>
         <ol class="breadcrumb">
@@ -49,7 +49,7 @@ $is_search=true;
                     <th class="text-center">Salary</th>
                     <th class="text-center">Overtime</th>
                     <th class="text-center">Calculated</th>
-                    <th class="text-center">Balance</th>
+                    <th class="text-center">Advance</th>
                     <th class="text-center">Remaining</th>
                     <th class="text-center">Payment</th>
                 </tr>
