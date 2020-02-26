@@ -180,11 +180,12 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
                 $scope.wctAJAX( data, function( response ){
                     $scope.processing = false;
                     if( response.status == 1 ) {
+						$scope.labours.push(response.labour);
                         $scope.showPopup = !$scope.showPopup;
-                        $scope.labour = angular.copy( $scope.labour_placeholder );
+						$scope.labour = angular.copy( $scope.labour_placeholder );
                     }
                     else{
-                        $scope.box_errors = response.error;
+						$scope.box_errors = response.error;
                     }
                 });
             }
@@ -192,7 +193,7 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 
         $scope.togglePopup = function() {
             $scope.showPopup = !$scope.showPopup;
-            setTimeout(function(){focus();}, 100);
+			setTimeout(function(){focus();}, 100);
         }
 		
 	}

@@ -157,6 +157,7 @@ angular.module('incoming', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
                 $scope.wctAJAX( data, function( response ){
                     $scope.processing = false;
                     if( response.status == 1 ) {
+						$scope.labours.push(response.labour);
                         $scope.showPopup = !$scope.showPopup;
                         $scope.labour = angular.copy( $scope.labour_placeholder );
                     }

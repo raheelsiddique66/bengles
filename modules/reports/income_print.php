@@ -82,7 +82,7 @@ table {
 		$sql=doquery("select sum(unit_price) as total from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink);
 		$payment=dofetch($sql);
 	?>
-    <tr class="head">
+    <tr>
         <th align="right">Income from <?php echo $date_from?> to <?php echo $date_to?></th>
         <th align="right"><?php echo curr_format($payment[ "total" ])?></th>
     </tr>
