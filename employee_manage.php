@@ -13,7 +13,7 @@ if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 else{
 	$tab="list";
 }
-
+$sql = "SELECT * FROM `employees`";
 switch($tab){
 	case 'add':
 		include("modules/employee/add_do.php");
