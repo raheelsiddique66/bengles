@@ -19,11 +19,13 @@ angular.module('salary', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angular
 			});
 		}
 		$scope.update_caculated = function(index){
+			$scope.employees[index].calculated_salary = Math.round(Number(($scope.employees[index].salary/$scope.get_total(index).total_days) * $scope.get_total(index).days + $scope.employees[index].over_time_rate * $scope.get_total(index).hours));
+		}
+		$scope.get_total = function(index){
 			var days = 0;
 			var hours = 0;
 			var total_days = 0;
 			for (var i in $scope.employees[index].attendance) {
-				console.log();
 				if( $scope.employees[index].attendance[i] == 'P' || Number($scope.employees[index].attendance[i] ) > 0 ){
 					days++;
 					if(Number($scope.employees[index].attendance[i] ) > 0){
@@ -34,7 +36,11 @@ angular.module('salary', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angular
 					total_days++;
 				}
 			}
-			$scope.employees[index].calculated_salary = Math.round(Number(($scope.employees[index].salary/total_days) * days + $scope.employees[index].over_time_rate * hours));
+			return {
+				days: days,
+				hours: hours,
+				total_days: total_days
+			};
 		}
 		$scope.wctAJAX = function( wctData, wctCallback ) {
 			wctData.tab = 'salary';
@@ -75,6 +81,13 @@ angular.module('salary', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angular
 				});
 			}
 		}
-		
+		$scope.sum = function (items, prop) {
+			if (items == null) {
+				return 0;
+			}
+			return items.reduce(function (a, b) {
+				return b[prop] == null ? a : a + b[prop];
+			}, 0);
+		};
 	}
 );

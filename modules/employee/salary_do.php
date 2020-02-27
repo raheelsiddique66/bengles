@@ -20,7 +20,7 @@ if(isset($_POST["action"])){
                 $end = strtotime ( '+1 month' , strtotime ( $date ) ) ;
             }
 			else if($salary_type == 1){
-                $end = strtotime("next Saturday", $start);
+                $end = strtotime("next Thursday", $start);
             }
 			else{
 			    $end = strtotime("tomorrow", $start);
@@ -31,6 +31,7 @@ if(isset($_POST["action"])){
                 $dates[] = array(
                     "date" => date('D d', $currentdate),
                     "value" => date('Ymd', $currentdate),
+                    "formatted" => date('d/m/Y', $currentdate),
                 );
                 $currentdate = strtotime('+1 day', $currentdate);
             }
@@ -54,12 +55,18 @@ if(isset($_POST["action"])){
                             }
                         }
                     }
+                    $payment=0;
                     $ch = doquery("select * from employee_salary where employee_id='".$r["id"]."' and date='".date("Y-m-d", strtotime($dates[count($dates)-1]["value"]))."'", $dblink);
                     if(numrows($ch)>0){
                         $ch = dofetch($ch);
                         $salary = $ch["salary_rate"];
                         $over_time_rate = $ch["over_time_rate"];
                         $calculated_salary = $ch["calculated_salary"];
+                        $ch = doquery("select * from employee_payment where employee_salary_id='".$ch["id"]."'", $dblink);
+                        if(numrows($ch)>0){
+                            $ch = dofetch($ch);
+                            $payment = $ch["amount"];
+                        }
                     }
                     else{
                         $salary = $r["salary"];
@@ -74,7 +81,8 @@ if(isset($_POST["action"])){
                         "salary" => (int)$salary,
                         "over_time_rate" => (int)$over_time_rate,
                         "calculated_salary" => (int)$calculated_salary,
-                        "balance" => get_employee_balance($r["id"], date("Y-m-d", $start))
+                        "balance" => get_employee_balance($r["id"], date("Y-m-d", strtotime($dates[count($dates)-1]["value"]))),
+                        "payment" => $payment
                     );
                 }
             }
@@ -84,6 +92,29 @@ if(isset($_POST["action"])){
             );
 		break;
         case "save_record":
+            $dates = array();
+            $start = strtotime(date_dbconvert($_SESSION["manage_salary"]["salary_date"]));
+            $salary_type = $_SESSION["manage_salary"]["salary_type"];
+            if($salary_type == 0){
+                $date = date("Y-m-01", $start);
+                $end = strtotime ( '+1 month' , strtotime ( $date ) ) ;
+            }
+            else if($salary_type == 1){
+                $end = strtotime("next Thursday", $start);
+            }
+            else{
+                $end = strtotime("tomorrow", $start);
+            }
+            $currentdate = $start;
+            while($currentdate < $end)
+            {
+                $dates[] = array(
+                    "date" => date('D d', $currentdate),
+                    "value" => date('Ymd', $currentdate),
+                    "formatted" => date('d/m/Y', $currentdate),
+                );
+                $currentdate = strtotime('+1 day', $currentdate);
+            }
             $employees = json_decode(stripslashes($_POST["employees"]));
             foreach($employees as $employee){
                 foreach($employee->attendance as $date => $attendance){
@@ -94,6 +125,27 @@ if(isset($_POST["action"])){
                     }
                     else{
                         doquery("insert into employee_attendance(employee_id, date, attendance) values('".$employee->id."', '".date("Y-m-d", strtotime($date))."', '".$attendance."')", $dblink);
+                    }
+                }
+                $date = $dates[count($dates)-1]["value"];
+                $ch = doquery("select * from employee_salary where employee_id='".$employee->id."' and date='".date("Y-m-d", strtotime($date))."'", $dblink);
+                if(numrows($ch)>0){
+                    $ch = dofetch($ch);
+                    $employee_salary_id = $ch["id"];
+                    doquery("update employee_salary set salary_rate = '".$employee->salary."', salary_rate = '".$employee->salary."', over_time_rate = '".$employee->over_time_rate."', calculated_salary = '".$employee->calculated_salary."' where id = '".$ch["id"]."'", $dblink);
+                }
+                else{
+                    doquery("insert into employee_salary(employee_id, date, salary_rate, over_time_rate, calculated_salary) values('".$employee->id."', '".date("Y-m-d", strtotime($date))."', '".$employee->salary."', '".$employee->over_time_rate."', '".$employee->calculated_salary."')", $dblink);
+                    $employee_salary_id = inserted_id();
+                }
+                if(isset($employee->payment) && !empty($employee->payment)){
+                    $ch = doquery("select * from employee_payment where employee_salary_id='".$employee_salary_id."'", $dblink);
+                    if(numrows($ch)>0){
+                        $ch = dofetch($ch);
+                        doquery("update employee_payment set amount = '".$employee->payment."' where id = '".$ch["id"]."'", $dblink);
+                    }
+                    else{
+                        doquery("insert into employee_payment(employee_id, employee_salary_id, date, amount, account_id) values('".$employee->id."', '".$employee_salary_id."', '".date("Y-m-d", strtotime($date))."', '".$employee->payment."', '".get_default_account_id()."')", $dblink);
                     }
                 }
             }

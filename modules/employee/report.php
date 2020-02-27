@@ -35,7 +35,7 @@ table {
 <tr class="head">
 	<th colspan="11">
     	<h1><?php echo get_config( 'site_title' )?></h1>
-    	<h2>Delivery List</h2>
+    	<h2>Employee List</h2>
         <p>
         	<?php
 			echo "List of";

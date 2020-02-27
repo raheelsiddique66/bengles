@@ -119,6 +119,19 @@ if(isset($_POST["action"])){
                         );
 					}
 				}
+				else{
+					$delivery_items[] = array(
+						"id" => "",
+						"delivery_id" => "",
+						"color_id" => "",
+						"size_id" => "",
+						"design_id" => "",
+						"machine_id" => "",
+						"quantity" => "",
+						"extra" => "",
+						"unit_price" => get_config("default_price"),
+					);
+				}
 				$delivery[ "delivery_items" ] = $delivery_items;
 			}
 			$response = $delivery;
