@@ -33,6 +33,10 @@ switch($tab){
 	case 'salary':
 		include("modules/employee/salary_do.php");
 	break;
+    case 'report':
+        include("modules/employee/report.php");
+        die;
+    break;
 }
 ?>
 <?php include("include/header.php");?>

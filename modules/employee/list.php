@@ -53,13 +53,13 @@ if(!empty($q)){
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
                 <th width="20%">Name</th>
-                <th width="20%">Father Name</th>
+                <th width="18%">Father Name</th>
                 <th width="10%">Phone Number</th>
                 <th width="10%">Salary Type</th>
                 <th width="10%">Salary</th>
-                <th width="15%">Over Time Per hour</th>
-                <th width="10%" class="text-center">Status</th>
-                <th width="10%" class="text-center">Actions</th>
+                <th width="11%">Over Time Per hour</th>
+                <th width="5%" class="text-center">Status</th>
+                <th width="15%" class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -111,6 +111,7 @@ if(!empty($q)){
                         <td class="text-center">
                             <a href="employee_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
                             <a onclick="return confirm('Are you sure you want to delete')" href="employee_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
+                            <a href="delivery_manage.php?tab=report&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/view.png"></a>
                         </td>
                     </tr>  
                     <?php 
