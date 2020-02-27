@@ -2,7 +2,7 @@
 if(!defined("APP_START")) die("No Direct Access");
 $is_search=true;
 ?>
-<div ng-app="salary" ng-controller="salaryController" id="salaryController">
+    <div ng-app="salary" ng-controller="salaryController" id="salaryController">
     <div class="page-header">
         <h1 class="title">Employees</h1>
         <ol class="breadcrumb">
@@ -42,12 +42,19 @@ $is_search=true;
                     <th width="8%" rowspan="2">Employee Name</th>
                     <th width="8%" rowspan="2">Father Name</th>
                     <th width="5%" data-ng-repeat="date in dates"  rowspan="2" class="text-center">{{ date.date }}</th>
-                    <th width="5%" colspan="2" class="text-center">Salary</th>
-                    <th width="5%" rowspan="2" class="text-center">Payment</th>
+                    <th width="5%" colspan="6" class="text-center">Salary</th>
+                    <th width="5%" colspan="3" class="text-center">Payment</th>
                 </tr>
                 <tr>
+                    <th class="text-center">Fixed</th>
+                    <th class="text-center">Per Hour</th>
+                    <th class="text-center">Overtime</th>
+                    <th class="text-center">Amount</th>
                     <th class="text-center">Salary</th>
-                    <th class="text-center">Calculated</th>
+                    <th class="text-center">Total</th>
+                    <th class="text-center">Advance</th>
+                    <th class="text-center">Remaining</th>
+                    <th class="text-center">Payment</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,8 +63,14 @@ $is_search=true;
                     <td>{{employee.name}}</td>
                     <td>{{employee.father_name}}</td>
                     <td data-ng-repeat="date in dates" class="text-center"><input type="text" style="width: 30px;" data-ng-model="employee.attendance[date.value]" data-ng-change="update_caculated($parent.$index)" /></td>
-                    <td class="text-center"><input type="text" style="width: 60px;" data-ng-model="employee.salary" /></td>
-                    <td class="text-center"><input type="text" style="width: 60px;" data-ng-model="employee.calculated_salary" /></td>
+                    <td class="text-center"><input type="text" style="width: 60px;" data-ng-model="employee.salary" data-ng-change="update_caculated($index)"/></td>
+                    <td class="text-center"><input type="text" style="width: 60px;" data-ng-model="employee.over_time_rate" data-ng-change="update_caculated($index)"/></td>
+                    <td>{{ get_total($index).hours|currency:'':0 }}</td>
+                    <td>{{ get_total($index).hours*employee.over_time_rate|currency:'':0 }}</td>
+                    <td>{{ employee.calculated_salary-get_total($index).hours*employee.over_time_rate|currency:'':0 }}</td>
+                    <td class="text-center"><input type="text" style="width: 60px;" data-ng-model="employee.calculated_salary" /> <i class="fa fa-refresh" data-ng-click="update_caculated($index)" style="font-size: 16px; cursor: pointer"></i> </td>
+                    <td>{{employee.balance}}</td>
+                    <td>{{employee.calculated_salary-employee.balance}}</td>
                     <td class="text-center"><input type="text" style="width: 60px;" data-ng-model="employee.payment" /></td>
                 </tr>  
             </tbody>
@@ -67,6 +80,7 @@ $is_search=true;
         <div class="row">
             <div class="col-sm-10">
                 <input type="submit" value="Save Record" class="btn btn-default btn-l" name="save_record" data-ng-click="save_record()" title="Update Record" />
+                <a href="employee_manage.php?tab=salary_print" class="btn btn-primary btn-l">Print</a>
             </div>
         </div>
     </div>

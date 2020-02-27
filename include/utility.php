@@ -1331,7 +1331,15 @@ function get_supplier_balance( $supplier_id, $dt = 0 ){
 }
 function get_employee_balance( $employee_id, $date ){
 	global $dblink;
-	$salary = dofetch(doquery("select sum(total_amount) as total from employee_salary where id = '".$employee_id."' and date <= '".$date."'", $dblink));
-    $payment = dofetch(doquery("select sum(amount) as total from employee_payment where id = '".$employee_id."' and date <= '".$date."'", $dblink));
+	$salary = dofetch(doquery("select sum(calculated_salary) as total from employee_salary where employee_id = '".$employee_id."' and date < '".$date."'", $dblink));
+    $payment = dofetch(doquery("select sum(amount) as total from employee_payment where employee_id = '".$employee_id."' and date < '".$date."'", $dblink));
     return $payment[ "total" ] - $salary[ "total" ];
+}
+function get_default_account_id(){
+    global $dblink;
+    $r = doquery("select id from account where is_petty_cash=1", $dblink);
+    if(numrows($r)>0){
+        $r = dofetch($r);
+        return $r["id"];
+    }
 }

@@ -6,14 +6,14 @@ include("include/paging.php");
 define("APP_START", 1);
 $filename = 'employee_manage.php';
 include("include/admin_type_access.php");
-$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action", "salary");
+$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action", "salary", "report");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
 else{
 	$tab="list";
 }
-
+$sql = "SELECT * FROM `employees`";
 switch($tab){
 	case 'add':
 		include("modules/employee/add_do.php");
@@ -33,6 +33,10 @@ switch($tab){
 	case 'salary':
 		include("modules/employee/salary_do.php");
 	break;
+    case 'report':
+        include("modules/employee/report.php");
+        die;
+    break;
 }
 ?>
 <?php include("include/header.php");?>

@@ -19,7 +19,7 @@ if(!defined("APP_START")) die("No Direct Access");
             	<label class="form-label" for="name">Name Employee</label>
             </div>
             <div class="col-sm-10">
-                <select name="employee_id" title="Choose Option">
+                <select name="employee_id" title="Choose Option" class="select_multiple">
                     <option value="0">Select Employee</option>
                     <?php
                     $res=doquery("select * from employees where status=1 order by id", $dblink);
@@ -62,7 +62,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 </div>
                 <div class="col-sm-10">
 
-                    <select name="account_id" title="Choose Option">
+                    <select name="account_id" title="Choose Option" class="select_multiple">
                     <option value="0">Select Account</option>
                         <?php
                         $res=doquery("select * from account where status=1 order by id", $dblink);
