@@ -69,14 +69,22 @@ if( empty( $extra ) ) {
 <div class="panel-body table-responsive">
 	<table class="table table-hover list">
     	<?php
-		$sql=doquery("select sum(unit_price) as total, sum(quantity) as quantity from delivery_items a inner join delivery b on a.delivery_id = b.id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."' ",$dblink);
-		//$sql = doquery( "select *, group_concat(concat(quantity)) as quantity from delivery_items a left join delivery b on a.delivery_id = b.id where b.status = 1 and b.date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and b.date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."' group by color_id,design_id", $dblink );
+		$sql=doquery("select sum(unit_price)*sum(quantity) as total from delivery_items a inner join delivery b on a.delivery_id = b.id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink);
 		$payment=dofetch($sql);
+		/*$rs1 = doquery( "select unit_price as total_price from delivery_items group by color_id,design_id", $dblink );
+		$total_price = 0;
+		if( numrows( $rs1 ) > 0 ) {
+			while( $r1 = dofetch( $rs1 ) ) {
+				//echo $r1["total"];
+				$total_price += $r1["total_price"];
+			}
+		}*/
+		//echo $total_price;
 		//print_r($payment);
 		?>
         <tr class="head">
             <th class="text-right">Income from <?php echo $date_from?> to <?php echo $date_to?></th>
-            <th class="text-right" ><?php echo curr_format($payment[ "total" ])?></th>
+            <th class="text-right" ><?php echo curr_format($payment["total"])?></th>
         </tr>
         <?php
 		$total = 0;

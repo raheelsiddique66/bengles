@@ -56,8 +56,8 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th class="text-center" width="3%"><div class="checkbox checkbox-primary">
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
-                <th width="10%">Gatepass ID</th>
                 <th width="10%">Date</th>
+                <th width="10%">Gatepass</th>
                 <th width="12%">Customer</th>
                 <th width="8%">Claim</th>
                 <th width="10%">Labour</th>
@@ -94,8 +94,8 @@ if(!defined("APP_START")) die("No Direct Access");
                             <input type="checkbox" name="id[]" id="<?php echo "rec_".$sn?>"  value="<?php echo $r["id"]?>" title="Select Record" />
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
-                        <td><?php echo $r["gatepass_id"]?></td>
                         <td><?php echo date_convert($r["date"]); ?></td>
+                        <td><?php echo $r["gatepass_id"]?></td>
                         <td><?php echo get_field( unslash($r["customer_id"]), "customer", "customer_name" ); ?></td>
                         <td><?php echo  unslash($r["claim"]); ?></td>
                         <td><?php echo get_field( unslash($r["labour_id"]), "labour", "name" ); ?></td>

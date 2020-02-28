@@ -79,7 +79,7 @@ table {
         </th>
     </tr>
     <?php
-		$sql=doquery("select sum(unit_price) as total from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink);
+		$sql=doquery("select sum(unit_price)*sum(quantity) as total, b.id as did from delivery_items a inner join delivery b on a.delivery_id = b.id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."' ",$dblink);
 		$payment=dofetch($sql);
 	?>
     <tr>

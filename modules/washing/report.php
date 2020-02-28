@@ -81,7 +81,7 @@ table {
 </tr>
 <tr>
     <th width="2%" align="center" rowspan="2">S.no</th>
-    <th width="6%" rowspan="2">ID</th>
+    <th width="3%" rowspan="2">ID</th>
 	<th width="8%" rowspan="2">Date</th>
 	<?php if(empty( $customer_id ) ){?>
 	<th width="10%" rowspan="2">Customer</th>
@@ -109,7 +109,7 @@ if( numrows( $rs ) > 0 ) {
 		?>
 		<tr>
         	<td align="center"><?php echo $sn?></td>
-			<td><?php echo $r["id"]; ?></td>
+			<td align="center"><?php echo $r["id"]; ?></td>
 			<td><?php echo date_convert($r["date"]); ?></td>
 			<?php if(empty( $customer_id ) ){?>
 			<td><?php echo get_field($r["customer_id"], "customer", "customer_name" ); ?></td>

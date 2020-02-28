@@ -113,7 +113,7 @@ if( numrows( $rs ) > 0 ) {
 		<tr>
         	<td align="center"><?php echo $sn?></td>
 			<td><?php echo date_convert($r["date"]); ?></td>
-			<td><?php echo $r["gatepass_id"]; ?></td>
+			<td align="center"><?php echo $r["gatepass_id"]; ?></td>
 			<?php if(empty( $customer_id ) ){?>
 			<td><?php echo get_field($r["customer_id"], "customer", "customer_name" ); ?></td>
 			<?php }?>
