@@ -69,24 +69,25 @@ if( empty( $extra ) ) {
 <div class="panel-body table-responsive">
 	<table class="table table-hover list">
     	<?php
-		$sql=doquery("select sum(unit_price)*sum(quantity) as total from delivery_items a inner join delivery b on a.delivery_id = b.id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink);
+		$sql=doquery("select sum(quantity) as total from delivery_items a inner join delivery b on a.delivery_id = b.id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink);
 		$payment=dofetch($sql);
-		/*$rs1 = doquery( "select unit_price as total_price from delivery_items group by color_id,design_id", $dblink );
+		$rs1 = doquery( "select unit_price as total_price from delivery_items group by color_id,design_id", $dblink );
 		$total_price = 0;
 		if( numrows( $rs1 ) > 0 ) {
 			while( $r1 = dofetch( $rs1 ) ) {
-				//echo $r1["total"];
-				$total_price += $r1["total_price"];
+				//echo $r1["total_price"];
+				$total_price += curr_format($r1["total_price"]);
 			}
-		}*/
+		}
 		//echo $total_price;
 		//print_r($payment);
 		?>
         <tr class="head">
             <th class="text-right">Income from <?php echo $date_from?> to <?php echo $date_to?></th>
-            <th class="text-right" ><?php echo curr_format($payment["total"])?></th>
+            <th class="text-right" >Rs. <?php echo $payment["total"] * $total_price?></th>
         </tr>
         <?php
+		$payment_total = $payment["total"] * $total_price;
 		$total = 0;
         $rs = doquery( "select title, sum(amount) as total from expense a left join expense_category b on a.expense_category_id = b.id where a.status=1 $extra group by expense_category_id", $dblink );
 		if( numrows( $rs ) > 0 ) {
@@ -105,11 +106,11 @@ if( empty( $extra ) ) {
 		?>
          <tr class="head">
             <th class="text-right">Total Expense</th>
-            <th class="text-right" ><?php echo curr_format($total)?></th>
+            <th class="text-right" >Rs. <?php echo curr_format($total)?></th>
         </tr>
         <tr class="head bg-success">
             <th class="text-right">Net Income</th>
-            <th class="text-right" ><?php echo curr_format($payment[ "total" ]-$total)?></th>
+            <th class="text-right" >Rs. <?php echo $payment_total-$total?></th>
         </tr>	
   	</table>
 </div>

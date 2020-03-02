@@ -82,7 +82,7 @@ table {
 <tr>
     <th width="2%" align="center" rowspan="2">S.no</th>
 	<th width="8%" rowspan="2">Date</th>
-    <th width="8%" rowspan="2">Gatepass ID</th>
+    <th width="8%" rowspan="2">Gatepass</th>
 	<?php if(empty( $customer_id ) ){?>
 	<th width="10%" rowspan="2">Customer</th>
 	<?php }?>
@@ -117,7 +117,7 @@ if( numrows( $rs ) > 0 ) {
 			<?php if(empty( $customer_id ) ){?>
 			<td><?php echo get_field($r["customer_id"], "customer", "customer_name" ); ?></td>
 			<?php }?>
-			<td><?php echo  unslash($r["claim"]); ?></td>
+			<td><?php echo unslash($r["claim"]); ?></td>
 			<td><?php echo get_field($r["labour_id"], "labour", "name" ); ?></td>
 					<?php
 					$rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from delivery_items where delivery_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
@@ -133,7 +133,6 @@ if( numrows( $rs ) > 0 ) {
 						$cnt = 0;
 						while($r1=dofetch($rs1)){
 							$price += $r1["unit_price"];
-							
 							$cnt++;
 							if($cnt>1){
 								echo '</tr><tr>
@@ -164,12 +163,10 @@ if( numrows( $rs ) > 0 ) {
 								<?php
 							}
 							$total_price +=  $t * $r1["unit_price"];
-							
-							
 							?>
 							<th class="text-right bg-grey"><?php echo $t?></th>
 							<td class="text-right color3-bg"><?php echo $r1["unit_price"]?></td>
-							<th class="text-right bg-grey"><?php echo $t * $r1["unit_price"]?></th>
+							<th class="text-right bg-grey"><?php  echo $t * $r1["unit_price"]?></th>
 							<?php
 						}
 						?>

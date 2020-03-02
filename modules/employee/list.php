@@ -111,7 +111,7 @@ if(!empty($q)){
                         <td class="text-center">
                             <a href="employee_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
                             <a onclick="return confirm('Are you sure you want to delete')" href="employee_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
-                            <a href="employee_manage.php?tab=employee_report&employee_id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/view.png"></a>
+                            <a href="employee_manage.php?tab=employee_report&id=<?php echo $r['id'];?>" class="download-icon"><i class="fa fa-download" aria-hidden="true"></i></a>
                         </td>
                     </tr>  
                     <?php 
