@@ -41,7 +41,10 @@ else {
             <li class="active">Manage Delivery</li>
         </ol>
         <div class="right">
-            <div class="btn-group" role="group" aria-label="..."> <a href="delivery_manage.php" class="btn btn-light editproject">Back to List</a> </div>
+            <div class="btn-group" role="group" aria-label="..."> 
+                <a href="delivery_manage.php?tab=addedit" class="btn btn-light editproject">Add New Delivery</a>
+                <a href="delivery_manage.php" class="btn btn-light editproject">Back to List</a> 
+            </div>
         </div>
     </div>
     <div class="form-horizontal">

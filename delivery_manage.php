@@ -66,7 +66,7 @@ if(!empty($q)){
 	$extra.=" and (gatepass_id like '%".$q."%')";
 	$is_search=true;
 }
-$sql = "SELECT * FROM `delivery` WHERE 1 $extra  order by date DESC";
+$sql = "SELECT * FROM `delivery` WHERE 1 $extra  order by gatepass_id ASC";
 switch($tab){
 	case 'addedit':
 		include("modules/delivery/addedit_do.php");

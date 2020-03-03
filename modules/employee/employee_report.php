@@ -87,7 +87,6 @@ if(!empty($date_to)){
             //$sql="select sum(calculated_salary) as amount from employee_salary where employee_id = '".$employee[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($date_to)))." 23:59:59' union select -amount from employee_payment where employee_id = '".$employee[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($date_to)))." 23:59:59'";
 			//$balance=dofetch(doquery($sql,$dblink));
             //$balance = $balance[ "amount" ];
-            
             $sql="select concat( 'Salary #', id) as details, date, calculated_salary as amount from employee_salary where employee_id = '".$employee[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($date_to)))." 23:59:59' union select 'Payment', date, amount from employee_payment where employee_id = '".$employee[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($date_to)))." 23:59:59' order by date desc";
             $rs=doquery( $sql, $dblink );
             if(numrows($rs)>0){

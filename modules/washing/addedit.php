@@ -15,7 +15,10 @@ else {
             <li class="active">Manage Washing</li>
         </ol>
         <div class="right">
-            <div class="btn-group" role="group" aria-label="..."> <a href="washing_manage.php" class="btn btn-light editproject">Back to List</a> </div>
+            <div class="btn-group" role="group" aria-label="..."> 
+                <a href="washing_manage.php?tab=addedit" class="btn btn-light editproject">Add New Washing</a>
+                <a href="washing_manage.php" class="btn btn-light editproject">Back to List</a> 
+            </div>
         </div>
     </div>
 	<?php
