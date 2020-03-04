@@ -8,11 +8,14 @@ body{font-size:14px; margin:0; font-family:Arial, Helvetica, sans-serif;}
   display: table;
 }
 p{
-	font-size:14px;
+	font-size:12px;
 }
 .content{
 	width:100%;
 	margin:0 auto;
+}
+.number {
+    margin: 20px 0 20px;
 }
 .logo {width: auto; clear:both;}
 .logo h1{ text-transform:uppercase; margin:10px 0; font-size:32px;}
@@ -24,8 +27,10 @@ p{
 .invoice_date p{
 	margin:0;
 }
+.logo p {
+    margin: 0;
+}
 .sale_tax{
-	margin: 20px 0 0;
 	text-align: center;
 }
 .sale_tax h1{
@@ -33,6 +38,7 @@ p{
 	color:#605f5b;
 	font-size:22px;
 	text-align: right;
+	margin: 0px 0 10px;
 }
 .invoice_number{
 	float:left;
@@ -41,26 +47,29 @@ p{
 	float:right;
 	text-transform:uppercase;
 }
-.order_number p{ margin: 0;line-height: 28px;}
+.order_number p {
+    margin: 0;
+    line-height: 19px;
+	font-size: 12px;
+	text-align: right;
+}
 .detail_box{
 	float: left;
-	border: 1px solid #000;
 	
 }
 .detail_box h3{
 	text-transform: uppercase;
-	margin: 0;
-	padding: 5px 10px;
-	border-bottom: 1px solid;
-	font-size: 14px;
+    color: #605f5b;
+    font-size: 22px;
+    text-align: right;
+    margin: 0px 0 10px;
 }
 .detail_box p{
 	font-size: 12px;
     margin: 0;
-    line-height: 18px;
+    line-height: 19px;
 }
 .detail_box_inner{
-	padding: 5px 10px;
 }
 .client_detail{
 	margin:0px 0 20px;

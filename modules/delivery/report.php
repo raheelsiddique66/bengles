@@ -163,6 +163,7 @@ if( numrows( $rs ) > 0 ) {
 								<?php
 							}
 							$total_price +=  $t * $r1["unit_price"];
+							
 							?>
 							<th class="text-right bg-grey"><?php echo $t?></th>
 							<td class="text-right color3-bg"><?php echo $r1["unit_price"]?></td>
@@ -190,11 +191,11 @@ if( numrows( $rs ) > 0 ) {
 							foreach($totals as $size_id => $total){
 								$grand_totals[$size_id] += $total;
 								$t += $total;
-								
 								?>
 								<th class="text-right bg-grey"><?php echo $total?></th>
 								<?php
 							}
+							
 							?>
 							<th class="text-right bg-grey"><?php echo $t?></th>
 							<th class="text-right bg-grey"><?php echo $price?></th>

@@ -30,12 +30,7 @@
             <p>DATE: 22/10/2020</p>
                 <p>Invoice # DES/A/</p>
                 <p>Gatepass # 2213</p>
-                
             </div>
-        </div>
-        <div class="client_detail clear">
-        	
-            
         </div>
         <table width="100%" cellpadding="0" cellspacing="0">
         	<thead>
