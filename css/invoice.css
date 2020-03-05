@@ -15,17 +15,29 @@ p{
 	margin:0 auto;
 }
 .number {
-    margin: 20px 0 20px;
+    margin: 12px 0 12px;
 }
-.logo {width: auto; clear:both;}
-.logo h1{ text-transform:uppercase; margin:10px 0; font-size:32px;}
+.logo {width: auto; float: left;}
+.phone {
+	float: right;
+	text-align:right;
+}
+.phone p {
+    font-size: 14px;
+    line-height: 22px;
+    margin: 10px 0;
+    font-weight: 600;
+}
+.logo h1{ text-transform:uppercase; margin:10px 0 0; font-size:32px;}
 .logo img {
 	height: auto;
 	max-width: 100%;
 	width:240px;
 }
 .logo p {
-    margin: 0;
+	margin: 0;
+	line-height: 18px;
+	font-weight: 600;
 }
 .sale_tax{
 	text-align: center;
@@ -58,7 +70,6 @@ p{
 	text-transform: uppercase;
     color: #605f5b;
     font-size: 22px;
-    text-align: right;
     margin: 0px 0 10px;
 }
 .detail_box p{

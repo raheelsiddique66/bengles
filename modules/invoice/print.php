@@ -13,10 +13,13 @@ $customer=dofetch(doquery("select * from customer where id='".slash($invoice["cu
 </head>
 <body>
 <div class="wrapper">
-    <div class="header">
+    <div class="header clear">
         <div class="logo">
-            <h1>MK COATING</h1>
+            <?php echo get_config("fees_chalan_header");?>
             <p>FROM: <?php echo date_convert($invoice["date_from"])?> TO: <?php echo date_convert($invoice["date_to"])?></p>
+        </div>
+        <div class="phone">
+            <?php echo get_config("address_phone");?>
         </div>
     </div>
     <div class="content">
@@ -56,7 +59,7 @@ $customer=dofetch(doquery("select * from customer where id='".slash($invoice["cu
             </thead>
             <tbody>
                 <?php
-                $sql = "select date as datetime_added, gatepass_id, color_id, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$invoice[ "customer_id" ]."' and date>='".date('Y-m-d',strtotime(date_convert($invoice["date_from"])))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_convert($invoice["date_to"])))." 23:59:59' group by color_id,design_id union select datetime_added as datetime_added, 0, 0, 0, 0, 0, amount as credit from customer_payment where customer_id = '".$invoice[ "customer_id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_convert($invoice["date_from"])))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_convert($invoice["date_to"])))." 23:59:59'";
+                $sql = "select date as datetime_added, gatepass_id, title, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id = '".$invoice[ "customer_id" ]."' and date>='".date('Y-m-d',strtotime(date_convert($invoice["date_from"])))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_convert($invoice["date_to"])))." 23:59:59' group by color_id,design_id union select datetime_added as datetime_added, '', title, 0, 0, 0, amount as credit from customer_payment a left join account c on a.account_id = c.id where customer_id = '".$invoice[ "customer_id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_convert($invoice["date_from"])))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_convert($invoice["date_to"])))." 23:59:59'";
                 $rs=doquery($sql,$dblink);
                 $total_quantity = 0;
                 $total_debit = 0;
@@ -71,8 +74,7 @@ $customer=dofetch(doquery("select * from customer where id='".slash($invoice["cu
                         <td class="text-right"><?php echo $balance ?></td>
                     </tr>
                     <?php
-                    while($r=dofetch($rs)){ 
-                        $color = dofetch(doquery("select title from color where id = '".$r["color_id"]."' order by sortorder", $dblink));  
+                    while($r=dofetch($rs)){   
                         $total_quantity += $r["quantity"];
                         $total_debit += $r["debit"];
                         $total_credit += $r["credit"];
@@ -82,7 +84,7 @@ $customer=dofetch(doquery("select * from customer where id='".slash($invoice["cu
                             <td class="text-center"><?php echo $sn?></td>
                             <td><?php echo date_convert($r["datetime_added"])?></td>
                             <td><?php echo $r["gatepass_id"]?></td>
-                            <td><?php echo $color["title"];?></td>
+                            <td><?php echo $r["title"]?></td>
                             <td class="text-right"><?php echo $r["quantity"]?></td>
                             <td class="text-right"><?php echo curr_format($r["unit_price"])?></td>
                             <td class="text-right"><?php echo curr_format($r["debit"])?></td>
