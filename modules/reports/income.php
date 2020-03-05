@@ -97,7 +97,7 @@ if( empty( $extra ) ) {
 					?>
                     <tr class="head">
                         <th class="text-right"><?php echo unslash( $r[ "title" ] )?></th>
-                        <th class="text-right" ><?php echo curr_format($r[ "total" ])?></th>
+                        <th class="text-right" >Rs.<?php echo curr_format($r[ "total" ])?></th>
                     </tr>	
                     <?php
 				}

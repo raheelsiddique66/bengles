@@ -1,39 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-if(isset($_GET["id"]) && $_GET["id"]!=""){
-	$rs1=doquery("select * from employees where id='".slash($_GET["id"])."'",$dblink);
-	if(numrows($rs1)>0){
-		$employee=dofetch($rs1);		
-    }
-}
-$q="";
-$extra='';
-$is_search=false;
-if(isset($_GET["date_from"])){
-	$date_from=slash($_GET["date_from"]);
-	$_SESSION["employee_manage"]["report"][ "date_from" ]=$date_from;
-}
-if(isset($_SESSION["employee_manage"]["report"][ "date_from" ]))
-	$date_from=$_SESSION["employee_manage"]["report"][ "date_from" ];
-else
-	$date_from=date("01/m/Y");
-if(!empty($date_from)){
-	$extra.=" and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))." 00:00:00'";
-	$is_search=true;
-}
-if(isset($_GET["date_to"])){
-	$date_to=slash($_GET["date_to"]);
-	$_SESSION["employee_manage"]["report"][ "date_to" ]=$date_to;
-}
-if(isset($_SESSION["employee_manage"]["report"][ "date_to" ]))
-	$date_to=$_SESSION["employee_manage"]["report"][ "date_to" ];
-else
-	$date_to=date("d/m/Y");
-if(!empty($date_to)){
-	$extra.=" and date<'".date('Y-m-d',strtotime(date_dbconvert($date_to)))." 23:59:59'";
-	$is_search=true;
-}
-//$sql = "SELECT a.calculated_salary, a.date, b.amount FROM `employee_salary` a inner join employee_payment b on a.employee_id = b.employee_id where a.employee_id=".$_GET['employee_id']." $extra order by $order_by $order";
+
 ?>
 <div class="page-header">
 	<h1 class="title"><?php echo $employee["name"]?></h1>
@@ -44,6 +11,7 @@ if(!empty($date_to)){
     	<div class="btn-group" role="group" aria-label="..."> 
             <a href="employee_manage.php?tab=list" class="btn btn-light editproject">Back to List</a> 
         	<a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
+            <a class="btn print-btn" href="employee_manage.php?tab=employee_report_print&id=<?php echo $employee["id"]; ?>"><i class="fa fa-print" aria-hidden="true"></i></a>
         </div>
   	</div>
 </div>
@@ -52,13 +20,29 @@ if(!empty($date_to)){
         <div>
         	<form class="form-horizontal" action="" method="get">
             	<input type="hidden" name="tab" value="employee_report" />
-                <input type="hidden" name="id" value="<?php echo $employee["id"]?>" />
-                <div class="col-md-3">
-                    <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="Date from" class="form-control date-picker"  value="<?php echo $date_from?>" autocomplete="off" />
+                <span class="col-sm-1">Employee</span>
+                <div class="col-sm-2">
+                    <select name="id">
+                    	<?php
+                        $rs=doquery( "select * from employees where status=1 order by name", $dblink );
+                        if( numrows( $rs ) > 0 ) {
+                            while( $r = dofetch( $rs ) ) {
+                                ?>
+                                <option value="<?php echo $r[ "id" ]?>"<?php echo $r[ "id" ]==$employee["id"]?' selected':''?>><?php echo unslash( $r[ "name" ] )?></option>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </select>
                 </div>
-                <div class="col-md-3">
-                    <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="Date to" class="form-control date-picker"  value="<?php echo $date_to?>" autocomplete="off" />
-                </div>                
+               <span class="col-sm-1 text-to">From</span>
+                <div class="col-sm-2">
+                    <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="" class="form-control date-picker"  value="<?php echo $date_from?>" >
+                </div>
+                <span class="col-sm-1 text-to">To</span>
+                <div class="col-sm-2">
+                    <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-picker"  value="<?php echo $date_to?>" >
+                </div>               
                 <div class="col-sm-3 text-left">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
@@ -72,33 +56,73 @@ if(!empty($date_to)){
     	<thead>
             <tr>
                 <th width="5%" class="text-center">S.no</th>
-                <th width="20%">Date </th>
-                <th width="30%">Details</th>
-                <th width="30%">Amount</th>
+                <th width="15%">
+                    <a href="employee_manage.php?tab=employee_report&id=<?php echo $employee["id"]; ?>&order_by=date&order=<?php echo $order=="asc"?"desc":"asc"?>" class="sorting">
+                    Date
+                    <?php
+                    if( $order_by == "date" ) {
+                        ?>
+                        <span class="sort-icon">
+								<i class="fa fa-angle-<?php echo $order=="asc"?"up":"down"?>" data-hover_in="<?php echo $order=="asc"?"down":"up"?>" data-hover_out="<?php echo $order=="desc"?"down":"up"?>" aria-hidden="true"></i>
+							</span>
+                        <?php
+                    }
+                    ?>
+                    </a>
+                </th>
+                <th width="15%">Details</th>
+                <th width="10%" class="text-right">Debit</th>
+                <th width="10%" class="text-right">Credit</th>
+                <th width="10%" class="text-right">Balance</th>
             </tr>
     	</thead>
     	<tbody>
-            <tr>
-                <td class="text-right" colspan="3"><strong>Balance</strong></td>
-                <td class="text-right"><?php echo get_employee_balance( $employee["id"], "") ?></td>
-            </tr>
             <?php
-            $sql="select concat( 'Salary #', id) as details, date, calculated_salary as amount from employee_salary where employee_id = '".$employee[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($date_to)))." 23:59:59' union select 'Payment', date, amount from employee_payment where employee_id = '".$employee[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($date_to)))." 23:59:59' order by date desc";
+            $sql="select concat( 'Salary #', id) as details, date, 0 as debit, calculated_salary as credit from employee_salary where employee_id = '".$employee[ "id" ]."' $extra union select 'Payment', date, amount as debit, 0 as credit from employee_payment where employee_id = '".$employee[ "id" ]."' $extra order by $order_by $order";
             $rs=doquery( $sql, $dblink );
             if(numrows($rs)>0){
                 $sn=1;
-                while($r=dofetch($rs)){
+                $balance = get_employee_balance( $employee["id"], date_dbconvert($date_from));
+                ?>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="text-left"><strong><?php echo $order == 'desc'?'Closing':'Opening'?> Balance</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right"><?php echo $balance ?></td>
+                </tr>
+                <?php
+                    while($r=dofetch($rs)){
+//                  
+//                         if($order == 'asc'){
+//                             $balance += $r["debit"]-$r["credit"];
+//                         }
+//                         else{
+//                             $balance -= $r["debit"]-$r["credit"];
+//                         }
+                        
                 ?>
                  <tr>
                     <td class="text-center"><?php echo $sn;?></td>
                     <td><?php echo date_convert($r['date']); ?></td>
                     <td><?php echo $r['details']; ?></td>
-                    <td><?php echo $r['amount']; ?></td>
+                    <td class="text-right"><?php echo curr_format($r['debit']); ?></td>
+                     <td class="text-right"><?php echo curr_format($r['credit']); ?></td>
+                     <td class="text-right"><?php if($order == 'asc'){$balance += ($r["debit"]-$r["credit"])*($order == 'desc'?'-1':1);} echo curr_format( $balance ); if($order == 'desc'){$balance += ($r["debit"]-$r["credit"])*($order == 'desc'?'-1':1);} ?></td>
                 </tr>
                 <?php 
-                $sn++;
-                }
-            } 
+                        $sn++;
+                    }
+                ?>
+                <tr>
+                	<td colspan="2"></td>
+                    <td><?php echo $order != 'desc'?'Closing':'Opening'?> Balance</td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right"><?php echo curr_format( $balance )?></td>
+                </tr>
+            <?php } 
             else{	
                 ?>
                 <tr>

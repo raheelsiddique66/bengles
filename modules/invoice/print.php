@@ -76,7 +76,7 @@ $customer=dofetch(doquery("select * from customer where id='".slash($invoice["cu
                             <td class="text-right">2000</td>
                         </tr>
                         <?php 
-                    $sn++;
+                        $sn++;
                     }
                 }
                 else{	
