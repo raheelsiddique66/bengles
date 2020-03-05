@@ -11,9 +11,9 @@ else{
 }
 ?>
 <div class="page-header">
-	<h1 class="title">Add New Employee Payment</h1>
+	<h1 class="title">Add New Employee Salary</h1>
   	<ol class="breadcrumb">
-    	<li class="active">Manage Employee Payment</li>
+    	<li class="active">Manage Employee Salary</li>
   	</ol>
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> <a href="employee_payment_manage.php" class="btn btn-light editproject">Back to List</a> </div>
