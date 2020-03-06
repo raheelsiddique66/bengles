@@ -51,11 +51,11 @@ if( empty( $extra ) ) {
                 <input type="hidden" name="tab" value="income" />
                 <span class="col-sm-1">Date From</span>
                 <div class="col-sm-2">
-                    <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="" class="form-control date-picker"  value="<?php echo $date_from?>">
+                    <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="" class="form-control date-picker"  value="<?php echo $date_from?>" autocomplete="off">
                 </div>
                 <span class="col-sm-1">Date To</span>
                 <div class="col-sm-2">
-                    <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-picker"  value="<?php echo $date_to?>">
+                    <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-picker"  value="<?php echo $date_to?>" autocomplete="off">
                 </div>
                 
                 <div class="col-sm-2 text-left">
@@ -69,25 +69,30 @@ if( empty( $extra ) ) {
 <div class="panel-body table-responsive">
 	<table class="table table-hover list">
     	<?php
-		$sql=doquery("select sum(quantity) as total from delivery_items a inner join delivery b on a.delivery_id = b.id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink);
-		$payment=dofetch($sql);
-		$rs1 = doquery( "select unit_price as total_price from delivery_items group by color_id,design_id", $dblink );
-		$total_price = 0;
-		if( numrows( $rs1 ) > 0 ) {
-			while( $r1 = dofetch( $rs1 ) ) {
-				//echo $r1["total_price"];
-				$total_price += curr_format($r1["total_price"]);
+		$sql=doquery("select * from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."' group by color_id,design_id",$dblink);
+		$quantity = 0;
+		$unit_price = 0;
+		if( numrows( $sql ) > 0 ) {
+			while( $r1 = dofetch( $sql ) ) {
+				//$quantity += (int)$r1["quantity"];
+				$unit_price += $r1["unit_price"];
 			}
 		}
-		//echo $total_price;
-		//print_r($payment);
+		$sql=doquery("select * from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink);
+		if( numrows( $sql ) > 0 ) {
+			while( $r1 = dofetch( $sql ) ) {
+				$quantity += $r1["quantity"];
+			}
+		}
+		//$payment=dofetch($sql);	
+		//print_r($payment);die;
 		?>
         <tr class="head">
             <th class="text-right">Income from <?php echo $date_from?> to <?php echo $date_to?></th>
-            <th class="text-right" >Rs. <?php echo $payment["total"] * $total_price?></th>
+            <th class="text-right" >Rs. <?php echo $unit_price*$quantity?></th>
         </tr>
         <?php
-		$payment_total = $payment["total"] * $total_price;
+		$payment_total = $unit_price*$quantity;
 		$total = 0;
         $rs = doquery( "select title, sum(amount) as total from expense a left join expense_category b on a.expense_category_id = b.id where a.status=1 $extra group by expense_category_id", $dblink );
 		if( numrows( $rs ) > 0 ) {

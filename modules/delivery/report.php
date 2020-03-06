@@ -106,8 +106,11 @@ table {
 </tr>
 </thead>
 <?php
+
 if( numrows( $rs ) > 0 ) {
 	$sn = 1;
+	$grand_price = 0;
+	$grand_total_price = 0;
 	while( $r = dofetch( $rs ) ) {
 		?>
 		<tr>
@@ -124,8 +127,6 @@ if( numrows( $rs ) > 0 ) {
 					if(numrows($rs1)>0){
 						$price = 0;
 						$total_price = 0;
-						$final_price = 0;
-						$final_total_price = 0;
 						$totals = [];
 						foreach($sizes as $size_id => $size){
 							$totals[$size_id] = 0;
@@ -163,10 +164,9 @@ if( numrows( $rs ) > 0 ) {
 								<?php
 							}
 							$total_price +=  $t * $r1["unit_price"];
-							
 							?>
 							<th class="text-right bg-grey"><?php echo $t?></th>
-							<td class="text-right color3-bg"><?php echo $r1["unit_price"]?></td>
+							<td class="text-right color3-bg"><?php echo curr_format($r1["unit_price"])?></td>
 							<th class="text-right bg-grey"><?php  echo $t * $r1["unit_price"]?></th>
 							<?php
 						}
@@ -195,7 +195,8 @@ if( numrows( $rs ) > 0 ) {
 								<th class="text-right bg-grey"><?php echo $total?></th>
 								<?php
 							}
-							
+							$grand_price += $price;
+							$grand_total_price += $total_price;
 							?>
 							<th class="text-right bg-grey"><?php echo $t?></th>
 							<th class="text-right bg-grey"><?php echo $price?></th>
@@ -208,6 +209,7 @@ if( numrows( $rs ) > 0 ) {
 		$sn++;
 	}
 }
+
 ?>
 <tr>
 	<td colspan="<?php if(empty($customer_id)) echo "6"; else echo "5";?>"></td>
@@ -217,16 +219,15 @@ if( numrows( $rs ) > 0 ) {
 	foreach($grand_totals as $total){
 		//print_r($total);
 		$final_total += $total;
-		$final_price += $price;
-		$final_total_price += $total_price;
 		?>
 		<th class="bg-grey text-right"><?php echo $total?></th>
 		<?php
 	}
+	
 	?>
 	<th class="text-right bg-grey"><?php echo $final_total?></th>
-	<th class="text-right bg-grey"><?php echo $final_price?></th>
-	<th class="text-right bg-grey"><?php echo $final_total_price?></th>
+	<th class="text-right bg-grey"><?php echo $grand_price?></th>
+	<th class="text-right bg-grey"><?php echo $grand_total_price?></th>
 </tr>
 </table>
 <?php
