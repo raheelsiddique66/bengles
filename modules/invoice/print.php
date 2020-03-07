@@ -27,9 +27,8 @@ $customer=dofetch(doquery("select * from customer where id='".slash($invoice["cu
         <div class="number clear">
         	<div class="invoice_number">
                 <div class="detail_box">
-                    <h3>Customer</h3>
+                    <h3>Customer: <?php echo unslash($customer["customer_name"]);?></h3>
                     <div class="detail_box_inner">
-                        <p><?php echo unslash($customer["customer_name"]);?></p>
                         <p><?php echo unslash($customer["address"]);?></p>
                         <p><?php echo unslash($customer["phone"]);?></p>
                     </div>
@@ -48,7 +47,7 @@ $customer=dofetch(doquery("select * from customer where id='".slash($invoice["cu
                 <tr>
                     <th width="2%" class="text-center">S.No</th>
                     <th width="10%">Date</th>
-                    <th width="10%">Narration</th>
+                    <th width="10%">Gatepass</th>
                     <th width="10%">Account</th>
                     <th width="5%" class="text-right">Qty</th>
                     <th width="5%" class="text-right">Rate</th>

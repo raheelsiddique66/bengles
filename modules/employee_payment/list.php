@@ -1,58 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$q="";
-$extra='';
-$is_search=false;
-if( isset($_GET["date_from"]) ){
-	$_SESSION["employee_payment"]["list"]["date_from"] = $_GET["date_from"];
-}
-if(isset($_SESSION["employee_payment"]["list"]["date_from"]) && !empty($_SESSION["employee_payment"]["list"]["date_from"])){
-	$date_from = $_SESSION["employee_payment"]["list"]["date_from"];
-}
-else{
-	$date_from = "";
-}
-if( !empty($date_from) ){
-	$extra.=" and date>='".date("Y/m/d H:i:s", strtotime(date_dbconvert($date_from)))."'";
-	$is_search=true;
-}
-if( isset($_GET["date_to"]) ){
-	$_SESSION["employee_payment"]["list"]["date_to"] = $_GET["date_to"];
-}
-if(isset($_SESSION["employee_payment"]["list"]["date_to"]) && !empty($_SESSION["employee_payment"]["list"]["date_to"])){
-	$date_to = $_SESSION["employee_payment"]["list"]["date_to"];
-}
-else{
-	$date_to = "";
-}
-if( !empty($date_to) ){
-	$extra.=" and date<'".date("Y/m/d", strtotime(date_dbconvert($date_to))+3600*24)."'";
-	$is_search=true;
-}
-if(isset($_GET["employee_id"])){
-	$employee_id=slash($_GET["employee_id"]);
-	$_SESSION["employee_payment"]["list"]["employee_id"]=$employee_id;
-}
-if(isset($_SESSION["employee_payment"]["list"]["employee_id"]))
-	$employee_id=$_SESSION["employee_payment"]["list"]["employee_id"];
-else
-	$employee_id="";
-if($employee_id!=""){
-	$extra.=" and employee_id='".$employee_id."'";
-	$is_search=true;
-}
-if(isset($_GET["q"])){
-	$q=slash($_GET["q"]);
-	$_SESSION["employee_payment"]["list"]["q"]=$q;
-}
-if(isset($_SESSION["employee_payment"]["list"]["q"]))
-	$q=$_SESSION["employee_payment"]["list"]["q"];
-else
-	$q="";
-if(!empty($q)){
-	$extra.=" and id like '%".$q."%'";
-	$is_search=true;
-}
+
 ?>
 <div class="page-header">
 	<h1 class="title">Employee Payment</h1>
@@ -63,6 +11,7 @@ if(!empty($q)){
     	<div class="btn-group" role="group" aria-label="..."> 
         	<a href="employee_payment_manage.php?tab=add" class="btn btn-light editproject">Add New Employee Payment</a>
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a> 
+            <a class="btn print-btn" href="employee_payment_manage.php?tab=print"><i class="fa fa-print" aria-hidden="true"></i></a>
     	</div> 
     </div> 
 </div>
@@ -107,16 +56,15 @@ if(!empty($q)){
                 <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
-                <th width="30%">Employee Name</th>
                 <th width="20%">Date</th>
-                <th width="10%">Amount</th>
+                <th width="30%">Employee Name</th>
                 <th width="20%">Account</th>
+                <th width="10%">Amount</th>
                 <th width="10%" class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
             <?php 
-            $sql="select * from employee_payment where 1 $extra";
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
@@ -128,10 +76,10 @@ if(!empty($q)){
                             <input type="checkbox" name="id[]" id="<?php echo "rec_".$sn?>"  value="<?php echo $r["id"]?>" title="Select Record" />
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
-                        <td><?php echo get_field($r["employee_id"], "employees", "name"); ?></td>
                         <td><?php echo date_convert($r["date"]); ?></td>
-                        <td><?php echo unslash($r["amount"]); ?></td>
+                        <td><?php echo get_field($r["employee_id"], "employees", "name"); ?></td>
                         <td><?php echo get_field($r["account_id"], "account", "title"); ?></td>
+                        <td><?php echo unslash($r["amount"]); ?></td>
                         <td class="text-center">
                             <a href="employee_payment_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
                             <a onclick="return confirm('Are you sure you want to delete')" href="employee_payment_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>

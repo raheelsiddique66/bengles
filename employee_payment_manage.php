@@ -13,7 +13,60 @@ if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 else{
 	$tab="list";
 }
-
+$q="";
+$extra='';
+$is_search=false;
+if( isset($_GET["date_from"]) ){
+	$_SESSION["employee_payment"]["list"]["date_from"] = $_GET["date_from"];
+}
+if(isset($_SESSION["employee_payment"]["list"]["date_from"]) && !empty($_SESSION["employee_payment"]["list"]["date_from"])){
+	$date_from = $_SESSION["employee_payment"]["list"]["date_from"];
+}
+else{
+	$date_from = "";
+}
+if( !empty($date_from) ){
+	$extra.=" and date>='".date("Y/m/d H:i:s", strtotime(date_dbconvert($date_from)))."'";
+	$is_search=true;
+}
+if( isset($_GET["date_to"]) ){
+	$_SESSION["employee_payment"]["list"]["date_to"] = $_GET["date_to"];
+}
+if(isset($_SESSION["employee_payment"]["list"]["date_to"]) && !empty($_SESSION["employee_payment"]["list"]["date_to"])){
+	$date_to = $_SESSION["employee_payment"]["list"]["date_to"];
+}
+else{
+	$date_to = "";
+}
+if( !empty($date_to) ){
+	$extra.=" and date<'".date("Y/m/d", strtotime(date_dbconvert($date_to))+3600*24)."'";
+	$is_search=true;
+}
+if(isset($_GET["employee_id"])){
+	$employee_id=slash($_GET["employee_id"]);
+	$_SESSION["employee_payment"]["list"]["employee_id"]=$employee_id;
+}
+if(isset($_SESSION["employee_payment"]["list"]["employee_id"]))
+	$employee_id=$_SESSION["employee_payment"]["list"]["employee_id"];
+else
+	$employee_id="";
+if($employee_id!=""){
+	$extra.=" and employee_id='".$employee_id."'";
+	$is_search=true;
+}
+if(isset($_GET["q"])){
+	$q=slash($_GET["q"]);
+	$_SESSION["employee_payment"]["list"]["q"]=$q;
+}
+if(isset($_SESSION["employee_payment"]["list"]["q"]))
+	$q=$_SESSION["employee_payment"]["list"]["q"];
+else
+	$q="";
+if(!empty($q)){
+	$extra.=" and id like '%".$q."%'";
+	$is_search=true;
+}
+$sql="select * from employee_payment where 1 $extra";
 switch($tab){
 	case 'add':
 		include("modules/employee_payment/add_do.php");
