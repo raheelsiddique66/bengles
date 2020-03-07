@@ -3,16 +3,54 @@ if(!defined("APP_START")) die("No Direct Access");
 $q="";
 $extra='';
 $is_search=false;
+if( isset($_GET["date_from"]) ){
+	$_SESSION["employee_payment"]["list"]["date_from"] = $_GET["date_from"];
+}
+if(isset($_SESSION["employee_payment"]["list"]["date_from"]) && !empty($_SESSION["employee_payment"]["list"]["date_from"])){
+	$date_from = $_SESSION["employee_payment"]["list"]["date_from"];
+}
+else{
+	$date_from = "";
+}
+if( !empty($date_from) ){
+	$extra.=" and date>='".date("Y/m/d H:i:s", strtotime(date_dbconvert($date_from)))."'";
+	$is_search=true;
+}
+if( isset($_GET["date_to"]) ){
+	$_SESSION["employee_payment"]["list"]["date_to"] = $_GET["date_to"];
+}
+if(isset($_SESSION["employee_payment"]["list"]["date_to"]) && !empty($_SESSION["employee_payment"]["list"]["date_to"])){
+	$date_to = $_SESSION["employee_payment"]["list"]["date_to"];
+}
+else{
+	$date_to = "";
+}
+if( !empty($date_to) ){
+	$extra.=" and date<'".date("Y/m/d", strtotime(date_dbconvert($date_to))+3600*24)."'";
+	$is_search=true;
+}
+if(isset($_GET["employee_id"])){
+	$employee_id=slash($_GET["employee_id"]);
+	$_SESSION["employee_payment"]["list"]["employee_id"]=$employee_id;
+}
+if(isset($_SESSION["employee_payment"]["list"]["employee_id"]))
+	$employee_id=$_SESSION["employee_payment"]["list"]["employee_id"];
+else
+	$employee_id="";
+if($employee_id!=""){
+	$extra.=" and employee_id='".$employee_id."'";
+	$is_search=true;
+}
 if(isset($_GET["q"])){
 	$q=slash($_GET["q"]);
-	$_SESSION["employee_payment_manage"]["q"]=$q;
+	$_SESSION["employee_payment"]["list"]["q"]=$q;
 }
-if(isset($_SESSION["employee_payment_manage"]["q"]))
-	$q=$_SESSION["employee_payment_manage"]["q"];
+if(isset($_SESSION["employee_payment"]["list"]["q"]))
+	$q=$_SESSION["employee_payment"]["list"]["q"];
 else
 	$q="";
 if(!empty($q)){
-	$extra.=" and b.name like '%".$q."%' or c.title like '%".$q."%' ";
+	$extra.=" and id like '%".$q."%'";
 	$is_search=true;
 }
 ?>
@@ -33,7 +71,25 @@ if(!empty($q)){
     	<div>
         	<form class="form-horizontal" action="" method="get">
                 <div class="col-sm-3">
-                  <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
+                	<select name="employee_id" id="employee_id" class="select_multiple custom_select">
+                        <option value=""<?php echo ($employee_id=="")? " selected":"";?>>Select Employee</option>
+                        <?php
+                            $res=doquery("select * from employees order by name",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($employee_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["name"])?></option>
+                            	<?php
+                                }
+                            }	
+                        ?>
+                    </select>
+                </div>
+                <div class="col-sm-2 margin-btm-5">
+                  <input type="text" title="Enter Date From" value="<?php echo $date_from;?>" placeholder="Date From" name="date_from" id="date_from" class="form-control date-picker" autocomplete="off" />  
+                </div>
+                <div class="col-sm-2 margin-btm-5">
+                  <input type="text" title="Enter Date To" value="<?php echo $date_to;?>" placeholder="Date To" name="date_to" id="date_to" class="form-control date-picker" autocomplete="off" />  
                 </div>
                 <div class="col-sm-3 text-left">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
@@ -73,7 +129,7 @@ if(!empty($q)){
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
                         <td><?php echo get_field($r["employee_id"], "employees", "name"); ?></td>
-                        <td><?php echo unslash(date_convert($r["date"])); ?></td>
+                        <td><?php echo date_convert($r["date"]); ?></td>
                         <td><?php echo unslash($r["amount"]); ?></td>
                         <td><?php echo get_field($r["account_id"], "account", "title"); ?></td>
                         <td class="text-center">
@@ -86,7 +142,7 @@ if(!empty($q)){
                 }
                 ?>
                 <tr>
-                    <td colspan="5" class="actions">
+                    <td colspan="4" class="actions">
                         <select name="bulk_action" class="" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
                             <option value="delete">Delete</option>

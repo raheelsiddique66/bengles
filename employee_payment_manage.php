@@ -6,7 +6,7 @@ include("include/paging.php");
 define("APP_START", 1);
 $filename = 'employee_payment_manage.php';
 include("include/admin_type_access.php");
-$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action");
+$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action", "print");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -29,6 +29,9 @@ switch($tab){
 	break;
 	case 'bulk_action':
 		include("modules/employee_payment/bulkactions.php");
+	break;
+	case 'print':
+		include("modules/employee_payment/print_do.php");
 	break;
 }
 ?>

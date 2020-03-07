@@ -4964,3 +4964,6 @@ span.project-icon img {
     transform: translate(-50%,-50%);
     margin: 0;
 }
+.topstats .chosen-container, .topstats .chosen-container .chosen-results li.active-result{
+  text-align: left;
+}
