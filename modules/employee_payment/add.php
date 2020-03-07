@@ -4,16 +4,23 @@ if(isset($_SESSION["employee_payment_manage"]["add"])){
 	extract($_SESSION["employee_payment_manage"]["add"]);
 }
 else{
-    $employee_id="";
+    $account = dofetch(doquery("select id from account where is_petty_cash = 1",$dblink));
+    if(isset($_GET["employee_id"])){
+        $employee_id = $_GET["employee_id"];
+    }
+    else{
+        $employee_id ="";
+    }
+
     $date=date("d/m/Y");
     $amount="";
-    $account_id="";
+    $account_id=$account["id"];
 }
 ?>
 <div class="page-header">
-	<h1 class="title">Add New Employee Salary</h1>
+	<h1 class="title">Add New Employee Payment</h1>
   	<ol class="breadcrumb">
-    	<li class="active">Manage Employee Salary</li>
+    	<li class="active">Manage Employee Payment</li>
   	</ol>
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> <a href="employee_payment_manage.php" class="btn btn-light editproject">Back to List</a> </div>
@@ -36,7 +43,7 @@ else{
                     if(numrows($res)>0){
                         while($rec=dofetch($res)){
                             ?>
-                            <option value="<?php echo $rec["id"]?>"><?php echo unslash($rec["name"]); ?></option>
+                            <option value="<?php echo $rec["id"]?>"<?php echo($employee_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["name"]); ?></option>
                             <?php
                         }
                     }

@@ -52,12 +52,13 @@ if(!empty($q)){
                 <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
-                <th width="20%">Name</th>
-                <th width="18%">Father Name</th>
+                <th width="15%">Name</th>
+                <th width="15%">Father Name</th>
                 <th width="10%">Phone Number</th>
                 <th width="10%">Salary Type</th>
                 <th width="10%">Salary</th>
                 <th width="11%">Over Time Per hour</th>
+                <th width="8%">Advance</th>
                 <th width="5%" class="text-center">Status</th>
                 <th width="15%" class="text-center">Actions</th>
             </tr>
@@ -92,6 +93,9 @@ if(!empty($q)){
                          ?></td>
                         <td><?php echo unslash($r["salary"]); ?></td>
                         <td><?php echo unslash($r["over_time_per_hour"]); ?></td>
+                        <td>
+                            <a class="btn btn-default btn-l fancybox_iframe" href="employee_payment_manage.php?tab=add&employee_id=<?php echo $r['id'];?>">Advance</a>
+                        </td>
                         <td class="text-center">
                             <a href="employee_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                                 <?php
@@ -128,14 +132,14 @@ if(!empty($q)){
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="3" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "employees", $sql, $pageNum)?></td>
+                    <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "employees", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="7"  class="no-record">No Result Found</td>
+                    <td colspan="11"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }
