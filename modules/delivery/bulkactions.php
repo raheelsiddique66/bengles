@@ -15,9 +15,15 @@ if(isset($_GET["action"]) && $_GET["action"]!=""){
 		if($bulk_action=="delete"){
 			$i=0;
 			while($i<count($id)){
-				
-				doquery("delete from delivery where id='".$id[$i]."'",$dblink);	
-				doquery("delete from delivery_items where delivery_id='".$id[$i]."'",$dblink);
+				$delivery = doquery( "select * from delivery where id = '".$id[$i]."' ", $dblink );
+				if( numrows( $delivery ) > 0 ) {
+					$delivery = dofetch( $delivery );
+					doquery("delete from delivery_items where delivery_id='".$id[$i]."'",$dblink);
+					if( $delivery[ "customer_payment_id" ] > 0 ) {
+						doquery( "delete from customer_payment where id = '".$delivery[ "customer_payment_id" ]."'", $dblink );
+					}
+					doquery("delete from delivery where id='".$id[$i]."'",$dblink);
+				}
 				$i++;
 			}
 			header("Location: delivery_manage.php?tab=list&msg=".url_encode("Records Deleted."));
@@ -26,6 +32,13 @@ if(isset($_GET["action"]) && $_GET["action"]!=""){
 		if($bulk_action=="statuson"){
 			$i=0;
 			while($i<count($id)){
+				$rec = doquery( "select * from delivery where id='".$id[$i]."'", $dblink );
+				if( numrows( $rec ) > 0 ) {
+					$rec = dofetch( $rec );
+					if( $rec[ "customer_payment_id" ] > 0 ) {
+						doquery( "update customer_payment set status=1 where id = '".$rec[ "customer_payment_id" ]."'", $dblink );
+					}
+				}
 				doquery("update delivery set status=1 where id='".$id[$i]."'",$dblink);
 				$i++;
 			}
@@ -35,6 +48,13 @@ if(isset($_GET["action"]) && $_GET["action"]!=""){
 		if($bulk_action=="statusof"){
 			$i=0;
 			while($i<count($id)){
+				$rec = doquery( "select * from delivery where id='".$id[$i]."'", $dblink );
+				if( numrows( $rec ) > 0 ) {
+					$rec = dofetch( $rec );
+					if( $rec[ "customer_payment_id" ] > 0 ) {
+						doquery( "update customer_payment set status=0 where id = '".$rec[ "customer_payment_id" ]."'", $dblink );
+					}
+				}
 				doquery("update delivery set status=0 where id='".$id[$i]."'",$dblink);
 				$i++;
 			}

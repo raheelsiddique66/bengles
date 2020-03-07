@@ -209,7 +209,6 @@ if( numrows( $rs ) > 0 ) {
 		$sn++;
 	}
 }
-
 ?>
 <tr>
 	<td colspan="<?php if(empty($customer_id)) echo "6"; else echo "5";?>"></td>
@@ -223,7 +222,6 @@ if( numrows( $rs ) > 0 ) {
 		<th class="bg-grey text-right"><?php echo $total?></th>
 		<?php
 	}
-	
 	?>
 	<th class="text-right bg-grey"><?php echo $final_total?></th>
 	<th class="text-right bg-grey"><?php echo $grand_price?></th>

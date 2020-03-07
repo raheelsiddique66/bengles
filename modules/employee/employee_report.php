@@ -93,27 +93,19 @@ if(!defined("APP_START")) die("No Direct Access");
                     <td class="text-right"><?php echo $balance ?></td>
                 </tr>
                 <?php
-                    while($r=dofetch($rs)){
-//                  
-//                         if($order == 'asc'){
-//                             $balance += $r["debit"]-$r["credit"];
-//                         }
-//                         else{
-//                             $balance -= $r["debit"]-$r["credit"];
-//                         }
-                        
-                ?>
-                 <tr>
-                    <td class="text-center"><?php echo $sn;?></td>
-                    <td><?php echo date_convert($r['date']); ?></td>
-                    <td><?php echo $r['details']; ?></td>
-                    <td class="text-right"><?php echo curr_format($r['debit']); ?></td>
-                     <td class="text-right"><?php echo curr_format($r['credit']); ?></td>
-                     <td class="text-right"><?php if($order == 'asc'){$balance += ($r["debit"]-$r["credit"])*($order == 'desc'?'-1':1);} echo curr_format( $balance ); if($order == 'desc'){$balance += ($r["debit"]-$r["credit"])*($order == 'desc'?'-1':1);} ?></td>
-                </tr>
-                <?php 
-                        $sn++;
-                    }
+                while($r=dofetch($rs)){
+                    ?>
+                    <tr>
+                        <td class="text-center"><?php echo $sn;?></td>
+                        <td><?php echo date_convert($r['date']); ?></td>
+                        <td><?php echo $r['details']; ?></td>
+                        <td class="text-right"><?php echo curr_format($r['debit']); ?></td>
+                        <td class="text-right"><?php echo curr_format($r['credit']); ?></td>
+                        <td class="text-right"><?php if($order == 'asc'){$balance += ($r["debit"]-$r["credit"])*($order == 'desc'?'-1':1);} echo curr_format( $balance ); if($order == 'desc'){$balance += ($r["debit"]-$r["credit"])*($order == 'desc'?'-1':1);} ?></td>
+                    </tr>
+                    <?php 
+                    $sn++;
+                }
                 ?>
                 <tr>
                 	<td colspan="2"></td>
@@ -122,11 +114,12 @@ if(!defined("APP_START")) die("No Direct Access");
                     <td></td>
                     <td class="text-right"><?php echo curr_format( $balance )?></td>
                 </tr>
-            <?php } 
+                <?php 
+            } 
             else{	
                 ?>
                 <tr>
-                    <td colspan="4"  class="no-record">No Result Found</td>
+                    <td colspan="6"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

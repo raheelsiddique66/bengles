@@ -69,30 +69,31 @@ if( empty( $extra ) ) {
 <div class="panel-body table-responsive">
 	<table class="table table-hover list">
     	<?php
-		$sql=doquery("select * from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."' group by color_id,design_id",$dblink);
 		$quantity = 0;
 		$unit_price = 0;
+		$payment_total = 0;
+		$sql=doquery("select * from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."' group by design_id,color_id",$dblink);
 		if( numrows( $sql ) > 0 ) {
 			while( $r1 = dofetch( $sql ) ) {
-				//$quantity += (int)$r1["quantity"];
+				//$quantity = $r1["quantity"];
 				$unit_price += $r1["unit_price"];
+				//echo $unit_price."<br>";
+				//echo $r1["quantity"]."<br>";
 			}
 		}
-		$sql=doquery("select * from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink);
-		if( numrows( $sql ) > 0 ) {
-			while( $r1 = dofetch( $sql ) ) {
-				$quantity += $r1["quantity"];
-			}
-		}
+		
+		$q=dofetch(doquery("select sum(quantity) as quantity from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink));
+		//echo $q["quantity"];
+		//echo $unit_price;
 		//$payment=dofetch($sql);	
 		//print_r($payment);die;
+		$payment_total += $unit_price*$q["quantity"];
 		?>
         <tr class="head">
             <th class="text-right">Income from <?php echo $date_from?> to <?php echo $date_to?></th>
-            <th class="text-right" >Rs. <?php echo $unit_price*$quantity?></th>
+            <th class="text-right" >Rs. <?php echo $payment_total?></th>
         </tr>
         <?php
-		$payment_total = $unit_price*$quantity;
 		$total = 0;
         $rs = doquery( "select title, sum(amount) as total from expense a left join expense_category b on a.expense_category_id = b.id where a.status=1 $extra group by expense_category_id", $dblink );
 		if( numrows( $rs ) > 0 ) {

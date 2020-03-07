@@ -6,6 +6,19 @@ if(isset($_POST["action"])){
 		case 'get_date':
 			$response = date_convert( date( "Y-m-d" ) );
 		break;
+		case "get_accounts":
+			$rs = doquery( "select * from account where status=1 order by id", $dblink );
+			$accounts = array();
+			if( numrows( $rs ) > 0 ) {
+				while( $r = dofetch( $rs ) ) {
+					$accounts[] = array(
+						"id" => $r[ "id" ],
+						"title" => unslash($r[ "title" ])
+					);
+				}
+			}
+			$response = $accounts;
+		break;
 		case "get_customer":
 			$rs = doquery( "select * from customer where status=1 order by customer_name", $dblink );
 			$customers = array();
@@ -95,8 +108,20 @@ if(isset($_POST["action"])){
 					"date" => date_convert( $r[ "date" ] ),
 					"customer_id" => unslash( $r[ "customer_id" ] ),
 					"claim" => unslash( $r[ "claim" ] ),
-					"labour_id" => unslash( $r[ "labour_id" ] )
+					"labour_id" => unslash( $r[ "labour_id" ] ),
+					"customer_payment_id" => 0,
+					"payment_account_id" => "",
+					"payment_amount" => 0,
 				);
+				if( !empty( $r[ "customer_payment_id" ] ) ) {
+					$customer_payment = doquery( "select * from customer_payment where id = '".$r[ "customer_payment_id" ]."'", $dblink );
+					if( numrows( $customer_payment ) > 0 ) {
+						$customer_payment = dofetch( $customer_payment );
+						$delivery[ "customer_payment_id" ] = $customer_payment[ "id" ];
+						$delivery[ "payment_account_id" ] = $customer_payment[ "account_id" ];
+						$delivery[ "payment_amount" ] = $customer_payment[ "amount" ];
+					}
+				}
 				$delivery_items = array();
 				$rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from delivery_items where delivery_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
 				if( numrows( $rs1 ) > 0 ) {
@@ -162,6 +187,23 @@ if(isset($_POST["action"])){
 				else {
 					doquery( "insert into delivery (date, customer_id, claim, labour_id, gatepass_id) VALUES ('".slash(date_dbconvert($delivery->date))."', '".slash($delivery->customer_id)."', '".slash($delivery->claim)."', '".slash($delivery->labour_id)."', '".slash($delivery->gatepass_id)."')", $dblink );
 					$delivery_id = inserted_id();
+				}
+				if( !empty( $delivery->payment_account_id ) ) {
+					$update = false;
+					if( !empty( $delivery->customer_payment_id ) ) {
+						$customer_payment = doquery( "select id from customer_payment where id='".$delivery->customer_payment_id."'", $dblink );
+						if( numrows( $customer_payment ) > 0 ) {
+							$update = true;
+						}
+					}
+					if( $update ) {
+						doquery( "update customer_payment set customer_id = '".slash( $delivery->customer_id )."', amount = '".slash( $delivery->payment_amount )."', account_id = '".slash( $delivery->payment_account_id )."' where id = '".$delivery->customer_payment_id."'", $dblink );
+					}
+					else {
+						doquery( "insert into customer_payment(customer_id, datetime_added, amount, account_id, details) values( '".slash( $delivery->customer_id )."', NOW(), '".slash( $delivery->payment_amount )."', '".slash( $delivery->payment_account_id )."', 'Payment against Delivery #".$delivery_id."' )", $dblink );
+						$delivery->customer_payment_id = inserted_id();
+						doquery( "update delivery set customer_payment_id = '".$delivery->customer_payment_id."' where id='".$delivery_id."'", $dblink );
+					}
 				}
 				$delivery_item_ids = array();
 				foreach( $delivery->delivery_items as $delivery_item) {

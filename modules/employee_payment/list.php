@@ -60,7 +60,7 @@ if(!empty($q)){
         </thead>
         <tbody>
             <?php 
-            $sql="select a.*,b.name as name,c.title as title from employee_payment a inner join employees b on a.employee_id = b.id inner join account c on a.account_id = c.id where 1 $extra";
+            $sql="select * from employee_payment where 1 $extra";
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
@@ -72,10 +72,10 @@ if(!empty($q)){
                             <input type="checkbox" name="id[]" id="<?php echo "rec_".$sn?>"  value="<?php echo $r["id"]?>" title="Select Record" />
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
-                        <td><?php echo unslash($r["name"]); ?></td>
+                        <td><?php echo get_field($r["employee_id"], "employees", "name"); ?></td>
                         <td><?php echo unslash(date_convert($r["date"])); ?></td>
                         <td><?php echo unslash($r["amount"]); ?></td>
-                        <td><?php echo unslash($r["title"]); ?></td>
+                        <td><?php echo get_field($r["account_id"], "account", "title"); ?></td>
                         <td class="text-center">
                             <a href="employee_payment_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
                             <a onclick="return confirm('Are you sure you want to delete')" href="employee_payment_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>

@@ -176,6 +176,19 @@ else {
                                     <th class="text-right">Total Price</th>
                                     <th class="text-right">{{ getTotal(-1,-1) }}</th>
                                 </tr>
+                                <tr>
+                                    <th class="text-right" colspan="{{ sizes.length+5 }}"><label>Payment Account </label></th>
+                                    <th class="text-right" colspan="3">
+                                        <select class="margin-btm-5" ng-model="delivery.payment_account_id">
+                                            <option value="">Select Account</option>
+                                            <option ng-repeat="account in accounts" value="{{account.id}}">{{account.title}}</option>
+                                        </select>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th class="text-right" colspan="{{ sizes.length+5 }}">Payment Amount</th>
+                                    <th class="text-right" colspan="3"><input type="text" style="text-align:right" ng-model="delivery.payment_amount" /></th>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

@@ -7,6 +7,7 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.designs = [];
 		$scope.machines = [];
 		$scope.errors = [];
+		$scope.accounts = [];
 		$scope.processing = false;
 		$scope.delivery_id = 0;
 		$scope.item_id = '';
@@ -26,7 +27,10 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			gatepass_id: '',
 			claim: '',
 			labour_id: 0,
-			delivery_items: []
+			delivery_items: [],
+			customer_payment_id: 0,
+			payment_account_id: 0,
+			payment_amount: 0
 		};
 		$scope.delivery_item = {
 			"color_id":"",
@@ -53,6 +57,9 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			});
 			$scope.wctAJAX( {action: 'get_machines'}, function( response ){
 				$scope.machines = response;
+			});
+			$scope.wctAJAX( {action: 'get_accounts'}, function( response ){
+				$scope.accounts = response;
 			});
 			if( $scope.delivery_id > 0 ) {
 				$scope.wctAJAX( {action: 'get_delivery', id: $scope.delivery_id}, function( response ){
