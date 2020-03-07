@@ -6,13 +6,15 @@ if(isset($_POST["action"])){
 		case 'get_session':
 			$response = array(
 			    "date" => isset($_SESSION["manage_salary"]["salary_date"])?$_SESSION["manage_salary"]["salary_date"]:date_convert( date( "Y-m-d" ) ),
-                "type" => isset($_SESSION["manage_salary"]["salary_type"])?$_SESSION["manage_salary"]["salary_type"]:"0"
+                "type" => isset($_SESSION["manage_salary"]["salary_type"])?$_SESSION["manage_salary"]["salary_type"]:"0",
+                "show_salary" => isset($_SESSION["manage_salary"]["show_salary"])?$_SESSION["manage_salary"]["show_salary"]:"1"
             );
 		break;
 		case "get_records":
             extract($_POST);
             $_SESSION["manage_salary"]["salary_type"] = $salary_type;
             $_SESSION["manage_salary"]["salary_date"] = $salary_date;
+                $_SESSION["manage_salary"]["show_salary"] = $show_salary;
 			$dates = array();
             $start = strtotime(date_dbconvert($salary_date));
 			if($salary_type == 0){
