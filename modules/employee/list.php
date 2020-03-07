@@ -65,7 +65,7 @@ if(!empty($q)){
         </thead>
         <tbody>
             <?php 
-            $sql="select * from employees where 1 $extra";
+            $sql="select * from employees where 1 $extra order by name";
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
