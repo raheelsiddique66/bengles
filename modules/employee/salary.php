@@ -80,7 +80,7 @@ $is_search=true;
                     <td class="text-center"><input type="text" style="width: 60px;" data-ng-model="employee.payment" /></td>
                 </tr>
                 <tr>
-                    <td colspan="{{ dates.length+5 }}" class="text-right">Total</td>
+                    <td colspan="{{ dates.length+(show_salary?5:4)}}" class="text-right">Total</td>
                     <td class="text-right">{{ total_hours() }}</td>
                     <td class="text-right">{{ total_hours_amount()|currency:'':0 }}</td>
                     <td class="text-right" data-ng-show="show_salary">{{ sum(employees, 'calculated_salary')-total_hours_amount()|currency:'':0 }}</td>
