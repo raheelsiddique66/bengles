@@ -36,7 +36,7 @@ if(!defined("APP_START")) die("No Direct Access");
         </tr>
         <tr>
             <td colspan="{{ dates.length+2 }}" class="text-right">Total</td>
-            <td class="text-right">{{ total_hours()|currency:'':0 }}</td>
+            <td class="text-right">{{ total_hours() }}</td>
             <td class="text-right">{{ total_hours_amount()|currency:'':0 }}</td>
             <td class="text-right" data-ng-show="show_salary">{{ sum(employees, 'calculated_salary')-total_hours_amount()|currency:'':0 }}</td>
             <td class="text-right" data-ng-show="show_salary">{{ sum(employees, 'calculated_salary')|currency:'':0 }}</td>
