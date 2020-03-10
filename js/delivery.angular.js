@@ -16,6 +16,7 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			id: "",
 			name: ""
 		};
+		
         $scope.labour_placeholder = {
             id: "",
 			name: ""

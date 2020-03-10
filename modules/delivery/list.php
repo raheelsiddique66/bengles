@@ -62,7 +62,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th width="8%">Claim</th>
                 <th width="10%">Labour</th>
                 <th width="30%">Items</th>
-                <th width="10%">Payment</th>
+                <th width="10%" class="text-right">Payment</th>
                 <th class="text-center" width="3%">Status</th>
                 <th class="text-center" width="10%">Actions</th>
             </tr>
@@ -176,7 +176,7 @@ if(!defined("APP_START")) die("No Direct Access");
                                 ?>
                             </table>
                         </td>
-                        <td></td>
+                        <td class="text-right color3-bg"><?php echo get_field($r["customer_payment_id"], "customer_payment", "amount" ); ?></td>
                         <td class="text-center">
                             <a href="delivery_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                                 <?php

@@ -68,8 +68,9 @@ if(!empty($end_date)){
                 <th width="5%" class="text-center">S.no</th>
                 <th>Date</th>
                 <th>Transaction</th>
-                <th>Amount</th>
-                <th>Balance</th>
+                <th class="text-right">Quantity</th>
+                <th class="text-right">Amount</th>
+                <th class="text-right">Balance</th>
             </tr>
     	</thead>
     	<tbody>
@@ -77,7 +78,7 @@ if(!empty($end_date)){
             $sql="select sum(amount) as amount from (select concat( 'Delivery #', a.id) as transaction, unit_price * quantity as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' union select concat( 'Payment #', id) as transaction, -amount from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59') as transactions ";
 			$balance=dofetch(doquery($sql,$dblink));
 			$balance = $balance[ "amount" ];
-			$sql="select concat( 'Delivery #', a.id) as transaction, date as datetime_added, unit_price * quantity as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' union select 'Payment', datetime_added as datetime_added, -amount from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' order by datetime_added desc";
+			$sql="select concat( 'Delivery #', a.id) as transaction, date as datetime_added, unit_price * quantity as amount, quantity from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' union select 'Payment', datetime_added as datetime_added, -amount, '' from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' order by datetime_added desc";
             $rs=show_page($rows, $pageNum, $sql);
             ?>
 			<tr>
@@ -94,6 +95,7 @@ if(!empty($end_date)){
                         <td class="text-center"><?php echo $sn;?></td>
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
                         <td><?php echo unslash($r["transaction"]); ?></td>
+                        <td class="text-right"><?php echo $r["quantity"]; ?></td>
                         <td class="text-right"><?php echo curr_format($r["amount"]); ?></td>
                         <td class="text-right"><?php echo curr_format($balance); ?></td>
                     </tr>

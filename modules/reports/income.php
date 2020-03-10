@@ -76,7 +76,7 @@ if( empty( $extra ) ) {
 		if( numrows( $sql ) > 0 ) {
 			while( $r1 = dofetch( $sql ) ) {
 				//$quantity = $r1["quantity"];
-				$unit_price += $r1["unit_price"];
+				$unit_price = $r1["unit_price"];
 				//echo $unit_price."<br>";
 				//echo $r1["quantity"]."<br>";
 			}
@@ -110,7 +110,7 @@ if( empty( $extra ) ) {
 			}
 		}
 		?>
-         <tr class="head">
+        <tr class="head">
             <th class="text-right">Total Expense</th>
             <th class="text-right" >Rs. <?php echo curr_format($total)?></th>
         </tr>

@@ -40,6 +40,7 @@ $is_search=true;
             </div>
         </li>
     </ul>
+    <input type="submit" value="Save Record" class="btn btn-default btn-l" name="save_record" data-ng-click="save_record()" title="Update Record" />
     <div class="panel-body table-responsive">
         <table class="table table-hover list">
             <thead>

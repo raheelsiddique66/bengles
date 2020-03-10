@@ -69,6 +69,10 @@ if(!defined("APP_START")) die("No Direct Access");
     table {
         width: 100%;
     }
+    table td{
+        font-size:14px;
+        font-weight:bold;
+    }
     .greyed{
         background-color: #000 !important;
         color: #fff !important;
