@@ -18,16 +18,16 @@ $customer=dofetch(doquery("select * from customer where id='".slash($invoice["cu
             <?php echo get_config("fees_chalan_header");?>
             <p>FROM: <?php echo date_convert($invoice["date_from"])?> TO: <?php echo date_convert($invoice["date_to"])?></p>
         </div>
-        <div class="phone">
-            <?php echo get_config("address_phone");?>
-        </div>
+        <!--<div class="phone">
+            <?php // echo get_config("address_phone");?>
+        </div>!-->
     </div>
     <div class="content">
     	
         <div class="number clear">
         	<div class="invoice_number">
                 <div class="detail_box">
-                    <h3>Customer: <?php echo unslash($customer["customer_name"]);?></h3>
+                    <h3><?php echo unslash($customer["customer_name"]);?></h3>
                     <div class="detail_box_inner">
                         <p><?php echo unslash($customer["address"]);?></p>
                         <p><?php echo unslash($customer["phone"]);?></p>

@@ -17,7 +17,7 @@ p{
 .number {
     margin: 12px 0 12px;
 }
-.logo {width: auto; float: left;}
+.logo {width: auto;}
 .phone {
 	float: right;
 	text-align:right;
@@ -28,7 +28,7 @@ p{
     margin: 10px 0;
     font-weight: 600;
 }
-.logo h1{ text-transform:uppercase; margin:10px 0 0; font-size:32px;}
+.logo h1{ text-transform:uppercase; margin:10px 0 0; font-size:32px;text-align: center;}
 .logo img {
 	height: auto;
 	max-width: 100%;
@@ -44,23 +44,24 @@ p{
 }
 .sale_tax h1{
 	text-transform:uppercase;
-	color:#605f5b;
+	color:#000;
 	font-size:22px;
-	text-align: right;
+	text-align: left;
 	margin: 0px 0 10px;
 }
 .invoice_number{
-	float:left;
+	float:right;
+	text-align: right;
 }
 .order_number{
-	float:right;
+	float:left;
 	text-transform:uppercase;
 }
 .order_number p {
     margin: 0;
     line-height: 19px;
 	font-size: 12px;
-	text-align: right;
+	text-align: left;
 }
 .detail_box{
 	float: left;
@@ -68,9 +69,9 @@ p{
 }
 .detail_box h3{
 	text-transform: uppercase;
-    color: #605f5b;
+    color:#000;
     font-size: 22px;
-    margin: 0px 0 10px;
+	margin: 0px 0 10px;
 }
 .detail_box p{
 	font-size: 12px;
