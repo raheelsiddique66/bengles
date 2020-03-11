@@ -3,19 +3,17 @@ angular.module('salary', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angular
 		$scope.employees = [];
 		$scope.salary_type = "0";
 		$scope.salary_date = '';
-		$scope.show_salary = '1';
 		$scope.errors = [];
 		$scope.processing = false;
 		angular.element(document).ready(function () {
 			$scope.wctAJAX( {action: 'get_session'}, function( response ){
 				$scope.salary_date = response.date;
 				$scope.salary_type = response.type;
-				$scope.show_salary = response.show_salary;
 				$scope.get_records();
 			});
 		});
 		$scope.get_records = function(){
-			$scope.wctAJAX( {action: 'get_records', salary_date: $scope.salary_date, salary_type: $scope.salary_type, show_salary: $scope.show_salary}, function( response ){
+			$scope.wctAJAX( {action: 'get_records', salary_date: $scope.salary_date, salary_type: $scope.salary_type}, function( response ){
 				$scope.employees = response.employees;
 				$scope.dates = response.dates;
 			});
