@@ -7,15 +7,13 @@ if(isset($_POST["action"])){
 			$response = array(
 			    "date" => isset($_SESSION["manage_salary"]["salary_date"])?$_SESSION["manage_salary"]["salary_date"]:date_convert( date( "Y-m-d" ) ),
                 "type" => isset($_SESSION["manage_salary"]["salary_type"])?$_SESSION["manage_salary"]["salary_type"]:"0",
-                "show_salary" => isset($_SESSION["manage_salary"]["show_salary"])?$_SESSION["manage_salary"]["show_salary"]:"1"
             );
 		break;
 		case "get_records":
             extract($_POST);
             $_SESSION["manage_salary"]["salary_type"] = $salary_type;
             $_SESSION["manage_salary"]["salary_date"] = $salary_date;
-                $_SESSION["manage_salary"]["show_salary"] = $show_salary;
-			$dates = array();
+            $dates = array();
             $start = strtotime(date_dbconvert($salary_date));
 			if($salary_type == 0){
                 $date = date("Y-m-01", $start);
@@ -37,7 +35,7 @@ if(isset($_POST["action"])){
                 );
                 $currentdate = strtotime('+1 day', $currentdate);
             }
-            $rs = doquery( "select * from employees where status=1 and salary_type='".$salary_type."' order by name", $dblink );
+            $rs = doquery( "select * from employees where status=1 and (salary_type='".$salary_type."'".($salary_type==1?" or salary_type='0'":"").") order by name", $dblink );
             $employees = array();
             if( numrows( $rs ) > 0 ) {
                 while( $r = dofetch( $rs ) ) {
@@ -57,23 +55,21 @@ if(isset($_POST["action"])){
                             }
                         }
                     }
-                    $payment=0;
-                    $ch = doquery("select * from employee_salary where employee_id='".$r["id"]."' and date='".date("Y-m-d", strtotime($dates[count($dates)-1]["value"]))."'", $dblink);
-                    if(numrows($ch)>0){
+                    $salary = $salary_type==1&&$r["salary_type"]==0?0:$r["salary"];
+                    $over_time_rate = $salary_type==0?0:$r["over_time_per_hour"];
+                    $calculated_salary = 0;
+                    $payment = 0;
+                    $ch = doquery("select * from employee_salary where employee_id='" . $r["id"] . "' and date='" . date("Y-m-d", strtotime($dates[count($dates) - 1]["value"])) . "'", $dblink);
+                    if (numrows($ch) > 0) {
                         $ch = dofetch($ch);
                         $salary = $ch["salary_rate"];
                         $over_time_rate = $ch["over_time_rate"];
                         $calculated_salary = $ch["calculated_salary"];
-                        $ch = doquery("select * from employee_payment where employee_salary_id='".$ch["id"]."'", $dblink);
-                        if(numrows($ch)>0){
+                        $ch = doquery("select * from employee_payment where employee_salary_id='" . $ch["id"] . "'", $dblink);
+                        if (numrows($ch) > 0) {
                             $ch = dofetch($ch);
                             $payment = $ch["amount"];
                         }
-                    }
-                    else{
-                        $salary = $r["salary"];
-                        $over_time_rate = $r["over_time_per_hour"];
-                        $calculated_salary = 0;
                     }
                     $employees[] = array(
                         "id" => $r[ "id" ],
