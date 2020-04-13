@@ -66,12 +66,7 @@ if(!empty($q)){
 	$extra.=" and (gatepass_id like '%".$q."%')";
 	$is_search=true;
 }
-if($tab=='report_total'){
-	$sql = "SELECT * FROM `delivery` WHERE 1 $extra group by customer_id order by customer_id";
-}
-else{
-	$sql = "SELECT * FROM `delivery` WHERE 1 $extra order by customer_id";
-}
+$sql = "SELECT * FROM `delivery` WHERE 1 $extra order by customer_id";
 switch($tab){
 	case 'addedit':
 		include("modules/delivery/addedit_do.php");
