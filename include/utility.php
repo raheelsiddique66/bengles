@@ -13,6 +13,7 @@ function get_config($var){
 }
 $admin_types = array("No","Yes");
 $account_type = array("Current Assets","Fixed Assets","Capital");
+$salary_types = array("Monthly","Weekly","Daily");
 $schedule_array = array("Monthly","Daily","Weekly","Fortnightly","Quarterly");
 function get_nextrun( $schedule, $day_number, $lastrun ){
 	global $day_name;

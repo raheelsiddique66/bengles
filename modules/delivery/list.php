@@ -9,6 +9,7 @@ if(!defined("APP_START")) die("No Direct Access");
         	<a href="delivery_manage.php?tab=addedit" class="btn btn-light editproject">Add New Delivery</a>
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
             <a class="btn print-btn" href="delivery_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a>
+            <a href="delivery_manage.php?tab=report_total" class="btn btn-light editproject">Report Total</a>
         </div>
   	</div>
 </div>

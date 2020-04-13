@@ -6,7 +6,7 @@ include("include/paging.php");
 define("APP_START", 1);
 $filename = 'delivery_manage.php';
 include("include/admin_type_access.php");
-$tab_array=array("list", "status", "delete", "bulk_action", "report", "addedit", "print_receipt");
+$tab_array=array("list", "status", "delete", "bulk_action", "report", "addedit", "print_receipt", "report_total");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -66,7 +66,7 @@ if(!empty($q)){
 	$extra.=" and (gatepass_id like '%".$q."%')";
 	$is_search=true;
 }
-$sql = "SELECT * FROM `delivery` WHERE 1 $extra  order by customer_id ASC";
+$sql = "SELECT * FROM `delivery` WHERE 1 $extra order by customer_id ASC";
 switch($tab){
 	case 'addedit':
 		include("modules/delivery/addedit_do.php");
@@ -86,6 +86,9 @@ switch($tab){
 	break;
 	case 'print_receipt':
 		include("modules/delivery/print_receipt.php");
+	break;
+	case 'report_total':
+		include("modules/delivery/report_total.php");
 	break;
 }
 ?>

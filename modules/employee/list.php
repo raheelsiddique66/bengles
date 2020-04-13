@@ -3,12 +3,24 @@ if(!defined("APP_START")) die("No Direct Access");
 $q="";
 $extra='';
 $is_search=false;
+if(isset($_GET["salary_type"])){
+	$salary_type=slash($_GET["salary_type"]);
+	$_SESSION["employee_manage"]["list"]["salary_type"]=$salary_type;
+}
+if(isset($_SESSION["employee_manage"]["list"]["salary_type"]))
+	$salary_type=$_SESSION["employee_manage"]["list"]["salary_type"];
+else
+	$salary_type="";
+if($salary_type!=""){
+	$extra.=" and salary_type='".$salary_type."'";
+	$is_search=true;
+}
 if(isset($_GET["q"])){
 	$q=slash($_GET["q"]);
-	$_SESSION["employee_manage"]["q"]=$q;
+	$_SESSION["employee_manage"]["list"]["q"]=$q;
 }
-if(isset($_SESSION["employee_manage"]["q"]))
-	$q=$_SESSION["employee_manage"]["q"];
+if(isset($_SESSION["employee_manage"]["list"]["q"]))
+	$q=$_SESSION["employee_manage"]["list"]["q"];
 else
 	$q="";
 if(!empty($q)){
@@ -33,6 +45,18 @@ if(!empty($q)){
     <li class="col-xs-12 col-lg-12 col-sm-12">
     	<div>
         	<form class="form-horizontal" action="" method="get">
+                <div class="col-sm-3">
+                	<select name="salary_type" id="salary_type" title="Choose Option">
+                        <option value="">Select Salary Type</option>
+                        <?php
+						foreach ($salary_types as $key=>$value) {
+                            ?>
+                            <option value="<?php echo $key?>"<?php echo ($salary_type!="" && $key==$salary_type)?' selected="selected"':""?>><?php echo $value ?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </div>
                 <div class="col-sm-3">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
                 </div>
