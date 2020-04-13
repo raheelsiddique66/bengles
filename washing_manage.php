@@ -66,7 +66,7 @@ if(!empty($q)){
 	$extra.=" and (id like '%".$q."%')";
 	$is_search=true;
 }
-$sql = "SELECT * FROM `washing` WHERE 1 $extra  order by date DESC";
+$sql = "SELECT * FROM `washing` WHERE 1 $extra  order by customer_id DESC";
 switch($tab){
 	case 'addedit':
 		include("modules/washing/addedit_do.php");

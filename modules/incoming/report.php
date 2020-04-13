@@ -82,11 +82,11 @@ table {
 <tr>
     <th width="2%" align="center" rowspan="2">S.no</th>
 	<th width="8%" rowspan="2">Date</th>
-    <th width="6%" rowspan="2">Gatepass</th>
 	<?php if(empty( $customer_id ) ){?>
 	<th width="10%" rowspan="2">Customer</th>
 	<?php }?>
-	<th width="10%" rowspan="2">Labour</th>
+    <th width="6%" rowspan="2">Gatepass</th>
+	<th width="6%" rowspan="2">Labour</th>
 	<th width="50%" colspan="<?php echo count($sizes)+3?>">Items</th>
 </tr>
 <tr>
@@ -111,10 +111,10 @@ if( numrows( $rs ) > 0 ) {
 		<tr>
         	<td align="center"><?php echo $sn?></td>
 			<td><?php echo date_convert($r["date"]); ?></td>
-			<td align="center"><?php echo $r["gatepass_id"]; ?></td>
 			<?php if(empty( $customer_id ) ){?>
 			<td><?php echo get_field($r["customer_id"], "customer", "customer_name" ); ?></td>
 			<?php }?>
+			<td align="center"><?php echo $r["gatepass_id"]; ?></td>
 			<td><?php echo get_field($r["labour_id"], "labour", "name" ); ?></td>
 					<?php
 					$rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from incoming_items where incoming_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );

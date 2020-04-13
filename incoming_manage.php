@@ -66,7 +66,7 @@ if(!empty($q)){
 	$extra.=" and (gatepass_id = '".$q."' or id = '".$q."')";
 	$is_search=true;
 }
-$sql = "SELECT * FROM `incoming` WHERE 1 $extra  order by gatepass_id ASC";
+$sql = "SELECT * FROM `incoming` WHERE 1 $extra  order by customer_id ASC";
 switch($tab){
 	case 'addedit':
 		include("modules/incoming/addedit_do.php");

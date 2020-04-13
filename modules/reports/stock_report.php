@@ -142,17 +142,17 @@ if($customer_id!=""){
             <tr>
                 <th width="2%" class="text-center" rowspan="2">S.no</th>
                 <th width="5%" rowspan="2">Date</th>
-                <th width="10%" colspan="2" class="text-center">Item</th>
                 <?php if(empty($_GET["customer_id"])){?>
                 <th width="11%" rowspan="2">Customer</th>
                 <?php }?>
+                <th width="10%" colspan="2" class="text-center">Item</th>
                 <th width="24%" colspan="<?php echo $colspan?>" class="text-center">Received</th>
                 <th width="24%" colspan="<?php echo $colspan?>" class="text-center">Sent</th>
                 <th width="24%" colspan="<?php echo $colspan?>" class="text-center">Balance</th>
             </tr>
             <tr>
-                <td>Color</td>
                 <td>Design</td>
+                <td>Color</td>
                 <?php
                 for($i = 0; $i < 3; $i++){
                     foreach($sizes as $size){
@@ -180,19 +180,21 @@ if($customer_id!=""){
             if(numrows($rs) > 0){
                 $sn = 1;
                 while($r = dofetch($rs)){
-                    $records = doquery("select date, customer_id, max(`incoming`) as incoming, max(`outgoing`) as outgoing from (select a.date, a.customer_id, group_concat(concat(size_id, 'x', quantity)) as incoming, '' as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id union select a.date, a.customer_id, '' as incoming, group_concat(concat(size_id, 'x', quantity)) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id) as records group by customer_id, date order by date", $dblink);
+                    $records = doquery("select date, customer_id, max(`incoming`) as incoming, max(`outgoing`) as outgoing from (select a.date, a.customer_id, group_concat(concat(size_id, 'x', quantity)) as incoming, '' as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id union select a.date, a.customer_id, '' as incoming, group_concat(concat(size_id, 'x', quantity)) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id) as records group by customer_id, date order by customer_id", $dblink);
                     if( numrows($records) > 0 ){
                         while($record = dofetch($records)){
                             ?>
                             <tr>
                                 <td class="text-center"><?php echo $sn; ?></td>
                                 <td><?php echo date_convert($record["date"]); ?></td>
-                                <td><?php echo unslash($r["color"])?></td>
-                                <td><?php echo unslash($r["title"]) ?></td>
                                 <?php if(empty($_GET["customer_id"])){?>
                                 <td><?php echo get_field($record["customer_id"], "customer", "customer_name" ); ?></td>
                                 <?php
                                 }
+                                ?>
+                                <td><?php echo unslash($r["title"]) ?></td>
+                                <td><?php echo unslash($r["color"])?></td>
+                                <?php
                                 $incoming = [];
                                 $outgoing = [];
                                 for($i = 0; $i < 2; $i++){
