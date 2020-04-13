@@ -106,7 +106,7 @@ else {
                     <div class="alert alert-danger" ng-show="errors.length > 0">
                         <p ng-repeat="error in errors">{{error}}</p>
                     </div>
-                    <button type="submit" ng-disabled="processing" class="btn btn-default btn-l" ng-click="save_washing()" title="Submit Record"><i class="fa fa-spin fa-gear" ng-show="processing"></i> SUBMIT</button>
+                    <button type="submit" ng-disabled="processing" class="btn btn-l <?php echo empty($id)?'btn-danger':"btn-default"?>" ng-click="save_washing()" title="Submit Record"><i class="fa fa-spin fa-gear" ng-show="processing"></i> SUBMIT</button>
                 </div>
             </div>
         </div>

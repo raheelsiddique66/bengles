@@ -20,6 +20,7 @@ $is_search=true;
             <div>
                 <div class="col-sm-2">
                     <select data-ng-model="salary_type">
+                        <option value="">Select Salary Type</option>
                         <option value="1">Weekly</option>
                         <option value="2">Daily</option>
                         <option value="0">Monthly</option>
