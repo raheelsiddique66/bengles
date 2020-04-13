@@ -200,7 +200,7 @@ if(isset($_POST["action"])){
 						doquery( "update customer_payment set customer_id = '".slash( $delivery->customer_id )."', amount = '".slash( $delivery->payment_amount )."', account_id = '".slash( $delivery->payment_account_id )."' where id = '".$delivery->customer_payment_id."'", $dblink );
 					}
 					else {
-						doquery( "insert into customer_payment(customer_id, datetime_added, amount, account_id, details) values( '".slash( $delivery->customer_id )."', NOW(), '".slash( $delivery->payment_amount )."', '".slash( $delivery->payment_account_id )."', 'Payment against Delivery #".$delivery_id."' )", $dblink );
+						doquery( "insert into customer_payment(customer_id, datetime_added, amount, account_id, details) values( '".slash( $delivery->customer_id )."', NOW(), '".slash( $delivery->payment_amount )."', '".slash( $delivery->payment_account_id )."', 'Payment against Delivery #".$delivery->gatepass_id."' )", $dblink );
 						$delivery->customer_payment_id = inserted_id();
 						doquery( "update delivery set customer_payment_id = '".$delivery->customer_payment_id."' where id='".$delivery_id."'", $dblink );
 					}
