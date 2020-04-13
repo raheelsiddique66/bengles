@@ -23,6 +23,7 @@ $is_search=true;
                         <option value="1">Weekly</option>
                         <option value="2">Daily</option>
                         <option value="0">Monthly</option>
+                        <option value="3">Staff</option>
                     </select>
                 </div>
                 <div class="col-sm-2">

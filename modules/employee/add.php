@@ -65,6 +65,7 @@ else{
                     <option value="0">monthly</option>
                     <option value="1">weekly</option>
                     <option value="2">daily</option>
+                    <option value="3">Staff</option>
                 </select>
             </div>
         </div>

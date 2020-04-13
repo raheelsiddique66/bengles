@@ -80,8 +80,8 @@ if(!empty($q)){
                 <th width="15%">Father Name</th>
                 <th width="10%">Phone Number</th>
                 <th width="10%">Salary Type</th>
-                <th width="10%">Salary</th>
-                <th width="11%">Over Time Per hour</th>
+                <th width="10%" class="text-right">Salary</th>
+                <th width="11%" class="text-right">Over Time Per hour</th>
                 <th width="8%">Advance</th>
                 <th width="5%" class="text-center">Status</th>
                 <th width="15%" class="text-center">Actions</th>
@@ -114,9 +114,12 @@ if(!empty($q)){
                             elseif($r["salary_type"] == 2) {
                                 echo "Daily";
                             }
+                            elseif($r["salary_type"] == 3) {
+                                echo "Staff";
+                            }
                          ?></td>
-                        <td><?php echo unslash($r["salary"]); ?></td>
-                        <td><?php echo unslash($r["over_time_per_hour"]); ?></td>
+                        <td class="text-right"><?php echo unslash($r["salary"]); ?></td>
+                        <td class="text-right"><?php echo unslash($r["over_time_per_hour"]); ?></td>
                         <td>
                             <a class="btn btn-default btn-l fancybox_iframe" href="employee_payment_manage.php?tab=add&employee_id=<?php echo $r['id'];?>">Advance</a>
                         </td>

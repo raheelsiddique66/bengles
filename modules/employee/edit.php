@@ -54,6 +54,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <option value="0" <?php echo ($salary_type == 0?"selected":"") ?> >monthly</option>
                         <option value="1" <?php echo ($salary_type == 1?"selected":"") ?>>weekly</option>
                         <option value="2" <?php echo ($salary_type == 2?"selected":"") ?>>daily</option>
+                        <option value="3" <?php echo ($salary_type == 3?"selected":"") ?>>Staff</option>
                     </select>
                 </div>
             </div>
