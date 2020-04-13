@@ -36,7 +36,7 @@ else{
 	$date_from = "";
 }
 if( !empty($date_from) ){
-	$extra.=" and datetime_added>='".date("Y/m/d H:i:s", strtotime(date_dbconvert($date_from)))."'";
+	$extra.=" and date_from>='".date("Y/m/d H:i:s", strtotime(date_dbconvert($date_from)))."'";
 	$is_search=true;
 }
 if( isset($_GET["date_to"]) ){
@@ -49,7 +49,7 @@ else{
 	$date_to = "";
 }
 if( !empty($date_to) ){
-	$extra.=" and datetime_added<'".date("Y/m/d", strtotime(date_dbconvert($date_to))+3600*24)."'";
+	$extra.=" and date_to<'".date("Y/m/d", strtotime(date_dbconvert($date_to))+3600*24)."'";
 	$is_search=true;
 }
 if(isset($_GET["q"])){
