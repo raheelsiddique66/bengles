@@ -25,6 +25,7 @@ angular.module('salary', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angular
 			var days = 0;
 			var hours = 0;
 			var total_days = 0;
+			var total_absent = 0;
 			for (var i in $scope.employees[index].attendance) {
 				if( $scope.employees[index].attendance[i] == 'P' || Number($scope.employees[index].attendance[i] ) > 0 ){
 					days++;
@@ -35,11 +36,15 @@ angular.module('salary', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angular
 				if( $scope.employees[index].attendance[i] != 'F' ){
 					total_days++;
 				}
+				if( $scope.employees[index].attendance[i] == 'A' ){
+					total_absent++;
+				}
 			}
 			return {
 				days: days,
 				hours: hours,
-				total_days: total_days
+				total_days: total_days,
+				total_absent: total_absent
 			};
 		}
 		$scope.total_hours = function(){
