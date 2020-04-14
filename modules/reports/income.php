@@ -72,6 +72,7 @@ if( empty( $extra ) ) {
 		$quantity = 0;
 		$unit_price = 0;
 		$payment_total = 0;
+		$salary_total = 0;
 		$sql=doquery("select * from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."' group by design_id,color_id",$dblink);
 		if( numrows( $sql ) > 0 ) {
 			while( $r1 = dofetch( $sql ) ) {
@@ -93,6 +94,14 @@ if( empty( $extra ) ) {
             <th class="text-right">Income from <?php echo $date_from?> to <?php echo $date_to?></th>
             <th class="text-right" >Rs. <?php echo $payment_total?></th>
         </tr>
+		<tr class="head">
+			<th class="text-right">Salary from <?php echo $date_from?> to <?php echo $date_to?></th>
+			<th class="text-right" >Rs. <?php
+				$rs = dofetch( doquery( "select sum(amount) from employee_payment where date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'", $dblink ) );
+				echo curr_format( $rs[ "sum(amount)" ] );
+				$salary_total += $rs[ "sum(amount)" ];
+			?></th>
+		</tr>
         <?php
 		$total = 0;
         $rs = doquery( "select title, sum(amount) as total from expense a left join expense_category b on a.expense_category_id = b.id where a.status=1 $extra group by expense_category_id", $dblink );
@@ -116,7 +125,7 @@ if( empty( $extra ) ) {
         </tr>
         <tr class="head bg-success">
             <th class="text-right">Net Income</th>
-            <th class="text-right" >Rs. <?php echo $payment_total-$total?></th>
+            <th class="text-right" >Rs. <?php echo $payment_total-$salary_total-$total?></th>
         </tr>	
   	</table>
 </div>
