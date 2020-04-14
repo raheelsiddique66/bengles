@@ -36,6 +36,7 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.delivery_item = {
 			"color_id":"",
 			"design_id": "",
+			"machine_id": "0",
 			"quantity": [],
 			"extra": 0,
 			"unit_price": 105
