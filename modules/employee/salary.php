@@ -72,7 +72,7 @@ $is_search=true;
                     <td class="text-center"><input type="text" style="width: 60px;" data-ng-model="employee.over_time_rate" data-ng-change="update_caculated($index)"/></td>
                     <td class="text-right">{{ get_total($index).hours }}</td>
                     <td class="text-right">{{ get_total($index).hours*employee.over_time_rate|currency:'':0 }}</td>
-                    <td class="text-right">{{ employee.calculated_salary-get_total($index).hours*employee.over_time_rate|currency:'':0 }}</td>
+                    <td class="text-right">{{ employee.calculated_salary-(salary_type!="0"?get_total($index).hours*employee.over_time_rate:0)|currency:'':0 }}</td>
                     <td class="text-center"><input type="text" style="width: 60px;" data-ng-model="employee.calculated_salary" /> <i class="fa fa-refresh" data-ng-click="update_caculated($index)" style="font-size: 16px; cursor: pointer"></i> </td>
                     <td class="text-right">{{employee.balance}}</td>
                     <td class="text-right">{{employee.calculated_salary-employee.balance|currency:'':0}}</td>
@@ -82,7 +82,7 @@ $is_search=true;
                     <td colspan="{{ dates.length+6}}" class="text-right">Total</td>
                     <td class="text-right">{{ total_hours() }}</td>
                     <td class="text-right">{{ total_hours_amount()|currency:'':0 }}</td>
-                    <td class="text-right">{{ sum(employees, 'calculated_salary')-total_hours_amount()|currency:'':0 }}</td>
+                    <td class="text-right">{{ sum(employees, 'calculated_salary')-(salary_type!="0"?total_hours_amount():0)|currency:'':0 }}</td>
                     <td class="text-right">{{ sum(employees, 'calculated_salary')|currency:'':0 }}</td>
                     <td class="text-right">{{ sum(employees, 'balance')|currency:'':0 }}</td>
                     <td class="text-right">{{ sum(employees, 'calculated_salary')|currency:'':0 }}</td>

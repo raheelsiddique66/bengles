@@ -29,7 +29,7 @@ if(!defined("APP_START")) die("No Direct Access");
             <td class="text-right">{{ get_total($index).total_absent }}</td>
             <td class="text-right">{{ get_total($index).hours }}</td>
             <td class="text-right">{{ get_total($index).hours*employee.over_time_rate|currency:'':0 }}</td>
-            <td class="text-right">{{ employee.calculated_salary-get_total($index).hours*employee.over_time_rate|currency:'':0 }}</td>
+            <td class="text-right">{{ employee.calculated_salary-(salary_type!="0"?get_total($index).hours*employee.over_time_rate:0)|currency:'':0 }}</td>
             <td class="text-right">{{ employee.calculated_salary|currency:'':0 }}</td>
             <td class="text-right">{{employee.balance|currency:'':0}}</td>
             <td class="text-right">{{employee.calculated_salary-employee.balance}}</td>
@@ -40,7 +40,7 @@ if(!defined("APP_START")) die("No Direct Access");
             <td colspan="{{ dates.length+3 }}" class="text-right">Total</td>
             <td class="text-right">{{ total_hours() }}</td>
             <td class="text-right">{{ total_hours_amount()|currency:'':0 }}</td>
-            <td class="text-right">{{ sum(employees, 'calculated_salary')-total_hours_amount()|currency:'':0 }}</td>
+            <td class="text-right">{{ sum(employees, 'calculated_salary')-(salary_type!="0"?total_hours_amount():0)|currency:'':0 }}</td>
             <td class="text-right">{{ sum(employees, 'calculated_salary')|currency:'':0 }}</td>
             <td class="text-right">{{ sum(employees, 'balance')|currency:'':0 }}</td>
             <td class="text-right">{{ sum(employees, 'calculated_salary')|currency:'':0 }}</td>
