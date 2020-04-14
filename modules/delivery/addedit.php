@@ -157,7 +157,7 @@ else {
                                     </td>
                                     <td>
                                         <select title="Choose Option" ng-model="delivery.delivery_items[$index].machine_id">
-                                            <option value="">Select Machine</option>
+                                            <option value="0">Select Machine</option>
                                             <option ng-repeat="machine in machines" value="{{ machine.id }}">{{ machine.title }}</option>
                                         </select>
                                     </td>

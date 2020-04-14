@@ -151,7 +151,7 @@ if(isset($_POST["action"])){
 						"color_id" => "",
 						"size_id" => "",
 						"design_id" => "",
-						"machine_id" => "",
+						"machine_id" => "0",
 						"quantity" => "",
 						"extra" => "",
 						"unit_price" => get_config("default_price"),
@@ -210,7 +210,7 @@ if(isset($_POST["action"])){
 					foreach($delivery_item->quantity as $size_id => $quantity){
 						$quantity = (int)$quantity;
 						if(!empty($quantity)){
-							$check = doquery("select * from delivery_items where delivery_id = '".$delivery_id."' and color_id = '".$delivery_item->color_id."' and design_id = '".$delivery_item->design_id."' and size_id = '".$size_id."' and machine_id = '".$delivery_item->machine_id."'",$dblink);
+							$check = doquery("select * from delivery_items where delivery_id = '".$delivery_id."' and color_id = '".$delivery_item->color_id."' and design_id = '".$delivery_item->design_id."' and machine_id = '".$delivery_item->machine_id."' and size_id = '".$size_id."'",$dblink);
 							if( numrows( $check ) == 0 ) {
 								doquery( "insert into delivery_items( delivery_id, color_id, size_id, design_id, machine_id, quantity, extra, unit_price ) values( '".$delivery_id."', '".$delivery_item->color_id."', '".$size_id."', '".$delivery_item->design_id."', '".$delivery_item->machine_id."', '".$quantity."', '".$delivery_item->extra."', '".$delivery_item->unit_price."')", $dblink );
 								$delivery_item_ids[] = inserted_id();
