@@ -49,6 +49,13 @@ else
 if($customer_id!=""){
     $extra.=" and customer_id='".$customer_id."'";
 }
+if(isset($_GET["report_type"])){
+    $_SESSION["reports"]["stock_report"]["report_type"]=slash($_GET["report_type"]);
+}
+if(isset($_SESSION["reports"]["stock_report"]["report_type"]))
+    $report_type=$_SESSION["reports"]["stock_report"]["report_type"];
+else
+    $report_type="";
 ?>
 <div class="page-header">
 	<h1 class="title">Reports</h1>
@@ -67,7 +74,7 @@ if($customer_id!=""){
         <div>
         	<form class="form-horizontal" action="" method="get">
             	<input type="hidden" name="tab" value="stock_report" />
-                <div class="col-sm-2">
+                <div class="col-sm-1">
                     <select name="color_id">
                         <option value=""<?php echo ($color_id=="")? " selected":"";?>>Select Color</option>
                     	<?php
@@ -82,7 +89,7 @@ if($customer_id!=""){
 						?>
                     </select>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-1">
                     <select name="design_id">
                         <option value=""<?php echo ($design_id=="")? " selected":"";?>>Select Design</option>
                         <?php
@@ -119,6 +126,12 @@ if($customer_id!=""){
                     <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-picker"  value="<?php echo $date_to?>" autocomplete="off" />
                 </div>                
                 <div class="col-sm-2 text-left">
+                    <select name="report_type">
+                        <option value=""<?php echo $report_type==''?" selected":""?>>Detailed</option>
+                        <option value="1"<?php echo $report_type=='1'?" selected":""?>>Summary</option>
+                    </select>
+                </div>
+                <div class="col-sm-2 text-left">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
                 </div>
@@ -141,7 +154,9 @@ if($customer_id!=""){
     	<thead>
             <tr>
                 <th width="2%" class="text-center" rowspan="2">S.no</th>
-                <th width="5%" rowspan="2">Date</th>
+                <?php if($report_type==""){?>
+                    <th width="5%" rowspan="2">Date</th>
+                <?php }?>
                 <?php if(empty($_GET["customer_id"])){?>
                 <th width="11%" rowspan="2">Customer</th>
                 <?php }?>
@@ -180,13 +195,15 @@ if($customer_id!=""){
             if(numrows($rs) > 0){
                 $sn = 1;
                 while($r = dofetch($rs)){
-                    $records = doquery("select date, customer_id, max(`incoming`) as incoming, max(`outgoing`) as outgoing from (select a.date, a.customer_id, group_concat(concat(size_id, 'x', quantity)) as incoming, '' as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id union select a.date, a.customer_id, '' as incoming, group_concat(concat(size_id, 'x', quantity)) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id) as records group by customer_id, date order by customer_id", $dblink);
+                    $records = doquery("select date, customer_id, max(`incoming`) as incoming, max(`outgoing`) as outgoing from (select a.date, a.customer_id, group_concat(concat(size_id, 'x', quantity)) as incoming, '' as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id union select a.date, a.customer_id, '' as incoming, group_concat(concat(size_id, 'x', quantity)) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id) as records group by customer_id".($report_type==""?",date":"")." order by customer_id", $dblink);
                     if( numrows($records) > 0 ){
                         while($record = dofetch($records)){
                             ?>
                             <tr>
                                 <td class="text-center"><?php echo $sn; ?></td>
-                                <td><?php echo date_convert($record["date"]); ?></td>
+                                <?php if($report_type==""){?>
+                                    <td><?php echo date_convert($record["date"]); ?></td>
+                                <?php } ?>
                                 <?php if(empty($_GET["customer_id"])){?>
                                 <td><?php echo get_field($record["customer_id"], "customer", "customer_name" ); ?></td>
                                 <?php
@@ -240,9 +257,16 @@ if($customer_id!=""){
                     ?>
                     <?php
                 }
+                $colspan = 5;
+                if(!empty($customer_id)){
+                    $colspan--;
+                }
+                if(!empty($report_type)){
+                    $colspan--;
+                }
                 ?>
                 <tr>
-                    <th class="text-right" colspan="<?php if(empty($_GET["customer_id"])) echo "5"; else echo "4";?>">Total</th>
+                    <th class="text-right" colspan="<?php echo $colspan;?>">Total</th>
                     <?php
                     for($i = 0; $i < 3; $i++){
                         foreach($sizes as $size_id => $size){

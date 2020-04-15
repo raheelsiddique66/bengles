@@ -49,6 +49,13 @@ else
 if($customer_id!=""){
     $extra.=" and customer_id='".$customer_id."'";
 }
+if(isset($_GET["report_type"])){
+    $_SESSION["reports"]["stock_report"]["report_type"]=slash($_GET["report_type"]);
+}
+if(isset($_SESSION["reports"]["stock_report"]["report_type"]))
+    $report_type=$_SESSION["reports"]["stock_report"]["report_type"];
+else
+    $report_type="";
 ?>
 <style>
 h1, h2, h3, p {
@@ -120,7 +127,9 @@ table {
         ?>
             <tr>
                 <th width="2%" class="text-center" rowspan="2">S.no</th>
-                <th width="5%" rowspan="2">Date</th>
+                <?php if(empty( $report_type ) ){?>
+                    <th width="5%" rowspan="2">Date</th>
+                <?php }?>
                 <th width="10%" colspan="2" class="text-center">Item</th>
                 <?php if(empty( $customer_id ) ){?>
                 <th width="11%" rowspan="2">Customer</th>
@@ -157,13 +166,15 @@ table {
             if(numrows($rs) > 0){
                 $sn = 1;
                 while($r = dofetch($rs)){
-                    $records = doquery("select date, customer_id, max(`incoming`) as incoming, max(`outgoing`) as outgoing from (select a.date, a.customer_id, group_concat(concat(size_id, 'x', quantity)) as incoming, '' as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id union select a.date, a.customer_id, '' as incoming, group_concat(concat(size_id, 'x', quantity)) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id) as records group by customer_id, date order by date", $dblink);
+                    $records = doquery("select date, customer_id, max(`incoming`) as incoming, max(`outgoing`) as outgoing from (select a.date, a.customer_id, group_concat(concat(size_id, 'x', quantity)) as incoming, '' as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id union select a.date, a.customer_id, '' as incoming, group_concat(concat(size_id, 'x', quantity)) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id) as records group by customer_id".($report_type==""?",date":"")." order by date", $dblink);
                     if( numrows($records) > 0 ){
                         while($record = dofetch($records)){
                             ?>
                             <tr>
                                 <td class="text-center"><?php echo $sn; ?></td>
-                                <td><?php echo date_convert($record["date"]); ?></td>
+                                <?php if(empty( $report_type ) ){?>
+                                    <td><?php echo date_convert($record["date"]); ?></td>
+                                <?php }?>
                                 <td><?php echo unslash($r["color"])?></td>
                                 <td><?php echo unslash($r["title"]) ?></td>
                                 <?php if(empty( $customer_id ) ){?>
@@ -215,9 +226,16 @@ table {
                     ?>
                     <?php
                 }
+                $colspan = 5;
+                if(!empty($customer_id)){
+                    $colspan--;
+                }
+                if(!empty($report_type)){
+                    $colspan--;
+                }
                 ?>
                 <tr>
-                    <th class="text-right" colspan="<?php if(empty( $customer_id ) ) echo "5"; else echo "4";?>">Total</th>
+                    <th class="text-right" colspan="<?php echo $colspan;?>">Total</th>
                     <?php
                     for($i = 0; $i < 3; $i++){
                         foreach($sizes as $size_id => $size){
