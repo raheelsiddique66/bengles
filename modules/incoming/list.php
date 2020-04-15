@@ -9,6 +9,7 @@ if(!defined("APP_START")) die("No Direct Access");
         	<a href="incoming_manage.php?tab=addedit" class="btn btn-light editproject">Add New Incoming</a>
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
             <a class="btn print-btn" href="incoming_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a>
+            <a href="incoming_manage.php?tab=report_total" class="btn btn-light editproject">Report Total</a>
         </div>
   	</div>
 </div>

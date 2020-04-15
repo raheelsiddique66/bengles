@@ -6,7 +6,7 @@ include("include/paging.php");
 define("APP_START", 1);
 $filename = 'incoming_manage.php';
 include("include/admin_type_access.php");
-$tab_array=array("list", "status", "delete", "bulk_action", "report", "addedit", "print_receipt");
+$tab_array=array("list", "status", "delete", "bulk_action", "report", "addedit", "print_receipt", "report_total");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -86,6 +86,9 @@ switch($tab){
 	break;
 	case 'print_receipt':
 		include("modules/incoming/print_receipt.php");
+	break;
+	case 'report_total':
+		include("modules/incoming/report_total.php");
 	break;
 }
 ?>
