@@ -68,7 +68,7 @@ $customer=dofetch(doquery("select * from customer where id='".slash($invoice["cu
                 $balance = 0;
 			    if(numrows($rs)>0){
                     $sn=1;
-                    $balance = get_customer_balance( $customer["id"], date_convert($invoice["date_from"]));
+                    $balance = get_customer_balance( $customer["id"], date('Y-m-d',strtotime($invoice["date_to"])));
                     ?>
                     <tr>
                         <td class="text-right" colspan="8"><strong>BALANCE</strong></td>
