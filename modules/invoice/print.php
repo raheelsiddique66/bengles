@@ -68,7 +68,10 @@ $customer=dofetch(doquery("select * from customer where id='".slash($invoice["cu
                 $balance = 0;
 			    if(numrows($rs)>0){
                     $sn=1;
-                    $balance = get_customer_balance( $customer["id"], date('Y-m-d',strtotime($invoice["date_to"])));
+                    $sql="select sum(amount) as amount from (select concat( 'Delivery #', a.gatepass_id) as transaction, unit_price * quantity as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer[ "id" ]."' and date>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' union select concat( 'Payment #', id) as transaction, -amount from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59') as transactions ";
+                    $balance=dofetch(doquery($sql,$dblink));
+                    $balance = $balance[ "amount" ];
+                    //$balance = get_customer_balance( $customer["id"], date('Y-m-d',strtotime($invoice["date_to"])));
                     ?>
                     <tr>
                         <td class="text-right" colspan="8"><strong>BALANCE</strong></td>
