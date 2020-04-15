@@ -4,12 +4,10 @@ $sql = "SELECT a.*, group_concat(a.id) as incoming_ids FROM `incoming` a left jo
 $rs = doquery( $sql, $dblink );
 $colors = [];
 $rs2 = doquery("select * from color order by sortorder", $dblink);
+$colors_total = array();
 while($r2=dofetch($rs2)){
-	$rates = doquery("select * from incoming_items where incoming_id in (select id from incoming where 1 $extra) and color_id = '".$r2["id"]."' order by incoming_id", $dblink);
-	foreach($rates as $rate){
-        $colors[$r2["id"]] = unslash($r2["title"]);
-    }
-
+	$colors[$r2["id"]] = unslash($r2["title"]);
+    $colors_total[$r2["id"]] = 0;
 }
 ?>
 <style>
@@ -80,13 +78,10 @@ table {
     <th width="2%" align="center">S.no</th>
 	<th width="30%">Customer</th>
     <?php
-    foreach($colors as $color_id => $color){
-        foreach($color as $rate => $color_title) {
-            $colors_total[$color_id][$rate] = 0;
-            ?>
-            <th><?php echo $color_title."<br>@".$rate ?></th>
-            <?php
-        }
+    foreach($colors as $color_id => $color) {
+        ?>
+        <th><?php echo $color ?></th>
+        <?php
     }
     ?>
     <th width="10%">Total</th>
@@ -114,11 +109,9 @@ if( numrows( $rs ) > 0 ) {
 			}
             $grand_total_quantity += $total_quantity;
             foreach($colors as $color_id => $color){
-                foreach($color as $rate => $color_title) {
-                    ?>
-                    <td class="text-right"><?php echo isset($colors_incoming[$color_id][$rate]) ? curr_format($colors_incoming[$color_id][$rate]) : 0 ?></td>
-                    <?php
-                }
+                ?>
+                <td class="text-right"><?php echo isset($colors_incoming[$color_id]) ? curr_format($colors_incoming[$color_id]) : 0 ?></td>
+                <?php
             }
 			?>
             <th class="text-right bg-grey"><?php echo curr_format($total_quantity)?></th>
@@ -133,11 +126,9 @@ if( numrows( $rs ) > 0 ) {
 	<th class="text-right bg-grey">Grand Total</th>
     <?php
     foreach($colors as $color_id => $color){
-        foreach($color as $rate => $color_title) {
-            ?>
-            <th class="text-right"><?php echo curr_format($colors_total[$color_id][$rate]) ?></th>
-            <?php
-        }
+        ?>
+        <th class="text-right"><?php echo curr_format($colors_total[$color_id]) ?></th>
+        <?php
     }
     ?>
 	<th class="text-right bg-grey"><?php echo curr_format($grand_total_quantity)?></th>
