@@ -39,7 +39,7 @@ else{
 	$date_to = "";
 }
 if( !empty($date_to) ){
-	$extra.=" and date<='".date("Y/m/d", strtotime(date_dbconvert($date_to))+3600*24)."'";
+	$extra.=" and date<='".date_dbconvert($date_to)."'";
 	$is_search=true;
 }
 if(isset($_GET["customer_id"])){

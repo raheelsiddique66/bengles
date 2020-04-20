@@ -102,7 +102,10 @@ if( numrows( $rs ) > 0 ) {
 			$rs1 = doquery( "select color_id, sum(quantity) from incoming_items where incoming_id in (".($r["incoming_ids"]).") group by quantity", $dblink );
 			if(numrows($rs1)>0){
 				while($r1=dofetch($rs1)){
-                    $colors_incoming[$r1["color_id"]] = $r1["sum(quantity)"];
+                    if(!isset($colors_incoming[$r1["color_id"]])){
+                        $colors_incoming[$r1["color_id"]] = 0;
+                    }
+				    $colors_incoming[$r1["color_id"]] += $r1["sum(quantity)"];
                     $colors_total[$r1["color_id"]] += $r1["sum(quantity)"];
                     $total_quantity += $r1["sum(quantity)"];
 				}

@@ -109,7 +109,10 @@ if( numrows( $rs ) > 0 ) {
 			$rs1 = doquery( "select color_id, unit_price, sum(quantity), sum(quantity*unit_price) as total from delivery_items where delivery_id in (".($r["delivery_ids"]).") group by unit_price", $dblink );
 			if(numrows($rs1)>0){
 				while($r1=dofetch($rs1)){
-                    $colors_delivery[$r1["color_id"]][$r1["unit_price"]] = $r1["sum(quantity)"];
+                    if(!isset($colors_delivery[$r1["color_id"]][$r1["unit_price"]])){
+                        $colors_delivery[$r1["color_id"]][$r1["unit_price"]] = 0;
+                    }
+				    $colors_delivery[$r1["color_id"]][$r1["unit_price"]] = $r1["sum(quantity)"];
                     $colors_total[$r1["color_id"]][$r1["unit_price"]] += $r1["sum(quantity)"];
                     $total_quantity += $r1["sum(quantity)"];
                     $total_amount += $r1["total"];
