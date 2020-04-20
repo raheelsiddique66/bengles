@@ -1,20 +1,5 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$q="";
-$extra='';
-$is_search=false;
-if(isset($_GET["q"])){
-	$q=slash($_GET["q"]);
-	$_SESSION["employee_salary_manage"]["q"]=$q;
-}
-if(isset($_SESSION["employee_salary_manage"]["q"]))
-	$q=$_SESSION["employee_salary_manage"]["q"];
-else
-	$q="";
-if(!empty($q)){
-	$extra.=" and b.name like '%".$q."%' ";
-	$is_search=true;
-}
 ?>
 <div class="page-header">
 	<h1 class="title">Employee Salary</h1>
@@ -25,6 +10,7 @@ if(!empty($q)){
     	<div class="btn-group" role="group" aria-label="..."> 
         	<a href="employee_salary_manage.php?tab=add" class="btn btn-light editproject">Add New Employee Salary</a>
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a> 
+            <a class="btn print-btn" href="employee_salary_manage.php?tab=print"><i class="fa fa-print" aria-hidden="true"></i></a>
     	</div> 
     </div> 
 </div>
@@ -33,9 +19,30 @@ if(!empty($q)){
     	<div>
         	<form class="form-horizontal" action="" method="get">
                 <div class="col-sm-3">
+                	<select name="employee_id" id="employee_id" class="select_multiple custom_select">
+                        <option value=""<?php echo ($employee_id=="")? " selected":"";?>>Select Employee</option>
+                        <?php
+                            $res=doquery("select * from employees order by name",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($employee_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["name"])?></option>
+                            	<?php
+                                }
+                            }	
+                        ?>
+                    </select>
+                </div>
+                <div class="col-sm-2 margin-btm-5">
+                  <input type="text" title="Enter Date From" value="<?php echo $date_from;?>" placeholder="Date From" name="date_from" id="date_from" class="form-control date-picker" autocomplete="off" />  
+                </div>
+                <div class="col-sm-2 margin-btm-5">
+                  <input type="text" title="Enter Date To" value="<?php echo $date_to;?>" placeholder="Date To" name="date_to" id="date_to" class="form-control date-picker" autocomplete="off" />  
+                </div>
+                <div class="col-sm-2">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
                 </div>
-                <div class="col-sm-3 text-left">
+                <div class="col-sm-2 text-left">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
                 </div>
@@ -60,8 +67,7 @@ if(!empty($q)){
             </tr>
         </thead>
         <tbody>
-            <?php 
-            $sql="select a.*,b.name as name from employee_salary a inner join employees b on a.employee_id = b.id where 1 $extra";
+            <?php
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
@@ -75,9 +81,9 @@ if(!empty($q)){
                         </td>
                         <td><?php echo unslash($r["name"]); ?></td>
                         <td><?php echo unslash(date_convert($r["date"])); ?></td>
-                        <td><?php echo unslash($r["salary_rate"]); ?></td>
-                        <td><?php echo unslash($r["over_time_rate"]); ?></td>
-                        <td><?php echo unslash($r["calculated_salary"]); ?></td>
+                        <td><?php echo curr_format($r["salary_rate"]); ?></td>
+                        <td><?php echo curr_format($r["over_time_rate"]); ?></td>
+                        <td><?php echo curr_format($r["calculated_salary"]); ?></td>
                         <td class="text-center">
                             <a href="employee_salary_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
                             <a onclick="return confirm('Are you sure you want to delete')" href="employee_salary_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
