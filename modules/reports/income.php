@@ -67,7 +67,7 @@ if( empty( $extra ) ) {
   	</li>
 </ul>
 <div class="panel-body table-responsive">
-	<table class="table table-hover list">
+	<table class="table list">
     	<?php
 		$quantity = 0;
 		$unit_price = 0;
@@ -90,11 +90,11 @@ if( empty( $extra ) ) {
 		//print_r($payment);die;
 		$payment_total += $unit_price*$q["quantity"];
 		?>
-        <tr class="head">
+        <tr class="">
             <th class="text-right">Income from <?php echo $date_from?> to <?php echo $date_to?></th>
-            <th class="text-right" >Rs. <?php echo $payment_total?></th>
+            <th class="text-right" >Rs. <?php echo curr_format($payment_total)?></th>
         </tr>
-		<tr class="head">
+		<tr class="">
 			<th class="text-right">Salary from <?php echo $date_from?> to <?php echo $date_to?></th>
 			<th class="text-right" >Rs. <?php
 				$rs = dofetch( doquery( "select sum(amount) from employee_payment where date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'", $dblink ) );
@@ -110,7 +110,7 @@ if( empty( $extra ) ) {
 				if( $r[ "total" ] > 0 ){
 					$total += $r[ "total" ];
 					?>
-                    <tr class="head">
+                    <tr class="">
                         <th class="text-right"><?php echo unslash( $r[ "title" ] )?></th>
                         <th class="text-right" >Rs.<?php echo curr_format($r[ "total" ])?></th>
                     </tr>	
@@ -119,13 +119,13 @@ if( empty( $extra ) ) {
 			}
 		}
 		?>
-        <tr class="head">
+        <tr class="color9-bg color3">
             <th class="text-right">Total Expense</th>
-            <th class="text-right" >Rs. <?php echo curr_format($total)?></th>
+            <th class="text-right" >Rs. <?php echo curr_format($total+$salary_total)?></th>
         </tr>
         <tr class="head bg-success">
             <th class="text-right">Net Income</th>
-            <th class="text-right" >Rs. <?php echo $payment_total-$salary_total-$total?></th>
+            <th class="text-right" >Rs. <?php echo curr_format($payment_total-$salary_total-$total)?></th>
         </tr>	
   	</table>
 </div>
