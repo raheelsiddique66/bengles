@@ -127,7 +127,7 @@ table {
         ?>
             <tr>
                 <th width="2%" class="text-center" rowspan="2">S.no</th>
-                <?php if(empty( $report_type ) ){?>
+                <?php if($report_type==""){?>
                     <th width="5%" rowspan="2">Date</th>
                 <?php }?>
                 <th width="10%" colspan="2" class="text-center">Item</th>
@@ -166,7 +166,8 @@ table {
             if(numrows($rs) > 0){
                 $sn = 1;
                 while($r = dofetch($rs)){
-                    $records = doquery("select date, customer_id, max(`incoming`) as incoming, max(`outgoing`) as outgoing from (select a.date, a.customer_id, group_concat(concat(size_id, 'x', quantity)) as incoming, '' as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id union select a.date, a.customer_id, '' as incoming, group_concat(concat(size_id, 'x', quantity)) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id) as records group by customer_id".($report_type==""?",date":"")." order by date", $dblink);
+                   // $records = doquery("select date, customer_id, max(`incoming`) as incoming, max(`outgoing`) as outgoing from (select a.date, a.customer_id, group_concat(concat(size_id, 'x', quantity)) as incoming, '' as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id union select a.date, a.customer_id, '' as incoming, group_concat(concat(size_id, 'x', quantity)) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id) as records group by customer_id".($report_type==""?",date":"")." order by date", $dblink);
+                    $records = doquery("select date, customer_id, ".($report_type=="asd"?"max":"group_concat")."(`incoming`) as incoming, ".($report_type=="asd"?"max":"group_concat")."(`outgoing`) as outgoing from (select a.date, a.customer_id, group_concat(concat(size_id, 'x', quantity)) as incoming, '' as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id union select a.date, a.customer_id, '' as incoming, group_concat(concat(size_id, 'x', quantity)) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id) as records group by customer_id".($report_type==""?",date":"")." order by customer_id", $dblink);
                     if( numrows($records) > 0 ){
                         while($record = dofetch($records)){
                             ?>
@@ -189,9 +190,17 @@ table {
                                     $t = 0;
                                     if(!empty($record[$type])) {
                                         foreach (explode(",", $record[$type]) as $size) {
-                                            $size = explode("x", $size);
-                                            $quantities[$size[0]] = $size[1];
-                                            $t += $size[1];
+                                            if(!empty($size)) {
+                                                $size = explode("x", $size);
+                                                if(!isset($quantities[$size[0]])){
+                                                    $quantities[$size[0]] = 0;
+                                                }
+                                                $quantities[$size[0]] += $size[1];
+                                                $t += $size[1];
+                                            }
+                                           // $size = explode("x", $size);
+                                            //$quantities[$size[0]] = $size[1];
+                                            //$t += $size[1];
                                         }
                                     }
                                     $$type = $quantities;
