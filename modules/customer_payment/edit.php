@@ -21,7 +21,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <select name="customer_id" title="Choose Option">
                     <option value="0">Select Customer</option>
                     <?php
-                    $res=doquery("select * from customer where status=1 order by id", $dblink);
+                    $res=doquery("select * from customer where status=1 order by customer_name", $dblink);
                     if(numrows($res)>0){
                         while($rec=dofetch($res)){
                         ?>
