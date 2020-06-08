@@ -39,6 +39,16 @@ if(isset($_SESSION["reports"]["stock_report"]["design_id"]))
     $design_id=$_SESSION["reports"]["stock_report"]["design_id"];
 else
     $design_id="";
+if(isset($_GET["machine_id"])){
+    $_SESSION["reports"]["stock_report"]["machine_id"]=slash($_GET["machine_id"]);
+}
+if(isset($_SESSION["reports"]["stock_report"]["machine_id"]))
+    $machine_id=$_SESSION["reports"]["stock_report"]["machine_id"];
+else
+    $machine_id="";
+if($machine_id!=""){
+    $extra.=" and machine_id='".$machine_id."'";
+}
 if(isset($_GET["customer_id"])){
     $_SESSION["reports"]["stock_report"]["customer_id"]=slash($_GET["customer_id"]);
 }
@@ -104,6 +114,21 @@ else
                         ?>
                     </select>
                 </div>
+                <div class="col-sm-1">
+                    <select name="machine_id">
+                        <option value=""<?php echo ($machine_id=="")? " selected":"";?>>Select Machine</option>
+                        <?php
+                        $rs=doquery( "select * from machine order by title", $dblink );
+                        if( numrows( $rs ) > 0 ) {
+                            while( $r = dofetch( $rs ) ) {
+                                ?>
+                                <option value="<?php echo $r[ "id" ]?>"<?php echo $r[ "id" ]==$machine_id?' selected':''?>><?php echo unslash( $r[ "title" ] )?></option>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
                 <div class="col-sm-2">
                     <select name="customer_id">
                         <option value=""<?php echo ($customer_id=="")? " selected":"";?>>Select Customer</option>
@@ -119,13 +144,13 @@ else
                         ?>
                     </select>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-1">
                     <input type="text" title="Enter Date From" name="date_from" id="date_from" placeholder="" class="form-control date-picker"  value="<?php echo $date_from?>" autocomplete="off" />
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-1">
                     <input type="text" title="Enter Date To" name="date_to" id="date_to" placeholder="" class="form-control date-picker"  value="<?php echo $date_to?>" autocomplete="off" />
                 </div>                
-                <div class="col-sm-2 text-left">
+                <div class="col-sm-1 text-left">
                     <select name="report_type">
                         <option value=""<?php echo $report_type==''?" selected":""?>>Detailed</option>
                         <option value="1"<?php echo $report_type=='1'?" selected":""?>>Summary</option>

@@ -39,6 +39,16 @@ if(isset($_SESSION["reports"]["stock_report"]["design_id"]))
     $design_id=$_SESSION["reports"]["stock_report"]["design_id"];
 else
     $design_id="";
+if(isset($_GET["machine_id"])){
+    $_SESSION["reports"]["stock_report"]["machine_id"]=slash($_GET["machine_id"]);
+}
+if(isset($_SESSION["reports"]["stock_report"]["machine_id"]))
+    $machine_id=$_SESSION["reports"]["stock_report"]["machine_id"];
+else
+    $machine_id="";
+if($machine_id!=""){
+    $extra.=" and machine_id='".$machine_id."'";
+}
 if(isset($_GET["customer_id"])){
     $_SESSION["reports"]["stock_report"]["customer_id"]=slash($_GET["customer_id"]);
 }
@@ -110,6 +120,9 @@ table {
                     }
                     if( !empty( $customer_id ) ){
                         echo " Customer: ".get_field($customer_id, "customer", "customer_name" );
+                    }
+                    if( !empty( $machine_id ) ){
+                        echo " Machine: ".get_field($machine_id, "machine", "title" );
                     }
                     ?>
                 </p>
