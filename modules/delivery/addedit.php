@@ -4,7 +4,7 @@ if( isset( $_GET[ "id" ] ) ) {
 	$id = slash( $_GET[ "id" ] );
 }
 else {
-	$id = 0;
+	$id = 0; //Testing
 }
 ?>
 <style>
