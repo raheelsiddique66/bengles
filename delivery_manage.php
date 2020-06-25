@@ -54,6 +54,20 @@ if($customer_id!=""){
 	$extra.=" and customer_id='".$customer_id."'";
 	$is_search=true;
 }
+if($tab!=="report_total"){
+if(isset($_GET["machine_id"])){
+	$machine_id=slash($_GET["machine_id"]);
+	$_SESSION["delivery"]["list"]["machine_id"]=$machine_id;
+}
+if(isset($_SESSION["delivery"]["list"]["machine_id"]))
+	$machine_id=$_SESSION["delivery"]["list"]["machine_id"];
+else
+	$machine_id="";
+if($machine_id!=""){
+	$extra.=" and c.machine_id='".$machine_id."'";
+	$is_search=true;
+}
+}
 if(isset($_GET["q"])){
 	$_SESSION["delivery"]["list"]["q"] = slash( $_GET["q"] );
 }
@@ -66,7 +80,8 @@ if(!empty($q)){
 	$extra.=" and (gatepass_id like '%".$q."%')";
 	$is_search=true;
 }
-$sql = "SELECT * FROM `delivery` WHERE 1 $extra order by customer_id";
+//$sql = "SELECT * FROM `delivery` WHERE 1 $extra order by customer_id";
+$sql = "SELECT a.* FROM `delivery` a left join customer b on a.customer_id = b.id left join delivery_items c on a.id = c.delivery_id WHERE 1 $extra group by delivery_id order by b.customer_name";
 switch($tab){
 	case 'addedit':
 		include("modules/delivery/addedit_do.php");

@@ -41,6 +41,21 @@ if(!defined("APP_START")) die("No Direct Access");
                         ?>
                     </select>
                 </div>
+                <div class="col-sm-2 col-xs-8">
+                    <select name="machine_id" id="machine_id" class="form-control">
+                        <option value=""<?php echo ($machine_id=="")? " selected":"";?>>Select Machine</option>
+                        <?php
+                            $res=doquery("select * from machine order by title",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($machine_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                                <?php
+                                }
+                            }	
+                        ?>
+                    </select>
+                </div>
                 <div class="col-sm-2 text-left">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
@@ -104,6 +119,7 @@ if(!defined("APP_START")) die("No Direct Access");
                                 <tr>
                                     <td>Color</td>
                                     <td>Design</td>
+                                    <td>Machine</td>
                                     <?php
                                     foreach($sizes as $size){
                                         ?>
@@ -115,7 +131,7 @@ if(!defined("APP_START")) die("No Direct Access");
                                 </tr>
                                 </thead>
                                 <?php
-                                $rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from incoming_items where incoming_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
+                                $rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from incoming_items where incoming_id='".$r[ "id" ]."'  group by color_id,design_id", $dblink );
                                 if(numrows($rs1)>0){
                                     $totals = [];
                                     foreach($sizes as $size_id => $size){
@@ -126,6 +142,7 @@ if(!defined("APP_START")) die("No Direct Access");
                                         <tr>
                                             <td><?php echo $colors[$r1["color_id"]]?></td>
                                             <td><?php echo $designs[$r1["design_id"]]?></td>
+                                            <td><?php echo get_field($r1["machine_id"], "machine", "title" ); ?></td>
                                             <?php
                                             $quantities = [];
                                             $t = 0;
@@ -147,7 +164,7 @@ if(!defined("APP_START")) die("No Direct Access");
                                     }
                                     ?>
                                     <tr>
-                                        <td colspan="2">Total</td>
+                                        <td colspan="3">Total</td>
                                         <?php
                                         $t = 0;
                                         foreach($totals as $total){

@@ -54,7 +54,7 @@ table {
 <table width="100%" cellspacing="0" cellpadding="0">
 <thead>
 <tr class="head">
-	<th colspan="18">
+	<th colspan="19">
     	<h1><?php echo get_config( 'site_title' )?></h1>
     	<h2>Delivery List</h2>
         <p>
@@ -72,6 +72,9 @@ table {
 			if( !empty( $customer_id ) ){
 				echo " Customer ".get_field($customer_id, "customer", "customer_name" )."<br>";
 			}
+			if( !empty( $machine_id ) ){
+				echo " Machine ".get_field($machine_id, "machine", "title" )."<br>";
+			}
 			if( !empty( $q ) ){
 				echo "Gatepass ID ".$q."<br>";
 			}
@@ -88,11 +91,12 @@ table {
     <th width="6%" rowspan="2">Gatepass</th>
 	<th width="6%" rowspan="2">Claim</th>
 	<th width="6%" rowspan="2">Labour</th>
-	<th width="60%" colspan="<?php echo count($sizes)+5?>">Items</th>
+	<th width="60%" colspan="<?php echo count($sizes)+6?>">Items</th>
 </tr>
 <tr>
 	<td>Color</td>
 	<td>Design</td>
+	<td>Machine</td>
 	<?php
 	foreach($sizes as $size){
 		?>
@@ -149,6 +153,7 @@ if( numrows( $rs ) > 0 ) {
 							?>
 							<td><?php echo $colors[$r1["color_id"]]?></td>
 							<td><?php echo $designs[$r1["design_id"]]?></td>
+							<td><?php echo get_field($r1["machine_id"], "machine", "title" ); ?></td>
 							<?php
 							$quantities = [];
 							$t = 0;
@@ -185,7 +190,7 @@ if( numrows( $rs ) > 0 ) {
 								<?php 
 							}
 							?>
-							<th colspan="2" class="text-right bg-grey">Total</th>
+							<th colspan="3" class="text-right bg-grey">Total</th>
 							<?php
 							$t = 0;
 							foreach($totals as $size_id => $total){
@@ -212,7 +217,7 @@ if( numrows( $rs ) > 0 ) {
 ?>
 <tr>
 	<td colspan="<?php if(empty($customer_id)) echo "6"; else echo "5";?>"></td>
-	<th colspan="2" class="text-right bg-grey">Grand Total</th>
+	<th colspan="3" class="text-right bg-grey">Grand Total</th>
 	<?php
 	$final_total = 0;
 	foreach($grand_totals as $total){

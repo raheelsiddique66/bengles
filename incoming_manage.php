@@ -15,6 +15,7 @@ else{
 }
 $q="";
 $extra='';
+$extra1='';
 $is_search=false;
 if( isset($_GET["date_from"]) ){
 	$_SESSION["incoming"]["list"]["date_from"] = $_GET["date_from"];
@@ -54,6 +55,20 @@ if($customer_id!=""){
 	$extra.=" and customer_id='".$customer_id."'";
 	$is_search=true;
 }
+if($tab!=="report_total"){
+if(isset($_GET["machine_id"])){
+	$machine_id=slash($_GET["machine_id"]);
+	$_SESSION["incoming"]["list"]["machine_id"]=$machine_id;
+}
+if(isset($_SESSION["incoming"]["list"]["machine_id"]))
+	$machine_id=$_SESSION["incoming"]["list"]["machine_id"];
+else
+	$machine_id="";
+if($machine_id!=""){
+	$extra.=" and c.machine_id='".$machine_id."'";
+	$is_search=true;
+}
+}
 if(isset($_GET["q"])){
 	$_SESSION["incoming"]["list"]["q"] = slash( $_GET["q"] );
 }
@@ -66,7 +81,7 @@ if(!empty($q)){
 	$extra.=" and (gatepass_id = '".$q."' or id = '".$q."')";
 	$is_search=true;
 }
-$sql = "SELECT * FROM `incoming` WHERE 1 $extra  order by customer_id ASC";
+$sql = "SELECT a.* FROM `incoming` a left join customer b on a.customer_id = b.id left join incoming_items c on a.id = c.incoming_id WHERE 1 $extra group by incoming_id order by b.customer_name";
 switch($tab){
 	case 'addedit':
 		include("modules/incoming/addedit_do.php");
