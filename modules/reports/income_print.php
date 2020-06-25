@@ -79,22 +79,32 @@ table {
         </th>
     </tr>
     <?php
-		$sql=doquery("select sum(quantity) as total from delivery_items a inner join delivery b on a.delivery_id = b.id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."' ",$dblink);
-        $payment=dofetch($sql);
-        $rs1 = doquery( "select unit_price as total_price from delivery_items group by color_id,design_id", $dblink );
-		$total_price = 0;
-		if( numrows( $rs1 ) > 0 ) {
-			while( $r1 = dofetch( $rs1 ) ) {
-				$total_price += curr_format($r1["total_price"]);
+        $quantity = 0;
+		$unit_price = 0;
+		$payment_total = 0;
+		$salary_total = 0;
+		$sql=doquery("select * from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."' group by design_id,color_id",$dblink);
+		if( numrows( $sql ) > 0 ) {
+			while( $r1 = dofetch( $sql ) ) {
+				$unit_price = $r1["unit_price"];
 			}
-		}
+        }
+        $q=dofetch(doquery("select sum(quantity) as quantity from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink));
+		$payment_total += $unit_price*$q["quantity"];
 	?>
     <tr>
         <th align="right">Income from <?php echo $date_from?> to <?php echo $date_to?></th>
-        <th align="right"><?php echo $payment["total"] * $total_price?></th>
+        <th align="right">Rs. <?php echo curr_format($payment_total)?></th>
+    </tr>
+    <tr>
+        <th align="right">Salary from <?php echo $date_from?> to <?php echo $date_to?></th>
+        <th align="right">Rs. <?php
+            $rs = dofetch( doquery( "select sum(amount) from employee_payment where date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'", $dblink ) );
+            echo curr_format( $rs[ "sum(amount)" ] );
+            $salary_total += $rs[ "sum(amount)" ];
+        ?></th>
     </tr>
     <?php
-    $payment_total = $payment["total"] * $total_price;
     $total = 0;
     $rs = doquery( "select title, sum(amount) as total from expense a left join expense_category b on a.expense_category_id = b.id where a.status=1 $extra group by expense_category_id", $dblink );
     if( numrows( $rs ) > 0 ) {
@@ -102,22 +112,22 @@ table {
             if( $r[ "total" ] > 0 ){
                 $total += $r[ "total" ];
                 ?>
-                <tr class="">
+                <tr>
                     <th align="right"><?php echo unslash( $r[ "title" ] )?></th>
-                    <th align="right">Rs. <?php echo curr_format($r[ "total" ])?></th>
+                    <th align="right">Rs.<?php echo curr_format($r[ "total" ])?></th>
                 </tr>	
                 <?php
             }
         }
     }
     ?>
-     <tr class="">
+    <tr>
         <th align="right">Total Expense</th>
-        <th align="right">Rs. <?php echo curr_format($total)?></th>
+        <th align="right">Rs. <?php echo curr_format($total+$salary_total)?></th>
     </tr>
-    <tr class="">
+    <tr>
         <th align="right">Net Income</th>
-        <th align="right">Rs. <?php echo $payment_total-$total?></th>
+        <th align="right">Rs. <?php echo curr_format($payment_total-$salary_total-$total)?></th>
     </tr>	
 </table>
 <?php

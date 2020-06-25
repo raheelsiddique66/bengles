@@ -32,8 +32,24 @@ table {
 <table width="100%" cellspacing="0" cellpadding="0">
     <tr class="head">
         <th colspan="9">
-            <?php echo get_config( 'fees_chalan_header' )?>
+            <h1><?php echo get_config( 'site_title' )?></h1>
             <h2>General Journal</h2>
+            <p>
+                <?php
+                if( !empty( $date_from ) || !empty( $date_to ) ){
+                    echo "<br />Date";
+                }
+                if( !empty( $date_from ) ){
+                    echo " from ".$date_from;
+                }
+                if( !empty( $date_to ) ){
+                    echo " to ".$date_to."<br>";
+                }
+                if( !empty( $account_id ) ){
+                    echo " Account: ".get_field($account_id, "account", "title");
+                }
+                ?>
+            </p>
         </th>
     </tr>
     <tr>
@@ -58,15 +74,25 @@ table {
         	while($r=dofetch($rs)){             
 				?>
 				<tr>
-					<td class="text-center"><?php echo $sn++;?></td>
+					<td align="center"><?php echo $sn;?></td>
 					<td><?php echo datetime_convert($r["date"]); ?></td>
 					<td><?php echo unslash($r["details"]); ?></td>
 					<td align="right"><?php echo curr_format($r["debit"]); ?></td>
 					<td align="right"><?php echo curr_format($r["credit"]); ?></td>
 					<td align="right"><?php if($order == 'asc'){$balance += ($r["debit"]-$r["credit"])*($order == 'desc'?'-1':1);} echo curr_format( $balance ); if($order == 'desc'){$balance += ($r["debit"]-$r["credit"])*($order == 'desc'?'-1':1);} ?></td>
 				</tr>
-				<?php
-			}
+                <?php
+                $sn++;
+            }
+            ?>
+            <tr>
+                <td colspan="2"></td>
+                <td><?php echo $order != 'desc'?'Closing':'Opening'?> Balance</td>
+                <td></td>
+                <td></td>
+                <td align="right"><?php echo curr_format( $balance )?></td>
+            </tr>
+            <?php
 		}
         ?>
     </tbody>

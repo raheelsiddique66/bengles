@@ -82,7 +82,6 @@ if( empty( $extra ) ) {
 				//echo $r1["quantity"]."<br>";
 			}
 		}
-		
 		$q=dofetch(doquery("select sum(quantity) as quantity from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink));
 		//echo $q["quantity"];
 		//echo $unit_price;

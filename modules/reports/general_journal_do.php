@@ -53,10 +53,12 @@ if( isset( $_SESSION["reports"]["general_journal"]["order"] ) ){
 }
 $orderby = $order_by." ".$order;
 $main_sql = array();
-$main_sql[] = "select date as date, concat( 'Delivery ', gatepass_id ) as details, unit_price as debit, 0 as credit from delivery_items a left join delivery b on a.delivery_id=b.id where b.status=1";
+$main_sql[] = "select date as date, concat( 'Delivery ', gatepass_id ) as details, unit_price*sum(quantity) as debit, 0 as credit from delivery_items a left join delivery b on a.delivery_id=b.id where b.status=1 group by delivery_id";
+$main_sql[] = "select datetime_added as date, concat( 'Payment ', if(amount>0, 'from', 'to'),' Customer ', customer_name ) as details, amount as debit, 0 as credit from customer_payment a left join customer b on a.customer_id=b.id where a.status=1".(!empty($account_id)?" and account_id='".$account_id."'":"");
 $main_sql[] = "select datetime_added as date, if(details='', concat( 'Paid ', title ), concat(title, ': ', details)) as details, 0 as debit, amount as credit from expense a left join expense_category b on a.expense_category_id=b.id where a.status=1".(!empty($account_id)?" and account_id='".$account_id."'":"");
 $main_sql[] = "select datetime_added as date, if(details='', concat( 'Transfer from account ', title ), details) as details, amount as debit, 0 as credit from transaction a left join account b on a.reference_id=b.id where a.status=1".(!empty($account_id)?" and account_id='".$account_id."'":"");
 $main_sql[] = "select datetime_added as date, if(details='', concat( 'Transfer to account ', title ), concat(title, ': ', details)) as details, 0 as debit, amount as credit from transaction a left join account b on a.account_id=b.id where a.status=1".(!empty($account_id)?" and reference_id='".$account_id."'":"");
+$main_sql[] = "select date as date, concat( 'Paid Salary to ', name ) as details, 0 as debit, amount as credit from employee_payment a left join employees b on a.employee_id=b.id where ".(!empty($account_id)?" account_id='".$account_id."'":"");
 $main_sql="(".implode( ' union ', $main_sql ).") as total_records";
 $sql = "select * from ".$main_sql." where 1 $extra order by $orderby, details $order";
 

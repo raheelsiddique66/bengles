@@ -70,7 +70,7 @@ $customer=dofetch(doquery("select * from customer where id='".slash($invoice["cu
                     $sn=1;
                     $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer[ "id" ]."' and date<'".date('Y-m-d',strtotime($invoice["date_from"]))."' union select -sum(amount) from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added<='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00') as transactions ";
                     $balance=dofetch(doquery($sql,$dblink));
-                    $balance = $balance[ "amount" ];
+                    $balance = $customer["balance"]+$balance[ "amount" ];
                     //$balance = get_customer_balance( $customer["id"], date('Y-m-d',strtotime($invoice["date_to"])));
                     ?>
                     <tr>

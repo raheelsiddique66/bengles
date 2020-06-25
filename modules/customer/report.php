@@ -74,16 +74,17 @@ if(!empty($end_date)){
             </tr>
     	</thead>
     	<tbody>
-			<?php 
+            <?php 
+           
             $sql="select sum(amount) as amount from (select concat( 'Delivery #', a.gatepass_id) as transaction, unit_price * quantity as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' union select concat( 'Payment #', id) as transaction, -amount from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59') as transactions ";
 			$balance=dofetch(doquery($sql,$dblink));
-			$balance = $balance[ "amount" ];
+			$balance = $customer["balance"]+$balance[ "amount" ];
 			$sql="select concat( 'Delivery #', a.gatepass_id) as transaction, date as datetime_added, unit_price * quantity as amount, quantity from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' union select 'Payment', datetime_added as datetime_added, -amount, '' from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' order by datetime_added desc";
             $rs=show_page($rows, $pageNum, $sql);
             ?>
 			<tr>
                 <td class="text-right" colspan="4"><strong>Opening Balance</strong></td>
-                <td class="text-right"><?php echo curr_format($balance); ?></td>
+                <th class="text-right"><?php echo curr_format($balance); ?></th>
             </tr>
 			<?php
 			if(numrows($rs)>0){
