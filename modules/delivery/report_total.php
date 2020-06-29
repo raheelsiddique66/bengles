@@ -128,8 +128,8 @@ if( numrows( $rs ) > 0 ) {
                 }
             }
 			?>
-            <th class="text-right bg-grey"><?php echo curr_format($total_quantity)?></th>
-            <th class="text-right bg-grey"><?php echo curr_format($total_amount)?></th>
+            <th class="text-right"><?php echo curr_format($total_quantity)?></th>
+            <th class="text-right"><?php echo curr_format($total_amount)?></th>
         </tr>
 		<?php
 		$sn++;
@@ -138,7 +138,7 @@ if( numrows( $rs ) > 0 ) {
 ?>
 <tr>
 	<td></td>
-	<th class="text-right bg-grey">Grand Total</th>
+	<th class="text-right">Grand Total</th>
     <?php
     foreach($colors as $color_id => $color){
         foreach($color as $rate => $color_title) {
@@ -148,8 +148,8 @@ if( numrows( $rs ) > 0 ) {
         }
     }
     ?>
-	<th class="text-right bg-grey"><?php echo curr_format($grand_total_quantity)?></th>
-	<th class="text-right bg-grey"><?php echo curr_format($grand_total_amount)?></th>
+	<th class="text-right"><?php echo curr_format($grand_total_quantity)?></th>
+	<th class="text-right"><?php echo curr_format($grand_total_amount)?></th>
 </tr>
 </table>
 <?php

@@ -94,9 +94,9 @@ table {
 	<th width="60%" colspan="<?php echo count($sizes)+6?>">Items</th>
 </tr>
 <tr>
+    <td>Machine</td>
 	<td>Color</td>
 	<td>Design</td>
-	<td>Machine</td>
 	<?php
 	foreach($sizes as $size){
 		?>
@@ -151,9 +151,9 @@ if( numrows( $rs ) > 0 ) {
 								}
 							}
 							?>
+                            <td><?php echo get_field($r1["machine_id"], "machine", "title" ); ?></td>
 							<td><?php echo $colors[$r1["color_id"]]?></td>
 							<td><?php echo $designs[$r1["design_id"]]?></td>
-							<td><?php echo get_field($r1["machine_id"], "machine", "title" ); ?></td>
 							<?php
 							$quantities = [];
 							$t = 0;

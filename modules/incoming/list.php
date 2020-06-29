@@ -117,9 +117,9 @@ if(!defined("APP_START")) die("No Direct Access");
                             <table class="table table-hover list">
                                 <thead>
                                 <tr>
+                                    <td>Machine</td>
                                     <td>Color</td>
                                     <td>Design</td>
-                                    <td>Machine</td>
                                     <?php
                                     foreach($sizes as $size){
                                         ?>
@@ -140,9 +140,9 @@ if(!defined("APP_START")) die("No Direct Access");
                                     while($r1=dofetch($rs1)){
                                         ?>
                                         <tr>
+                                            <td><?php echo get_field($r1["machine_id"], "machine", "title" ); ?></td>
                                             <td><?php echo $colors[$r1["color_id"]]?></td>
                                             <td><?php echo $designs[$r1["design_id"]]?></td>
-                                            <td><?php echo get_field($r1["machine_id"], "machine", "title" ); ?></td>
                                             <?php
                                             $quantities = [];
                                             $t = 0;
