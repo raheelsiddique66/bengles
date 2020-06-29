@@ -63,45 +63,6 @@ function get_schedule( $schedule, $day_number ){
 	}
 	return $schedule_text;
 }
-function run_schedule(){
-	global $dblink;
-	$rs = doquery( "select * from scheduled_transaction where nextrun < '".time()."' and status=1", $dblink );
-	if( numrows( $rs ) > 0 ) {
-		while( $r = dofetch( $rs ) ){
-			$r[ "details" ] = str_replace( array(
-				'[date]',
-				'[day]',
-				'[month]',
-				'[year]'
-			), array(
-				date("d/m/Y"),
-				date('l'),
-				date('F'),
-				date('Y')
-			), $r[ "details" ]);
-			if( $r[ "type" ] == 0 ) {
-				$sql="INSERT INTO transaction ( project_id, account_id, reference_id, datetime_added, amount, details, added_by) VALUES ( '".$r["project_id"]."', '".$r["account_id"]."','".$r["reference_id"]."','".date("Y-m-d H:i:s")."','".$r[ "amount" ]."','".$r["details"]."','".$r["added_by"]."')";
-				doquery($sql,$dblink);
-			}
-			else if( $r[ "type" ] == 1 ) {
-				$sql="INSERT INTO expense ( project_id, expense_category_id, account_id, datetime_added, amount, details, added_by) VALUES ( '".$r["project_id"]."', '".$r["account_id"]."','".$r["reference_id"]."','".date("Y-m-d H:i:s")."','".$r[ "amount" ]."','".$r["details"]."','".$r["added_by"]."')";
-				doquery($sql,$dblink);
-			}
-			else if( $r[ "type" ] == 2 ) {
-				$month = date( "n", strtotime( "last month" ))-1;
-				$year = date( "Y", strtotime( "last month" ));
-				doquery( "insert into salary(employee_id, month, year, datetime_added, amount, added_by) values('".$r["account_id"]."', '".$month."','".$year."','".date("Y-m-d H:i:s")."','".$r[ "amount" ]."','".$r["added_by"]."')", $dblink );
-				$salary_id = inserted_id();
-				$sql="INSERT INTO salary_payment ( salary_id, employee_id, account_id, datetime_added, amount, details, added_by) VALUES ( '".$salary_id."', '".$r["account_id"]."','".$r["reference_id"]."','".date("Y-m-d H:i:s")."','".$r[ "amount" ]."','".$r["details"]."','".$r["added_by"]."')";
-				doquery($sql,$dblink);
-			}
-			$r[ "lastrun" ] = $r[ "nextrun" ];
-			$r[ "nextrun" ] = get_nextrun( $r[ "schedule" ], $r[ "day_number" ], $r[ "lastrun" ] );
-			doquery( "update scheduled_transaction set lastrun = '".$r[ "lastrun" ]."', nextrun = '".$r[ "nextrun" ]."' where id = '".$r[ "id" ]."'", $dblink );
-		}
-	}
-}
-run_schedule();
 $admin_email=get_config("admin_email");
 $site_title=get_config("site_title");
 $site_url=get_config("site_url");

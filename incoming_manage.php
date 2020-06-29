@@ -78,7 +78,7 @@ if(isset($_SESSION["incoming"]["list"]["q"])) {
 	$q="";
 }
 if(!empty($q)){
-	$extra.=" and (gatepass_id = '".$q."' or id = '".$q."')";
+	$extra.=" and (gatepass_id = '".$q."' or a.id = '".$q."')";
 	$is_search=true;
 }
 $sql = "SELECT a.* FROM `incoming` a left join customer b on a.customer_id = b.id left join incoming_items c on a.id = c.incoming_id WHERE 1 $extra group by incoming_id order by b.customer_name";
