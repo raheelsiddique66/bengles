@@ -118,8 +118,8 @@ if(!defined("APP_START")) die("No Direct Access");
                                 <thead>
                                 <tr>
                                     <td>Machine</td>
-                                    <td>Color</td>
                                     <td>Design</td>
+                                    <td>Color</td>
                                     <?php
                                     foreach($sizes as $size){
                                         ?>
@@ -141,8 +141,8 @@ if(!defined("APP_START")) die("No Direct Access");
                                         ?>
                                         <tr>
                                             <td><?php echo get_field($r1["machine_id"], "machine", "title" ); ?></td>
-                                            <td><?php echo $colors[$r1["color_id"]]?></td>
                                             <td><?php echo $designs[$r1["design_id"]]?></td>
+                                            <td><?php echo $colors[$r1["color_id"]]?></td>
                                             <?php
                                             $quantities = [];
                                             $t = 0;

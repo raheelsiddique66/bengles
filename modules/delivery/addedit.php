@@ -127,8 +127,8 @@ else {
                                 <tr>
                                     <th width="2%" class="text-center" rowspan="2">S.no</th>
                                     <th width="10%" rowspan="2">Machine</th>
-                                    <th width="10%" rowspan="2">Color</th>
                                     <th width="10%" rowspan="2">Design</th>
+                                    <th width="10%" rowspan="2">Color</th>
                                     <th class="text-center" width="40%" colspan="{{ sizes.length+1 }}">Sizes</th>
                                     <th class="text-right" width="5%">Extra</th>
                                     <th class="text-right" width="6%">Unit Price</th>
@@ -150,15 +150,15 @@ else {
                                         </select>
                                     </td>
                                     <td>
-                                        <select title="Choose Option" ng-model="delivery.delivery_items[$index].color_id">
-                                            <option value="">Select Color</option>
-                                            <option ng-repeat="color in colors" value="{{ color.id }}">{{ color.title }}</option>
-                                        </select>
-                                    </td>
-                                    <td>
                                         <select title="Choose Option" ng-model="delivery.delivery_items[$index].design_id">
                                             <option value="">Select Design</option>
                                             <option ng-repeat="design in designs" value="{{ design.id }}">{{ design.title }}</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select title="Choose Option" ng-model="delivery.delivery_items[$index].color_id">
+                                            <option value="">Select Color</option>
+                                            <option ng-repeat="color in colors" value="{{ color.id }}">{{ color.title }}</option>
                                         </select>
                                     </td>
                                     <td class="text-right" ng-repeat="size in sizes"><input type="text" ng-model="delivery.delivery_items[$parent.$index].quantity[size.id]" /></td>                        
