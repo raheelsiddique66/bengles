@@ -1,6 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$sql = "SELECT a.*, group_concat(a.id) as delivery_ids FROM `delivery` a left join customer b on a.customer_id = b.id  WHERE 1 $extra group by customer_id order by customer_name";
+$sql = "SELECT a.*, group_concat(a.id)  as delivery_ids, b.balance FROM `delivery` a left join customer b on a.customer_id = b.id  WHERE 1 $extra group by customer_id order by customer_name";
 $rs = doquery( $sql, $dblink );
 $colors = [];
 $rs2 = doquery("select * from color order by sortorder", $dblink);
@@ -91,6 +91,9 @@ table {
     ?>
     <th width="10%">Total</th>
     <th width="10%">Amount</th>
+    <th width="10%">Previous Amount</th>
+    <th width="10%">Payment</th>
+    <th width="10%">New Balance</th>
 </tr>
 </thead>
 <?php
@@ -98,8 +101,23 @@ if( numrows( $rs ) > 0 ) {
 	$sn = 1;
     $grand_total_quantity = 0;
 	$grand_total_amount = 0;
+    $total_balance = 0;
+    $total_income = 0;
 	while( $r = dofetch( $rs ) ) {
-		?>
+        if(!empty($date_from)){
+            $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$r[ "customer_id" ]."' and date<'".date_dbconvert($date_from)."' union select -sum(amount) from customer_payment where customer_id = '".$r[ "customer_id" ]."' and datetime_added<='".date_dbconvert($date_from)." 00:00:00') as transactions ";
+            $balance=dofetch(doquery($sql,$dblink));
+            $balance = $r["balance"]+$balance[ "amount" ];
+        }
+        else{
+            $balance = 0;
+        }
+        $sql="select sum(amount) as amount from customer_payment where customer_id = '".$r[ "customer_id" ]."' and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 00:00:00'";
+        $income=dofetch(doquery($sql,$dblink));
+        $income = $income[ "amount" ];
+        $total_balance += $balance;
+        $total_income += $income;
+        ?>
 		<tr>
         	<td align="center"><?php echo $sn?></td>
 			<td><?php echo get_field($r["customer_id"], "customer", "customer_name" ); ?></td>
@@ -128,8 +146,11 @@ if( numrows( $rs ) > 0 ) {
                 }
             }
 			?>
-            <th class="text-right bg-grey"><?php echo curr_format($total_quantity)?></th>
-            <th class="text-right bg-grey"><?php echo curr_format($total_amount)?></th>
+            <th class="text-right"><?php echo curr_format($total_quantity)?></th>
+            <th class="text-right"><?php echo curr_format($total_amount)?></th>
+            <th class="text-right"><?php echo curr_format($balance)?></th>
+            <th class="text-right"><?php echo curr_format($income)?></th>
+            <th class="text-right"><?php echo curr_format($total_amount+$balance-$income)?></th>
         </tr>
 		<?php
 		$sn++;
@@ -138,7 +159,7 @@ if( numrows( $rs ) > 0 ) {
 ?>
 <tr>
 	<td></td>
-	<th class="text-right bg-grey">Grand Total</th>
+	<th class="text-right">Grand Total</th>
     <?php
     foreach($colors as $color_id => $color){
         foreach($color as $rate => $color_title) {
@@ -148,8 +169,11 @@ if( numrows( $rs ) > 0 ) {
         }
     }
     ?>
-	<th class="text-right bg-grey"><?php echo curr_format($grand_total_quantity)?></th>
-	<th class="text-right bg-grey"><?php echo curr_format($grand_total_amount)?></th>
+	<th class="text-right"><?php echo curr_format($grand_total_quantity)?></th>
+	<th class="text-right"><?php echo curr_format($grand_total_amount)?></th>
+    <th class="text-right"><?php echo curr_format($total_balance)?></th>
+    <th class="text-right"><?php echo curr_format($total_income)?></th>
+    <th class="text-right"><?php echo curr_format($grand_total_amount+$total_balance-$total_income)?></th>
 </tr>
 </table>
 <?php
