@@ -1,6 +1,7 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
 $rs = doquery( $sql, $dblink );
+$total_amount = 0;
 ?>
 <style>
 h1, h2, h3, p {
@@ -69,6 +70,7 @@ table {
 if( numrows( $rs ) > 0 ) {
 	$sn = 1;
 	while( $r = dofetch( $rs ) ) {
+        $total_amount += $r["amount"];
 		?>
 		<tr>
         	<td align="center"><?php echo $sn++?></td>
@@ -82,6 +84,11 @@ if( numrows( $rs ) > 0 ) {
 	}
 }
 ?>
+<tr>
+<th align="right" colspan="4">Total</th>
+<th align="right"><?php echo curr_format($total_amount)?></th>
+<th></th>
+</tr>
 </table>
 <?php
 die;
