@@ -54,6 +54,18 @@ if($employee_id!=""){
 	$extra.=" and employee_id='".$employee_id."'";
 	$is_search=true;
 }
+if(isset($_GET["account_id"])){
+	$account_id=slash($_GET["account_id"]);
+	$_SESSION["employee_payment"]["list"]["account_id"]=$account_id;
+}
+if(isset($_SESSION["employee_payment"]["list"]["account_id"]))
+	$account_id=$_SESSION["employee_payment"]["list"]["account_id"];
+else
+	$account_id="";
+if($account_id!=""){
+	$extra.=" and account_id='".$account_id."'";
+	$is_search=true;
+}
 if(isset($_GET["q"])){
 	$q=slash($_GET["q"]);
 	$_SESSION["employee_payment"]["list"]["q"]=$q;

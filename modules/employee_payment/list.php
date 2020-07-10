@@ -19,7 +19,7 @@ if(!defined("APP_START")) die("No Direct Access");
     <li class="col-xs-12 col-lg-12 col-sm-12">
     	<div>
         	<form class="form-horizontal" action="" method="get">
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                 	<select name="employee_id" id="employee_id" class="select_multiple custom_select">
                         <option value=""<?php echo ($employee_id=="")? " selected":"";?>>Select Employee</option>
                         <?php
@@ -34,13 +34,28 @@ if(!defined("APP_START")) die("No Direct Access");
                         ?>
                     </select>
                 </div>
+                <div class="col-sm-2">
+                	<select name="account_id" id="account_id" class="select_multiple custom_select">
+                        <option value=""<?php echo ($account_id=="")? " selected":"";?>>Select Account</option>
+                        <?php
+                            $res=doquery("select * from account order by title",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($account_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                            	<?php
+                                }
+                            }	
+                        ?>
+                    </select>
+                </div>
                 <div class="col-sm-2 margin-btm-5">
                   <input type="text" title="Enter Date From" value="<?php echo $date_from;?>" placeholder="Date From" name="date_from" id="date_from" class="form-control date-picker" autocomplete="off" />  
                 </div>
                 <div class="col-sm-2 margin-btm-5">
                   <input type="text" title="Enter Date To" value="<?php echo $date_to;?>" placeholder="Date To" name="date_to" id="date_to" class="form-control date-picker" autocomplete="off" />  
                 </div>
-                <div class="col-sm-3 text-left">
+                <div class="col-sm-2 text-left">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
                 </div>

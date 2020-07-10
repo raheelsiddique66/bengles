@@ -33,6 +33,21 @@ if(!defined("APP_START")) die("No Direct Access");
                         ?>
                     </select>
                 </div>
+                <div class="col-sm-2">
+                	<select name="account_id" id="account_id" class="custom_select">
+                        <option value=""<?php echo ($account_id=="")? " selected":"";?>>Select Account</option>
+                        <?php
+                            $res=doquery("select * from account where status = 1 order by title ",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($account_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                                <?php
+                                }
+                            }	
+                        ?>
+                    </select>
+                </div>
                 <div class="col-sm-2 margin-btm-5">
                   <input type="text" title="Enter Date From" value="<?php echo $date_from;?>" placeholder="Date From" name="date_from" id="date_from" class="form-control date-picker" autocomplete="off" />  
                 </div>
