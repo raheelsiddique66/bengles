@@ -6,7 +6,7 @@ if(isset($_POST["employee_salary_edit"])){
 	if(empty($employee_id))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="Update employee_salary set `employee_id`='".slash($employee_id)."', `date`='".slash(date_dbconvert($date))."', `salary_rate`='".slash($salary_rate)."', `over_time_rate`='".slash($over_time_rate)."', `calculated_salary`='".slash($calculated_salary)."' where id='".$id."'";
+		$sql="Update employee_salary set `employee_id`='".slash($employee_id)."', `machine_id`='".slash($machine_id)."', `date`='".slash(date_dbconvert($date))."', `salary_rate`='".slash($salary_rate)."', `over_time_rate`='".slash($over_time_rate)."', `calculated_salary`='".slash($calculated_salary)."' where id='".$id."'";
 		doquery($sql,$dblink);
 		unset($_SESSION["employee_salary_manage"]["edit"]);
 		header('Location: employee_salary_manage.php?tab=list&msg='.url_encode("Sucessfully Updated"));

@@ -54,6 +54,18 @@ if($employee_id!=""){
 	$extra.=" and employee_id='".$employee_id."'";
 	$is_search=true;
 }
+if(isset($_GET["machine_id"])){
+    $machine_id=slash($_GET["machine_id"]);
+    $_SESSION["employee_salary"]["list"]["machine_id"]=$machine_id;
+}
+if(isset($_SESSION["employee_salary"]["list"]["machine_id"]))
+    $machine_id=$_SESSION["employee_salary"]["list"]["machine_id"];
+else
+    $machine_id="";
+if($machine_id!=""){
+    $extra.=" and machine_id='".$machine_id."'";
+    $is_search=true;
+}
 if(isset($_GET["q"])){
 	$q=slash($_GET["q"]);
 	$_SESSION["employee_salary"]["list"]["q"]=$q;
