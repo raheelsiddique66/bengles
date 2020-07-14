@@ -131,7 +131,7 @@ else {
                                     <th width="10%" rowspan="2">Color</th>
                                     <th class="text-center" width="40%" colspan="{{ sizes.length+1 }}">Sizes</th>
                                     <th class="text-right" width="5%">Extra</th>
-                                    <th class="text-right" width="6%">Unit Price</th>
+                                    <th class="text-right" width="6%">Price</th>
                                     <th class="text-right" width="5%">Total</th>
                                     <th class="text-center" width="5%">Actions</th>
                                 </tr>
@@ -173,7 +173,7 @@ else {
                                     <th class="text-right" style="background: rgb(178, 219, 239);" ng-repeat="size in sizes">{{ getTotalQty(-1,size.id) }}</th>
                                     <th class="text-right" style="background: rgba(61, 165, 145, 0.89);color: #fff;">{{ getTotalQty(-1,-1) }}</th>
                                     <th class="text-right">&nbsp;</th>
-                                    <th class="text-right">Total Price</th>
+                                    <th class="text-right">Total</th>
                                     <th class="text-right">{{ getTotal(-1,-1) }}</th>
                                 </tr>
                                 <tr>
