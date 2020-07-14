@@ -30,13 +30,13 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			labour_id: 0,
 			delivery_items: [],
 			customer_payment_id: 0,
-			payment_account_id: 0,
+			payment_account_id: "15",
 			payment_amount: 0
 		};
 		$scope.delivery_item = {
-			"color_id":"",
+			"color_id":"5",
 			"design_id": "",
-			"machine_id": "0",
+			"machine_id": "7",
 			"quantity": [],
 			"extra": 0,
 			"unit_price": 105
