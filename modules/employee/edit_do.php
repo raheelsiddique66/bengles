@@ -6,7 +6,7 @@ if(isset($_POST["employee_edit"])){
 	if(empty($name))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="Update employees set `name`='".slash($name)."', `father_name`='".slash($father_name)."', `phone_number`='".slash($phone_number)."', `salary_type`='".slash($salary_type)."', `salary`='".slash($salary)."', `over_time_per_hour`='".slash($over_time_per_hour)."' where id='".$id."'";
+		$sql="Update employees set `name`='".slash($name)."', `father_name`='".slash($father_name)."', `phone_number`='".slash($phone_number)."', `salary_type`='".slash($salary_type)."', `machine_id`='".slash($machine_id)."', `salary`='".slash($salary)."', `over_time_per_hour`='".slash($over_time_per_hour)."' where id='".$id."'";
 		doquery($sql,$dblink);
 		unset($_SESSION["employee_manage"]["edit"]);
 		header('Location: employee_manage.php?tab=list&msg='.url_encode("Sucessfully Updated"));

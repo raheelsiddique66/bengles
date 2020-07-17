@@ -1,19 +1,25 @@
 angular.module('salary', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularjs-datetime-picker', 'localytics.directives']).controller('salaryController', 
 	function ($scope, $http, $interval, $filter) {
 		$scope.employees = [];
+		$scope.machines = [];
 		$scope.salary_type = "0";
 		$scope.salary_date = '';
+		$scope.machine_id = '';
 		$scope.errors = [];
 		$scope.processing = false;
 		angular.element(document).ready(function () {
 			$scope.wctAJAX( {action: 'get_session'}, function( response ){
 				$scope.salary_date = response.date;
 				$scope.salary_type = response.type;
+				$scope.machine_id = response.machine;
 				$scope.get_records();
+			});
+			$scope.wctAJAX( {action: 'get_machine'}, function( response ){
+				$scope.machines = response;
 			});
 		});
 		$scope.get_records = function(){
-			$scope.wctAJAX( {action: 'get_records', salary_date: $scope.salary_date, salary_type: $scope.salary_type}, function( response ){
+			$scope.wctAJAX( {action: 'get_records', salary_date: $scope.salary_date, salary_type: $scope.salary_type, machine_id: $scope.machine_id}, function( response ){
 				$scope.employees = response.employees;
 				$scope.dates = response.dates;
 			});

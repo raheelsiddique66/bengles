@@ -33,21 +33,6 @@ if(!defined("APP_START")) die("No Direct Access");
                         ?>
                     </select>
                 </div>
-                <div class="col-sm-2">
-                    <select name="machine_id" id="machine_id" class="custom_select">
-                        <option value=""<?php echo ($machine_id=="")? " selected":"";?>>All Machine</option>
-                        <?php
-                        $res=doquery("select * from machine where status = 1 order by title",$dblink);
-                        if(numrows($res)>=0){
-                            while($rec=dofetch($res)){
-                                ?>
-                                <option value="<?php echo $rec["id"]?>" <?php echo($machine_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
-                                <?php
-                            }
-                        }
-                        ?>
-                    </select>
-                </div>
                 <div class="col-sm-2 margin-btm-5">
                   <input type="text" title="Enter Date From" value="<?php echo $date_from;?>" placeholder="Date From" name="date_from" id="date_from" class="form-control date-picker" autocomplete="off" />  
                 </div>
@@ -74,7 +59,6 @@ if(!defined("APP_START")) die("No Direct Access");
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
                 <th width="20%">Employee Name</th>
-                <th width="10%">Machine</th>
                 <th width="10%">Date</th>
                 <th width="10%">Salary Rate</th>
                 <th width="10%">Over Time rate</th>
@@ -96,7 +80,6 @@ if(!defined("APP_START")) die("No Direct Access");
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
                         <td><?php echo unslash($r["name"]); ?></td>
-                        <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
                         <td><?php echo unslash(date_convert($r["date"])); ?></td>
                         <td><?php echo curr_format($r["salary_rate"]); ?></td>
                         <td><?php echo curr_format($r["over_time_rate"]); ?></td>

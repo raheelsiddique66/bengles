@@ -7,12 +7,27 @@ if(isset($_POST["action"])){
 			$response = array(
 			    "date" => isset($_SESSION["manage_salary"]["salary_date"])?$_SESSION["manage_salary"]["salary_date"]:date_convert( date( "Y-m-d" ) ),
                 "type" => isset($_SESSION["manage_salary"]["salary_type"])?$_SESSION["manage_salary"]["salary_type"]:"0",
+                "machine" => isset($_SESSION["manage_salary"]["machine_id"])?$_SESSION["manage_salary"]["machine_id"]:"",
             );
 		break;
+        case "get_machine":
+            $rs = doquery( "select * from machine where status=1 order by title", $dblink );
+            $machines = array();
+            if( numrows( $rs ) > 0 ) {
+                while( $r = dofetch( $rs ) ) {
+                    $machines[] = array(
+                        "id" => $r[ "id" ],
+                        "title" => unslash($r[ "title" ])
+                    );
+                }
+            }
+            $response = $machines;
+        break;
 		case "get_records":
             extract($_POST);
             $_SESSION["manage_salary"]["salary_type"] = $salary_type;
             $_SESSION["manage_salary"]["salary_date"] = $salary_date;
+            $_SESSION["manage_salary"]["machine_id"] = $machine_id;
             $dates = array();
             $start = strtotime(date_dbconvert($salary_date));
 			if($salary_type == 0){
@@ -35,7 +50,7 @@ if(isset($_POST["action"])){
                 );
                 $currentdate = strtotime('+1 day', $currentdate);
             }
-            $rs = doquery( "select * from employees where status=1 and (salary_type='".$salary_type."'".($salary_type==""?" or salary_type='0'":"").") order by name", $dblink );
+            $rs = doquery( "select * from employees where status=1 and machine_id = '".$machine_id."' and (salary_type='".$salary_type."'".($salary_type==""?" or salary_type='0'":"").") order by name", $dblink );
             $employees = array();
             if( numrows( $rs ) > 0 ) {
                 while( $r = dofetch( $rs ) ) {
@@ -56,6 +71,7 @@ if(isset($_POST["action"])){
                         }
                     }
                     $salary = $salary_type==1&&$r["salary_type"]==0?0:$r["salary"];
+                    $machine = $machine_id;
                     $over_time_rate = $salary_type==0?0:$r["over_time_per_hour"];
                     $calculated_salary = 0;
                     $payment = 0;
@@ -93,6 +109,7 @@ if(isset($_POST["action"])){
             $dates = array();
             $start = strtotime(date_dbconvert($_SESSION["manage_salary"]["salary_date"]));
             $salary_type = $_SESSION["manage_salary"]["salary_type"];
+            $machine_id = $_SESSION["manage_salary"]["salary_type"];
             if($salary_type == 0){
                 $date = date("Y-m-01", $start);
                 $end = strtotime ( '+1 month' , strtotime ( $date ) ) ;
