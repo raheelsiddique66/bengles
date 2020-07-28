@@ -34,6 +34,21 @@ if(!defined("APP_START")) die("No Direct Access");
                     </select>
                 </div>
                 <div class="col-sm-2">
+                    <select name="machine_id" id="machine_id" class="custom_select">
+                        <option value=""<?php echo ($machine_id=="")? " selected":"";?>>All Machine</option>
+                        <?php
+                        $res=doquery("select * from machine where status = 1 order by title",$dblink);
+                        if(numrows($res)>=0){
+                            while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($machine_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="col-sm-2">
                 	<select name="account_id" id="account_id" class="custom_select">
                         <option value=""<?php echo ($account_id=="")? " selected":"";?>>Select Account</option>
                         <?php
@@ -48,10 +63,10 @@ if(!defined("APP_START")) die("No Direct Access");
                         ?>
                     </select>
                 </div>
-                <div class="col-sm-2 margin-btm-5">
+                <div class="col-sm-1 margin-btm-5">
                   <input type="text" title="Enter Date From" value="<?php echo $date_from;?>" placeholder="Date From" name="date_from" id="date_from" class="form-control date-picker" autocomplete="off" />  
                 </div>
-                <div class="col-sm-2 margin-btm-5">
+                <div class="col-sm-1 margin-btm-5">
                   <input type="text" title="Enter Date To" value="<?php echo $date_to;?>" placeholder="Date To" name="date_to" id="date_to" class="form-control date-picker" autocomplete="off" />  
                 </div>
                 <div class="col-sm-2">
@@ -75,6 +90,7 @@ if(!defined("APP_START")) die("No Direct Access");
                     <label for="select_all"></label></div></th>
                 <th width="5%" class="text-center">ID</th>
                 <th>Customer Name</th>
+                <th width="10%">Machine</th>
                 <th>Datetime</th>
                 <th class="text-right">Amount</th>
                 <th>Paid By</th>
@@ -97,6 +113,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         </td>
                         <td class="text-center"><?php echo $r["id"]?></td>
                         <td><?php echo unslash( $r[ "customer_name" ] );?></td>
+                        <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
                         <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
                         <td><?php echo get_field( unslash($r["account_id"]), "account", "title" ); ?></td>
@@ -133,14 +150,14 @@ if(!defined("APP_START")) die("No Direct Access");
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "customer_payment", $sql, $pageNum)?></td>
+                    <td colspan="5" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "customer_payment", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="9"  class="no-record">No Result Found</td>
+                    <td colspan="10"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

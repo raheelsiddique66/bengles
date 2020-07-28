@@ -53,6 +53,7 @@ if(!empty($q)){
                     <label for="select_all"></label></div></th>
                 <th width="20%">Title</th>
                 <th width="20%">Title In Urdu</th>
+                <th width="10%">Rate</th>
                 <th width="10%" class="text-center">Sortorder</th>
                 <th width="10%" class="text-center">Status</th>
                 <th width="10%" class="text-center">Actions</th>
@@ -74,6 +75,7 @@ if(!empty($q)){
                         </td>
                         <td><?php echo unslash($r["title"]); ?></td>
                         <td><span class="nastaleeq"><?php echo unslash($r["title_urdu"]); ?></span></td>
+                        <td><?php echo curr_format($r["rate"]);?></td>
                         <td class="text-center"><?php echo $r["sortorder"]; ?></td>
                         <td class="text-center">
                             <a href="color_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
@@ -110,14 +112,14 @@ if(!empty($q)){
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="3" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "color", $sql, $pageNum)?></td>
+                    <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "color", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="7"  class="no-record">No Result Found</td>
+                    <td colspan="8"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

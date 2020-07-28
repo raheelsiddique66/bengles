@@ -53,6 +53,7 @@ if(isset($_POST["action"])){
 					$colors[] = array(
 						"id" => $r[ "id" ],
 						"title" => unslash($r[ "title" ]),
+                        "rate" => unslash($r[ "rate" ]),
 					);
 				}
 			}

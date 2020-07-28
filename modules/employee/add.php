@@ -10,6 +10,7 @@ else{
     $salary_type="";
     $salary="";
     $over_time_per_hour="40";
+    $machine_id = "";
 }
 ?>
 <div class="page-header">
@@ -66,6 +67,28 @@ else{
                     <option value="1">weekly</option>
                     <option value="2">daily</option>
                     <option value="3">Staff</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-2 control-label">
+                <label class="form-label" for="machine_id">Machine</label>
+            </div>
+            <div class="col-sm-10">
+                <select name="machine_id" title="Choose Option">
+                    <option value="0">All Machine</option>
+                    <?php
+                    $res=doquery("select * from machine where status=1 order by title", $dblink);
+                    if(numrows($res)>0){
+                        while($rec=dofetch($res)){
+                            ?>
+                            <option value="<?php echo $rec["id"]?>"<?php echo($machine_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"]); ?></option>
+                            <?php
+                        }
+                    }
+                    ?>
                 </select>
             </div>
         </div>

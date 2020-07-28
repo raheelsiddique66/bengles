@@ -6,7 +6,7 @@ if(isset($_POST["invoice_edit"])){
 	if(empty($customer_id))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="Update invoice set `customer_id`='".slash($customer_id)."',`datetime_added`='".slash(datetime_dbconvert(unslash($datetime_added)))."', `date_from`='".slash(date_dbconvert($date_from))."',`date_to`='".slash(date_dbconvert($date_to))."',`notes`='".slash($notes)."'"." where id='".$id."'";
+		$sql="Update invoice set `customer_id`='".slash($customer_id)."',`machine_id`='".slash($machine_id)."',`datetime_added`='".slash(datetime_dbconvert(unslash($datetime_added)))."', `date_from`='".slash(date_dbconvert($date_from))."',`date_to`='".slash(date_dbconvert($date_to))."',`notes`='".slash($notes)."'"." where id='".$id."'";
 		doquery($sql,$dblink);
 		unset($_SESSION["invoice_manage"]["edit"]);
 		header('Location: invoice_manage.php?tab=list&msg='.url_encode("Sucessfully Updated"));

@@ -131,7 +131,7 @@ else {
                                     <th width="10%" rowspan="2">Color</th>
                                     <th class="text-center" width="40%" colspan="{{ sizes.length+1 }}">Sizes</th>
                                     <th class="text-right" width="5%">Extra</th>
-                                    <th class="text-right" width="6%">Unit Price</th>
+                                    <th class="text-right" width="6%">Price</th>
                                     <th class="text-right" width="5%">Total</th>
                                     <th class="text-center" width="5%">Actions</th>
                                 </tr>
@@ -156,7 +156,7 @@ else {
                                         </select>
                                     </td>
                                     <td>
-                                        <select title="Choose Option" ng-model="delivery.delivery_items[$index].color_id">
+                                        <select title="Choose Option" ng-model="delivery.delivery_items[$index].color_id" ng-change='update_color_rate( $index )'>
                                             <option value="">Select Color</option>
                                             <option ng-repeat="color in colors" value="{{ color.id }}">{{ color.title }}</option>
                                         </select>
@@ -173,7 +173,7 @@ else {
                                     <th class="text-right" style="background: rgb(178, 219, 239);" ng-repeat="size in sizes">{{ getTotalQty(-1,size.id) }}</th>
                                     <th class="text-right" style="background: rgba(61, 165, 145, 0.89);color: #fff;">{{ getTotalQty(-1,-1) }}</th>
                                     <th class="text-right">&nbsp;</th>
-                                    <th class="text-right">Total Price</th>
+                                    <th class="text-right">Total</th>
                                     <th class="text-right">{{ getTotal(-1,-1) }}</th>
                                 </tr>
                                 <tr>

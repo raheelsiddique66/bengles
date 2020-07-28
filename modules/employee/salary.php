@@ -28,6 +28,13 @@ $is_search=true;
                     </select>
                 </div>
                 <div class="col-sm-2">
+                    <select data-ng-model="machine_id">
+                        <option value="0">All Machine</option>
+                        <option ng-repeat="machine in machines" value="{{ machine.id }}">{{ machine.title }}</option>
+
+                    </select>
+                </div>
+                <div class="col-sm-2">
                     <input type="text" title="Enter Date" value="" class="form-control date-picker" autocomplete="off" data-ng-model="salary_date" />
                 </div>
                 <div class="col-sm-3 text-left">
