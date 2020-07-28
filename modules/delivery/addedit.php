@@ -156,7 +156,7 @@ else {
                                         </select>
                                     </td>
                                     <td>
-                                        <select title="Choose Option" ng-model="delivery.delivery_items[$index].color_id">
+                                        <select title="Choose Option" ng-model="delivery.delivery_items[$index].color_id" ng-change='update_color_rate( $index )'>
                                             <option value="">Select Color</option>
                                             <option ng-repeat="color in colors" value="{{ color.id }}">{{ color.title }}</option>
                                         </select>

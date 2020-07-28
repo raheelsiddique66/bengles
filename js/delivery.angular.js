@@ -39,7 +39,7 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			"machine_id": "7",
 			"quantity": [],
 			"extra": 0,
-			"unit_price": 105
+			"unit_price": 0
 		};
 		angular.element(document).ready(function () {
 			$scope.wctAJAX( {action: 'get_customer'}, function( response ){
@@ -104,6 +104,16 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			var quantity = parseFloat( $scope.delivery.delivery_items[ position ].quantity?$scope.delivery.delivery_items[ position ].quantity:0 );
 			$scope.delivery.delivery_items[ position ].total = ( parseFloat( $scope.delivery.delivery_items[ position ].unit_price )) * quantity;
 			$scope.update_grand_total();
+		}
+		$scope.update_color_rate = function(position){
+			var id = $scope.delivery.delivery_items[ position ].color_id
+			var item = $filter('filter')($scope.colors, {id: id}, true );
+			if( item.length > 0 ) {
+				item = item[0];
+				$scope.delivery.delivery_items[ position ].color_id = item.id;
+				$scope.delivery.delivery_items[ position ].unit_price = item.rate;
+				$scope.update_total(position);
+			}
 		}
 		$scope.getTotal = function(index, size_id){
 			var total = 0;

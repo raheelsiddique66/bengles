@@ -7,6 +7,7 @@ else{
 	$title="";
     $title_urdu="";
     $sortorder="";
+    $rate="";
 }
 ?>
 <div class="page-header">
@@ -49,6 +50,16 @@ else{
             </div>
             <div class="col-sm-10">
                 <input type="text" title="Enter Sortorder" value="<?php echo $sortorder; ?>" name="sortorder" id="sortorder" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-2 control-label">
+                <label class="form-label" for="rate">Rate </label>
+            </div>
+            <div class="col-sm-10">
+                <input type="text" title="Enter Rate" value="<?php echo $rate; ?>" name="rate" id="rate" class="form-control" />
             </div>
         </div>
     </div>

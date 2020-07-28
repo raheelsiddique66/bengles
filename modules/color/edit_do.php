@@ -6,7 +6,7 @@ if(isset($_POST["color_edit"])){
 	if(empty($title))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="Update color set `title`='".slash($title)."', `title_urdu`='".slash($title_urdu)."', `sortorder`='".slash($sortorder)."' where id='".$id."'";
+		$sql="Update color set `title`='".slash($title)."', `title_urdu`='".slash($title_urdu)."', `sortorder`='".slash($sortorder)."', `rate`='".slash($rate)."' where id='".$id."'";
 		doquery($sql,$dblink);
 		unset($_SESSION["color_manage"]["edit"]);
 		header('Location: color_manage.php?tab=list&msg='.url_encode("Sucessfully Updated"));
