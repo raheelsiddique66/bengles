@@ -4,7 +4,11 @@ if(isset($_SESSION["employee_payment_manage"]["add"])){
 	extract($_SESSION["employee_payment_manage"]["add"]);
 }
 else{
-    $account = dofetch(doquery("select id from account where is_petty_cash = 1",$dblink));
+    $accounts = doquery("select id from account where is_petty_cash = 1",$dblink);
+    if(numrows($accounts)>0){
+        $account=dofetch($accounts);
+        $account_id=$account["id"];
+    }
     if(isset($_GET["employee_id"])){
         $employee_id = $_GET["employee_id"];
     }
@@ -14,7 +18,7 @@ else{
 
     $date=date("d/m/Y");
     $amount="";
-    $account_id=$account["id"];
+
 }
 ?>
 <div class="page-header">
