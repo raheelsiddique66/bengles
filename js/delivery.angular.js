@@ -125,6 +125,16 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			$scope.delivery.delivery_items[ position ].total = ( parseFloat( $scope.delivery.delivery_items[ position ].unit_price )) * quantity;
 			$scope.update_grand_total();
 		}
+		$scope.update_color_rate = function(position){
+			var id = $scope.delivery.delivery_items[ position ].color_id
+			var item = $filter('filter')($scope.colors, {id: id}, true );
+			if( item.length > 0 ) {
+				item = item[0];
+				$scope.delivery.delivery_items[ position ].color_id = item.id;
+				$scope.delivery.delivery_items[ position ].unit_price = item.rate;
+				$scope.update_total(position);
+			}
+		}
 		$scope.getTotal = function(index, size_id){
 			var total = 0;
 			for(var i = 0; i < $scope.delivery.delivery_items.length; i++){
