@@ -12,6 +12,8 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.delivery_id = 0;
 		$scope.item_id = '';
 		$scope.showPopup = false;
+		$scope.showPopupCustomer = false;
+		$scope.showPopupDesign = false;
 		$scope.labour = {
 			id: "",
 			name: ""
@@ -21,6 +23,24 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
             id: "",
 			name: ""
         };
+		$scope.customer = {
+			id: "",
+			customer_name: ""
+		};
+
+		$scope.customer_placeholder = {
+			id: "",
+			customer_name: ""
+		};
+		$scope.design = {
+			id: "",
+			title: ""
+		};
+
+		$scope.design_placeholder = {
+			id: "",
+			title: ""
+		};
 		$scope.delivery = {
 			id: 0,
 			date: '',
@@ -199,11 +219,54 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
                 });
             }
         }
-
+		$scope.save_customer = function () {
+			$scope.box_errors = [];
+			if( $scope.processing == false ){
+				$scope.processing = true;
+				data = {action: 'save_customer', customer: JSON.stringify( $scope.customer )};
+				$scope.wctAJAX( data, function( response ){
+					$scope.processing = false;
+					if( response.status == 1 ) {
+						$scope.customers.push(response.customer);
+						$scope.showPopupCustomer = !$scope.showPopupCustomer;
+						$scope.customer = angular.copy( $scope.customer_placeholder );
+					}
+					else{
+						$scope.box_errors = response.error;
+					}
+				});
+			}
+		}
+		$scope.save_design = function () {
+			$scope.box_errors = [];
+			if( $scope.processing == false ){
+				$scope.processing = true;
+				data = {action: 'save_design', design: JSON.stringify( $scope.design )};
+				$scope.wctAJAX( data, function( response ){
+					$scope.processing = false;
+					if( response.status == 1 ) {
+						$scope.designs.push(response.design);
+						$scope.showPopupDesign = !$scope.showPopupDesign;
+						$scope.design = angular.copy( $scope.design_placeholder );
+					}
+					else{
+						$scope.box_errors = response.error;
+					}
+				});
+			}
+		}
         $scope.togglePopup = function() {
             $scope.showPopup = !$scope.showPopup;
 			setTimeout(function(){focus();}, 100);
         }
+		$scope.togglePopupCustomer = function() {
+			$scope.showPopupCustomer = !$scope.showPopupCustomer;
+			setTimeout(function(){focus();}, 100);
+		}
+		$scope.togglePopupDesign = function() {
+			$scope.showPopupDesign = !$scope.showPopupDesign;
+			setTimeout(function(){focus();}, 100);
+		}
 		
 	}
 );
