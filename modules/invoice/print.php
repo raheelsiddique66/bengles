@@ -1,9 +1,15 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
 if(isset($_GET["id"]) && !empty($_GET["id"])){
-$invoice=dofetch(doquery("select * from invoice where id='".slash($_GET["id"])."'", $dblink));
-$customer=dofetch(doquery("select * from customer where id='".slash($invoice["customer_id"])."'", $dblink));
-?>
+$invoice=doquery("select * from invoice where id='".slash($_GET["id"])."'", $dblink);
+    if(numrows($invoice)>0){
+        $invoice=dofetch($invoice);
+    }
+$customer=doquery("select * from customer where id='".slash($invoice["customer_id"])."'", $dblink);
+    if(numrows($customer)>0){
+        $customer=dofetch($customer);
+    }
+    ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
