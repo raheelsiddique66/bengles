@@ -1,13 +1,13 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
 if(isset($_GET["id"]) && !empty($_GET["id"])){
-$invoice=doquery("select * from invoice where id='".slash($_GET["id"])."'", $dblink);
-    if(numrows($invoice)>0){
-        $invoice=dofetch($invoice);
+$invoices=doquery("select * from invoice where id='".slash($_GET["id"])."'", $dblink);
+    if(numrows($invoices)>0){
+        $invoice=dofetch($invoices);
     }
-$customer=doquery("select * from customer where id='".slash($invoice["customer_id"])."'", $dblink);
-    if(numrows($customer)>0){
-        $customer=dofetch($customer);
+$customers=doquery("select * from customer where id='".slash($invoice["customer_id"])."'", $dblink);
+    if(numrows($customers)>0){
+        $customer=dofetch($customers);
     }
     ?>
 <!DOCTYPE html>
@@ -64,7 +64,7 @@ $customer=doquery("select * from customer where id='".slash($invoice["customer_i
             </thead>
             <tbody>
                 <?php
-                $sql = "select date as datetime_added, gatepass_id, title, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and b.machine_id='".$invoice["machine_id"]."'":"")." and date>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' group by color_id,design_id union select datetime_added as datetime_added, '', title, 0, 0, 0, amount-discount as credit from customer_payment a left join account c on a.account_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and a.machine_id='".$invoice["machine_id"]."'":"")." and datetime_added>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' order by datetime_added";
+                $sql = "select date as datetime_added, gatepass_id, title, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and b.machine_id='".$invoice["machine_id"]."'":"")." and date>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' group by color_id,design_id union select datetime_added as datetime_added, '', title, 0, 0, 0, amount as credit from customer_payment a left join account c on a.account_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and a.machine_id='".$invoice["machine_id"]."'":"")." and datetime_added>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' order by datetime_added";
                 //echo $sql;die;
                 $rs=doquery($sql,$dblink);
                 $total_quantity = 0;
@@ -74,7 +74,8 @@ $customer=doquery("select * from customer where id='".slash($invoice["customer_i
                 $balance = 0;
 			    if(numrows($rs)>0){
                     $sn=1;
-                    $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer[ "id" ]."'".($invoice["machine_id"]>0?" and b.machine_id='".$invoice["machine_id"]."'":"")." and date<'".date('Y-m-d',strtotime($invoice["date_from"]))."' union select -sum(amount) from customer_payment where customer_id = '".$customer[ "id" ]."'".($invoice["machine_id"]>0?" and b.machine_id='".$invoice["machine_id"]."'":"")." and datetime_added<='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00') as transactions ";
+                    //print_r($invoice);die;
+                    $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer[ "id" ]."'".($invoice["machine_id"]>0?" and b.machine_id='".$invoice["machine_id"]."'":"")." and date<'".date('Y-m-d',strtotime($invoice["date_from"]))."' union select -sum(amount) from customer_payment where customer_id = '".$customer[ "id" ]."'".($invoice["machine_id"]>0?" and machine_id='".$invoice["machine_id"]."'":"")." and datetime_added<='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00') as transactions ";
                     $balance=dofetch(doquery($sql,$dblink));
                     $balance = $customer["balance"]+$balance[ "amount" ];
                     //$balance = get_customer_balance( $customer["id"], date('Y-m-d',strtotime($invoice["date_to"])));
