@@ -7,6 +7,7 @@ else{
 	$customer_id="";
 	$datetime_added=date("d/m/Y H:i A");
 	$amount="";
+	$discount="";
 	$account_id="";
 	$details="";
 	$machine_id="";
@@ -79,6 +80,16 @@ else{
             </div>
         </div>
   	</div>
+    <div class="form-group">
+    	<div class="row">
+            <div class="col-sm-2 control-label">
+                <label class="form-label" for="discount">Discount</label>
+            </div>
+            <div class="col-sm-10">
+                <input type="text" title="Enter Discount" value="<?php echo $discount; ?>" name="discount" id="discount" class="form-control" >
+            </div>
+        </div>
+  	</div>
   	<div class="form-group">
     	<div class="row">
             <div class="col-sm-2 control-label">
@@ -89,6 +100,7 @@ else{
             </div>
         </div>
   	</div>
+    
     <div class="form-group">
     	<div class="row">
             <div class="col-sm-2 control-label">

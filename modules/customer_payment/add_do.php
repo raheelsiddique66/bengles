@@ -6,7 +6,7 @@ if(isset($_POST["customer_payment_add"])){
 	if(empty($customer_id))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="INSERT INTO customer_payment (customer_id, machine_id, datetime_added, amount, account_id, details) VALUES ('".slash($customer_id)."','".slash($machine_id)."','".slash(datetime_dbconvert($datetime_added))."','".slash($amount)."','".slash($account_id)."','".slash($details)."')";
+		$sql="INSERT INTO customer_payment (customer_id, machine_id, datetime_added, amount, discount, account_id, details) VALUES ('".slash($customer_id)."','".slash($machine_id)."','".slash(datetime_dbconvert($datetime_added))."','".slash($amount)."','".slash($discount)."','".slash($account_id)."','".slash($details)."')";
 		doquery($sql,$dblink);
 		unset($_SESSION["customer_payment_manage"]["add"]);
 		header('Location: customer_payment_manage.php?tab=list&msg='.url_encode("Sucessfully Added"));

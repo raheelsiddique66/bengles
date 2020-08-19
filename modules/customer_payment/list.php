@@ -92,6 +92,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th>Customer Name</th>
                 <th width="10%">Machine</th>
                 <th>Datetime</th>
+                <th class="text-right">Discount</th>
                 <th class="text-right">Amount</th>
                 <th>Paid By</th>
                 <th class="text-center">Status</th>
@@ -115,6 +116,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td><?php echo unslash( $r[ "customer_name" ] );?></td>
                         <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
+                        <td class="text-right"><?php echo curr_format(unslash($r["discount"])); ?></td>
                         <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
                         <td><?php echo get_field( unslash($r["account_id"]), "account", "title" ); ?></td>
                         <td class="text-center"><a href="customer_payment_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
@@ -141,7 +143,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 }
                 ?>
                 <tr>
-                    <td colspan="5" class="actions">
+                    <td colspan="6" class="actions">
                         <select name="bulk_action" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
                             <option value="delete">Delete</option>
@@ -157,7 +159,7 @@ if(!defined("APP_START")) die("No Direct Access");
             else{	
                 ?>
                 <tr>
-                    <td colspan="10"  class="no-record">No Result Found</td>
+                    <td colspan="11"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }
