@@ -1,6 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$sql = "SELECT a.*, group_concat(a.id)  as delivery_ids, b.balance FROM `delivery` a left join customer b on a.customer_id = b.id  WHERE 1 $extra group by customer_id order by customer_name";
+$sql = "SELECT a.*, group_concat(a.id)  as delivery_ids, b.balance, b.customer_name FROM `delivery` a left join customer b on a.customer_id = b.id  WHERE 1 $extra group by customer_id order by customer_name";
 $rs = doquery( $sql, $dblink );
 $colors = [];
 $rs2 = doquery("select * from color order by sortorder", $dblink);
@@ -93,6 +93,7 @@ table {
     <th width="10%">Amount</th>
     <th width="10%">Previous Amount</th>
     <th width="10%">Payment</th>
+    <th width="10%">Discount</th>
     <th width="10%">New Balance</th>
 </tr>
 </thead>
@@ -103,6 +104,7 @@ if( numrows( $rs ) > 0 ) {
 	$grand_total_amount = 0;
     $total_balance = 0;
     $total_income = 0;
+    $total_discount = 0;
 	while( $r = dofetch( $rs ) ) {
         if(!empty($date_from)){
             $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$r[ "customer_id" ]."' and date<'".date_dbconvert($date_from)."' union select -sum(amount) from customer_payment where customer_id = '".$r[ "customer_id" ]."' and datetime_added<='".date_dbconvert($date_from)." 00:00:00') as transactions ";
@@ -112,15 +114,17 @@ if( numrows( $rs ) > 0 ) {
         else{
             $balance = 0;
         }
-        $sql="select sum(amount) as amount from customer_payment where customer_id = '".$r[ "customer_id" ]."' and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 00:00:00'";
-        $income=dofetch(doquery($sql,$dblink));
-        $income = $income[ "amount" ];
+        $sql="select sum(amount) as amount, sum(discount) as discount from customer_payment where customer_id = '".$r[ "customer_id" ]."' and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 00:00:00'";
+        $income1=dofetch(doquery($sql,$dblink));
+        $income = $income1[ "amount" ];
+        $discount = $income1[ "discount" ];
         $total_balance += $balance;
         $total_income += $income;
+        $total_discount += $discount;
         ?>
 		<tr>
         	<td align="center"><?php echo $sn?></td>
-			<td><?php echo get_field($r["customer_id"], "customer", "customer_name" ); ?></td>
+			<td><?php echo unslash($r["customer_name"]); ?></td>
 			<?php
             $colors_delivery = [];
             $total_quantity = $total_amount = 0;
@@ -150,7 +154,8 @@ if( numrows( $rs ) > 0 ) {
             <th class="text-right"><?php echo curr_format($total_amount)?></th>
             <th class="text-right"><?php echo curr_format($balance)?></th>
             <th class="text-right"><?php echo curr_format($income)?></th>
-            <th class="text-right"><?php echo curr_format($total_amount+$balance-$income)?></th>
+            <th class="text-right"><?php echo curr_format($discount)?></th>
+            <th class="text-right"><?php echo curr_format($total_amount+$balance-$income-$discount)?></th>
         </tr>
 		<?php
 		$sn++;
@@ -173,7 +178,8 @@ if( numrows( $rs ) > 0 ) {
 	<th class="text-right"><?php echo curr_format($grand_total_amount)?></th>
     <th class="text-right"><?php echo curr_format($total_balance)?></th>
     <th class="text-right"><?php echo curr_format($total_income)?></th>
-    <th class="text-right"><?php echo curr_format($grand_total_amount+$total_balance-$total_income)?></th>
+    <th class="text-right"><?php echo curr_format($total_discount)?></th>
+    <th class="text-right"><?php echo curr_format($grand_total_amount+$total_balance-$total_income-$total_discount)?></th>
 </tr>
 </table>
 <?php
