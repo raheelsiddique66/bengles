@@ -114,7 +114,7 @@ if( numrows( $rs ) > 0 ) {
         else{
             $balance = 0;
         }
-        $sql="select sum(amount) as amount, sum(discount) as discount from customer_payment where customer_id = '".$r[ "customer_id" ]."' and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 00:00:00'";
+        $sql="select sum(amount) as amount, sum(discount) as discount from customer_payment where customer_id = '".$r[ "customer_id" ]."' and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 23:59:59'";
         $income1=dofetch(doquery($sql,$dblink));
         $income = $income1[ "amount" ];
         $discount = $income1[ "discount" ];
