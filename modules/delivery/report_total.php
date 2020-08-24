@@ -5,7 +5,7 @@ $rs = doquery( $sql, $dblink );
 $colors = [];
 $rs2 = doquery("select * from color order by sortorder", $dblink);
 while($r2=dofetch($rs2)){
-	$rates = doquery("select distinct(unit_price) as rate from delivery_items where delivery_id in (select id from delivery where 1 $extra) and color_id = '".$r2["id"]."' order by unit_price", $dblink);
+	$rates = doquery("select distinct(unit_price) as rate from delivery_items where delivery_id in (select id from delivery where 1 $extra)".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and color_id = '".$r2["id"]."' order by unit_price", $dblink);
 	foreach($rates as $rate){
         $colors[$r2["id"]][$rate["rate"]] = unslash($r2["title"]);
     }
@@ -107,14 +107,14 @@ if( numrows( $rs ) > 0 ) {
     $total_discount = 0;
 	while( $r = dofetch( $rs ) ) {
         if(!empty($date_from)){
-            $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$r[ "customer_id" ]."' and date<'".date_dbconvert($date_from)."' union select -sum(amount) from customer_payment where customer_id = '".$r[ "customer_id" ]."' and datetime_added<='".date_dbconvert($date_from)." 00:00:00') as transactions ";
+            $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$r[ "customer_id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and date<'".date_dbconvert($date_from)."' union select -sum(amount) from customer_payment where customer_id = '".$r[ "customer_id" ]."' and datetime_added<='".date_dbconvert($date_from)." 00:00:00') as transactions ";
             $balance=dofetch(doquery($sql,$dblink));
             $balance = $r["balance"]+$balance[ "amount" ];
         }
         else{
             $balance = 0;
         }
-        $sql="select sum(amount) as amount, sum(discount) as discount from customer_payment where customer_id = '".$r[ "customer_id" ]."' and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 23:59:59'";
+        $sql="select sum(amount) as amount, sum(discount) as discount from customer_payment where customer_id = '".$r[ "customer_id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 23:59:59'";
         $income1=dofetch(doquery($sql,$dblink));
         $income = $income1[ "amount" ];
         $discount = $income1[ "discount" ];
@@ -128,7 +128,7 @@ if( numrows( $rs ) > 0 ) {
 			<?php
             $colors_delivery = [];
             $total_quantity = $total_amount = 0;
-			$rs1 = doquery( "select color_id, unit_price, sum(quantity), sum(quantity*unit_price) as total from delivery_items where delivery_id in (".($r["delivery_ids"]).") group by unit_price", $dblink );
+			$rs1 = doquery( "select color_id, unit_price, sum(quantity), sum(quantity*unit_price) as total from delivery_items where delivery_id in (".($r["delivery_ids"]).")".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." group by unit_price", $dblink );
 			if(numrows($rs1)>0){
 				while($r1=dofetch($rs1)){
                     if(!isset($colors_delivery[$r1["color_id"]][$r1["unit_price"]])){

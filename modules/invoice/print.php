@@ -88,6 +88,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                         <td class="text-right"><?php echo curr_format($balance) ?></td>
                     </tr>
                     <?php
+                    $accounts = [];
                     while($r=dofetch($rs)){   
                         $total_quantity += $r["quantity"];
                         $total_debit += $r["debit"];
@@ -95,6 +96,14 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                         $total_discount += $r["discount"];
                         $total_credit_discount = $r["credit"]-$r["discount"];
                         $balance += $r["debit"]-$total_credit_discount;
+                        if(!isset($accounts[$r["title"].$r["unit_price"]])){
+                            $accounts[$r["title"].$r["unit_price"]] = [
+                                    "title" => $r["title"],
+                                "rate" => $r["unit_price"],
+                                "quantity" => 0
+                            ];
+                        }
+                        $accounts[$r["title"].$r["unit_price"]]["quantity"] += $r["quantity"];
                         ?>
                         <tr>
                             <td class="text-center"><?php echo $sn?></td>
@@ -131,6 +140,13 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                 </tr>
             </tbody>
         </table>
+        <div class="summary" style="padding-top: 20px">
+            <?php
+            foreach($accounts as $account){
+                echo $account["title"]. " (".$account["quantity"]."x".$account["rate"].") = ".curr_format($account["quantity"]*$account["rate"])."<br><br>";
+            }
+            ?>
+        </div>
     </div>
 </div>
 </body>
