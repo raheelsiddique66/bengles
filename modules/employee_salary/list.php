@@ -18,7 +18,7 @@ if(!defined("APP_START")) die("No Direct Access");
     <li class="col-xs-12 col-lg-12 col-sm-12">
     	<div>
         	<form class="form-horizontal" action="" method="get">
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                 	<select name="employee_id" id="employee_id" class="select_multiple custom_select">
                         <option value=""<?php echo ($employee_id=="")? " selected":"";?>>Select Employee</option>
                         <?php
@@ -103,14 +103,14 @@ if(!defined("APP_START")) die("No Direct Access");
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="3" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "employees", $sql, $pageNum)?></td>
+                    <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "employees", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="7"  class="no-record">No Result Found</td>
+                    <td colspan="9"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

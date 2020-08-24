@@ -205,6 +205,54 @@ if(isset($_POST["action"])){
 				);
 			}
 		break;
+        case "save_customer":
+            $box_err = array();
+            $customer = json_decode( $_POST[ "customer" ] );
+            if( empty( $customer->customer_name ) ) {
+                $box_err[] = "Fields with * are mandatory";
+            }
+            if( count( $box_err ) == 0 ) {
+                doquery( "insert into customer (customer_name) VALUES ('".slash($customer->customer_name)."')", $dblink);
+                $id = inserted_id();
+                $response = array(
+                    "status" => 1,
+                    "customer" => array(
+                        "id" => $id,
+                        "customer_name" => $customer->customer_name,
+                    )
+                );
+            }
+            else {
+                $response = array(
+                    "status" => 0,
+                    "error" => $box_err
+                );
+            }
+        break;
+        case "save_design":
+            $box_err = array();
+            $design = json_decode( $_POST[ "design" ] );
+            if( empty( $design->title ) ) {
+                $box_err[] = "Fields with * are mandatory";
+            }
+            if( count( $box_err ) == 0 ) {
+                doquery( "insert into design (title) VALUES ('".slash($design->title)."')", $dblink);
+                $id = inserted_id();
+                $response = array(
+                    "status" => 1,
+                    "design" => array(
+                        "id" => $id,
+                        "title" => $design->title,
+                    )
+                );
+            }
+            else {
+                $response = array(
+                    "status" => 0,
+                    "error" => $box_err
+                );
+            }
+        break;
 	}
 	echo json_encode( $response );
 	die;

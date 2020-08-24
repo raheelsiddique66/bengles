@@ -18,6 +18,20 @@ else {
         transform: translate(-50%,-50%);
         z-index: 999;
     }
+    .add_customer_link.design {
+        position: absolute;
+        background-color: #399bff;
+        width: 22px;
+        height: 22px;
+        z-index: 999;
+        text-align: center;
+        line-height: 22px;
+        font-size: 22px;
+        color: #fff;
+        border-radius: 50%;
+        right: 5px;
+        top: 25px;
+    }
     .fancybox-close-small {
         position: absolute;
         top: 0;
@@ -68,6 +82,7 @@ else {
                         <option value="0" selected="false">Select Customer</option>
                         <option ng-repeat="customer in customers" value="{{ customer.id }}">{{ customer.customer_name }}</option>
                     </select>
+                    <a href="" class="add_customer_link" ng-click="togglePopupCustomer()">+</a>
                 </div>
             </div>
         </div>
@@ -86,6 +101,26 @@ else {
             <div style="padding: 20px;">
                 Labour Name: <span><input id="cursor_focus" type="text" placeholder="Enter Labour Name" ng-model="labour.name"></span>
                 <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_labour()" title="Submit Labour"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
+                <br><br><div class="alert alert-danger" ng-show="box_errors.length > 0">
+                    <p ng-repeat="error in box_errors">{{error}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="labour-add" ng-show="showPopupCustomer">
+            <button data-fancybox-close="" class="fancybox-close-small popup_close" title="Close" ng-click="togglePopupCustomer()"></button>
+            <div style="padding: 20px;">
+                Customer Name: <span><input id="cursor_focus" type="text" placeholder="Enter Customer Name" ng-model="customer.customer_name"></span>
+                <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_customer()" title="Submit Customer"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
+                <br><br><div class="alert alert-danger" ng-show="box_errors.length > 0">
+                    <p ng-repeat="error in box_errors">{{error}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="labour-add" ng-show="showPopupDesign">
+            <button data-fancybox-close="" class="fancybox-close-small popup_close" title="Close" ng-click="togglePopupDesign()"></button>
+            <div style="padding: 20px;">
+                Design: <span><input id="cursor_focus" type="text" placeholder="Enter Design" ng-model="design.title"></span>
+                <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_design()" title="Submit Design"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
                 <br><br><div class="alert alert-danger" ng-show="box_errors.length > 0">
                     <p ng-repeat="error in box_errors">{{error}}</p>
                 </div>
@@ -127,11 +162,11 @@ else {
                                 <tr>
                                     <th width="2%" class="text-center" rowspan="2">S.no</th>
                                     <th width="10%" rowspan="2">Machine</th>
-                                    <th width="10%" rowspan="2">Design</th>
+                                    <th width="10%" rowspan="2" style="position: relative">Design <a href="" class="add_customer_link design" ng-click="togglePopupDesign()">+</a></th>
                                     <th width="10%" rowspan="2">Color</th>
                                     <th class="text-center" width="40%" colspan="{{ sizes.length+1 }}">Sizes</th>
                                     <th class="text-right" width="5%">Extra</th>
-                                    <th class="text-right" width="6%">Unit Price</th>
+                                    <th class="text-right" width="6%">Price</th>
                                     <th class="text-right" width="5%">Total</th>
                                     <th class="text-center" width="5%">Actions</th>
                                 </tr>
@@ -156,7 +191,7 @@ else {
                                         </select>
                                     </td>
                                     <td>
-                                        <select title="Choose Option" ng-model="delivery.delivery_items[$index].color_id">
+                                        <select title="Choose Option" ng-model="delivery.delivery_items[$index].color_id" ng-change='update_color_rate( $index )'>
                                             <option value="">Select Color</option>
                                             <option ng-repeat="color in colors" value="{{ color.id }}">{{ color.title }}</option>
                                         </select>
@@ -173,7 +208,7 @@ else {
                                     <th class="text-right" style="background: rgb(178, 219, 239);" ng-repeat="size in sizes">{{ getTotalQty(-1,size.id) }}</th>
                                     <th class="text-right" style="background: rgba(61, 165, 145, 0.89);color: #fff;">{{ getTotalQty(-1,-1) }}</th>
                                     <th class="text-right">&nbsp;</th>
-                                    <th class="text-right">Total Price</th>
+                                    <th class="text-right">Total</th>
                                     <th class="text-right">{{ getTotal(-1,-1) }}</th>
                                 </tr>
                                 <tr>

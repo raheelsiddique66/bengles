@@ -6,7 +6,7 @@ if(isset($_POST["customer_payment_edit"])){
 	if(empty($customer_id))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="Update customer_payment set `customer_id`='".slash($customer_id)."',`datetime_added`='".slash(datetime_dbconvert(unslash($datetime_added)))."', `amount`='".slash($amount)."',`account_id`='".slash($account_id)."',`details`='".slash($details)."'"." where id='".$id."'";
+		$sql="Update customer_payment set `customer_id`='".slash($customer_id)."',`machine_id`='".slash($machine_id)."',`datetime_added`='".slash(datetime_dbconvert(unslash($datetime_added)))."', `amount`='".slash($amount)."',`discount`='".slash($discount)."',`account_id`='".slash($account_id)."',`details`='".slash($details)."'"." where id='".$id."'";
 		doquery($sql,$dblink);
 		unset($_SESSION["customer_payment_manage"]["edit"]);
 		header('Location: customer_payment_manage.php?tab=list&msg='.url_encode("Sucessfully Updated"));

@@ -7,8 +7,10 @@ else{
 	$customer_id="";
 	$datetime_added=date("d/m/Y H:i A");
 	$amount="";
+	$discount="";
 	$account_id="";
 	$details="";
+	$machine_id="";
 }
 ?>
 <div class="page-header">
@@ -46,6 +48,28 @@ else{
             </div>
         </div>
   	</div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-2 control-label">
+                <label class="form-label" for="machine_id">Machine</label>
+            </div>
+            <div class="col-sm-10">
+                <select name="machine_id" title="Choose Option">
+                    <option value="0">All Machine</option>
+                    <?php
+                    $res=doquery("select * from machine where status=1 order by title", $dblink);
+                    if(numrows($res)>0){
+                        while($rec=dofetch($res)){
+                            ?>
+                            <option value="<?php echo $rec["id"]?>"<?php echo($machine_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"]); ?></option>
+                            <?php
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+    </div>
   	<div class="form-group">
     	<div class="row">
             <div class="col-sm-2 control-label">
@@ -53,6 +77,16 @@ else{
             </div>
             <div class="col-sm-10">
                 <input type="text" title="Enter datetime" value="<?php echo $datetime_added; ?>" name="datetime_added" id="datetime_added" class="form-control date-timepicker" >
+            </div>
+        </div>
+  	</div>
+    <div class="form-group">
+    	<div class="row">
+            <div class="col-sm-2 control-label">
+                <label class="form-label" for="discount">Discount</label>
+            </div>
+            <div class="col-sm-10">
+                <input type="text" title="Enter Discount" value="<?php echo $discount; ?>" name="discount" id="discount" class="form-control" >
             </div>
         </div>
   	</div>
@@ -66,6 +100,7 @@ else{
             </div>
         </div>
   	</div>
+    
     <div class="form-group">
     	<div class="row">
             <div class="col-sm-2 control-label">

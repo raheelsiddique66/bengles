@@ -6,7 +6,7 @@ if(isset($_POST["employee_add"])){
 	if(empty($name))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="INSERT INTO employees (name, father_name, phone_number, salary_type, salary, over_time_per_hour) VALUES ('".slash($name)."', '".slash($father_name)."', '".slash($phone_number)."', '".slash($salary_type)."', '".slash($salary)."', '".slash($over_time_per_hour)."')";
+		$sql="INSERT INTO employees (name, father_name, phone_number, salary_type, machine_id, salary, over_time_per_hour) VALUES ('".slash($name)."', '".slash($father_name)."', '".slash($phone_number)."', '".slash($salary_type)."', '".slash($machine_id)."', '".slash($salary)."', '".slash($over_time_per_hour)."')";
 		doquery($sql,$dblink);
 		unset($_SESSION["employee_manage"]["add"]);
 		header('Location: employee_manage.php?tab=list&msg='.url_encode("Sucessfully Added"));

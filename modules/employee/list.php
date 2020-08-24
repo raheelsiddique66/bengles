@@ -15,6 +15,18 @@ if($salary_type!=""){
 	$extra.=" and salary_type='".$salary_type."'";
 	$is_search=true;
 }
+if(isset($_GET["machine_id"])){
+    $machine_id=slash($_GET["machine_id"]);
+    $_SESSION["employee_manage"]["list"]["machine_id"]=$machine_id;
+}
+if(isset($_SESSION["employee_manage"]["list"]["machine_id"]))
+    $machine_id=$_SESSION["employee_manage"]["list"]["machine_id"];
+else
+    $machine_id="";
+if($machine_id!=""){
+    $extra.=" and machine_id='".$machine_id."'";
+    $is_search=true;
+}
 if(isset($_GET["q"])){
 	$q=slash($_GET["q"]);
 	$_SESSION["employee_manage"]["list"]["q"]=$q;
@@ -45,7 +57,7 @@ if(!empty($q)){
     <li class="col-xs-12 col-lg-12 col-sm-12">
     	<div>
         	<form class="form-horizontal" action="" method="get">
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                 	<select name="salary_type" id="salary_type" title="Choose Option">
                         <option value="">Select Salary Type</option>
                         <?php
@@ -57,10 +69,25 @@ if(!empty($q)){
                         ?>
                     </select>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
+                    <select name="machine_id" id="machine_id" class="custom_select">
+                        <option value=""<?php echo ($machine_id=="")? " selected":"";?>>All Machine</option>
+                        <?php
+                        $res=doquery("select * from machine where status = 1 order by title",$dblink);
+                        if(numrows($res)>=0){
+                            while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($machine_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="col-sm-2">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
                 </div>
-                <div class="col-sm-3 text-left">
+                <div class="col-sm-2 text-left">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
                 </div>
@@ -80,6 +107,7 @@ if(!empty($q)){
                 <th width="15%">Father Name</th>
                 <th width="10%">Phone Number</th>
                 <th width="10%">Salary Type</th>
+                <th width="10%">Machine</th>
                 <th width="10%" class="text-right">Salary</th>
                 <th width="11%" class="text-right">Over Time Per hour</th>
                 <th width="8%">Advance</th>
@@ -118,6 +146,7 @@ if(!empty($q)){
                                 echo "Staff";
                             }
                          ?></td>
+                        <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
                         <td class="text-right"><?php echo unslash($r["salary"]); ?></td>
                         <td class="text-right"><?php echo unslash($r["over_time_per_hour"]); ?></td>
                         <td>
