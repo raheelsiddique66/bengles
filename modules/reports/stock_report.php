@@ -220,7 +220,7 @@ else
             if(numrows($rs) > 0){
                 $sn = 1;
                 while($r = dofetch($rs)){
-                    $sql = "select date, customer_id, concat(size_id, 'x', sum(incoming)) as incoming, concat(size_id, 'x', sum(outgoing)) as outgoing from (select a.date, a.customer_id, size_id, sum(quantity) as incoming, 0 as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id union select a.date, a.customer_id, size_id, 0 as incoming, sum(quantity) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id) as records group by customer_id".($report_type==""?",date":"")." order by customer_id";
+                    $sql = "select date, customer_id, concat(size_id, 'x', sum(incoming)) as incoming, concat(size_id, 'x', sum(outgoing)) as outgoing from (select a.date, a.customer_id, size_id, sum(quantity) as incoming, 0 as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.date union select a.date, a.customer_id, size_id, 0 as incoming, sum(quantity) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.date) as records group by customer_id".($report_type==""?",date":"")." order by customer_id";
                     $records = doquery($sql, $dblink);
                     if( numrows($records) > 0 ){
                         while($record = dofetch($records)){
