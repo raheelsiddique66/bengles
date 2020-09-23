@@ -3,7 +3,7 @@ if(!defined("APP_START")) die("No Direct Access");
 $sql = "SELECT a.*, group_concat(a.id)  as delivery_ids, b.balance, b.customer_name, b.id as customerid FROM `delivery` a left join customer b on a.customer_id = b.id  WHERE 1 $extra and b.status = 1 group by customer_id order by customer_name";
 $rs = doquery( $sql, $dblink );
 $colors = [];
-$rs2 = doquery("select * from color order by sortorder", $dblink);
+$rs2 = doquery("select * from color where status = 1 order by sortorder", $dblink);
 while($r2=dofetch($rs2)){
 	$rates = doquery("select distinct(unit_price) as rate from delivery_items where delivery_id in (select id from delivery where 1 $extra)".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and color_id = '".$r2["id"]."' order by unit_price", $dblink);
 	foreach($rates as $rate){
