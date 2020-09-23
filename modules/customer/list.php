@@ -60,7 +60,7 @@ if(!empty($q)){
         </thead>
         <tbody>
             <?php 
-            $sql="select * from customer where 1 $extra order by id";
+            $sql="select * from customer where 1 $extra order by customer_name";
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;

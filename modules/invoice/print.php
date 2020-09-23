@@ -95,7 +95,9 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                         $total_credit += $r["credit"];
                         $total_discount += $r["discount"];
                         $total_credit_discount = $r["credit"]-$r["discount"];
-                        $balance += $r["debit"]-$total_credit_discount;
+                        echo $total_credit_discount;
+                        $balance += $r["debit"]-$r["credit"]-$r["discount"];
+
                         if(!isset($accounts[$r["title"].$r["unit_price"]])){
                             $accounts[$r["title"].$r["unit_price"]] = [
                                     "title" => $r["title"],
