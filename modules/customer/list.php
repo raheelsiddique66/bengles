@@ -52,6 +52,7 @@ if(!empty($q)){
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
                 <th width="20%">Customer Name</th>
+                <th width="10%">Machine</th>
                 <th width="20%">Customer Name In Urdu</th>
                 <th width="10%">Phone</th>
                 <th width="5%" class="text-center">Status</th>
@@ -73,6 +74,7 @@ if(!empty($q)){
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
                         <td><?php echo unslash($r["customer_name"]); ?></td>
+                        <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
                         <td><span class="nastaleeq"><?php echo unslash($r["customer_name_urdu"]); ?></span></td>
                         <td><?php echo unslash($r["phone"]); ?></td>
                         <td class="text-center">
@@ -111,14 +113,14 @@ if(!empty($q)){
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="3" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "customer", $sql, $pageNum)?></td>
+                    <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "customer", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="7"  class="no-record">No Result Found</td>
+                    <td colspan="8"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }
