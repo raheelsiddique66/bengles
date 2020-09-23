@@ -1,6 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$sql = "SELECT a.*, group_concat(a.id)  as delivery_ids, b.balance, b.customer_name FROM `delivery` a left join customer b on a.customer_id = b.id  WHERE 1 $extra group by customer_id order by customer_name";
+$sql = "SELECT a.*, group_concat(a.id)  as delivery_ids, b.balance, b.customer_name, b.id as customerid FROM `delivery` a left join customer b on a.customer_id = b.id  WHERE 1 $extra and b.status = 1 group by customer_id order by customer_name";
 $rs = doquery( $sql, $dblink );
 $colors = [];
 $rs2 = doquery("select * from color order by sortorder", $dblink);
@@ -107,8 +107,9 @@ if( numrows( $rs ) > 0 ) {
     $total_discount = 0;
 	while( $r = dofetch( $rs ) ) {
         if(!empty($date_from)){
-            $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$r[ "customer_id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and date<'".date_dbconvert($date_from)."' union select -sum(amount) from customer_payment where customer_id = '".$r[ "customer_id" ]."' and datetime_added<='".date_dbconvert($date_from)." 00:00:00') as transactions ";
+            $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$r[ "customer_id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and date<'".date_dbconvert($date_from)."' union select -sum(amount) from customer_payment where customer_id = '".$r[ "customer_id" ]."' ".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added<='".date_dbconvert($date_from)." 00:00:00') as transactions ";
             $balance=dofetch(doquery($sql,$dblink));
+            //$customer_balance = dofetch(doquery("select * from customer where id = '".$r["customer_id"]."' ".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." ", $dblink));
             $balance = $r["balance"]+$balance[ "amount" ];
         }
         else{

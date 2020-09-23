@@ -1,6 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$sql = "SELECT a.*, group_concat(a.id) as incoming_ids FROM `incoming` a left join customer b on a.customer_id = b.id  WHERE 1 $extra group by customer_id order by customer_name";
+$sql = "SELECT a.*, group_concat(a.id) as incoming_ids FROM `incoming` a left join customer b on a.customer_id = b.id  WHERE 1 $extra and b.status = 1 group by customer_id order by customer_name";
 $rs = doquery( $sql, $dblink );
 $colors = [];
 $rs2 = doquery("select * from color order by sortorder", $dblink);
