@@ -109,8 +109,9 @@ if( numrows( $rs ) > 0 ) {
         if(!empty($date_from)){
             $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$r[ "customer_id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and date<'".date_dbconvert($date_from)."' union select -sum(amount) from customer_payment where customer_id = '".$r[ "customer_id" ]."' ".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added<='".date_dbconvert($date_from)." 00:00:00') as transactions ";
             $balance=dofetch(doquery($sql,$dblink));
-            //$customer_balance = dofetch(doquery("select * from customer where id = '".$r["customer_id"]."' ".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." ", $dblink));
-            $balance = $r["balance"]+$balance[ "amount" ];
+            $customer_balance = dofetch(doquery("select * from customer where id = '".$r["customer_id"]."' ".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." ", $dblink));
+            //echo $customer_balance["balance"];
+            $balance = $customer_balance["balance"]+$balance[ "amount" ];
         }
         else{
             $balance = 0;
