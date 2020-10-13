@@ -74,20 +74,23 @@ if( empty( $extra ) ) {
 		$payment_total = 0;
 		$salary_total = 0;
 		$sql=doquery("select * from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."' group by design_id,color_id",$dblink);
+
 		if( numrows( $sql ) > 0 ) {
 			while( $r1 = dofetch( $sql ) ) {
 				//$quantity = $r1["quantity"];
+                $q=dofetch(doquery("select sum(quantity) as quantity from delivery_items where delivery_id = '".$r1["delivery_id"]."'",$dblink));
 				$unit_price = $r1["unit_price"];
+                $payment_total += $unit_price*$q["quantity"];
 				//echo $unit_price."<br>";
 				//echo $r1["quantity"]."<br>";
 			}
 		}
-		$q=dofetch(doquery("select sum(quantity) as quantity from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink));
+
 		//echo $q["quantity"];
 		//echo $unit_price;
 		//$payment=dofetch($sql);	
 		//print_r($payment);die;
-		$payment_total += $unit_price*$q["quantity"];
+
 		?>
         <tr class="">
             <th class="text-right">Income from <?php echo $date_from?> to <?php echo $date_to?></th>
