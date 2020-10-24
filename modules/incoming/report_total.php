@@ -6,7 +6,7 @@ $colors = [];
 $rs2 = doquery("select * from color order by sortorder", $dblink);
 $colors_total = array();
 while($r2=dofetch($rs2)){
-	$colors[$r2["id"]] = unslash($r2["title"]);
+	$colors[$r2["id"]] = unslash($r2["title_urdu"]);
     $colors_total[$r2["id"]] = 0;
 }
 ?>
@@ -90,7 +90,7 @@ table {
     <?php
     foreach($colors as $color_id => $color) {
         ?>
-        <th><?php echo $color ?></th>
+        <th class="nastaleeq"><?php echo $color ?></th>
         <?php
     }
     ?>
