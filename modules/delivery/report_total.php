@@ -1,18 +1,26 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$sql = "SELECT a.*, group_concat(a.id)  as delivery_ids, b.balance, b.customer_name, b.id as customerid FROM `delivery` a left join customer b on a.customer_id = b.id  WHERE 1 $extra and b.status = 1 group by customer_id order by customer_name";
+$sql = "SELECT a.*, group_concat(a.id)  as delivery_ids, b.balance, b.customer_name, b.customer_name_urdu, b.id as customerid FROM `delivery` a left join customer b on a.customer_id = b.id  WHERE 1 $extra and b.status = 1 group by customer_id order by customer_name";
 $rs = doquery( $sql, $dblink );
 $colors = [];
 $rs2 = doquery("select * from color order by sortorder", $dblink);
 while($r2=dofetch($rs2)){
 	$rates = doquery("select distinct(unit_price) as rate from delivery_items where delivery_id in (select id from delivery where 1 $extra)".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and color_id = '".$r2["id"]."' order by unit_price", $dblink);
 	foreach($rates as $rate){
-        $colors[$r2["id"]][$rate["rate"]] = unslash($r2["title"]);
+        $colors[$r2["id"]][$rate["rate"]] = unslash($r2["title_urdu"]);
     }
 
 }
 ?>
 <style>
+@font-face {
+    font-family: 'NafeesRegular';
+    src: url('fonts/NafeesRegular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+.nastaleeq{font-family: 'NafeesRegular'; direction:rtl; unicode-bidi: embed; text-align:right; font-size: 18px;  }
 h1, h2, h3, p {
     margin: 0 0 10px;
 }
@@ -52,10 +60,12 @@ table {
         	<?php
 			echo "List of Delivery of ";
 			$all = true;
-			if( !empty( $customer_id ) ){
-				echo " Customer ".get_field($customer_id, "customer", "customer_name" )."<br>";
+            if( !empty( $customer_id ) ){
+                ?>
+                Customer <span class="nastaleeq"><?php echo get_field($customer_id, "customer", "customer_name_urdu" )."<br>";?></span>
+                <?php
                 $all = false;
-			}
+            }
 			if( !empty( $q ) ){
 				echo " Gatepass ID ".$q."<br>";
                 $all = false;
@@ -84,7 +94,7 @@ table {
         foreach($color as $rate => $color_title) {
             $colors_total[$color_id][$rate] = 0;
             ?>
-            <th><?php echo $color_title."<br>@".$rate ?></th>
+            <th><span class="nastaleeq"><?php echo $color_title."<br>"?></span><?php echo "@".$rate ?></th>
             <?php
         }
     }
@@ -131,7 +141,7 @@ if( numrows( $rs ) > 0 ) {
         ?>
 		<tr>
         	<td align="center"><?php echo $sn?></td>
-			<td><?php echo unslash($r["customer_name"]); ?></td>
+            <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo unslash($r["customer_name_urdu"]); ?></span></td>
 			<?php
             $colors_delivery = [];
             $total_quantity = $total_amount = 0;

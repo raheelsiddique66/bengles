@@ -96,7 +96,7 @@ table {
     <th width="2%" align="center" rowspan="2">S.no</th>
 	<th width="8%" rowspan="2">Date</th>
 	<?php if(empty( $customer_id ) ){?>
-	<th width="10%" rowspan="2">Customer</th>
+	<th width="10%" rowspan="2" class="text-right">Customer</th>
 	<?php }?>
     <th width="6%" rowspan="2">Gatepass</th>
 	<th width="6%" rowspan="2">Labour</th>
