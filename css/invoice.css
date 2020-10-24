@@ -59,10 +59,12 @@ p{
 .invoice_number{
 	float:right;
 	text-align: right;
+	width: 30%;
 }
 .order_number{
 	float:left;
 	text-transform:uppercase;
+	width: 20%;
 }
 .order_number p {
     margin: 0;
@@ -96,7 +98,9 @@ td strong{ font-size:12px; font-weight:bold;}
 	font-family: 'NafeesRegular';
 	direction: rtl;
 	unicode-bidi: embed;
-	text-align: right;
+	text-align: center;
+	font-size: 26px;
+	margin: 5px 0;
 }
 @media print{
 

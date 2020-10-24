@@ -11,6 +11,14 @@ while($r2=dofetch($rs2)){
 }
 ?>
 <style>
+@font-face {
+    font-family: 'NafeesRegular';
+    src: url('fonts/NafeesRegular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+.nastaleeq{font-family: 'NafeesRegular'; direction:rtl; unicode-bidi: embed; text-align:right; font-size: 18px;  }
 h1, h2, h3, p {
     margin: 0 0 10px;
 }
@@ -51,7 +59,9 @@ table {
 			echo "List of Incoming of ";
 			$all = true;
 			if( !empty( $customer_id ) ){
-				echo " Customer ".get_field($customer_id, "customer", "customer_name" )."<br>";
+			    ?>
+                Customer <span class="nastaleeq"><?php echo get_field($customer_id, "customer", "customer_name_urdu" )."<br>";?></span>
+                <?php
                 $all = false;
 			}
 			if( !empty( $q ) ){
@@ -95,7 +105,7 @@ if( numrows( $rs ) > 0 ) {
 		?>
 		<tr>
         	<td align="center"><?php echo $sn?></td>
-			<td><?php echo get_field($r["customer_id"], "customer", "customer_name" ); ?></td>
+            <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo get_field($r["customer_id"], "customer", "customer_name_urdu" ); ?></span></td>
 			<?php
             $colors_incoming = [];
             $total_quantity = 0;

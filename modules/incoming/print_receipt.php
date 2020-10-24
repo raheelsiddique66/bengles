@@ -31,6 +31,7 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
     font-style: normal;
 
 }
+.nastaleeq{font-family: 'NafeesRegular'; direction:rtl; unicode-bidi: embed; text-align:right; font-size: 18px;  }
 .clearfix:after {
 	content: "";
 	display: table;
@@ -194,7 +195,7 @@ footer {
     <div id="receipt" style="width: 160px">Gatepass No: <strong><?php echo $incoming["gatepass_id"]; ?></div>
     <div class="contentbox">
         <p>Date: <strong style="float:right"><?php echo date_convert($incoming["date"]); ?></strong></p>
-		<p>Customer: <strong style="float:right"><?php echo get_field($incoming["customer_id"], "customer", "customer_name" ); ?></strong></p>
+        <p class="">Customer: <span class="nastaleeq"><strong style="float:right"><?php echo get_field($incoming["customer_id"], "customer", "customer_name_urdu" ); ?></strong></span></p>
 		<p>Labour: <strong style="float:right"><?php echo get_field( unslash($incoming["labour_id"]), "labour", "name" ); ?></strong></p>
         <table class="table table-hover list">
             <thead>

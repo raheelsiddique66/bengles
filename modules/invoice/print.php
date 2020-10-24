@@ -33,13 +33,14 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
         <div class="number clear">
         	<div class="invoice_number">
                 <div class="detail_box">
-                    <h3 class="urdu_text"><?php echo unslash($customer["customer_name_urdu"]);?></h3>
+
                     <div class="detail_box_inner">
                         <p><?php echo unslash($customer["address"]);?></p>
                         <p><?php echo unslash($customer["phone"]);?></p>
                     </div>
                 </div>
             </div>
+            <div class="text-center" style="display: inline-block;width: 50%;"><h3 class="urdu_text"><?php echo unslash($customer["customer_name_urdu"]);?></h3></div>
             <div class="order_number">
                 <div class="sale_tax">
                     <h1> INVOICE</h1>
