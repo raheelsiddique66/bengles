@@ -28,6 +28,12 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
         .summary{
             text-align: right;
         }
+        td, th {
+            border: solid 1px #000;
+            padding: 6px 10px;
+            text-align: left;
+            font-size: 22px;
+        }
     </style>
 </head>
 <body>
@@ -65,14 +71,14 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
         <table width="100%" cellpadding="0" cellspacing="0">
         	<thead>
                 <tr>
-                    <th width="8%" class="text-right nastaleeq">رقم</th>
+                    <th width="12%" class="text-right nastaleeq"> ٹوٹل رقم</th>
                     <th width="8%" class="text-right nastaleeq">ڈسکاؤنٹ</th>
                     <th width="8%" class="text-right nastaleeq">جمع</th>
                     <th width="8%" class="text-right nastaleeq">نام</th>
                     <th width="5%" class="text-right nastaleeq">ریٹ</th>
                     <th width="5%" class="text-right nastaleeq">تعداد</th>
                     <th width="10%" class="text-right nastaleeq">آئٹم</th>
-                    <th width="10%" class="text-right nastaleeq">گیٹ پاس</th>
+                    <th width="8%" class="text-right nastaleeq">گیٹ پاس</th>
                     <th width="10%" class="text-right nastaleeq">تاریخ</th>
                     <th width="2%" class="text-center nastaleeq">سیریل</th>
                 </tr>
@@ -152,7 +158,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                     <th class="text-right"><?php echo curr_format($total_debit)?></th>
                     <th class="text-right"><?php echo $total_quantity?></th>
                     <th class="text-right"></th>
-                    <th class="text-left" colspan="4">ٹوٹل</th>
+                    <th class="text-left" colspan="4"><span class="nastaleeq">ٹوٹل</span></th>
                 </tr>
             </tbody>
         </table>
