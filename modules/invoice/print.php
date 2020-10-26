@@ -112,7 +112,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                             <td class="text-center"><?php echo $sn?></td>
                             <td><?php echo date_convert($r["datetime_added"])?></td>
                             <td><?php echo $r["gatepass_id"]?></td>
-                            <td class="nastaleeq"><?php echo $r["title"]?></td>
+                            <td class="nastaleeq"><?php echo unslash($r["title"]);?></td>
                             <td class="text-right"><?php echo $r["quantity"]?></td>
                             <td class="text-right"><?php echo curr_format($r["unit_price"])?></td>
                             <td class="text-right"><?php echo curr_format($r["debit"])?></td>
