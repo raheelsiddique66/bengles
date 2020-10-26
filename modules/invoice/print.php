@@ -66,7 +66,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
             </thead>
             <tbody>
                 <?php
-                $sql = "select date as datetime_added, gatepass_id, title, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit, 0 as discount from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and b.machine_id='".$invoice["machine_id"]."'":"")." and date>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' group by color_id,design_id union select datetime_added as datetime_added, '', title, 0, 0, 0, amount as credit, discount as discount from customer_payment a left join account c on a.account_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and a.machine_id='".$invoice["machine_id"]."'":"")." and datetime_added>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' order by datetime_added";
+                $sql = "select date as datetime_added, gatepass_id, title_urdu, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit, 0 as discount from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and b.machine_id='".$invoice["machine_id"]."'":"")." and date>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' group by color_id,design_id union select datetime_added as datetime_added, '', title, 0, 0, 0, amount as credit, discount as discount from customer_payment a left join account c on a.account_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and a.machine_id='".$invoice["machine_id"]."'":"")." and datetime_added>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' order by datetime_added";
                 //echo $sql;die;
                 $rs=doquery($sql,$dblink);
                 $total_quantity = 0;
@@ -99,20 +99,20 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                         echo $total_credit_discount;
                         $balance += $r["debit"]-$r["credit"]-$r["discount"];
 
-                        if(!isset($accounts[$r["title"].$r["unit_price"]])){
-                            $accounts[$r["title"].$r["unit_price"]] = [
-                                    "title" => $r["title"],
+                        if(!isset($accounts[$r["title_urdu"].$r["unit_price"]])){
+                            $accounts[$r["title_urdu"].$r["unit_price"]] = [
+                                    "title_urdu" => $r["title_urdu"],
                                 "rate" => $r["unit_price"],
                                 "quantity" => 0
                             ];
                         }
-                        $accounts[$r["title"].$r["unit_price"]]["quantity"] += $r["quantity"];
+                        $accounts[$r["title_urdu"].$r["unit_price"]]["quantity"] += $r["quantity"];
                         ?>
                         <tr>
                             <td class="text-center"><?php echo $sn?></td>
                             <td><?php echo date_convert($r["datetime_added"])?></td>
                             <td><?php echo $r["gatepass_id"]?></td>
-                            <td><?php echo $r["title"]?></td>
+                            <td><?php echo $r["title_urdu"]?></td>
                             <td class="text-right"><?php echo $r["quantity"]?></td>
                             <td class="text-right"><?php echo curr_format($r["unit_price"])?></td>
                             <td class="text-right"><?php echo curr_format($r["debit"])?></td>
@@ -146,7 +146,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
         <div class="summary" style="padding-top: 20px">
             <?php
             foreach($accounts as $account){
-                echo $account["title"]. " (".$account["quantity"]."x".$account["rate"].") = ".curr_format($account["quantity"]*$account["rate"])."<br><br>";
+                echo $account["title_urdu"]. " (".$account["quantity"]."x".$account["rate"].") = ".curr_format($account["quantity"]*$account["rate"])."<br><br>";
             }
             ?>
         </div>
