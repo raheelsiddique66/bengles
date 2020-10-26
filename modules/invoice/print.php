@@ -16,6 +16,19 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
 <meta charset="utf-8">
 <title>Invoice</title>
 <link rel="stylesheet" type="text/css" href="css/invoice.css">
+    <style>
+        .nastaleeq {
+            font-family: 'NafeesRegular';
+            direction: rtl;
+            unicode-bidi: embed;
+            text-align: center;
+            font-size: 16px;
+            margin: 5px 0;
+        }
+        .summary{
+            text-align: right;
+        }
+    </style>
 </head>
 <body>
 <div class="wrapper">
@@ -52,16 +65,16 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
         <table width="100%" cellpadding="0" cellspacing="0">
         	<thead>
                 <tr>
-                    <th width="2%" class="text-center nastaleeq">سیریل</th>
-                    <th width="10%" class="text-right nastaleeq">تاریخ</th>
-                    <th width="10%" class="text-right nastaleeq">گیٹ پاس</th>
-                    <th width="10%" class="text-right nastaleeq">آئٹم</th>
-                    <th width="5%" class="text-right nastaleeq">تعداد</th>
-                    <th width="5%" class="text-right nastaleeq">ریٹ</th>
-                    <th width="8%" class="text-right nastaleeq">نام</th>
-                    <th width="8%" class="text-right nastaleeq">جمع</th>
-                    <th width="8%" class="text-right nastaleeq">ڈسکاؤنٹ</th>
                     <th width="8%" class="text-right nastaleeq">رقم</th>
+                    <th width="8%" class="text-right nastaleeq">ڈسکاؤنٹ</th>
+                    <th width="8%" class="text-right nastaleeq">جمع</th>
+                    <th width="8%" class="text-right nastaleeq">نام</th>
+                    <th width="5%" class="text-right nastaleeq">ریٹ</th>
+                    <th width="5%" class="text-right nastaleeq">تعداد</th>
+                    <th width="10%" class="text-right nastaleeq">آئٹم</th>
+                    <th width="10%" class="text-right nastaleeq">گیٹ پاس</th>
+                    <th width="10%" class="text-right nastaleeq">تاریخ</th>
+                    <th width="2%" class="text-center nastaleeq">سیریل</th>
                 </tr>
             </thead>
             <tbody>
@@ -85,8 +98,8 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                     //$balance = get_customer_balance( $customer["id"], date('Y-m-d',strtotime($invoice["date_to"])));
                     ?>
                     <tr>
-                        <td class="text-right" colspan="9"><strong class="nastaleeq">سابقہ</strong></td>
                         <td class="text-right"><?php echo curr_format($balance) ?></td>
+                        <td class="text-left" colspan="9"><strong class="nastaleeq">سابقہ</strong></td>
                     </tr>
                     <?php
                     $accounts = [];
@@ -109,16 +122,16 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                         $accounts[$r["title"].$r["unit_price"]]["quantity"] += $r["quantity"];
                         ?>
                         <tr>
-                            <td class="text-center"><?php echo $sn?></td>
-                            <td><?php echo date_convert($r["datetime_added"])?></td>
-                            <td><?php echo $r["gatepass_id"]?></td>
-                            <td class="nastaleeq"><?php echo unslash($r["title"]);?></td>
-                            <td class="text-right"><?php echo $r["quantity"]?></td>
-                            <td class="text-right"><?php echo curr_format($r["unit_price"])?></td>
-                            <td class="text-right"><?php echo curr_format($r["debit"])?></td>
-                            <td class="text-right"><?php echo curr_format($r["credit"])?></td>
-                            <td class="text-right"><?php echo curr_format($r["discount"])?></td>
                             <td class="text-right"><?php echo curr_format($balance); ?></td>
+                            <td class="text-right"><?php echo curr_format($r["discount"])?></td>
+                            <td class="text-right"><?php echo curr_format($r["credit"])?></td>
+                            <td class="text-right"><?php echo curr_format($r["debit"])?></td>
+                            <td class="text-right"><?php echo curr_format($r["unit_price"])?></td>
+                            <td class="text-right"><?php echo $r["quantity"]?></td>
+                            <td class="nastaleeq"><?php echo unslash($r["title"]);?></td>
+                            <td><?php echo $r["gatepass_id"]?></td>
+                            <td><?php echo date_convert($r["datetime_added"])?></td>
+                            <td class="text-center"><?php echo $sn?></td>
                         </tr>
                         <?php 
                         $sn++;
@@ -133,13 +146,13 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                 }
                 ?>
                 <tr>
-                    <th class="text-right" colspan="4">TOTAL</th>
+                    <th class="text-right"><?php echo curr_format($balance)?></th>
+                    <th class="text-right"><?php echo curr_format($total_discount)?></th>
+                    <th class="text-right"><?php echo curr_format($total_credit)?></th>
+                    <th class="text-right"><?php echo curr_format($total_debit)?></th>
                     <th class="text-right"><?php echo $total_quantity?></th>
                     <th class="text-right"></th>
-                    <th class="text-right"><?php echo curr_format($total_debit)?></th>
-                    <th class="text-right"><?php echo curr_format($total_credit)?></th>
-                    <th class="text-right"><?php echo curr_format($total_discount)?></th>
-                    <th class="text-right"><?php echo curr_format($balance)?></th>
+                    <th class="text-left" colspan="4">ٹوٹل</th>
                 </tr>
             </tbody>
         </table>
