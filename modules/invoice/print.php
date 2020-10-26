@@ -145,8 +145,10 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
         </table>
         <div class="summary" style="padding-top: 20px">
             <?php
-            foreach($accounts as $account){
-                echo $account["title"]. " (".$account["quantity"]."x".$account["rate"].") = ".curr_format($account["quantity"]*$account["rate"])."<br><br>";
+            foreach($accounts as $account){?>
+                <span class="nastaleeq"><?php echo unslash($account["title"]);?></span>
+                <?php
+                echo " (".$account["quantity"]."x".$account["rate"].") = ".curr_format($account["quantity"]*$account["rate"])."<br><br>";
             }
             ?>
         </div>
