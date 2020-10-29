@@ -87,8 +87,12 @@ table {
     </th>
 </tr>
 <tr>
-    <th width="2%" align="center">S.no</th>
-	<th width="30%">Customer</th>
+    <th width="10%">New Balance</th>
+    <th width="10%">Discount</th>
+    <th width="10%">Payment</th>
+    <th width="10%">Previous Amount</th>
+    <th width="10%">Amount</th>
+    <th width="10%">Total</th>
     <?php
     foreach($colors as $color_id => $color){
         foreach($color as $rate => $color_title) {
@@ -99,12 +103,8 @@ table {
         }
     }
     ?>
-    <th width="10%">Total</th>
-    <th width="10%">Amount</th>
-    <th width="10%">Previous Amount</th>
-    <th width="10%">Payment</th>
-    <th width="10%">Discount</th>
-    <th width="10%">New Balance</th>
+    <th width="30%">Customer</th>
+    <th width="2%" align="center">سیریل</th>
 </tr>
 </thead>
 <?php
@@ -138,27 +138,32 @@ if( numrows( $rs ) > 0 ) {
         $total_balance += $balance;
         $total_income += $income;
         $total_discount += $discount;
+        $colors_delivery = [];
+        $total_quantity = $total_amount = 0;
+        $rs1 = doquery( "select color_id, unit_price, sum(quantity), sum(quantity*unit_price) as total from delivery_items where delivery_id in (".($r["delivery_ids"]).")".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." group by unit_price", $dblink );
+        if(numrows($rs1)>0){
+            while($r1=dofetch($rs1)){
+                if(!isset($colors_delivery[$r1["color_id"]][$r1["unit_price"]])){
+                    $colors_delivery[$r1["color_id"]][$r1["unit_price"]] = 0;
+                }
+                $colors_delivery[$r1["color_id"]][$r1["unit_price"]] = $r1["sum(quantity)"];
+                $colors_total[$r1["color_id"]][$r1["unit_price"]] += $r1["sum(quantity)"];
+                $total_quantity += $r1["sum(quantity)"];
+                $total_amount += $r1["total"];
+            }
+        }
+        $grand_total_quantity += $total_quantity;
+        $grand_total_amount += $total_amount;
         ?>
 		<tr>
-        	<td align="center"><?php echo $sn?></td>
-            <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo unslash($r["customer_name_urdu"]); ?></span></td>
-			<?php
-            $colors_delivery = [];
-            $total_quantity = $total_amount = 0;
-			$rs1 = doquery( "select color_id, unit_price, sum(quantity), sum(quantity*unit_price) as total from delivery_items where delivery_id in (".($r["delivery_ids"]).")".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." group by unit_price", $dblink );
-			if(numrows($rs1)>0){
-				while($r1=dofetch($rs1)){
-                    if(!isset($colors_delivery[$r1["color_id"]][$r1["unit_price"]])){
-                        $colors_delivery[$r1["color_id"]][$r1["unit_price"]] = 0;
-                    }
-				    $colors_delivery[$r1["color_id"]][$r1["unit_price"]] = $r1["sum(quantity)"];
-                    $colors_total[$r1["color_id"]][$r1["unit_price"]] += $r1["sum(quantity)"];
-                    $total_quantity += $r1["sum(quantity)"];
-                    $total_amount += $r1["total"];
-				}
-			}
-            $grand_total_quantity += $total_quantity;
-            $grand_total_amount += $total_amount;
+            <th class="text-right"><?php echo curr_format($total_amount+$balance-$income-$discount)?></th>
+            <th class="text-right"><?php echo curr_format($discount)?></th>
+            <th class="text-right"><?php echo curr_format($income)?></th>
+            <th class="text-right"><?php echo curr_format($balance)?></th>
+            <th class="text-right"><?php echo curr_format($total_amount)?></th>
+            <th class="text-right"><?php echo curr_format($total_quantity)?></th>
+            <?php
+
             foreach($colors as $color_id => $color){
                 foreach($color as $rate => $color_title) {
                     ?>
@@ -166,13 +171,9 @@ if( numrows( $rs ) > 0 ) {
                     <?php
                 }
             }
-			?>
-            <th class="text-right"><?php echo curr_format($total_quantity)?></th>
-            <th class="text-right"><?php echo curr_format($total_amount)?></th>
-            <th class="text-right"><?php echo curr_format($balance)?></th>
-            <th class="text-right"><?php echo curr_format($income)?></th>
-            <th class="text-right"><?php echo curr_format($discount)?></th>
-            <th class="text-right"><?php echo curr_format($total_amount+$balance-$income-$discount)?></th>
+            ?>
+            <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo unslash($r["customer_name_urdu"]); ?></span></td>
+        	<td align="center"><?php echo $sn?></td>
         </tr>
 		<?php
 		$sn++;
@@ -180,8 +181,13 @@ if( numrows( $rs ) > 0 ) {
 }
 ?>
 <tr>
-	<td></td>
-	<th class="text-right">Grand Total</th>
+    <th class="text-right"><?php echo curr_format($grand_total_amount+$total_balance-$total_income-$total_discount)?></th>
+    <th class="text-right"><?php echo curr_format($total_discount)?></th>
+    <th class="text-right"><?php echo curr_format($total_income)?></th>
+    <th class="text-right"><?php echo curr_format($total_balance)?></th>
+    <th class="text-right"><?php echo curr_format($grand_total_amount)?></th>
+    <th class="text-right"><?php echo curr_format($grand_total_quantity)?></th>
+    <th class="text-right">Grand Total</th>
     <?php
     foreach($colors as $color_id => $color){
         foreach($color as $rate => $color_title) {
@@ -191,12 +197,7 @@ if( numrows( $rs ) > 0 ) {
         }
     }
     ?>
-	<th class="text-right"><?php echo curr_format($grand_total_quantity)?></th>
-	<th class="text-right"><?php echo curr_format($grand_total_amount)?></th>
-    <th class="text-right"><?php echo curr_format($total_balance)?></th>
-    <th class="text-right"><?php echo curr_format($total_income)?></th>
-    <th class="text-right"><?php echo curr_format($total_discount)?></th>
-    <th class="text-right"><?php echo curr_format($grand_total_amount+$total_balance-$total_income-$total_discount)?></th>
+    <td></td>
 </tr>
 </table>
 <?php
