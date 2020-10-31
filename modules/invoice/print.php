@@ -156,8 +156,8 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                     <th class="text-right"><?php echo curr_format($total_discount)?></th>
                     <th class="text-right"><?php echo curr_format($total_credit)?></th>
                     <th class="text-right"><?php echo curr_format($total_debit)?></th>
-                    <th class="text-right"><?php echo $total_quantity?></th>
                     <th class="text-right"></th>
+                    <th class="text-right"><?php echo $total_quantity?></th>
                     <th class="text-left" colspan="4"><span class="nastaleeq">ٹوٹل</span></th>
                 </tr>
             </tbody>
