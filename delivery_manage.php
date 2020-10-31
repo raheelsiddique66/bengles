@@ -81,7 +81,7 @@ if(!empty($q)){
 	$is_search=true;
 }
 //$sql = "SELECT * FROM `delivery` WHERE 1 $extra order by customer_id";
-$sql = "SELECT a.* FROM `delivery` a left join customer b on a.customer_id = b.id left join delivery_items c on a.id = c.delivery_id WHERE 1 $extra group by delivery_id order by b.customer_name";
+$sql = "SELECT a.* FROM `delivery` a left join customer b on a.customer_id = b.id left join delivery_items c on a.id = c.delivery_id WHERE 1 $extra group by delivery_id order by gatepass_id, b.customer_name";
 switch($tab){
 	case 'addedit':
 		include("modules/delivery/addedit_do.php");
