@@ -216,11 +216,14 @@ else
                 }
                 $totals[$i]['t'] = 0;
             }
-            $rs = doquery("select a.*, b.id as color_id, b.title as color from design a cross join color b where 1 ".((!empty($color_id)?" and b.id='".$color_id."'":"").(!empty($design_id)?" and a.id='".$design_id."'":""))." order by a.title, b.sortorder", $dblink);
+            $rs = doquery("select a.*, b.id as color_id, b.title as color from design a cross join color b where 1 ".((!empty($color_id)?" and b.id='".$color_id."'":"").(!empty($design_id)?" and a.id='".$design_id."'":""))." ", $dblink);
             if(numrows($rs) > 0){
                 $sn = 1;
                 while($r = dofetch($rs)){
-                    $sql = "select date, customer_id, concat(size_id, 'x', sum(incoming)) as incoming, concat(size_id, 'x', sum(outgoing)) as outgoing from (select a.date, a.customer_id, c.customer_name, size_id, sum(quantity) as incoming, 0 as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id inner join customer c on a.customer_id = c.id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.date union select a.date, a.customer_id, c.customer_name, size_id, 0 as incoming, sum(quantity) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id inner join customer c on a.customer_id = c.id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.date) as records group by customer_id".($report_type==""?",date":"")." order by customer_name";
+                    $sql = "select date, customer_id, customer_name, concat(size_id, 'x', sum(incoming)) as incoming, concat(size_id, 'x', sum(outgoing)) as outgoing from 
+(select a.date, a.customer_id, c.customer_name, size_id, sum(quantity) as incoming, 0 as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id inner join customer c on a.customer_id = c.id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.date 
+union select a.date, a.customer_id, c.customer_name, size_id, 0 as incoming, sum(quantity) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id inner join customer c on a.customer_id = c.id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.date) as records group by customer_id".($report_type==""?",date":"")." order by customer_name";
+                    //echo $sql;
                     $records = doquery($sql, $dblink);
                     if( numrows($records) > 0 ){
                         while($record = dofetch($records)){
@@ -234,7 +237,7 @@ else
                                     <td><?php echo date_convert($record["date"]); ?></td>
                                 <?php } ?>
                                 <?php if(empty($_GET["customer_id"])){?>
-                                <td><?php echo get_field($record["customer_id"], "customer", "customer_name" ); ?></td>
+                                <td><?php echo unslash($record["customer_name"]); ?></td>
                                 <?php
                                 }
                                 ?>
