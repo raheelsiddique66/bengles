@@ -234,7 +234,7 @@ else
                                     <td><?php echo date_convert($record["date"]); ?></td>
                                 <?php } ?>
                                 <?php if(empty($_GET["customer_id"])){?>
-                                <td><?php echo unslash($record["customer_id"], "customer", "customer_name" ); ?></td>
+                                <td><?php echo get_field($record["customer_id"], "customer", "customer_name" ); ?></td>
                                 <?php
                                 }
                                 ?>
