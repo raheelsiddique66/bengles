@@ -3,7 +3,7 @@ if(!defined("APP_START")) die("No Direct Access");
 $sql = "SELECT a.*, group_concat(a.id) as incoming_ids FROM `incoming` a left join customer b on a.customer_id = b.id  WHERE 1 $extra and b.status = 1 group by customer_id order by customer_name";
 $rs = doquery( $sql, $dblink );
 $colors = [];
-$rs2 = doquery("select * from color order by sortorder", $dblink);
+$rs2 = doquery("select a.* from color a inner join incoming_items b on a.id = b.color_id where ".(!empty($machine_id)?" machine_id = '".$machine_id."'":"")." order by sortorder", $dblink);
 $colors_total = array();
 while($r2=dofetch($rs2)){
 	$colors[$r2["id"]] = unslash($r2["title_urdu"]);
@@ -85,8 +85,7 @@ table {
     </th>
 </tr>
 <tr>
-    <th width="2%" align="center">S.no</th>
-	<th width="30%">Customer</th>
+    <th width="10%">Total</th>
     <?php
     foreach($colors as $color_id => $color) {
         ?>
@@ -94,7 +93,8 @@ table {
         <?php
     }
     ?>
-    <th width="10%">Total</th>
+    <th width="30%">Customer</th>
+    <th width="2%" align="center">S.no</th>
 </tr>
 </thead>
 <?php
@@ -102,32 +102,35 @@ if( numrows( $rs ) > 0 ) {
 	$sn = 1;
     $grand_total_quantity = 0;
 	while( $r = dofetch( $rs ) ) {
+        $colors_incoming = [];
+        $total_quantity = 0;
+        $rs1 = doquery( "select color_id, sum(quantity) from incoming_items where incoming_id in (".($r["incoming_ids"]).")".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." group by quantity", $dblink );
+        if(numrows($rs1)>0){
+            while($r1=dofetch($rs1)){
+                if(!isset($colors_incoming[$r1["color_id"]])){
+                    $colors_incoming[$r1["color_id"]] = 0;
+                }
+                $colors_incoming[$r1["color_id"]] += $r1["sum(quantity)"];
+                $colors_total[$r1["color_id"]] += $r1["sum(quantity)"];
+                $total_quantity += $r1["sum(quantity)"];
+            }
+        }
+        $grand_total_quantity += $total_quantity;
 		?>
 		<tr>
-        	<td align="center"><?php echo $sn?></td>
-            <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo get_field($r["customer_id"], "customer", "customer_name_urdu" ); ?></span></td>
-			<?php
-            $colors_incoming = [];
-            $total_quantity = 0;
-			$rs1 = doquery( "select color_id, sum(quantity) from incoming_items where incoming_id in (".($r["incoming_ids"]).") group by quantity", $dblink );
-			if(numrows($rs1)>0){
-				while($r1=dofetch($rs1)){
-                    if(!isset($colors_incoming[$r1["color_id"]])){
-                        $colors_incoming[$r1["color_id"]] = 0;
-                    }
-				    $colors_incoming[$r1["color_id"]] += $r1["sum(quantity)"];
-                    $colors_total[$r1["color_id"]] += $r1["sum(quantity)"];
-                    $total_quantity += $r1["sum(quantity)"];
-				}
-			}
-            $grand_total_quantity += $total_quantity;
+            <th class="text-right"><?php echo curr_format($total_quantity)?></th>
+            <?php
+
             foreach($colors as $color_id => $color){
                 ?>
                 <td class="text-right"><?php echo isset($colors_incoming[$color_id]) ? curr_format($colors_incoming[$color_id]) : 0 ?></td>
                 <?php
             }
-			?>
-            <th class="text-right"><?php echo curr_format($total_quantity)?></th>
+            ?>
+            <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo get_field($r["customer_id"], "customer", "customer_name_urdu" ); ?></span></td>
+        	<td align="center"><?php echo $sn?></td>
+
+
         </tr>
 		<?php
 		$sn++;
@@ -135,8 +138,7 @@ if( numrows( $rs ) > 0 ) {
 }
 ?>
 <tr>
-	<td></td>
-	<th class="text-right">Grand Total</th>
+    <th class="text-right"><?php echo curr_format($grand_total_quantity)?></th>
     <?php
     foreach($colors as $color_id => $color){
         ?>
@@ -144,7 +146,10 @@ if( numrows( $rs ) > 0 ) {
         <?php
     }
     ?>
-	<th class="text-right"><?php echo curr_format($grand_total_quantity)?></th>
+    <td></td>
+    <th class="text-right">Grand Total</th>
+
+
 </tr>
 </table>
 <?php

@@ -55,7 +55,6 @@ if($customer_id!=""){
 	$extra.=" and customer_id='".$customer_id."'";
 	$is_search=true;
 }
-if($tab!=="report_total"){
 if(isset($_GET["machine_id"])){
 	$machine_id=slash($_GET["machine_id"]);
 	$_SESSION["incoming"]["list"]["machine_id"]=$machine_id;
@@ -64,10 +63,11 @@ if(isset($_SESSION["incoming"]["list"]["machine_id"]))
 	$machine_id=$_SESSION["incoming"]["list"]["machine_id"];
 else
 	$machine_id="";
-if($machine_id!=""){
-	$extra.=" and c.machine_id='".$machine_id."'";
-	$is_search=true;
-}
+if($tab!=="report_total"){
+    if($machine_id!=""){
+        $extra.=" and c.machine_id='".$machine_id."'";
+        $is_search=true;
+    }
 }
 if(isset($_GET["q"])){
 	$_SESSION["incoming"]["list"]["q"] = slash( $_GET["q"] );
