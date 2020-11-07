@@ -276,7 +276,7 @@ if(numrows($customers)>0){
                     }
                     ?>
                 </tr>
-                <<?php
+                <?php
             }
     }
 }
