@@ -175,6 +175,9 @@ table {
                 }
                 $totals[$i]['t'] = 0;
             }
+$customers = doquery("select * from customer where status = 1".($customer_id!=""?" and id='".$customer_id."'":"")." order by customer_name", $dblink);
+if(numrows($customers)>0){
+    while($customer = dofetch($customers)){
             $rs = doquery("select a.*, b.id as color_id, b.title as color from design a cross join color b where 1 ".((!empty($color_id)?" and b.id='".$color_id."'":"").(!empty($design_id)?" and a.id='".$design_id."'":""))." order by a.title, b.sortorder", $dblink);
             if(numrows($rs) > 0){
                 $sn = 1;
@@ -273,8 +276,10 @@ table {
                     }
                     ?>
                 </tr>
-                <?php
+                <<?php
             }
+    }
+}
             ?>
   	</table>
 <style>
