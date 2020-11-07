@@ -3,7 +3,7 @@ if(!defined("APP_START")) die("No Direct Access");
 $sql = "SELECT a.*, group_concat(a.id) as incoming_ids FROM `incoming` a left join customer b on a.customer_id = b.id  WHERE 1 $extra and b.status = 1 group by customer_id order by customer_name";
 $rs = doquery( $sql, $dblink );
 $colors = [];
-$rs2 = doquery("select * from color order by sortorder", $dblink);
+$rs2 = doquery("select * from color a inner join incoming_items b on a.id = b.color_id where ".(!empty($machine_id)?" machine_id = '".$machine_id."'":"")." order by sortorder", $dblink);
 $colors_total = array();
 while($r2=dofetch($rs2)){
 	$colors[$r2["id"]] = unslash($r2["title_urdu"]);
