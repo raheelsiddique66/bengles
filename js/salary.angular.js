@@ -26,9 +26,6 @@ angular.module('salary', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angular
 		}
 		$scope.update_caculated = function(index){
 			$over_time = $scope.salary_type!="0"?($scope.employees[index].over_time_rate * $scope.get_total(index).hours):0;
-			console.log($scope.employees[index].salary);
-			console.log($scope.employees[index].salary/30);
-			console.log(30-$scope.get_total(index).total_absent);
 			$scope.employees[index].calculated_salary = Math.round(Number((($scope.employees[index].salary/30) * (30-$scope.get_total(index).total_absent)) + $over_time));
 		}
 		$scope.get_total = function(index){
