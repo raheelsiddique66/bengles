@@ -1,6 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$sql = "SELECT a.*, group_concat(a.id)  as delivery_ids, b.balance, b.customer_name, b.customer_name_urdu, b.id as customerid FROM `delivery` a left join customer b on a.customer_id = b.id  WHERE 1 $extra and b.status = 1 group by customer_id order by customer_name";
+$sql = "SELECT a.*, group_concat(a.id)  as delivery_ids, b.balance, b.customer_name, b.customer_name_urdu, b.id as customerid FROM `delivery` a left join customer b on a.customer_id = b.id  WHERE 1 $extra and b.status = 1  group by customer_id order by customer_name";
 $rs = doquery( $sql, $dblink );
 $colors = [];
 $rs2 = doquery("select * from color order by sortorder", $dblink);
@@ -126,7 +126,7 @@ if( numrows( $rs ) > 0 ) {
                 $cus_balance = $customer_balance["balance"];
             }
             //echo $customer_balance["balance"];
-            $balance = $cus_balance+$balance[ "amount" ];
+            $balance = $r["balance"]+$balance[ "amount" ];
         }
         else{
             $balance = 0;
