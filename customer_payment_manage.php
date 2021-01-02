@@ -35,7 +35,7 @@ if(isset($_SESSION["customer_payment"]["list"]["machine_id"]))
 else
     $machine_id="";
 if($machine_id!=""){
-    $extra.=" and machine_id='".$machine_id."'";
+    $extra.=" and a.machine_id='".$machine_id."'";
     $is_search=true;
 }
 if(isset($_GET["account_id"])){

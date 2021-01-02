@@ -1,7 +1,7 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
 $rs = doquery( $sql, $dblink );
-$total_amount = $discount = 0;
+$total_amount = $total_discount = 0;
 ?>
 <style>
 h1, h2, h3, p {
