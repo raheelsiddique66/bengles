@@ -6,7 +6,7 @@ if(isset($_POST["expense_category_edit"])){
 	if(empty($title))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="Update expense_category set `title`='".slash($title)."' where id='".$id."'";
+		$sql="Update expense_category set `title`='".slash($title)."', `title_urdu`='".slash($title_urdu)."' where id='".$id."'";
 		doquery($sql,$dblink);
 		unset($_SESSION["expense_category_manage"]["edit"]);
 		header('Location: expense_category_manage.php?tab=list&msg='.url_encode("Sucessfully Updated"));

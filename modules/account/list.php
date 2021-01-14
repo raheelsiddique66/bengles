@@ -51,9 +51,10 @@ if(!empty($q)){
                 <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
-                <th width="30%">Title</th>
-                <th width="20%">Account Type</th>
-                <th width="20%" class="text-right">Balance</th>
+                <th width="20%">Title</th>
+                <th width="20%">Title Urdu</th>
+                <th width="15%">Account Type</th>
+                <th width="10%" class="text-right">Balance</th>
                 <th width="10%" class="text-center">Status</th>
                 <th width="10%" class="text-center">Actions</th>
             </tr>
@@ -73,6 +74,7 @@ if(!empty($q)){
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
                         <td><?php echo unslash($r["title"]); ?></td>
+                        <td><span class="nastaleeq"><?php echo unslash($r["title_urdu"]); ?></span></td>
                         <td><?php echo getAccountType(unslash($r["type"])); ?></td>
                         <td class="text-right"><?php echo get_account_balance(unslash($r["id"])); ?></td>
                         <td class="text-center">

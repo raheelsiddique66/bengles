@@ -1,9 +1,19 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
+$sql = "select * from expense where id = '".slash($_GET["id"])."'";
 $rs = doquery( $sql, $dblink );
 $r=dofetch($rs);
 ?>
 <style>
+    @font-face {
+        font-family: 'NafeesRegular';
+        src: url('fonts/NafeesRegular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+
+    }
+    .nastaleeq{font-family: 'NafeesRegular'; direction:rtl; unicode-bidi: embed; text-align:right; font-size: 18px;  }
+    .nastaleeq.details{ font-size: 12px}
 h1, h2, h3, p {
     margin: 0 0 10px;
 }
@@ -87,7 +97,7 @@ vertical-align: bottom;}
 <div class="voucher_detail clear">
 	<div class="detail_left">
     	<p>VOUCHER NO: <?php echo $r["id"] ?></p>
-        <p>DEBIT ACCOUNT: <?php echo get_field( unslash($r["expense_category_id"]), "expense_category", "title" ); ?></p>
+        <p class="nastaleeq">DEBIT ACCOUNT: <?php echo get_field(unslash($r["expense_category_id"]), "expense_category", "title_urdu" ); ?></p>
     </div>
     <div class="detail_right">
     	<p>DATE: <?php echo datetime_convert($r["datetime_added"]); ?></p>
@@ -111,7 +121,7 @@ if( numrows( $rs ) > 0 ) {
 		<td align="center"><?php echo $sn++?></td>
 		<td><?php echo get_field( unslash($r["account_id"]), "account", "title" ); ?></td>
 		<td align="right"><?php echo curr_format(unslash($r["amount"])); ?></td>
-		<td><?php echo unslash($r["details"]); ?></td>
+		<td class="nastaleeq details"><?php echo unslash($r["details"]); ?></td>
 	</tr>
 	<?php
 }

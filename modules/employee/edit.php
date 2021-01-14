@@ -26,6 +26,16 @@ if(!defined("APP_START")) die("No Direct Access");
     <div class="form-group">
         <div class="row">
         	<div class="col-sm-2 control-label">
+            	<label class="form-label" for="name_in_urdu">Name In Urdu</label>
+            </div>
+            <div class="col-sm-10">
+                <input type="text" title="Enter Name in Urdu" value="<?php echo $name_in_urdu; ?>" name="name_in_urdu" id="name_in_urdu" class="form-control nastaleeq" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+        	<div class="col-sm-2 control-label">
             	<label class="form-label" for="father_name">Father Name</label>
             </div>
             <div class="col-sm-10">

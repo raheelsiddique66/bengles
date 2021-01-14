@@ -4,6 +4,15 @@ $rs = doquery( $sql, $dblink );
 $total_amount = 0;
 ?>
 <style>
+    @font-face {
+        font-family: 'NafeesRegular';
+        src: url('fonts/NafeesRegular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+
+    }
+    .nastaleeq{font-family: 'NafeesRegular'; direction:rtl; unicode-bidi: embed; text-align:right; font-size: 18px;  }
+    .nastaleeq.details{ font-size: 12px}
 h1, h2, h3, p {
     margin: 0 0 10px;
 }
@@ -76,9 +85,9 @@ if( numrows( $rs ) > 0 ) {
 		<tr>
         	<td align="center"><?php echo $sn++?></td>
            	<td><?php echo datetime_convert($r["datetime_added"]); ?></td>
-            <td><?php echo get_field( unslash($r["expense_category_id"]), "expense_category", "title" ); ?></td>
+            <td class="nastaleeq"><?php echo get_field( unslash($r["expense_category_id"]), "expense_category", "title_urdu" ); ?></td>
             <td><?php echo get_field( unslash($r["account_id"]), "account", "title" ); ?></td>
-            <td><?php echo unslash($r["details"]); ?></td>
+            <td class="nastaleeq details"><?php echo unslash($r["details"]); ?></td>
             <td align="right"><?php echo curr_format($r["amount"]); ?></td>
             <td><?php echo get_field( unslash($r["added_by"]), "admin", "username" ); ?></td>
         </tr>
