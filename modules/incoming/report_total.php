@@ -3,7 +3,7 @@ if(!defined("APP_START")) die("No Direct Access");
 $sql = "SELECT a.*, group_concat(a.id) as incoming_ids FROM `incoming` a left join customer b on a.customer_id = b.id  WHERE 1 $extra and b.status = 1 group by customer_id order by customer_name";
 $rs = doquery( $sql, $dblink );
 $colors = [];
-$rs2 = doquery("select a.* from color a inner join incoming_items b on a.id = b.color_id where ".(!empty($machine_id)?" machine_id = '".$machine_id."'":"")." order by sortorder", $dblink);
+$rs2 = doquery("select a.* from color a inner join incoming_items b on a.id = b.color_id ".(!empty($machine_id)?"where machine_id = '".$machine_id."'":"")." order by sortorder", $dblink);
 $colors_total = array();
 while($r2=dofetch($rs2)){
 	$colors[$r2["id"]] = unslash($r2["title_urdu"]);
@@ -85,15 +85,15 @@ table {
     </th>
 </tr>
 <tr>
-    <th width="10%">Total</th>
+    <th width="15%">Total</th>
     <?php
     foreach($colors as $color_id => $color) {
         ?>
-        <th class="nastaleeq"><?php echo $color ?></th>
+        <th width="15%" class="nastaleeq"><?php echo $color ?></th>
         <?php
     }
     ?>
-    <th width="30%">Customer</th>
+    <th>Customer</th>
     <th width="2%" align="center">S.no</th>
 </tr>
 </thead>
@@ -104,7 +104,7 @@ if( numrows( $rs ) > 0 ) {
 	while( $r = dofetch( $rs ) ) {
         $colors_incoming = [];
         $total_quantity = 0;
-        $rs1 = doquery( "select color_id, sum(quantity) from incoming_items where incoming_id in (".($r["incoming_ids"]).")".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." group by quantity", $dblink );
+        $rs1 = doquery( "select color_id, sum(quantity) from incoming_items where incoming_id in (".($r["incoming_ids"]).")".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." group by color_id, quantity", $dblink );
         if(numrows($rs1)>0){
             while($r1=dofetch($rs1)){
                 if(!isset($colors_incoming[$r1["color_id"]])){

@@ -140,7 +140,7 @@ if( numrows( $rs ) > 0 ) {
         $total_discount += $discount;
         $colors_delivery = [];
         $total_quantity = $total_amount = 0;
-        $rs1 = doquery( "select color_id, unit_price, sum(quantity), sum(quantity*unit_price) as total from delivery_items where delivery_id in (".($r["delivery_ids"]).")".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." group by unit_price", $dblink );
+        $rs1 = doquery( "select color_id, unit_price, sum(quantity), sum(quantity*unit_price) as total from delivery_items where delivery_id in (".($r["delivery_ids"]).")".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." group by color_id,unit_price", $dblink );
         if(numrows($rs1)>0){
             while($r1=dofetch($rs1)){
                 if(!isset($colors_delivery[$r1["color_id"]][$r1["unit_price"]])){
