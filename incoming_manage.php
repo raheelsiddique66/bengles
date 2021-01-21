@@ -81,7 +81,7 @@ if(!empty($q)){
 	$extra.=" and (gatepass_id = '".$q."' or a.id = '".$q."')";
 	$is_search=true;
 }
-$sql = "SELECT a.* FROM `incoming` a left join customer b on a.customer_id = b.id left join incoming_items c on a.id = c.incoming_id WHERE 1 $extra group by incoming_id order by b.customer_name, gatepass_id desc";
+$sql = "SELECT a.* FROM `incoming` a left join customer b on a.customer_id = b.id left join incoming_items c on a.id = c.incoming_id WHERE 1 $extra group by incoming_id order by gatepass_id desc";
 switch($tab){
 	case 'addedit':
 		include("modules/incoming/addedit_do.php");
