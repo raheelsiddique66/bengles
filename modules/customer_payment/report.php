@@ -65,14 +65,14 @@ table {
     </th>
 </tr>
 <tr>
-    <th width="5%" align="center">S.no</th>
-    <th width="5%" class="text-center">ID</th>
-    <th>Customer Name</th>
-    <th>Machine</th>
-    <th>Datetime</th>
-    <th class="text-right">Discount</th>
-    <th class="text-right">Amount</th>
     <th>Paid By</th>
+    <th class="text-right nastaleeq">رقم</th>
+    <th class="text-right nastaleeq">ڈسکاؤنٹ</th>
+    <th class="nastaleeq">تاریخ</th>
+    <th>Machine</th>
+    <th>Customer</th>
+    <th width="5%" class="text-center">ID</th>
+    <th width="2%" class="text-center nastaleeq">سیریل</th>
 </tr>
 <?php
 if( numrows( $rs ) > 0 ) {
@@ -82,24 +82,24 @@ if( numrows( $rs ) > 0 ) {
         $total_discount += $r["discount"];
 		?>
 		<tr>
-        	<td align="center"><?php echo $sn++?></td>
-            <td class="text-center"><?php echo $r["id"]?></td>
-            <td class="nastaleeq"><?php echo unslash( $r[ "customer_name_urdu" ] );?></td>
-            <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
-            <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
-            <td class="text-right"><?php echo curr_format(unslash($r["discount"])); ?></td>
-            <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
             <td class="nastaleeq"><?php echo get_field( unslash($r["account_id"]), "account", "title_urdu" ); ?></td>
+            <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
+            <td class="text-right"><?php echo curr_format(unslash($r["discount"])); ?></td>
+            <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
+            <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
+            <td class="nastaleeq"><?php echo unslash( $r[ "customer_name_urdu" ] );?></td>
+            <td class="text-center"><?php echo $r["id"]?></td>
+            <td align="center"><?php echo $sn++?></td>
         </tr>
 		<?php
 	}
 }
 ?>
 <tr>
-<th align="right" colspan="5">Total</th>
-<th align="right"><?php echo curr_format($total_discount)?></th>
-<th align="right"><?php echo curr_format($total_amount)?></th>
 <th></th>
+<th align="right"><?php echo curr_format($total_amount)?></th>
+<th align="right"><?php echo curr_format($total_discount)?></th>
+<th align="right" colspan="5">ٹوٹل</th>
 </tr>
 </table>
 <?php
