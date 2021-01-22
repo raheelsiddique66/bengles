@@ -30,6 +30,7 @@ table {
 }
 .text-center{ text-align:center}
 .text-right{ text-align:right}
+.nastaleeq{font-family: 'NafeesRegular'; direction:rtl; unicode-bidi: embed; text-align:right; font-size: 18px;  }
 </style>
 <table width="100%" cellspacing="0" cellpadding="0">
 <tr class="head">
@@ -49,7 +50,9 @@ table {
                 echo " to ".$date_to."<br>";
             }
             if( !empty( $customer_id ) ){
-                echo " Customer: ".get_field($customer_id, "customer", "customer_name" )."<br>";
+                ?>
+                Customer:  <span class="nastaleeq"><?php echo get_field($customer_id, "customer", "customer_name_urdu" )."<br>";?></span>
+                <?php
             }
             if( !empty( $machine_id ) ){
                 echo " Machine: ".get_field($machine_id, "machine", "title" )."<br>";
@@ -81,12 +84,12 @@ if( numrows( $rs ) > 0 ) {
 		<tr>
         	<td align="center"><?php echo $sn++?></td>
             <td class="text-center"><?php echo $r["id"]?></td>
-            <td><?php echo unslash( $r[ "customer_name" ] );?></td>
+            <td class="nastaleeq"><?php echo unslash( $r[ "customer_name_urdu" ] );?></td>
             <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
             <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
             <td class="text-right"><?php echo curr_format(unslash($r["discount"])); ?></td>
             <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
-            <td><?php echo get_field( unslash($r["account_id"]), "account", "title" ); ?></td>
+            <td class="nastaleeq"><?php echo get_field( unslash($r["account_id"]), "account", "title_urdu" ); ?></td>
         </tr>
 		<?php
 	}

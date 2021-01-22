@@ -88,7 +88,7 @@ if(!empty($q)){
 	$extra.=" and b.customer_name like '%".$q."%'";
 	$is_search=true;
 }
-$sql="select a.*, b.customer_name from customer_payment a inner join customer b on a.customer_id = b.id where 1 ".$extra." order by customer_name, datetime_added desc";
+$sql="select a.*, b.customer_name_urdu, b.customer_name from customer_payment a inner join customer b on a.customer_id = b.id where 1 ".$extra." order by customer_name, datetime_added desc";
 switch($tab){
 	case 'add':
 		include("modules/customer_payment/add_do.php");
