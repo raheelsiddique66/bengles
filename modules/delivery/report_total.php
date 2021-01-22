@@ -178,6 +178,46 @@ if( numrows( $rs ) > 0 ) {
 		<?php
 		$sn++;
 	}
+	$sql = "select * from customer where id not in (select customer_id from delivery WHERE 1 $extra and status = 1) order by customer_name";
+	$rs = doquery($sql, $dblink);
+	if(numrows($rs)){
+        while($r = dofetch($rs)){
+            $sql="select sum(amount) as amount, sum(discount) as discount from customer_payment where customer_id = '".$r[ "id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 23:59:59'";
+            $income1=dofetch(doquery($sql,$dblink));
+            $income = $income1[ "amount" ];
+            $discount = $income1[ "discount" ];
+            $total_balance += $balance;
+            $total_income += $income;
+            $total_discount += $discount;
+            $total_amount=0;
+            if($income==0 && $discount==0){
+                continue;
+            }
+            ?>
+            <tr>
+                <th class="text-right"><?php echo curr_format($total_amount+$balance-$income-$discount)?></th>
+                <th class="text-right"><?php echo curr_format($discount)?></th>
+                <th class="text-right"><?php echo curr_format($income)?></th>
+                <th class="text-right"><?php echo curr_format($balance)?></th>
+                <th class="text-right"><?php echo curr_format($total_amount)?></th>
+                <th class="text-right"><?php echo curr_format(0)?></th>
+                <?php
+
+                foreach($colors as $color_id => $color){
+                    foreach($color as $rate => $color_title) {
+                        ?>
+                        <td class="text-right">0</td>
+                        <?php
+                    }
+                }
+                ?>
+                <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo unslash($r["customer_name_urdu"]); ?></span></td>
+                <td align="center"><?php echo $sn?></td>
+            </tr>
+            <?php
+            $sn++;
+        }
+    }
 }
 ?>
 <tr>
