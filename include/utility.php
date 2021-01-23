@@ -1188,15 +1188,18 @@ function get_account_balance( $account_id, $datetime = "", $project_id = "" ){
 		$datetime = date( "Y-m-d H:i:s" );
 	}
 	if( empty( $project_id ) ) {
-		$account = dofetch( doquery( "select is_petty_cash, balance from account where id='".$account_id."'", $dblink ) );
+		$account = doquery( "select is_petty_cash, balance from account where id='".$account_id."'", $dblink ) ;
+        $account = dofetch($account);
 		$balance = $account[ "balance" ];
 	}
 	else {
 		$balance = 0;
 	}
-	$balance_transactions = dofetch( doquery( "select sum(amount) as balance from (SELECT id, amount as amount FROM `transaction` a where a.account_id='".$account_id."' and datetime_added<='".$datetime."' union select id, -amount from transaction b where b.reference_id='".$account_id."' and datetime_added<='".$datetime."') as transactions", $dblink ) );
+	$balance_transactions =  doquery( "select sum(amount) as balance from (SELECT id, amount as amount FROM `transaction` a where a.account_id='".$account_id."' and datetime_added<='".$datetime."' union select id, -amount from transaction b where b.reference_id='".$account_id."' and datetime_added<='".$datetime."') as transactions", $dblink ) ;
+    $balance_transactions = dofetch($balance_transactions );
 	$balance = $balance + $balance_transactions[ "balance" ];
-	$expense = dofetch( doquery( "select sum(amount) as total from expense where status=1 and account_id = '".$account_id."' and datetime_added<='".$datetime."'", $dblink ) );
+	$expense =  doquery( "select sum(amount) as total from expense where status=1 and account_id = '".$account_id."' and datetime_added<='".$datetime."'", $dblink  );
+    $expense = dofetch($expense);
 	$balance -= $expense[ "total" ];
 	return $balance;
 }

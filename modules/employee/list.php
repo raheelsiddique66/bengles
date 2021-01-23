@@ -99,17 +99,18 @@ if(!empty($q)){
 	<table class="table table-hover list">
     	<thead>
             <tr>
-                <th width="5%" class="text-center">S.No</th>
-                <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
+                <th width="2%" class="text-center">S.No</th>
+                <th class="text-center" width="3%"><div class="checkbox checkbox-primary">
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
-                <th width="15%">Name</th>
-                <th width="15%">Father Name</th>
-                <th width="10%">Phone Number</th>
-                <th width="10%">Salary Type</th>
-                <th width="10%">Machine</th>
-                <th width="10%" class="text-right">Salary</th>
-                <th width="11%" class="text-right">Over Time Per hour</th>
+                <th width="12%">Name</th>
+                <th width="12%">Name in urdu</th>
+                <th width="12%">Father Name</th>
+                <th width="8%">Phone</th>
+                <th width="8%">Salary Type</th>
+                <th width="8%">Machine</th>
+                <th width="6%" class="text-right">Salary</th>
+                <th width="12%" class="text-right">Over Time Per hour</th>
                 <th width="8%">Advance</th>
                 <th width="5%" class="text-center">Status</th>
                 <th width="15%" class="text-center">Actions</th>
@@ -130,6 +131,7 @@ if(!empty($q)){
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
                         <td><?php echo unslash($r["name"]); ?></td>
+                        <td><span class="nastaleeq"><?php echo unslash($r["name_in_urdu"]); ?></span></td>
                         <td><?php echo unslash($r["father_name"]); ?></td>
                         <td><?php echo unslash($r["phone_number"]); ?></td>
                         <td><?php
@@ -179,7 +181,7 @@ if(!empty($q)){
                 }
                 ?>
                 <tr>
-                    <td colspan="7" class="actions">
+                    <td colspan="8" class="actions">
                         <select name="bulk_action" class="" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
                             <option value="delete">Delete</option>
@@ -188,14 +190,14 @@ if(!empty($q)){
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "employees", $sql, $pageNum)?></td>
+                    <td colspan="5" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "employees", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="11"  class="no-record">No Result Found</td>
+                    <td colspan="13"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

@@ -74,7 +74,7 @@ if(!defined("APP_START")) die("No Direct Access");
                     <label for="select_all"></label></div></th>
                 <th width="7%">Date</th>
                 <th width="5%">Gatepass</th>
-                <th width="13%">Customer</th>
+                <th width="13%" class="text-right">Customer</th>
                 <th width="10%">Labour</th>
                 <th>Items</th>
                 <th class="text-center" width="3%">Status</th>
@@ -88,12 +88,12 @@ if(!defined("APP_START")) die("No Direct Access");
                 $colors = [];
                 $rs2 = doquery("select * from color order by sortorder", $dblink);
                 while($r2=dofetch($rs2)){
-                    $colors[$r2["id"]] = unslash($r2["title"]);
+                    $colors[$r2["id"]] = unslash($r2["title_urdu"]);
                 }
                 $designs = [];
                 $rs3 = doquery("select * from design order by sortorder", $dblink);
                 while($r3=dofetch($rs3)){
-                    $designs[$r3["id"]] = unslash($r3["title"]);
+                    $designs[$r3["id"]] = unslash($r3["title_urdu"]);
                 }
                 $sizes = [];
                 $rs4 = doquery("select * from size order by sortorder", $dblink);
@@ -111,15 +111,15 @@ if(!defined("APP_START")) die("No Direct Access");
                         </td>
                         <td><?php echo date_convert($r["date"]); ?></td>
                         <td><?php echo $r["gatepass_id"]; ?></td>
-                        <td><?php echo get_field($r["customer_id"], "customer", "customer_name" ); ?></td>
+                        <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo get_field($r["customer_id"], "customer", "customer_name_urdu" ); ?></span></td>
                         <td><?php echo get_field($r["labour_id"], "labour", "name" ); ?></td>
                         <td>
                             <table class="table table-hover list">
                                 <thead>
                                 <tr>
                                     <td>Machine</td>
-                                    <td>Design</td>
-                                    <td>Color</td>
+                                    <td class="text-right">Design</td>
+                                    <td class="text-right">Color</td>
                                     <?php
                                     foreach($sizes as $size){
                                         ?>
@@ -141,8 +141,8 @@ if(!defined("APP_START")) die("No Direct Access");
                                         ?>
                                         <tr>
                                             <td><?php echo get_field($r1["machine_id"], "machine", "title" ); ?></td>
-                                            <td><?php echo $designs[$r1["design_id"]]?></td>
-                                            <td><?php echo $colors[$r1["color_id"]]?></td>
+                                            <td class="nastaleeq"><?php echo $designs[$r1["design_id"]]?></td>
+                                            <td class="nastaleeq"><?php echo $colors[$r1["color_id"]]?></td>
                                             <?php
                                             $quantities = [];
                                             $t = 0;
