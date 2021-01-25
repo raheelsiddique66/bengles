@@ -72,7 +72,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
         	<thead>
                 <tr>
                     <th width="12%" class="text-right nastaleeq"> ٹوٹل رقم</th>
-                    <th width="8%" class="text-right nastaleeq">کلیم/RF/ڈسکاؤنٹ</th>
+                    <th width="8%" class="text-right nastaleeq">کلیم/RF/ڈسکاؤنٹ/نقصان</th>
                     <th width="8%" class="text-right nastaleeq">جمع</th>
                     <th width="8%" class="text-right nastaleeq">نام</th>
                     <th width="5%" class="text-right nastaleeq">ریٹ</th>
