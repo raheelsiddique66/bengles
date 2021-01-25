@@ -62,7 +62,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
             <div class="text-center" style="display: inline-block;width: 50%;"><h3 class="urdu_text"><?php echo unslash($customer["customer_name_urdu"]);?></h3></div>
             <div class="order_number">
                 <div class="sale_tax">
-                    <h1> INVOICE</h1>
+                    <h1> Bill</h1>
                 </div>
                 <p>DATE: <?php echo datetime_convert($invoice["datetime_added"])?></p>
                 <p>Invoice # <?php echo $invoice["id"]?></p>

@@ -1287,7 +1287,7 @@ function get_customer_total_balance( $dt = 0 ){
     $customer = doquery( "select balance from customer", $dblink );
     if( numrows( $customer ) > 0 ) {
         $customer = dofetch( $customer );
-        $sql="select sum(amount) as amount from (select concat( 'Delivery #', a.id) as transaction, unit_price*quantity as amount from delivery a left join delivery_items b on a.id = b.delivery_id where date <='".$dt."' union select concat( 'Payment #', id) as transaction, -amount from customer_payment where datetime_added <='".$dt."') as transactions";
+        $sql="select sum(amount) as amount from (select concat( 'Delivery #', a.id) as transaction, unit_price*quantity as amount from delivery a left join delivery_items b on a.id = b.delivery_id where date <='".$dt."' union select concat( 'Payment #', id) as transaction, -amount-discount as amount from customer_payment where datetime_added <='".$dt."') as transactions";
         $balance=dofetch(doquery($sql,$dblink));
         $balance = $customer["balance"] + $balance[ "amount" ];
         $total += $balance;
