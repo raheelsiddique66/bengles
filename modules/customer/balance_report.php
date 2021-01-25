@@ -25,7 +25,7 @@ table table th, table table td{
 }
 table {
     border-collapse:  collapse;
-	max-width:1200px;
+	max-width:800px;
 	margin:0 auto;
 }
 .text-center{ text-align:center}
@@ -53,20 +53,22 @@ table {
     </th>
 </tr>
 <tr>
-    <th>Balance</th>
-    <th>Phone</th>
-    <th>Machine</th>
-    <th>Customer</th>
+    <th width="10%">Remarks</th>
+    <th width="10%" style="font-size: 18px">Balance</th>
+    <th width="10%">Phone</th>
+    <th width="10%">Machine</th>
+    <th width="15%">Customer</th>
     <th width="2%" class="text-center nastaleeq">سیریل</th>
 </tr>
 <?php
+$total = 1;
 if( numrows( $rs ) > 0 ) {
 	$sn = 1;
 	while( $r = dofetch( $rs ) ) {
 		?>
 		<tr>
-
-            <td><?php echo get_customer_balance($r['id']);?></td>
+            <td></td>
+            <td style="font-size: 18px"><?php echo get_customer_balance($r['id']);?></td>
             <td><?php echo unslash($r["phone"]); ?></td>
             <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
             <td class="nastaleeq"><?php echo unslash( $r[ "customer_name_urdu" ] );?></td>
@@ -76,6 +78,11 @@ if( numrows( $rs ) > 0 ) {
 	}
 }
 ?>
+    <tr>
+        <td></td>
+        <th><?php echo get_customer_total_balance();?></th>
+        <th>Total</th>
+    </tr>
 </table>
 <?php
 die;
