@@ -6,7 +6,7 @@ include("include/paging.php");
 define("APP_START", 1);
 $filename = 'account_manage.php';
 include("include/admin_type_access.php");
-$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action");
+$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action", "report");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -30,6 +30,9 @@ switch($tab){
 	case 'bulk_action':
 		include("modules/account/bulkactions.php");
 	break;
+    case 'report':
+        include("modules/account/report.php");
+    break;
 }
 ?>
 <?php include("include/header.php");?>

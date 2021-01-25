@@ -24,7 +24,8 @@ if(!empty($q)){
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> 
         	<a href="account_manage.php?tab=add" class="btn btn-light editproject">Add New Account</a> 
-            <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a> 
+            <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
+            <a class="btn print-btn" href="account_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a>
     	</div> 
     </div> 
 </div>
@@ -112,14 +113,14 @@ if(!empty($q)){
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="3" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "account", $sql, $pageNum)?></td>
+                    <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "account", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="7"  class="no-record">No Result Found</td>
+                    <td colspan="8"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

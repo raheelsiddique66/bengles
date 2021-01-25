@@ -1,20 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$q="";
-$extra='';
-$is_search=false;
-if(isset($_GET["q"])){
-	$q=slash($_GET["q"]);
-	$_SESSION["customer_manage"]["q"]=$q;
-}
-if(isset($_SESSION["customer_manage"]["q"]))
-	$q=$_SESSION["customer_manage"]["q"];
-else
-	$q="";
-if(!empty($q)){
-	$extra.=" and customer_name like '%".$q."%'";
-	$is_search=true;
-}
+
 ?>
 <div class="page-header">
 	<h1 class="title">Customer</h1>
@@ -24,7 +10,8 @@ if(!empty($q)){
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> 
         	<a href="customer_manage.php?tab=add" class="btn btn-light editproject">Add New Customer</a> 
-            <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a> 
+            <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
+            <a class="btn print-btn" href="customer_manage.php?tab=balance_report"><i class="fa fa-print" aria-hidden="true"></i></a>
     	</div> 
     </div> 
 </div>
@@ -34,6 +21,21 @@ if(!empty($q)){
         	<form class="form-horizontal" action="" method="get">
                 <div class="col-sm-3">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
+                </div>
+                <div class="col-sm-3 col-xs-8">
+                    <select name="machine_id" id="machine_id" class="form-control">
+                        <option value=""<?php echo ($machine_id=="")? " selected":"";?>>Select Machine</option>
+                        <?php
+                        $res=doquery("select * from machine order by title",$dblink);
+                        if(numrows($res)>=0){
+                            while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($machine_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </select>
                 </div>
                 <div class="col-sm-3 text-left">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
@@ -55,13 +57,14 @@ if(!empty($q)){
                 <th width="10%">Machine</th>
                 <th width="20%">Customer Name In Urdu</th>
                 <th width="10%">Phone</th>
+                <th width="10%">Balance</th>
                 <th width="5%" class="text-center">Status</th>
                 <th width="5%" class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
             <?php 
-            $sql="select * from customer where 1 $extra order by customer_name";
+
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
@@ -77,6 +80,7 @@ if(!empty($q)){
                         <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
                         <td><span class="nastaleeq"><?php echo unslash($r["customer_name_urdu"]); ?></span></td>
                         <td><?php echo unslash($r["phone"]); ?></td>
+                        <td><?php echo get_customer_balance($r['id']);?></td>
                         <td class="text-center">
                             <a href="customer_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                                 <?php

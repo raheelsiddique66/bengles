@@ -1276,7 +1276,7 @@ function get_customer_balance( $customer_id, $dt = 0 ){
 		$balance=dofetch(doquery($sql,$dblink));
 		$balance = $customer["balance"] + $balance[ "amount" ];
 	}
-	return $balance;
+	return curr_format($balance);
 }
 
 function get_supplier_balance( $supplier_id, $dt = 0 ){
