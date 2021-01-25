@@ -80,8 +80,8 @@ if( numrows( $rs ) > 0 ) {
 ?>
     <tr>
         <td></td>
-        <th><?php echo get_customer_total_balance();?></th>
-        <th>Total</th>
+        <th align="left"><?php echo get_customer_total_balance();?></th>
+        <th colspan="4" align="left">Total</th>
     </tr>
 </table>
 <?php
