@@ -152,7 +152,7 @@ if( numrows( $rs ) > 0 ) {
 							}
 							?>
                             <td><?php echo get_field($r1["machine_id"], "machine", "title" ); ?></td>
-                            <td class="nastaleeq"><?php echo $designs[$r1["design_id"]]?></td>
+                            <td class="nastaleeq"><?php echo !empty($designs[$r1["design_id"]])?$designs[$r1["design_id"]]:''?></td>
                             <td class="nastaleeq"><?php echo $colors[$r1["color_id"]]?></td>
 							<?php
 							$quantities = [];
