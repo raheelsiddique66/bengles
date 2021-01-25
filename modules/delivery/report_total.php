@@ -182,6 +182,20 @@ if( numrows( $rs ) > 0 ) {
 	$rs = doquery($sql, $dblink);
 	if(numrows($rs)){
         while($r = dofetch($rs)){
+            if(!empty($date_from)){
+                $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$r[ "customer_id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and date<'".date_dbconvert($date_from)."' union select -sum(amount) from customer_payment where customer_id = '".$r[ "customer_id" ]."' ".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added<='".date_dbconvert($date_from)." 00:00:00') as transactions ";
+                $balance=dofetch(doquery($sql,$dblink));
+                $customer_balance = doquery("select * from customer where id = '".$r["customer_id"]."' ".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." ", $dblink);
+                if( numrows( $customer_balance ) > 0 ) {
+                    $customer_balance = dofetch( $customer_balance );
+                    $cus_balance = $customer_balance["balance"];
+                }
+                //echo $customer_balance["balance"];
+                $balance = $r["balance"]+$balance[ "amount" ];
+            }
+            else{
+                $balance = 0;
+            }
             $sql="select sum(amount) as amount, sum(discount) as discount from customer_payment where customer_id = '".$r[ "id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 23:59:59'";
             $income1=dofetch(doquery($sql,$dblink));
             $income = $income1[ "amount" ];
