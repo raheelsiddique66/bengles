@@ -1272,13 +1272,30 @@ function get_customer_balance( $customer_id, $dt = 0 ){
 	$customer = doquery( "select balance from customer where id = '".$customer_id."'", $dblink );
 	if( numrows( $customer ) > 0 ) {
 		$customer = dofetch( $customer );
-		$sql="select sum(amount) as amount from (select concat( 'Delivery #', a.id) as transaction, unit_price*quantity as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer_id."' and date <='".$dt."' union select concat( 'Payment #', id) as transaction, -amount from customer_payment where customer_id = '".$customer_id."' and datetime_added <='".$dt."') as transactions";
+		$sql="select sum(amount) as amount from (select concat( 'Delivery #', a.id) as transaction, unit_price*quantity as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer_id."' and date <='".$dt."' union select concat( 'Payment #', id) as transaction, -amount-discount as amount from customer_payment where customer_id = '".$customer_id."' and datetime_added <='".$dt."') as transactions";
 		$balance=dofetch(doquery($sql,$dblink));
 		$balance = $customer["balance"] + $balance[ "amount" ];
 	}
-	return $balance;
+	return curr_format($balance);
 }
+function get_customer_total_balance( $dt = 0 ){
+    global $dblink;
+    if( empty( $dt ) ) {
+        $dt = date( "Y-m-d H:i:s" );
+    }
+    $total = 0;
+    $customers = doquery( "select balance from customer", $dblink );
+    if( numrows( $customers ) > 0 ) {
+        while($customer = dofetch( $customers )) {
+            $sql = "select sum(amount) as amount from (select concat( 'Delivery #', a.id) as transaction, unit_price*quantity as amount from delivery a left join delivery_items b on a.id = b.delivery_id where date <='" . $dt . "' union select concat( 'Payment #', id) as transaction, -amount-discount as amount from customer_payment where datetime_added <='" . $dt . "') as transactions";
+            $balance = dofetch(doquery($sql, $dblink));
+            $balance = $customer["balance"] + $balance["amount"];
+            $total += $balance;
+        }
 
+    }
+    return curr_format($total);
+}
 function get_supplier_balance( $supplier_id, $dt = 0 ){
 	global $dblink;
 	if( empty( $dt ) ) {
