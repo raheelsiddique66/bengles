@@ -114,7 +114,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td><?php echo date_convert($r["date"]); ?></td>
                         <td><?php echo $r["gatepass_id"]?></td>
                         <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo get_field( unslash($r["customer_id"]), "customer", "customer_name_urdu" ); ?></span></td>
-                        <td><?php echo  unslash($r["claim"]); ?></td>
+                        <td><?php echo unslash($r["claim"]); ?></td>
                         <td><?php echo get_field( unslash($r["labour_id"]), "labour", "name" ); ?></td>
                         <td>
                             <table class="table table-hover list">
@@ -149,7 +149,7 @@ if(!defined("APP_START")) die("No Direct Access");
                                         ?>
                                         <tr>
                                             <td><?php echo get_field($r1["machine_id"], "machine", "title" ); ?></td>
-                                            <td class="nastaleeq"><?php echo $designs[$r1["design_id"]]?></td>
+                                            <td class="nastaleeq"><?php echo !empty($designs[$r1["design_id"]])?$designs[$r1["design_id"]]:''?></td>
                                             <td class="nastaleeq"><?php echo $colors[$r1["color_id"]]?></td>
                                             <?php
                                             $quantities = [];

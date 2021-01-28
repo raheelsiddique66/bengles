@@ -1,7 +1,7 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
 $rs = doquery( $sql, $dblink );
-$total_amount = $total_discount = 0;
+$total_amount = $total_discount = $total_claim = 0;
 ?>
 <style>
 h1, h2, h3, p {
@@ -66,6 +66,7 @@ table {
 </tr>
 <tr>
     <th>Paid By</th>
+    <th class="text-right nastaleeq">وائرس</th>
     <th class="text-right nastaleeq">رقم</th>
     <th class="text-right nastaleeq">ڈسکاؤنٹ</th>
     <th class="nastaleeq">تاریخ</th>
@@ -78,11 +79,13 @@ table {
 if( numrows( $rs ) > 0 ) {
 	$sn = 1;
 	while( $r = dofetch( $rs ) ) {
+        $total_claim += $r["claim"];
         $total_amount += $r["amount"];
         $total_discount += $r["discount"];
 		?>
 		<tr>
             <td class="nastaleeq"><?php echo get_field( unslash($r["account_id"]), "account", "title_urdu" ); ?></td>
+            <td class="text-right"><?php echo unslash($r["claim"]); ?></td>
             <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
             <td class="text-right"><?php echo curr_format(unslash($r["discount"])); ?></td>
             <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
@@ -97,6 +100,7 @@ if( numrows( $rs ) > 0 ) {
 ?>
 <tr>
 <th></th>
+<th align="right"><?php echo curr_format($total_claim)?></th>
 <th align="right"><?php echo curr_format($total_amount)?></th>
 <th align="right"><?php echo curr_format($total_discount)?></th>
 <th align="right" colspan="5">ٹوٹل</th>

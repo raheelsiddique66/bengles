@@ -77,6 +77,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                     <th width="8%" class="text-right nastaleeq">نام</th>
                     <th width="5%" class="text-right nastaleeq">ریٹ</th>
                     <th width="5%" class="text-right nastaleeq">تعداد</th>
+                    <th width="5%" class="text-right nastaleeq">وائرس</th>
                     <th width="10%" class="text-right nastaleeq">آئٹم</th>
                     <th width="8%" class="text-right nastaleeq">گیٹ پاس</th>
                     <th width="10%" class="text-right nastaleeq">تاریخ</th>
@@ -86,6 +87,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
             <tbody>
             <?php
             $total_quantity = 0;
+            $total_claim = 0;
             $total_debit = 0;
             $total_credit = 0;
             $total_balance = 0;
@@ -101,7 +103,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                 <td class="text-left" colspan="9"><strong class="nastaleeq">سابقہ</strong></td>
             </tr>
                 <?php
-                $sql = "select date as datetime_added, gatepass_id, title_urdu, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit, 0 as discount, '' as details from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and b.machine_id='".$invoice["machine_id"]."'":"")." and date>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' group by delivery_id,color_id,design_id union select datetime_added as datetime_added, '', title_urdu, 0, 0, 0, amount as credit, discount as discount, details from customer_payment a left join account c on a.account_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and a.machine_id='".$invoice["machine_id"]."'":"")." and datetime_added>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' order by datetime_added";
+                $sql = "select date as datetime_added, gatepass_id, title_urdu, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit, 0 as discount, '' as details, 0 as claim from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and b.machine_id='".$invoice["machine_id"]."'":"")." and date>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' group by delivery_id,color_id,design_id union select datetime_added as datetime_added, '', title_urdu, 0, 0, 0, amount as credit, discount as discount, details, claim from customer_payment a left join account c on a.account_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and a.machine_id='".$invoice["machine_id"]."'":"")." and datetime_added>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' order by datetime_added";
                 //echo $sql;die;
                 $rs=doquery($sql,$dblink);
 
@@ -116,6 +118,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                     $accounts = [];
                     while($r=dofetch($rs)){   
                         $total_quantity += $r["quantity"];
+                        $total_claim += $r["claim"];
                         $total_debit += $r["debit"];
                         $total_credit += $r["credit"];
                         $total_discount += $r["discount"];
@@ -139,6 +142,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                             <td class="text-right"><?php echo curr_format($r["debit"])?></td>
                             <td class="text-right"><?php echo curr_format($r["unit_price"])?></td>
                             <td class="text-right"><?php echo $r["quantity"]?></td>
+                            <td class="text-right"><?php echo $r["claim"]?></td>
                             <td class="nastaleeq"><?php echo unslash($r["title_urdu"]);?><span style="display: block;font-size: 12px;"><?php echo unslash($r["details"]);?></span></td>
                             <td><?php echo $r["gatepass_id"]?></td>
                             <td><?php echo date_convert($r["datetime_added"])?></td>
@@ -163,6 +167,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                     <th class="text-right"><?php echo curr_format($total_debit)?></th>
                     <th class="text-right"></th>
                     <th class="text-right"><?php echo $total_quantity?></th>
+                    <th class="text-right"><?php echo $total_claim?></th>
                     <th class="text-left" colspan="4"><span class="nastaleeq">ٹوٹل</span></th>
                 </tr>
             </tbody>

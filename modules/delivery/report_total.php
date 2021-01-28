@@ -92,6 +92,7 @@ table {
     <th width="10%">Payment</th>
     <th width="10%">Previous Amount</th>
     <th width="10%">Amount</th>
+    <th width="10%">وائرس</th>
     <th width="10%">Total</th>
     <?php
     foreach($colors as $color_id => $color){
@@ -115,6 +116,7 @@ if( numrows( $rs ) > 0 ) {
     $total_balance = 0;
     $total_income = 0;
     $total_discount = 0;
+    $total_claim = 0;
     $cus_balance = 0;
 	while( $r = dofetch( $rs ) ) {
         if(!empty($date_from)){
@@ -131,13 +133,15 @@ if( numrows( $rs ) > 0 ) {
         else{
             $balance = 0;
         }
-        $sql="select sum(amount) as amount, sum(discount) as discount from customer_payment where customer_id = '".$r[ "customer_id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 23:59:59'";
+        $sql="select sum(amount) as amount, sum(discount) as discount, sum(claim) as claim from customer_payment where customer_id = '".$r[ "customer_id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 23:59:59'";
         $income1=dofetch(doquery($sql,$dblink));
         $income = $income1[ "amount" ];
         $discount = $income1[ "discount" ];
+        $claim = $income1[ "claim" ];
         $total_balance += $balance;
         $total_income += $income;
         $total_discount += $discount;
+        $total_claim += $claim;
         $colors_delivery = [];
         $total_quantity = $total_amount = 0;
         $rs1 = doquery( "select color_id, unit_price, sum(quantity), sum(quantity*unit_price) as total from delivery_items where delivery_id in (".($r["delivery_ids"]).")".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." group by color_id,unit_price", $dblink );
@@ -161,6 +165,7 @@ if( numrows( $rs ) > 0 ) {
             <th class="text-right"><?php echo curr_format($income)?></th>
             <th class="text-right"><?php echo curr_format($balance)?></th>
             <th class="text-right"><?php echo curr_format($total_amount)?></th>
+            <th class="text-right"><?php echo unslash($claim)?></th>
             <th class="text-right"><?php echo curr_format($total_quantity)?></th>
             <?php
 
@@ -196,13 +201,15 @@ if( numrows( $rs ) > 0 ) {
             else{
                 $balance = 0;
             }
-            $sql="select sum(amount) as amount, sum(discount) as discount from customer_payment where customer_id = '".$r[ "id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 23:59:59'";
+            $sql="select sum(amount) as amount, sum(discount) as discount, sum(claim) as claim from customer_payment where customer_id = '".$r[ "id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 23:59:59'";
             $income1=dofetch(doquery($sql,$dblink));
             $income = $income1[ "amount" ];
             $discount = $income1[ "discount" ];
+            $claim = $income1[ "claim" ];
             $total_balance += $balance;
             $total_income += $income;
             $total_discount += $discount;
+            $total_claim += $claim;
             $total_amount=0;
             if($income==0 && $discount==0){
                 continue;
@@ -214,6 +221,7 @@ if( numrows( $rs ) > 0 ) {
                 <th class="text-right"><?php echo curr_format($income)?></th>
                 <th class="text-right"><?php echo curr_format($balance)?></th>
                 <th class="text-right"><?php echo curr_format($total_amount)?></th>
+                <th class="text-right"><?php echo unslash($claim)?></th>
                 <th class="text-right"><?php echo curr_format(0)?></th>
                 <?php
 
@@ -240,6 +248,7 @@ if( numrows( $rs ) > 0 ) {
     <th class="text-right"><?php echo curr_format($total_income)?></th>
     <th class="text-right"><?php echo curr_format($total_balance)?></th>
     <th class="text-right"><?php echo curr_format($grand_total_amount)?></th>
+    <th class="text-right"><?php echo curr_format($total_claim)?></th>
     <th class="text-right"><?php echo curr_format($grand_total_quantity)?></th>
 
     <?php
