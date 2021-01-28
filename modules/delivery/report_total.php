@@ -35,7 +35,7 @@ th, td {
     border: solid 1px #000;
     padding: 5px 5px;
     font-size: 14px;
-	vertical-align:top;
+	vertical-align:middle;
 }
 table table th, table table td{
 	padding:3px;
@@ -92,7 +92,7 @@ table {
     <th width="10%">Payment</th>
     <th width="10%">Previous Amount</th>
     <th width="10%">Amount</th>
-    <th width="10%">وائرس</th>
+    <th width="10%" class="nastaleeq"> وائرس</th>
     <th width="10%">Total</th>
     <?php
     foreach($colors as $color_id => $color){
