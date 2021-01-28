@@ -17,7 +17,7 @@ body {
 th, td {
     border: solid 1px #000;
     padding: 5px 5px;
-    font-size: 11px;
+    font-size: 18px;
 	vertical-align:top;
 }
 table table th, table table td{
