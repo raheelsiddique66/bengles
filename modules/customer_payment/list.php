@@ -94,6 +94,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th>Datetime</th>
                 <th class="text-right">Discount</th>
                 <th class="text-right">Amount</th>
+                <th class="text-right">Claim</th>
                 <th>Paid By</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Actions</th>
@@ -118,6 +119,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
                         <td class="text-right"><?php echo curr_format(unslash($r["discount"])); ?></td>
                         <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
+                        <td class="text-right"><?php echo unslash($r["claim"]); ?></td>
                         <td><?php echo get_field( unslash($r["account_id"]), "account", "title" ); ?></td>
                         <td class="text-center"><a href="customer_payment_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                             <?php
@@ -152,14 +154,14 @@ if(!defined("APP_START")) die("No Direct Access");
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="5" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "customer_payment", $sql, $pageNum)?></td>
+                    <td colspan="6" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "customer_payment", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="11"  class="no-record">No Result Found</td>
+                    <td colspan="12"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }
