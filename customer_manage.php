@@ -35,7 +35,7 @@ if(isset($_GET["machine_id"])){
 if(isset($_SESSION["customer_manage"]["list"]["machine_id"]))
     $machine_id=$_SESSION["customer_manage"]["list"]["machine_id"];
 else
-    $machine_id="";
+    $machine_id='';
 if($machine_id!=""){
     $extra.=" and machine_id='".$machine_id."'";
     $is_search=true;
@@ -66,9 +66,9 @@ switch($tab){
     case 'balance_report':
         include("modules/customer/balance_report.php");
     break;
-//    case 'customer_dashboard':
-//        include("modules/customer/customer_dashboard_do.php");
-//    break;
+    case 'customer_dashboard':
+        include("modules/customer/customer_dashboard_do.php");
+    break;
 }
 ?>
 <?php include("include/header.php");?>

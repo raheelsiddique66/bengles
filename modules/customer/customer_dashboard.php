@@ -1,6 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-
+$is_search=true;
 ?>
 <style>
     .summary-tb th{
@@ -9,38 +9,28 @@ if(!defined("APP_START")) die("No Direct Access");
 </style>
 <div ng-app="customerDashboard" ng-controller="customerDashboardController" id="customerDashboardController">
     <div class="page-header">
-        <h1 class="title">Customer</h1>
+        <h1 class="title">Customer Dashboard</h1>
         <ol class="breadcrumb">
-            <li class="active">Manage Customer</li>
+            <li class="active">Customer</li>
         </ol>
         <div class="right">
             <div class="btn-group" role="group" aria-label="...">
-                <a href="customer_manage.php?tab=add" class="btn btn-light editproject">Add New Customer</a>
                 <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
-                <a class="btn print-btn" href="customer_manage.php?tab=balance_report"><i class="fa fa-print" aria-hidden="true"></i></a>
+                <div class="btn-group" role="group" aria-label="..."> <a href="customer_manage.php" class="btn btn-light editproject">Back to List</a> </div>
             </div>
         </div>
     </div>
-    <ul class="topstats clearfix search_filter"<?php if($is_search) echo ' style="display: block"';?>>
+    <ul class="topstats clearfix search_filter" style="display: block">
         <li class="col-xs-12 col-lg-12 col-sm-12">
             <div>
                 <form class="form-horizontal" action="" method="get">
                     <div class="col-sm-3">
-                      <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >
+                      <input type="text" title="Enter String" value="" name="q" id="search" class="form-control" >
                     </div>
                     <div class="col-sm-3 col-xs-8">
                         <select name="client_id" id="client_id" class="form-control">
-                            <option value=""<?php echo ($client_id=="")? " selected":"";?>>Select Client</option>
-                            <?php
-                            $res=doquery("select * from customer order by customer_name",$dblink);
-                            if(numrows($res)>=0){
-                                while($rec=dofetch($res)){
-                                    ?>
-                                    <option value="<?php echo $rec["id"]?>" <?php echo($client_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["customer_name"])?></option>
-                                    <?php
-                                }
-                            }
-                            ?>
+                            <option value="">Select Customer</option>
+
                         </select>
                     </div>
                     <div class="col-sm-3 text-left">
@@ -52,7 +42,7 @@ if(!defined("APP_START")) die("No Direct Access");
         </li>
     </ul>
     <div class="panel-body summary-tb">
-        <div class="row clearfix">
+        <div class="clearfix">
             <div class="col-md-3">
                 <table class="table table-hover list">
                     <tr>
