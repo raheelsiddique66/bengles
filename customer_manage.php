@@ -36,14 +36,6 @@ if(isset($_SESSION["customer_manage"]["list"]["machine_id"]))
     $machine_id=$_SESSION["customer_manage"]["list"]["machine_id"];
 else
     $machine_id="";
-if(isset($_GET["client_id"])){
-    $client_id=slash($_GET["client_id"]);
-    $_SESSION["customer_manage"]["list"]["client_id"]=$client_id;
-}
-if(isset($_SESSION["customer_manage"]["list"]["client_id"]))
-    $client_id=$_SESSION["customer_manage"]["list"]["client_id"];
-else
-    $client_id="";
 if($machine_id!=""){
     $extra.=" and machine_id='".$machine_id."'";
     $is_search=true;

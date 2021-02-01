@@ -57,7 +57,7 @@ table {
     <th width="10%" style="font-size: 18px">Balance</th>
     <th width="10%">Phone</th>
     <th width="10%">Machine</th>
-    <th width="15%">Customer</th>
+    <th width="20%">Customer</th>
     <th width="2%" class="text-center nastaleeq">سیریل</th>
 </tr>
 <?php
