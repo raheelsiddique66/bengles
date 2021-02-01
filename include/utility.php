@@ -1284,10 +1284,10 @@ function get_customer_total_balance( $dt = 0, $machine_id = 0 ){
         $dt = date( "Y-m-d H:i:s" );
     }
     $total = 0;
-    $customers = doquery( "select balance from customer where machine_id = '".$machine_id."'", $dblink );
+    $customers = doquery( "select id, balance from customer where status = 1 ".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." ", $dblink );
     if( numrows( $customers ) > 0 ) {
         while($customer = dofetch( $customers )) {
-            $sql = "select amount from (select concat( 'Delivery #', a.id) as transaction, unit_price*quantity as amount from delivery a left join delivery_items b on a.id = b.delivery_id where date <='" . $dt . "' union select concat( 'Payment #', id) as transaction, -amount-discount as amount from customer_payment where datetime_added <='" . $dt . "') as transactions";
+            $sql = "select amount from (select concat( 'Delivery #', a.id) as transaction, unit_price*quantity as amount from delivery a left join delivery_items b on a.id = b.delivery_id where date <='" . $dt . "' and customer_id = '".$customer["id"]."' union select concat( 'Payment #', id) as transaction, -amount-discount as amount from customer_payment where datetime_added <='" . $dt . "' and customer_id = '".$customer["id"]."') as transactions";
             $balance = dofetch(doquery($sql, $dblink));
             $balance = $customer["balance"] + $balance["amount"];
             $total += $balance;
