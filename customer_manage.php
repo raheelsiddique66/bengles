@@ -6,7 +6,7 @@ include("include/paging.php");
 define("APP_START", 1);
 $filename = 'customer_manage.php';
 include("include/admin_type_access.php");
-$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action", "report", "print", "balance_report");
+$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action", "report", "print", "balance_report", "customer_dashboard");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -36,6 +36,14 @@ if(isset($_SESSION["customer_manage"]["list"]["machine_id"]))
     $machine_id=$_SESSION["customer_manage"]["list"]["machine_id"];
 else
     $machine_id="";
+if(isset($_GET["client_id"])){
+    $client_id=slash($_GET["client_id"]);
+    $_SESSION["customer_manage"]["list"]["client_id"]=$client_id;
+}
+if(isset($_SESSION["customer_manage"]["list"]["client_id"]))
+    $client_id=$_SESSION["customer_manage"]["list"]["client_id"];
+else
+    $client_id="";
 if($machine_id!=""){
     $extra.=" and machine_id='".$machine_id."'";
     $is_search=true;
@@ -66,6 +74,9 @@ switch($tab){
     case 'balance_report':
         include("modules/customer/balance_report.php");
     break;
+//    case 'customer_dashboard':
+//        include("modules/customer/customer_dashboard_do.php");
+//    break;
 }
 ?>
 <?php include("include/header.php");?>
@@ -85,6 +96,9 @@ switch($tab){
 				case 'report':
 					include("modules/customer/report.php");
 				break;
+                case 'customer_dashboard':
+                    include("modules/customer/customer_dashboard.php");
+                break;
             }
           ?>
     	</div>
