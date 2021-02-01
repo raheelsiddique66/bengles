@@ -1278,7 +1278,7 @@ function get_customer_balance( $customer_id, $dt = 0 ){
 	}
 	return curr_format($balance);
 }
-function get_customer_total_balance( $dt = 0, $machine_id ){
+function get_customer_total_balance( $dt = 0, $machine_id = 0 ){
     global $dblink;
     if( empty( $dt ) ) {
         $dt = date( "Y-m-d H:i:s" );
