@@ -24,18 +24,18 @@ $is_search=true;
         <li class="col-xs-12 col-lg-12 col-sm-12">
             <div>
                 <form class="form-horizontal" action="" method="get">
-                    <div class="col-sm-3">
-                      <input type="text" title="Enter String" value="" name="q" id="search" class="form-control" >
-                    </div>
+<!--                    <div class="col-sm-3">-->
+<!--                      <input type="text" title="Enter String" value="" name="q" id="search" class="form-control">-->
+<!--                    </div>-->
                     <div class="col-sm-3 col-xs-8">
-                        <select name="client_id" id="client_id" class="form-control">
-                            <option value="">Select Customer</option>
-
+                        <select data-ng-model="customer_id" class="form-control" chosen>
+                            <option value="0">Select Customer</option>
+                            <option ng-repeat="customer in customers" value="{{ customer.id }}">{{ customer.customer_name }}</option>
                         </select>
                     </div>
                     <div class="col-sm-3 text-left">
                         <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
-                        <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
+                        <input data-ng-click="get_records()" type="button" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
                     </div>
                 </form>
             </div>
@@ -146,42 +146,33 @@ $is_search=true;
                     <h2 class="total-heading" style="margin-top:0">Incoming</h2>
                     <div class="clearfix">
                         <div class="col-md-12">
-                            <h2 class="total-heading" style="margin-top:0"></h2>
-                            <div class="panel-body">
+                            <div class="panel-body table-responsive">
                                 <table width="100%" class="table table-hover list">
                                     <tr>
-                                        <th width="3%">SN</th>
-                                        <th width="22%">DATE</th>
-                                        <th width="25%">GATEPASS</th>
-                                        <th width="30%">CUSTOMER</th>
-                                        <th width="30%">LABOUR</th>
-                                        <th width="15%">ITEMS</th>
-                                        <th width="10%" class="text-right">STATUS</th>
+                                        <th width="2%" class="text-center">SN</th>
+                                        <th width="10%">DATE</th>
+                                        <th width="10%">GATEPASS</th>
+                                        <th width="15%">CUSTOMER</th>
+                                        <th width="10%">LABOUR</th>
+                                        <th>ITEMS</th>
                                         <th width="5%" class="text-right">Actions</th>
                                     </tr>
-                                    <?php
-                                        $rs = doquery( "select a.*,c.customer_name as customer_name,d.name as labour from incoming a left join incoming_items b on a.id = b.incoming_id left join customer c on a.customer_id = c.id left join labour d on a.labour_id = d.id where a.customer_id = '".$client_id."' and a.status = 1", $dblink );
-                                        if( numrows( $rs ) > 0 ) {
-                                        $sn = 1;
-                                        while( $r = dofetch( $rs ) ) {
-                                    ?>
-                                    <tr>
-                                        <td><?php echo $sn++; ?></td>
-                                        <td><?php echo unslash($r["date"]); ?></td>
-                                        <td><?php echo unslash($r["gatepass_id"]); ?></td>
-                                        <td><?php echo unslash($r["customer_name"]); ?></td>
-                                        <td><?php echo unslash($r["labour"]); ?></td>
-                                        <td class="text-center"><?php echo unslash($r["status"]); ?></td>
-                                        <td class="text-right"><a class="fancybox_iframe" href="expense_manage.php?tab=addedit&id=1"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;</td>
+                                    <tr data-ng-repeat="incoming in incomings">
+                                        <td class="text-center">{{ $index+1 }}</td>
+                                        <td>{{ incoming.date }}</td>
+                                        <td>{{ incoming.gatepass_id }}</td>
+                                        <td>{{ incoming.customer_name }}</td>
+                                        <td>{{ incoming.labour }}</td>
+                                        <td></td>
+                                        <td class="text-right"><a href="incoming_manage.php?tab=addedit&id={{ incoming.id }}" class="fancybox_iframe"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;</td>
                                     </tr>
-                                    <?php
-                                    $sn++;
-                                        }}
-                                ?>
+                                    <tr data-ng-if="incomings.length==0">
+                                        <th colspan="7">{{ msg }}</th>
+                                    </tr>
                                 </table>
                                 <div class="fancybox-btn">
-                                    <a href="expense_manage.php?project_id=1" class="btn f-iframe btn-default btn-l">View All Expenses</a>
-                                    <a href="expense_manage.php?project_id=1&tab=addedit" class="btn f-iframe btn-danger btn-l">Add Expense</a>
+                                    <a href="incoming_manage.php?customer_id={{ customer_id }}" class="btn fancybox_iframe btn-default btn-l">View All Incoming</a>
+                                    <a href="incoming_manage.php?tab=addedit" class="btn f-iframe btn-danger btn-l">Add Incoming</a>
                                 </div>
                             </div>
                         </div>
@@ -189,32 +180,33 @@ $is_search=true;
                     <h2 class="total-heading" style="margin-top:0">Delivery</h2>
                     <div class="clearfix">
                         <div class="col-md-12">
-                            <h2 class="total-heading" style="margin-top:0"></h2>
                             <div class="panel-body">
                                 <table width="100%" class="table table-hover list">
                                     <tr>
-                                        <th width="3%">SN</th>
-                                        <th width="22%">Date/Time</th>
-                                        <th width="20%">Account To</th>
-                                        <th width="15%">Account From</th>
-                                        <th width="30%">Detail</th>
-                                        <th width="10%" class="text-right">Amount</th>
-                                        <th width="5%" class="text-right">Action</th>
+                                        <th width="2%" class="text-center">SN</th>
+                                        <th width="10%">DATE</th>
+                                        <th width="10%">GATEPASS</th>
+                                        <th width="15%">CUSTOMER</th>
+                                        <th width="10%">LABOUR</th>
+                                        <th>ITEMS</th>
+                                        <th width="5%" class="text-right">Actions</th>
                                     </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>datetime_added</td>
-                                        <td>account_to</td>
-                                        <td>account_from</td>
-                                        <td>details</td>
-                                        <td class="text-right">amount</td>
-                                        <td class="text-right"><a class="fancybox_iframe" href="transaction_manage.php?tab=edit&id=5"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;</td>
+                                    <tr data-ng-repeat="delivery in deliveries">
+                                        <td class="text-center">{{ $index+1 }}</td>
+                                        <td>{{ delivery.date }}</td>
+                                        <td>{{ delivery.gatepass_id }}</td>
+                                        <td>{{ delivery.customer_name }}</td>
+                                        <td>{{ delivery.labour }}</td>
+                                        <td></td>
+                                        <td class="text-right"><a class="fancybox_iframe" href="delivery_manage.php?tab=addedit&id={{ delivery.id }}"><img title="Edit Record" alt="Edit" src="images/edit.png"></a></td>
                                     </tr>
-
+                                    <tr data-ng-if="deliveries.length==0">
+                                        <th colspan="7">{{ msg }}</th>
+                                    </tr>
                                 </table>
                                 <div class="fancybox-btn">
-                                    <a href="transaction_manage.php?project_id=3" class="btn f-iframe btn-default btn-l">View All Transactions</a>
-                                    <a href="transaction_manage.php?project_id=3&tab=add" class="btn f-iframe btn-danger btn-l">Add Transaction</a>
+                                    <a href="delivery_manage.php?customer_id={{ customer_id }}" class="btn fancybox_iframe btn-default btn-l">View All Delivery</a>
+                                    <a href="delivery_manage.php?tab=addedit" class="btn f-iframe btn-danger btn-l">Add Delivery</a>
                                 </div>
                             </div>
                         </div>
@@ -222,32 +214,29 @@ $is_search=true;
                     <h2 class="total-heading" style="margin-top:0">Washing</h2>
                     <div class="clearfix">
                         <div class="col-md-12">
-                            <h2 class="total-heading" style="margin-top:0"></h2>
                             <div class="panel-body">
                                 <table width="100%" class="table table-hover list">
                                     <tr>
-                                        <th width="3%">SN</th>
-                                        <th width="22%">Date/Time</th>
-                                        <th width="20%">Account To</th>
-                                        <th width="15%">Account From</th>
-                                        <th width="30%">Detail</th>
-                                        <th width="10%" class="text-right">Amount</th>
+                                        <th width="3%" class="text-center">SN</th>
+                                        <th width="10%">Date</th>
+                                        <th width="20%">Customer</th>
+                                        <th>Items</th>
                                         <th width="5%" class="text-right">Action</th>
                                     </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>datetime_added</td>
-                                        <td>account_to</td>
-                                        <td>account_from</td>
-                                        <td>details</td>
-                                        <td class="text-right">amount</td>
-                                        <td class="text-right"><a class="fancybox_iframe" href="transaction_manage.php?tab=edit&id=5"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;</td>
+                                    <tr data-ng-repeat="wash in washing">
+                                        <td class="text-center">{{ $index+1 }}</td>
+                                        <td>{{ wash.date }}</td>
+                                        <td>{{ wash.customer_name }}</td>
+                                        <td></td>
+                                        <td class="text-right"><a class="fancybox_iframe" href="washing_manage.php?tab=addedit&id={{ wash.id }}"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;</td>
                                     </tr>
-
+                                    <tr data-ng-if="washing.length==0">
+                                        <th colspan="5">{{ msg }}</th>
+                                    </tr>
                                 </table>
                                 <div class="fancybox-btn">
-                                    <a href="transaction_manage.php?project_id=3" class="btn f-iframe btn-default btn-l">View All Transactions</a>
-                                    <a href="transaction_manage.php?project_id=3&tab=add" class="btn f-iframe btn-danger btn-l">Add Transaction</a>
+                                    <a href="washing_manage.php?customer_id={{ customer_id }}" class="btn fancybox_iframe btn-default btn-l">View All Washing</a>
+                                    <a href="washing_manage.php?tab=addedit" class="btn f-iframe btn-danger btn-l">Add Washing</a>
                                 </div>
                             </div>
                         </div>
@@ -255,32 +244,39 @@ $is_search=true;
                     <h2 class="total-heading" style="margin-top:0">Customer Payment</h2>
                     <div class="clearfix">
                         <div class="col-md-12">
-                            <h2 class="total-heading" style="margin-top:0"></h2>
                             <div class="panel-body">
                                 <table width="100%" class="table table-hover list">
                                     <tr>
-                                        <th width="3%">SN</th>
-                                        <th width="22%">Date/Time</th>
-                                        <th width="20%">Account To</th>
-                                        <th width="15%">Account From</th>
-                                        <th width="30%">Detail</th>
-                                        <th width="10%" class="text-right">Amount</th>
+                                        <th width="2%" class="text-center">SN</th>
+                                        <th width="3%" class="text-center">ID</th>
+                                        <th width="15%">Customer Name</th>
+                                        <th width="10%">Machine</th>
+                                        <th width="12%">Date/Time</th>
+                                        <th width="8%" class="text-right">Discount</th>
+                                        <th width="8%" class="text-right">Amount</th>
+                                        <th width="8%" class="text-right">Claim</th>
+                                        <th width="10%">Paid By</th>
                                         <th width="5%" class="text-right">Action</th>
                                     </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>datetime_added</td>
-                                        <td>account_to</td>
-                                        <td>account_from</td>
-                                        <td>details</td>
-                                        <td class="text-right">amount</td>
-                                        <td class="text-right"><a class="fancybox_iframe" href="transaction_manage.php?tab=edit&id=5"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;</td>
+                                    <tr data-ng-repeat="payment in customer_payment">
+                                        <td class="text-center">{{ $index+1 }}</td>
+                                        <td class="text-center">{{ payment.id }}</td>
+                                        <td>{{ payment.customer }}</td>
+                                        <td>{{ payment.machine }}</td>
+                                        <td>{{ payment.date }}</td>
+                                        <td class="text-right">{{ payment.discount }}</td>
+                                        <td class="text-right">{{ payment.amount }}</td>
+                                        <td class="text-right">{{ payment.claim }}</td>
+                                        <td>{{ payment.account }}</td>
+                                        <td class="text-right"><a class="fancybox_iframe" href="customer_payment_manage.php?tab=edit&id={{ payment.id }}"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;</td>
                                     </tr>
-
+                                    <tr data-ng-if="customer_payment.length==0">
+                                        <th colspan="10">{{ msg }}</th>
+                                    </tr>
                                 </table>
                                 <div class="fancybox-btn">
-                                    <a href="transaction_manage.php?project_id=3" class="btn f-iframe btn-default btn-l">View All Transactions</a>
-                                    <a href="transaction_manage.php?project_id=3&tab=add" class="btn f-iframe btn-danger btn-l">Add Transaction</a>
+                                    <a href="customer_payment_manage.php?customer_id={{ customer_id }}" class="btn fancybox_iframe btn-default btn-l">View Customer Payment</a>
+                                    <a href="customer_payment_manage.php?tab=add" class="btn f-iframe btn-danger btn-l">Add Customer Payment</a>
                                 </div>
                             </div>
                         </div>
@@ -292,28 +288,35 @@ $is_search=true;
                             <div class="panel-body">
                                 <table width="100%" class="table table-hover list">
                                     <tr>
-                                        <th width="3%">SN</th>
-                                        <th width="22%">Date/Time</th>
-                                        <th width="20%">Account To</th>
-                                        <th width="15%">Account From</th>
-                                        <th width="30%">Detail</th>
-                                        <th width="10%" class="text-right">Amount</th>
+                                        <th width="2%" class="text-center">SN</th>
+                                        <th width="3%" class="text-center">ID</th>
+                                        <th width="15%">Customer Name</th>
+                                        <th width="10%">Machine</th>
+                                        <th width="12%">Date/Time</th>
+                                        <th width="10%">Date From</th>
+                                        <th width="10%">Date To</th>
                                         <th width="5%" class="text-right">Action</th>
                                     </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>datetime_added</td>
-                                        <td>account_to</td>
-                                        <td>account_from</td>
-                                        <td>details</td>
-                                        <td class="text-right">amount</td>
-                                        <td class="text-right"><a class="fancybox_iframe" href="transaction_manage.php?tab=edit&id=5"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;</td>
+                                    <tr data-ng-repeat="invoice in invoices">
+                                        <td class="text-center">{{ $index+1 }}</td>
+                                        <td class="text-center">{{ invoice.id }}</td>
+                                        <td>{{ invoice.customer }}</td>
+                                        <td>{{ invoice.machine }}</td>
+                                        <td>{{ payment.date }}</td>
+                                        <td>{{ invoice.date_from }}</td>
+                                        <td>{{ invoice.date_to }}</td>
+                                        <td class="text-right">
+                                            <a class="fancybox_iframe" href="invoice_manage.php?tab=edit&id={{ invoice.id }}"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
+                                            <a href="invoice_manage.php?tab=print&id={{ invoice.id }}" class="download-icon" target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a>&nbsp;&nbsp;
+                                        </td>
                                     </tr>
-
+                                    <tr data-ng-if="invoices.length==0">
+                                        <th colspan="10">{{ msg }}</th>
+                                    </tr>
                                 </table>
                                 <div class="fancybox-btn">
-                                    <a href="transaction_manage.php?project_id=3" class="btn f-iframe btn-default btn-l">View All Transactions</a>
-                                    <a href="transaction_manage.php?project_id=3&tab=add" class="btn f-iframe btn-danger btn-l">Add Transaction</a>
+                                    <a href="invoice_manage.php?customer_id={{ customer_id }}" class="btn fancybox_iframe btn-default btn-l">View Invoices</a>
+                                    <a href="invoice_manage.php?tab=add" class="btn f-iframe btn-danger btn-l">Add Invoice</a>
                                 </div>
                             </div>
                         </div>

@@ -1,13 +1,21 @@
 angular.module('customerDashboard', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularjs-datetime-picker', 'localytics.directives']).controller('customerDashboardController',
-	function ($scope, $http, $interval, $filter) {
+	function ($scope, $http, $interval, $filter, $timeout) {
 		$scope.incomings = [];
+		$scope.deliveries = [];
+		$scope.washing = [];
 		$scope.customers = [];
+		$scope.customer_payment = [];
+		$scope.invoices = [];
 		$scope.customer_id = '';
 		$scope.errors = [];
 		$scope.processing = false;
+		$scope.msg = '';
 		angular.element(document).ready(function () {
 			$scope.wctAJAX( {action: 'get_session'}, function( response ){
 				$scope.customer_id = response.customer;
+				$timeout(function(){
+					$('.fancybox_iframe').fancybox({type: 'iframe', width: '90%'});
+				}, 200);
 				$scope.get_records();
 			});
 			$scope.wctAJAX( {action: 'get_customer'}, function( response ){
@@ -16,7 +24,44 @@ angular.module('customerDashboard', ['ngAnimate', 'angularMoment', 'ui.bootstrap
 		});
 		$scope.get_records = function(){
 			$scope.wctAJAX( {action: 'get_incoming', customer_id: $scope.customer_id}, function( response ){
-				$scope.incomings = response.incomings;
+				if(response.status==1){
+					$scope.incomings = response.incoming;
+				}
+				else{
+					$scope.msg = response.msg;
+				}
+			});
+			$scope.wctAJAX( {action: 'get_delivery', customer_id: $scope.customer_id}, function( response ){
+				if(response.status==1){
+					$scope.deliveries = response.delivery;
+				}
+				else{
+					$scope.msg = response.msg;
+				}
+			});
+			$scope.wctAJAX( {action: 'get_washing', customer_id: $scope.customer_id}, function( response ){
+				if(response.status==1){
+					$scope.washing = response.washing;
+				}
+				else{
+					$scope.msg = response.msg;
+				}
+			});
+			$scope.wctAJAX( {action: 'get_customer_payment', customer_id: $scope.customer_id}, function( response ){
+				if(response.status==1){
+					$scope.customer_payment = response.customer_payment;
+				}
+				else{
+					$scope.msg = response.msg;
+				}
+			});
+			$scope.wctAJAX( {action: 'get_invoice', customer_id: $scope.customer_id}, function( response ){
+				if(response.status==1){
+					$scope.invoices = response.invoice;
+				}
+				else{
+					$scope.msg = response.msg;
+				}
 			});
 		}
 		$scope.wctAJAX = function( wctData, wctCallback ) {
