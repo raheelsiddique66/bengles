@@ -26,7 +26,8 @@ body {
 th, td {
     border: solid 1px #000;
     padding: 5px 5px;
-    font-size: 11px;
+    font-size: 14px;
+    font-weight: bold;
 	vertical-align:top;
 }
 table table th, table table td{
@@ -39,6 +40,9 @@ table {
 }
 .text-center{ text-align:center}
 .text-right{ text-align:right}
+    .total_col th{
+        background-color:#2AB750; font-size: 18px
+    }
 </style>
 <table width="100%" cellspacing="0" cellpadding="0">
 <tr class="head">
@@ -69,7 +73,7 @@ table {
 </tr>
 <tr>
     <th width="5%" align="center">S.no</th>
-    <th width="10%">Date/Time</th>
+    <th width="12%">Date/Time</th>
     <th width="15%">Expense Category</th>
     <th width="15%">Paid By</th>
     <th width="20%">Details</th>
@@ -95,7 +99,7 @@ if( numrows( $rs ) > 0 ) {
 	}
 }
 ?>
-<tr>
+<tr class="total_col">
     <th align="right" colspan="5">Total</th>
     <th align="right"><?php echo $total_amount?></th>
     <th></th>

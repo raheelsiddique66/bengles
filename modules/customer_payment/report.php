@@ -17,7 +17,7 @@ body {
 th, td {
     border: solid 1px #000;
     padding: 5px 5px;
-    font-size: 11px;
+    font-size: 14px;
 	vertical-align:top;
     font-weight: bold;
 }
@@ -70,8 +70,8 @@ table {
     <th class="text-right nastaleeq" width="10%">وائرس/تعداد</th>
     <th class="text-right nastaleeq" width="10%">رقم</th>
     <th class="text-right nastaleeq" width="10%">ڈسکاؤنٹ</th>
-    <th class="nastaleeq text-center" width="10%">حوالہ</th>
-    <th class="nastaleeq" width="10%">تاریخ</th>
+    <th class="nastaleeq text-center" width="10%">حوالہ نمبر</th>
+    <th class="nastaleeq" width="12%">تاریخ</th>
     <th width="10%">Machine</th>
     <th width="15%">Customer</th>
     <th width="5%" class="text-center">ID</th>
