@@ -17,8 +17,9 @@ body {
 th, td {
     border: solid 1px #000;
     padding: 5px 5px;
-    font-size: 11px;
+    font-size: 14px;
 	vertical-align:top;
+    font-weight: bold;
 }
 table table th, table table td{
 	padding:3px;
@@ -65,13 +66,14 @@ table {
     </th>
 </tr>
 <tr>
-    <th>Paid By</th>
-    <th class="text-right nastaleeq">وائرس</th>
-    <th class="text-right nastaleeq">رقم</th>
-    <th class="text-right nastaleeq">ڈسکاؤنٹ</th>
-    <th class="nastaleeq">تاریخ</th>
-    <th>Machine</th>
-    <th>Customer</th>
+    <th width="10%">Paid By</th>
+    <th class="text-right nastaleeq" width="10%">وائرس/تعداد</th>
+    <th class="text-right nastaleeq" width="10%">رقم</th>
+    <th class="text-right nastaleeq" width="10%">ڈسکاؤنٹ</th>
+    <th class="nastaleeq text-center" width="10%">حوالہ نمبر</th>
+    <th class="nastaleeq" width="12%">تاریخ</th>
+    <th width="10%">Machine</th>
+    <th width="15%">Customer</th>
     <th width="5%" class="text-center">ID</th>
     <th width="2%" class="text-center nastaleeq">سیریل</th>
 </tr>
@@ -88,6 +90,7 @@ if( numrows( $rs ) > 0 ) {
             <td class="text-right"><?php echo unslash($r["claim"]); ?></td>
             <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
             <td class="text-right"><?php echo curr_format(unslash($r["discount"])); ?></td>
+            <td><?php echo unslash($r["details"]); ?></td>
             <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
             <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
             <td class="nastaleeq"><?php echo unslash( $r[ "customer_name_urdu" ] );?></td>
@@ -100,10 +103,10 @@ if( numrows( $rs ) > 0 ) {
 ?>
 <tr>
 <th></th>
-<th align="right"><?php echo curr_format($total_claim)?></th>
-<th align="right"><?php echo curr_format($total_amount)?></th>
-<th align="right"><?php echo curr_format($total_discount)?></th>
-<th align="right" colspan="5">ٹوٹل</th>
+<th align="right" style="background-color:#dad55e;padding: 10px 5px;vertical-align: middle;font-weight: 900;font-size: 22px;"><?php echo curr_format($total_claim)?></th>
+<th align="right" style="background-color:#dad55e;padding: 10px 5px;vertical-align: middle;font-weight: 900;font-size: 22px;"><?php echo curr_format($total_amount)?></th>
+<th align="right" style="background-color:#dad55e;padding: 10px 5px;vertical-align: middle;font-weight: 900;font-size: 22px;"><?php echo curr_format($total_discount)?></th>
+<th align="left" colspan="6" style="vertical-align: middle;font-weight: 900;font-size: 22px;">ٹوٹل</th>
 </tr>
 </table>
 <?php

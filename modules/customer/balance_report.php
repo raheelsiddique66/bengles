@@ -19,6 +19,7 @@ th, td {
     padding: 5px 5px;
     font-size: 18px;
 	vertical-align:top;
+    font-weight: bold;
 }
 table table th, table table td{
 	padding:3px;
@@ -68,7 +69,7 @@ if( numrows( $rs ) > 0 ) {
 		?>
 		<tr>
             <td></td>
-            <td style="font-size: 18px"><?php echo get_customer_balance($r['id']);?></td>
+            <td style="font-size: 18px; text-align: right"><?php echo get_customer_balance($r['id']);?></td>
             <td><?php echo unslash($r["phone"]); ?></td>
             <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
             <td class="nastaleeq"><?php echo unslash( $r[ "customer_name_urdu" ] );?></td>
@@ -80,8 +81,8 @@ if( numrows( $rs ) > 0 ) {
 ?>
     <tr>
         <td></td>
-        <th align="left"><?php echo get_customer_total_balance($machine_id);?></th>
-        <th colspan="4" align="left">Total</th>
+        <th align="right" class="bg-success" style="background-color:#dad55e;padding: 10px 5px;vertical-align: middle;font-weight: 900;font-size: 22px;"><?php echo curr_format(get_customer_total_balance($machine_id));?></th>
+        <th colspan="4" align="left" style="vertical-align: middle;font-weight: 900;font-size: 22px;">Total</th>
     </tr>
 </table>
 <?php

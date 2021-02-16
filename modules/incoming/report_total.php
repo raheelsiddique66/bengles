@@ -34,6 +34,7 @@ th, td {
     padding: 5px 5px;
     font-size: 14px;
 	vertical-align:top;
+    font-weight: bold;
 }
 table table th, table table td{
 	padding:3px;
@@ -47,6 +48,9 @@ table {
 .text-left{ text-align:left}
 .text-right{ text-align:right}
 .bg-grey{ background:#ccc;}
+.total_col th{
+    background-color:#2AB750; font-size: 18px
+}
 </style>
 <table width="100%" cellspacing="0" cellpadding="0">
 <thead>
@@ -137,7 +141,7 @@ if( numrows( $rs ) > 0 ) {
 	}
 }
 ?>
-<tr>
+<tr class="total_col">
     <th class="text-right"><?php echo curr_format($grand_total_quantity)?></th>
     <?php
     foreach($colors as $color_id => $color){

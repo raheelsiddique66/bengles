@@ -58,6 +58,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th width="20%">Customer Name In Urdu</th>
                 <th width="10%">Phone</th>
                 <th width="10%">Balance</th>
+                <th width="10%">Sortorder</th>
                 <th width="5%" class="text-center">Status</th>
                 <th width="5%" class="text-center">Actions</th>
             </tr>
@@ -81,6 +82,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td><span class="nastaleeq"><?php echo unslash($r["customer_name_urdu"]); ?></span></td>
                         <td><?php echo unslash($r["phone"]); ?></td>
                         <td><?php echo get_customer_balance($r['id']);?></td>
+                        <td><?php echo unslash($r["sortorder"]); ?></td>
                         <td class="text-center">
                             <a href="customer_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                                 <?php
@@ -109,7 +111,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 }
                 ?>
                 <tr>
-                    <td colspan="4" class="actions">
+                    <td colspan="6" class="actions">
                         <select name="bulk_action" class="" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
                             <option value="delete">Delete</option>
@@ -125,7 +127,7 @@ if(!defined("APP_START")) die("No Direct Access");
             else{	
                 ?>
                 <tr>
-                    <td colspan="8"  class="no-record">No Result Found</td>
+                    <td colspan="10"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }
