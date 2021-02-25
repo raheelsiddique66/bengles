@@ -210,7 +210,7 @@ if( numrows( $rs ) > 0 ) {
             $income = $income1[ "amount" ];
             $discount = $income1[ "discount" ];
             $claim = $income1[ "claim" ];
-            $total_balance += $balance;
+//            $total_balance += $balance;
             $total_income += $income;
             $total_discount += $discount;
             $total_claim += $claim;
