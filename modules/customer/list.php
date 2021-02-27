@@ -19,7 +19,7 @@ if(!defined("APP_START")) die("No Direct Access");
     <li class="col-xs-12 col-lg-12 col-sm-12">
     	<div>
         	<form class="form-horizontal" action="" method="get">
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
                 </div>
                 <div class="col-sm-3 col-xs-8">
@@ -37,7 +37,10 @@ if(!defined("APP_START")) die("No Direct Access");
                         ?>
                     </select>
                 </div>
-                <div class="col-sm-3 text-left">
+                <div class="col-sm-2 margin-btm-5">
+                    <input type="text" title="Enter Date" value="<?php echo $date;?>" placeholder="Date From" name="date" id="date" class="form-control date-picker" autocomplete="off" />
+                </div>
+                <div class="col-sm-2 text-left">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
                 </div>
@@ -81,7 +84,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
                         <td><span class="nastaleeq"><?php echo unslash($r["customer_name_urdu"]); ?></span></td>
                         <td><?php echo unslash($r["phone"]); ?></td>
-                        <td><?php echo get_customer_balance($r['id']);?></td>
+                        <td><?php echo get_customer_balance($r['id'], date_dbconvert($date));?></td>
                         <td><?php echo unslash($r["sortorder"]); ?></td>
                         <td class="text-center">
                             <a href="customer_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
