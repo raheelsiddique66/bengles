@@ -1,6 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$sql = "SELECT a.*, group_concat(a.id)  as delivery_ids, b.balance, b.customer_name, b.customer_name_urdu, b.id as customerid FROM `delivery` a left join customer b on a.customer_id = b.id  WHERE 1 $extra and b.status = 1  group by customer_id order by customer_name";
+$sql = "SELECT a.*, group_concat(a.id) as delivery_ids, b.balance, b.customer_name, b.customer_name_urdu, b.id as customerid FROM customer b left join delivery a on (a.customer_id = b.id $extra) group by b.id order by customer_name";
 $rs = doquery( $sql, $dblink );
 $colors = [];
 $rs2 = doquery("select * from color order by sortorder", $dblink);
@@ -123,21 +123,8 @@ if( numrows( $rs ) > 0 ) {
     $total_claim = 0;
     $cus_balance = 0;
 	while( $r = dofetch( $rs ) ) {
-        if(!empty($date_from)){
-            $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$r[ "customer_id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and date<'".date_dbconvert($date_from)."' union select -sum(amount)-sum(discount) as amount from customer_payment where customer_id = '".$r[ "customer_id" ]."' ".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added<='".date_dbconvert($date_from)." 00:00:00') as transactions ";
-            $balance=dofetch(doquery($sql,$dblink));
-            $customer_balance = doquery("select * from customer where id = '".$r["customer_id"]."' ".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." ", $dblink);
-            if( numrows( $customer_balance ) > 0 ) {
-                $customer_balance = dofetch( $customer_balance );
-                $cus_balance = $customer_balance["balance"];
-            }
-            //echo $customer_balance["balance"];
-            $balance = $r["balance"]+$balance[ "amount" ];
-        }
-        else{
-            $balance = 0;
-        }
-        $sql="select sum(amount) as amount, sum(discount) as discount, sum(claim) as claim from customer_payment where customer_id = '".$r[ "customer_id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 23:59:59'";
+	    $balance = get_customer_balance($r["customerid"], date_dbconvert($date_from));
+        $sql="select sum(amount) as amount, sum(discount) as discount, sum(claim) as claim from customer_payment where customer_id = '".$r[ "customerid" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 23:59:59'";
         $income1=dofetch(doquery($sql,$dblink));
         $income = $income1[ "amount" ];
         $discount = $income1[ "discount" ];
@@ -148,16 +135,18 @@ if( numrows( $rs ) > 0 ) {
         $total_claim += $claim;
         $colors_delivery = [];
         $total_quantity = $total_amount = 0;
-        $rs1 = doquery( "select color_id, unit_price, sum(quantity), sum(quantity*unit_price) as total from delivery_items where delivery_id in (".($r["delivery_ids"]).")".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." group by color_id,unit_price", $dblink );
-        if(numrows($rs1)>0){
-            while($r1=dofetch($rs1)){
-                if(!isset($colors_delivery[$r1["color_id"]][$r1["unit_price"]])){
-                    $colors_delivery[$r1["color_id"]][$r1["unit_price"]] = 0;
+        if(!empty($r["delivery_ids"])) {
+            $rs1 = doquery("select color_id, unit_price, sum(quantity), sum(quantity*unit_price) as total from delivery_items where delivery_id in (" . ($r["delivery_ids"]) . ")" . (!empty($machine_id) ? " and machine_id = '" . $machine_id . "'" : "") . " group by color_id,unit_price", $dblink);
+            if (numrows($rs1) > 0) {
+                while ($r1 = dofetch($rs1)) {
+                    if (!isset($colors_delivery[$r1["color_id"]][$r1["unit_price"]])) {
+                        $colors_delivery[$r1["color_id"]][$r1["unit_price"]] = 0;
+                    }
+                    $colors_delivery[$r1["color_id"]][$r1["unit_price"]] = $r1["sum(quantity)"];
+                    $colors_total[$r1["color_id"]][$r1["unit_price"]] += $r1["sum(quantity)"];
+                    $total_quantity += $r1["sum(quantity)"];
+                    $total_amount += $r1["total"];
                 }
-                $colors_delivery[$r1["color_id"]][$r1["unit_price"]] = $r1["sum(quantity)"];
-                $colors_total[$r1["color_id"]][$r1["unit_price"]] += $r1["sum(quantity)"];
-                $total_quantity += $r1["sum(quantity)"];
-                $total_amount += $r1["total"];
             }
         }
         $grand_total_quantity += $total_quantity;
@@ -187,63 +176,6 @@ if( numrows( $rs ) > 0 ) {
 		<?php
 		$sn++;
 	}
-	$sql = "select * from customer where id not in (select customer_id from delivery WHERE 1 $extra and status = 1) order by customer_name";
-	$rs = doquery($sql, $dblink);
-	if(numrows($rs)){
-        while($r = dofetch($rs)){
-            if(!empty($date_from)){
-                $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$r[ "id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and date<'".date_dbconvert($date_from)."' union select -sum(amount) from customer_payment where customer_id = '".$r[ "id" ]."' ".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added<='".date_dbconvert($date_from)." 00:00:00') as transactions ";
-                $balance=dofetch(doquery($sql,$dblink));
-                $customer_balance = doquery("select * from customer where id = '".$r["id"]."' ".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." ", $dblink);
-                if( numrows( $customer_balance ) > 0 ) {
-                    $customer_balance = dofetch( $customer_balance );
-                    $cus_balance = $customer_balance["balance"];
-                }
-                //echo $customer_balance["balance"];
-                $balance = $r["balance"]+$balance[ "amount" ];
-            }
-            else{
-                $balance = 0;
-            }
-            $sql="select sum(amount) as amount, sum(discount) as discount, sum(claim) as claim from customer_payment where customer_id = '".$r[ "id" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added>='".date_dbconvert($date_from)." 00:00:00' and datetime_added<='".date_dbconvert($date_to)." 23:59:59'";
-            $income1=dofetch(doquery($sql,$dblink));
-            $income = $income1[ "amount" ];
-            $discount = $income1[ "discount" ];
-            $claim = $income1[ "claim" ];
-//            $total_balance += $balance;
-            $total_income += $income;
-            $total_discount += $discount;
-            $total_claim += $claim;
-            $total_amount=0;
-            if($income==0 && $discount==0){
-                continue;
-            }
-            ?>
-            <tr>
-                <th class="text-right"><?php echo curr_format($total_amount+$balance-$income-$discount)?></th>
-                <th class="text-right"><?php echo curr_format($discount)?></th>
-                <th class="text-right"><?php echo curr_format($income)?></th>
-                <th class="text-right"><?php echo curr_format($balance)?></th>
-                <th class="text-right"><?php echo curr_format($total_amount)?></th>
-                <th class="text-right"><?php echo unslash($claim)?></th>
-                <th class="text-right"><?php echo curr_format(0)?></th>
-                <?php
-
-                foreach($colors as $color_id => $color){
-                    foreach($color as $rate => $color_title) {
-                        ?>
-                        <td class="text-right">0</td>
-                        <?php
-                    }
-                }
-                ?>
-                <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo unslash($r["customer_name_urdu"]); ?></span></td>
-                <td align="center"><?php echo $sn?></td>
-            </tr>
-            <?php
-            $sn++;
-        }
-    }
 }
 ?>
 <tr class="total_col">
