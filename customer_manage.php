@@ -40,6 +40,18 @@ if($machine_id!=""){
     $extra.=" and machine_id='".$machine_id."'";
     $is_search=true;
 }
+if( isset($_GET["date"]) ){
+    $_SESSION["customer_manage"]["list"]["date"] = $_GET["date"];
+}
+if(isset($_SESSION["customer_manage"]["list"]["date"]) && !empty($_SESSION["customer_manage"]["list"]["date"])){
+    $date = $_SESSION["customer_manage"]["list"]["date"];
+}
+else{
+    $date = "";
+}
+if( !empty($date) ){
+    $is_search=true;
+}
 $sql="select * from customer where 1 $extra order by customer_name";
 switch($tab){
 	case 'add':
