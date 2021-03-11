@@ -60,7 +60,7 @@ table {
 	<th colspan="18">
     	<h1><?php echo get_config( 'site_title' )?></h1>
     	<h2>Summary</h2>
-        <p>
+        <p style=" font-size: 22px;background: #187bd0;padding: 5px;">
         	<?php
 			echo "List of Delivery of ";
 			$all = true;

@@ -33,7 +33,7 @@ table {
 	<th colspan="6">
     	<?php echo get_config( 'fees_chalan_header' )?>
     	<h2>Transaction List</h2>
-        <p>
+        <p style="font-size: 22px;background: #187bd0;padding: 5px;">
         	<?php
 			echo "List of";
             if( !empty( $date_from ) || !empty( $date_to ) ){
