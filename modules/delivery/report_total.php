@@ -1,6 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$sql = "SELECT a.*, group_concat(a.id) as delivery_ids, b.balance, b.customer_name, b.customer_name_urdu, b.id as customerid FROM customer b left join delivery a on (a.customer_id = b.id $extra) group by b.id order by customer_name";
+$sql = "SELECT a.*, group_concat(a.id) as delivery_ids, b.balance, b.customer_name, b.customer_name_urdu, b.id as customerid FROM customer b left join delivery a on (a.customer_id = b.id $extra ".(!empty($machine_id)?" and b.machine_id = '".$machine_id."'":"").") group by b.id order by customer_name";
 $rs = doquery( $sql, $dblink );
 $colors = [];
 $rs2 = doquery("select * from color order by sortorder", $dblink);
@@ -60,7 +60,7 @@ table {
 	<th colspan="18">
     	<h1><?php echo get_config( 'site_title' )?></h1>
     	<h2>Summary</h2>
-        <p>
+        <p style=" font-size: 22px;background: #187bd0;padding: 5px;">
         	<?php
 			echo "List of Delivery of ";
 			$all = true;
