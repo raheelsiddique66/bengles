@@ -84,7 +84,7 @@ if( numrows( $rs ) > 0 ) {
 ?>
     <tr>
         <td></td>
-        <th align="right" class="bg-success" style="background-color:#dad55e;padding: 10px 5px;vertical-align: middle;font-weight: 900;font-size: 22px;"><?php echo curr_format(get_customer_total_balance($machine_id));?></th>
+        <th align="right" class="bg-success" style="background-color:#dad55e;padding: 10px 5px;vertical-align: middle;font-weight: 900;font-size: 22px;"><?php echo curr_format(get_customer_total_balance($machine_id, date_dbconvert($date)));?></th>
         <th colspan="4" align="left" style="vertical-align: middle;font-weight: 900;font-size: 22px;">Total</th>
     </tr>
 </table>
