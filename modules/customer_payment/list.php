@@ -92,7 +92,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th>Customer Name</th>
                 <th width="10%">Machine</th>
                 <th>Datetime</th>
-                <th>Details</th>
+                <th>Reference No</th>
                 <th class="text-right">Discount</th>
                 <th class="text-right">Amount</th>
                 <th class="text-right">Claim</th>
