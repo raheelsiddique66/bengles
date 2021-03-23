@@ -49,6 +49,9 @@ table {
             if( !empty( $machine_id ) ){
                 echo " Machine: ".get_field($machine_id, "machine", "title" )."<br>";
             }
+            if( !empty( $date ) ){
+                echo " Date ".$date;
+            }
 			?>
         </p>
     </th>
@@ -69,7 +72,7 @@ if( numrows( $rs ) > 0 ) {
 		?>
 		<tr>
             <td></td>
-            <td style="font-size: 18px; text-align: right"><?php echo get_customer_balance($r['id']);?></td>
+            <td style="font-size: 18px; text-align: right"><?php echo get_customer_balance($r['id'], date_dbconvert($date));?></td>
             <td><?php echo unslash($r["phone"]); ?></td>
             <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
             <td class="nastaleeq"><?php echo unslash( $r[ "customer_name_urdu" ] );?></td>
