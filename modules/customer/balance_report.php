@@ -1,6 +1,7 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$rs = doquery( $sql, $dblink );
+$sql1="select * from customer where 1 $extra and status = 1 order by customer_name";
+$rs = doquery( $sql1, $dblink );
 $total_balance = 0;
 ?>
 <style>
@@ -75,7 +76,7 @@ if( numrows( $rs ) > 0 ) {
             <td style="font-size: 18px; text-align: right"><?php echo get_customer_balance($r['id'], date_dbconvert($date));?></td>
             <td><?php echo unslash($r["phone"]); ?></td>
             <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
-            <td class="nastaleeq"><?php echo unslash( $r[ "customer_name_urdu" ] );?></td>
+            <td class="nastaleeq"><?php echo unslash( $r[ "customer_name" ] );?></td>
             <td align="center"><?php echo $sn++?></td>
         </tr>
 		<?php
