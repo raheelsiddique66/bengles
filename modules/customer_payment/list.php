@@ -92,6 +92,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th>Customer Name</th>
                 <th width="10%">Machine</th>
                 <th>Datetime</th>
+                <th>Reference No</th>
                 <th class="text-right">Discount</th>
                 <th class="text-right">Amount</th>
                 <th class="text-right">Claim</th>
@@ -117,6 +118,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td><?php echo unslash( $r[ "customer_name" ] );?></td>
                         <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
+                        <td><?php echo unslash($r["details"]); ?></td>
                         <td class="text-right"><?php echo curr_format(unslash($r["discount"])); ?></td>
                         <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
                         <td class="text-right"><?php echo unslash($r["claim"]); ?></td>
@@ -145,7 +147,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 }
                 ?>
                 <tr>
-                    <td colspan="6" class="actions">
+                    <td colspan="7" class="actions">
                         <select name="bulk_action" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
                             <option value="delete">Delete</option>
@@ -161,7 +163,7 @@ if(!defined("APP_START")) die("No Direct Access");
             else{	
                 ?>
                 <tr>
-                    <td colspan="12"  class="no-record">No Result Found</td>
+                    <td colspan="13"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

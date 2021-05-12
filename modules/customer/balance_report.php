@@ -1,6 +1,7 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$rs = doquery( $sql, $dblink );
+$sql1="select * from customer where 1 $extra and status = 1 order by customer_name";
+$rs = doquery( $sql1, $dblink );
 $total_balance = 0;
 ?>
 <style>
@@ -49,6 +50,9 @@ table {
             if( !empty( $machine_id ) ){
                 echo " Machine: ".get_field($machine_id, "machine", "title" )."<br>";
             }
+            if( !empty( $date ) ){
+                echo " Date ".$date;
+            }
 			?>
         </p>
     </th>
@@ -69,10 +73,10 @@ if( numrows( $rs ) > 0 ) {
 		?>
 		<tr>
             <td></td>
-            <td style="font-size: 18px; text-align: right"><?php echo get_customer_balance($r['id']);?></td>
+            <td style="font-size: 18px; text-align: right"><?php echo get_customer_balance($r['id'], date_dbconvert($date));?></td>
             <td><?php echo unslash($r["phone"]); ?></td>
             <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
-            <td class="nastaleeq"><?php echo unslash( $r[ "customer_name_urdu" ] );?></td>
+            <td class="nastaleeq"><?php echo unslash( $r[ "customer_name" ] );?></td>
             <td align="center"><?php echo $sn++?></td>
         </tr>
 		<?php
@@ -81,7 +85,7 @@ if( numrows( $rs ) > 0 ) {
 ?>
     <tr>
         <td></td>
-        <th align="right" class="bg-success" style="background-color:#dad55e;padding: 10px 5px;vertical-align: middle;font-weight: 900;font-size: 22px;"><?php echo curr_format(get_customer_total_balance($machine_id));?></th>
+        <th align="right" class="bg-success" style="background-color:#dad55e;padding: 10px 5px;vertical-align: middle;font-weight: 900;font-size: 22px;"><?php echo curr_format(get_customer_total_balance($machine_id, date_dbconvert($date)));?></th>
         <th colspan="4" align="left" style="vertical-align: middle;font-weight: 900;font-size: 22px;">Total</th>
     </tr>
 </table>

@@ -37,7 +37,7 @@ table {
 	<th colspan="9">
     	<h1><?php echo get_config( 'site_title' )?></h1>
     	<h2>Employee Payment List</h2>
-        <p>
+        <p style="font-size: 22px;background: #187bd0;padding: 5px;">
             <?php
                 echo "List of";
                 if( !empty( $date_from ) || !empty( $date_to ) ){

@@ -93,10 +93,10 @@ table {
     </th>
 </tr>
 <tr>
-    <th width="10%">New Balance</th>
-    <th width="10%">Discount</th>
-    <th width="10%">Payment</th>
-    <th width="10%">Previous Amount</th>
+<!--    <th width="10%">New Balance</th>-->
+<!--    <th width="10%">Discount</th>-->
+<!--    <th width="10%">Payment</th>-->
+<!--    <th width="10%">Previous Amount</th>-->
     <th width="10%">Amount</th>
     <th width="10%" class="nastaleeq"> وائرس</th>
     <th width="10%">Total</th>
@@ -155,10 +155,10 @@ if( numrows( $rs ) > 0 ) {
         $grand_total_amount += $total_amount;
         ?>
 		<tr>
-            <th class="text-right"><?php echo curr_format($total_amount+$balance-$income-$discount)?></th>
-            <th class="text-right"><?php echo curr_format($discount)?></th>
-            <th class="text-right"><?php echo curr_format($income)?></th>
-            <th class="text-right"><?php echo curr_format($balance)?></th>
+<!--            <th class="text-right">--><?php //echo curr_format($total_amount+$balance-$income-$discount)?><!--</th>-->
+<!--            <th class="text-right">--><?php //echo curr_format($discount)?><!--</th>-->
+<!--            <th class="text-right">--><?php //echo curr_format($income)?><!--</th>-->
+<!--            <th class="text-right">--><?php //echo curr_format($balance)?><!--</th>-->
             <th class="text-right"><?php echo curr_format($total_amount)?></th>
             <th class="text-right"><?php echo unslash($claim)?></th>
             <th class="text-right"><?php echo curr_format($total_quantity)?></th>
@@ -172,7 +172,7 @@ if( numrows( $rs ) > 0 ) {
                 }
             }
             ?>
-            <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo unslash($r["customer_name"]); ?></span></td>
+            <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo unslash($r["customer_name_urdu"]); ?></span></td>
         	<td align="center"><?php echo $sn?></td>
         </tr>
 		<?php
@@ -181,10 +181,10 @@ if( numrows( $rs ) > 0 ) {
 }
 ?>
 <tr class="total_col">
-    <th class="text-right"><?php echo curr_format($grand_total_amount+$total_balance-$total_income-$total_discount)?></th>
-    <th class="text-right"><?php echo curr_format($total_discount)?></th>
-    <th class="text-right"><?php echo curr_format($total_income)?></th>
-    <th class="text-right"><?php echo curr_format($total_balance)?></th>
+<!--    <th class="text-right">--><?php //echo curr_format($grand_total_amount+$total_balance-$total_income-$total_discount)?><!--</th>-->
+<!--    <th class="text-right">--><?php //echo curr_format($total_discount)?><!--</th>-->
+<!--    <th class="text-right">--><?php //echo curr_format($total_income)?><!--</th>-->
+<!--    <th class="text-right">--><?php //echo curr_format($total_balance)?><!--</th>-->
     <th class="text-right"><?php echo curr_format($grand_total_amount)?></th>
     <th class="text-right"><?php echo curr_format($total_claim)?></th>
     <th class="text-right"><?php echo curr_format($grand_total_quantity)?></th>
