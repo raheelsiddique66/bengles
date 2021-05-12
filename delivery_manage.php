@@ -62,11 +62,11 @@ if(isset($_SESSION["delivery"]["list"]["machine_id"]))
 	$machine_id=$_SESSION["delivery"]["list"]["machine_id"];
 else
 	$machine_id="";
-if($tab!=="report_total"){
-if($machine_id!=""){
-	$extra.=" and c.machine_id='".$machine_id."'";
-	$is_search=true;
-}
+if($tab!=="report_total" && $tab!=="current_report"){
+    if($machine_id!=""){
+        $extra.=" and c.machine_id='".$machine_id."'";
+        $is_search=true;
+    }
 }
 if(isset($_GET["q"])){
 	$_SESSION["delivery"]["list"]["q"] = slash( $_GET["q"] );
