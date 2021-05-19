@@ -354,6 +354,20 @@ else
                 <tr>
                     <th class="text-right" colspan="<?php echo $colspan;?>">Grand Total</th>
                     <?php
+                    if($customer_id!=""){
+                        for($i = 0; $i < 3; $i++){
+                            foreach($sizes as $size_id => $size){
+                                if(!isset($grand_totals[$i]["size_".$size_id])){
+                                    $grand_totals[$i]["size_".$size_id] = 0;
+                                }
+                                $grand_totals[$i]["size_".$size_id] += $totals[$i]["size_".$size_id];
+                            }
+                            if(!isset($grand_totals[$i]["t"])){
+                                $grand_totals[$i]["t"] = 0;
+                            }
+                            $grand_totals[$i]["t"] += $totals[$i]["t"];
+                        }
+                    }
                     for($i = 0; $i < 3; $i++){
                         foreach($sizes as $size_id => $size){
                             ?>
