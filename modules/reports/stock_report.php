@@ -263,7 +263,7 @@ else
                         <?php if($report_type==""){?>
                             <td><?php echo date_convert($customer["date"]); ?></td>
                         <?php } ?>
-                        <?php if(empty($_GET["customer_id"])){?>
+                        <?php if(empty($customer_id)){?>
                             <td><?php echo $customer["name"]; ?></td>
                             <?php
                         }
