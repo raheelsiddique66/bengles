@@ -167,121 +167,182 @@ table {
                 }
                 ?>
             </tr>
-            <?php
-            $totals = [];
-            for($i = 0; $i < 3; $i++){
-                foreach($sizes as $size_id => $size){
-                    $totals[$i][$size_id] = 0;
-                }
-                $totals[$i]['t'] = 0;
+    <tbody>
+    <?php
+    $customers = [];
+    $records = doquery("select customer.customer_name, design.title as design, color.title as color, size.title as size, combined.* from (select a.date, a.customer_id, design_id, color_id, size_id, 0 as type, sum(quantity) as incoming, 0 as outgoing from incoming a inner join incoming_items b on a.id = b.incoming_id where 1 $extra group by date, customer_id, design_id, color_id union select a.date, a.customer_id, design_id, color_id, size_id, 1 as type, 0 as incoming, sum(quantity) as outgoing from delivery a inner join delivery_items b on a.id = b.delivery_id where 1 $extra group by ".($report_type!=1?'date, ':'')."customer_id, design_id, color_id) as combined inner join customer on combined.customer_id = customer.id inner join design on combined.design_id = design.id inner join color on combined.color_id = color.id inner join size on combined.size_id = size.id order by customer_name, date, color_id, design_id, size_id", $dblink);
+    if(numrows($records) > 0){
+        while($record = dofetch($records)){
+            $key1 = $record["customer_id"]."_".$record["date"];
+            if(!isset($customers[$key1])){
+                $customers[$key1] = [
+                    "id" => $record["customer_id"],
+                    "name" => unslash($record["customer_name"]),
+                    "date" => $record["date"],
+                    "design" => unslash($record["design"]),
+                    "color" => unslash($record["color"]),
+                ];
             }
-            $customers = doquery("select * from customer where status = 1".($customer_id!=""?" and id='".$customer_id."'":"")." order by customer_name", $dblink);
-            if(numrows($customers)>0){
-                while($customer = dofetch($customers)){
-                    $rs = doquery("select a.*, b.id as color_id, b.title as color from design a cross join color b where 1 ".((!empty($color_id)?" and b.id='".$color_id."'":"").(!empty($design_id)?" and a.id='".$design_id."'":""))." order by a.title, b.sortorder", $dblink);
-                    if(numrows($rs) > 0){
-                    $sn = 1;
-                    while($r = dofetch($rs)){
-                       // $records = doquery("select date, customer_id, max(`incoming`) as incoming, max(`outgoing`) as outgoing from (select a.date, a.customer_id, group_concat(concat(size_id, 'x', quantity)) as incoming, '' as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id union select a.date, a.customer_id, '' as incoming, group_concat(concat(size_id, 'x', quantity)) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id) as records group by customer_id".($report_type==""?",date":"")." order by date", $dblink);
-                        //$records = doquery("select date, customer_id, ".($report_type=="asd"?"max":"group_concat")."(`incoming`) as incoming, ".($report_type=="asd"?"max":"group_concat")."(`outgoing`) as outgoing from (select a.date, a.customer_id, group_concat(concat(size_id, 'x', quantity)) as incoming, '' as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id union select a.date, a.customer_id, '' as incoming, group_concat(concat(size_id, 'x', quantity)) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.id) as records group by customer_id".($report_type==""?",date":"")." order by customer_id", $dblink);
-                        //$sql = "select date, customer_id, concat(size_id, 'x', sum(incoming)) as incoming, concat(size_id, 'x', sum(outgoing)) as outgoing from (select a.date, a.customer_id, size_id, sum(quantity) as incoming, 0 as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.date union select a.date, a.customer_id, size_id, 0 as incoming, sum(quantity) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' group by a.date) as records group by customer_id".($report_type==""?",date":"")." order by customer_id";
-                        $sql = "select date, customer_id, concat(size_id, 'x', sum(incoming)) as incoming, concat(size_id, 'x', sum(outgoing)) as outgoing from (select a.date, a.customer_id, size_id, sum(quantity) as incoming, 0 as outgoing from incoming a left join incoming_items b on a.id = b.incoming_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' and a.customer_id='".$customer["id"]."' group by a.date union select a.date, a.customer_id, size_id, 0 as incoming, sum(quantity) as outgoing from delivery a left join delivery_items b on a.id = b.delivery_id where 1 $extra and design_id = '".$r["id"]."' and color_id = '".$r["color_id"]."' and a.customer_id='".$customer["id"]."' group by a.date) as records group by customer_id".($report_type==""?",date":"")." order by customer_id";
-                        $records = doquery($sql, $dblink);
-                        if( numrows($records) > 0 ){
-                            while($record = dofetch($records)){
-                                ?>
-                                <tr>
-                                    <td class="text-center"><?php echo $sn; ?></td>
-                                    <?php if(empty( $report_type ) ){?>
-                                        <td><?php echo date_convert($record["date"]); ?></td>
-                                    <?php }?>
-                                    <td><?php echo unslash($r["color"])?></td>
-                                    <td><?php echo unslash($r["title"]) ?></td>
-                                    <?php if(empty( $customer_id ) ){?>
-                                    <td><?php echo get_field($record["customer_id"], "customer", "customer_name" ); ?></td>
-                                    <?php }?>
-                                    <?php
-                                    $incoming = [];
-                                    $outgoing = [];
-                                    for($i = 0; $i < 2; $i++){
-                                        $type = $i==0?"incoming":"outgoing";
-                                        $quantities = [];
-                                        $t = 0;
-                                        if(!empty($record[$type])) {
-                                            foreach (explode(",", $record[$type]) as $size) {
-                                                if(!empty($size)) {
-                                                    $size = explode("x", $size);
-                                                    if(!isset($quantities[$size[0]])){
-                                                        $quantities[$size[0]] = 0;
-                                                    }
-                                                    $quantities[$size[0]] += $size[1];
-                                                    $t += $size[1];
-                                                }
-                                               // $size = explode("x", $size);
-                                                //$quantities[$size[0]] = $size[1];
-                                                //$t += $size[1];
-                                            }
-                                        }
-                                        $$type = $quantities;
-                                        foreach($sizes as $size_id => $size){
-                                            $totals[$i][$size_id] += isset($quantities[$size_id])?$quantities[$size_id]:0;
-                                            ?>
-                                            <td class="text-right"><?php echo isset($quantities[$size_id])?$quantities[$size_id]:"--";?></td>
-                                            <?php
-                                        }
-                                        $totals[$i]['t'] += $t;
-                                        ?>
-                                        <th class="text-center color-<?php echo $i?>"><?php echo $t?></th>
-                                        <?php
-                                    }
-                                    $t = 0;
-                                    foreach($sizes as $size_id => $size){
-                                        $b = (isset($incoming[$size_id])?$incoming[$size_id]:0)-(isset($outgoing[$size_id])?$outgoing[$size_id]:0);
-                                        $t += $b;
-                                        $totals[2][$size_id] += $b;
-                                        ?>
-                                        <td class="text-right"><?php echo $b;?></td>
-                                        <?php
-                                    }
-                                    $totals[2]['t'] += $t;
-                                    ?>
-                                    <th class="text-center color-2"><?php echo $t?></th>
-                                </tr>
-                                <?php
-                                $sn++;
+            $key = "size_".$record["size_id"];
+            $key2 = $key.'i';
+            $key3 = $key.'o';
+            if(!isset($customers[$key1][$key2])){
+                $customers[$key1][$key2] = 0;
+            }
+            if(!isset($customers[$key1][$key3])){
+                $customers[$key1][$key3] = 0;
+            }
+            $customers[$key1][$key2] += $record["incoming"];
+            $customers[$key1][$key3] += $record["outgoing"];
+        }
+    }
+    $sn = 1;
+    $loop_customer_id = 0;
+    $colspan = 5;
+    if(!empty($customer_id)){
+        $colspan--;
+    }
+    if(!empty($report_type)){
+        $colspan--;
+    }
+    $totals = [];
+    $grand_totals = [];
+    if(count($customers) > 0){
+        foreach($customers as $customer){
+            ?>
+            <tr>
+                <td class="text-center"><?php echo $sn; ?></td>
+                <?php if($report_type==""){?>
+                    <td><?php echo date_convert($customer["date"]); ?></td>
+                <?php } ?>
+                <?php if(empty($customer_id)){?>
+                    <td><?php echo $customer["name"]; ?></td>
+                    <?php
+                }
+                ?>
+                <td><?php echo $customer["design"] ?></td>
+                <td><?php echo $customer["color"]?></td>
+                <?php
+                $balance = [];
+                foreach(['i', 'o'] as $k => $type){
+                    $t = 0;
+                    foreach($sizes as $size_id => $size){
+                        if(!isset($totals[$k]["size_".$size_id])){
+                            $totals[$k]["size_".$size_id] = 0;
+                        }
+                        if(isset($customer["size_".$size_id.$type])){
+                            if(!isset($balance["size_".$size_id])){
+                                $balance["size_".$size_id] = 0;
                             }
+                            $balance["size_".$size_id] += $customer["size_".$size_id.$type] * ($k?-1:1);
+                            $t += $customer["size_".$size_id.$type];
+                            $totals[$k]["size_".$size_id] += $customer["size_".$size_id.$type];
                         }
                         ?>
+                        <td class="text-right"><?php echo curr_format($customer["size_".$size_id.$type] ?? "--");?></td>
                         <?php
                     }
-                    $colspan = 5;
-                    if(!empty($customer_id)){
-                        $colspan--;
+                    if(!isset($totals[$k]["t"])){
+                        $totals[$k]["t"] = 0;
                     }
-                    if(!empty($report_type)){
-                        $colspan--;
+                    $totals[$k]["t"] += $t;
+                    ?>
+                    <th class="text-center color-<?php echo $k?>"><?php echo curr_format($t)?></th>
+                    <?php
+                }
+                $t = 0;
+                foreach($sizes as $size_id => $size){
+                    $t += $balance["size_".$size_id] ?? 0;
+                    if(!isset($totals[2]["size_".$size_id])){
+                        $totals[2]["size_".$size_id] = 0;
                     }
+                    $totals[2]["size_".$size_id] += $balance["size_".$size_id] ?? 0;
+                    ?>
+                    <td class="text-right"><?php echo curr_format($balance["size_".$size_id] ?? '--');?></td>
+                    <?php
+                }
+                if(!isset($totals[2]["t"])){
+                    $totals[2]["t"] = 0;
+                }
+                $totals[2]["t"] += $t;
+                ?>
+                <th class="text-center color-2"><?php echo curr_format($t)?></th>
+            </tr>
+            <?php
+            $sn++;
+            if($loop_customer_id != $customer["id"]){
+                if($loop_customer_id != 0){
                     ?>
                     <tr>
                         <th class="text-right" colspan="<?php echo $colspan;?>">Total</th>
                         <?php
                         for($i = 0; $i < 3; $i++){
                             foreach($sizes as $size_id => $size){
+                                if(!isset($grand_totals[$i]["size_".$size_id])){
+                                    $grand_totals[$i]["size_".$size_id] = 0;
+                                }
+                                $grand_totals[$i]["size_".$size_id] += $totals[$i]["size_".$size_id];
                                 ?>
-                                <th class="text-center"><?php echo $totals[$i][$size_id]?></th>
+                                <th class="text-right"><?php echo curr_format($totals[$i]["size_".$size_id])?></th>
                                 <?php
                             }
+                            if(!isset($grand_totals[$i]["t"])){
+                                $grand_totals[$i]["t"] = 0;
+                            }
+                            $grand_totals[$i]["t"] += $totals[$i]["t"];
                             ?>
-                            <th class="text-center color-<?php echo $i?>"><?php echo $totals[$i]['t']?></th>
+                            <th class="text-center color-<?php echo $i?>"><?php echo curr_format($totals[$i]['t'])?></th>
                             <?php
                         }
                         ?>
                     </tr>
                     <?php
+                    $totals = [];
                 }
+                $loop_customer_id = $customer["id"];
             }
         }
         ?>
+        <tr>
+            <th class="text-right" colspan="<?php echo $colspan;?>">Grand Total</th>
+            <?php
+            if($customer_id!=""){
+                for($i = 0; $i < 3; $i++){
+                    foreach($sizes as $size_id => $size){
+                        if(!isset($grand_totals[$i]["size_".$size_id])){
+                            $grand_totals[$i]["size_".$size_id] = 0;
+                        }
+                        $grand_totals[$i]["size_".$size_id] += $totals[$i]["size_".$size_id];
+                    }
+                    if(!isset($grand_totals[$i]["t"])){
+                        $grand_totals[$i]["t"] = 0;
+                    }
+                    $grand_totals[$i]["t"] += $totals[$i]["t"];
+                }
+            }
+            for($i = 0; $i < 3; $i++){
+                foreach($sizes as $size_id => $size){
+                    ?>
+                    <th class="text-right"><?php echo curr_format($grand_totals[$i]["size_".$size_id])?></th>
+                    <?php
+                }
+                ?>
+                <th class="text-center color-<?php echo $i?>"><?php echo curr_format($grand_totals[$i]['t'])?></th>
+                <?php
+            }
+            ?>
+        </tr>
+        <?php
+    }
+    else{
+        ?>
+        <tr>
+            <td colspan="8">No records found.</td>
+        </tr>
+        <?php
+    }
+    ?>
+    </tbody>
   	</table>
 <style>
     .color-0{
