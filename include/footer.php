@@ -52,6 +52,7 @@ $(document).ready(function(){
 <script type="text/javascript" src="js/washing.angular.js"></script>
 <script type="text/javascript" src="js/delivery.angular.js"></script>
 <script type="text/javascript" src="js/salary.angular.js"></script>
+<script type="text/javascript" src="js/customer_dashboard.angular.js"></script>
 <script src="js/jquery.UrduEditor.js" type="text/javascript"></script> 
 <script>
 $(document).ready(function() {

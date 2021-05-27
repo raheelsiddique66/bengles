@@ -24,7 +24,8 @@ if(!empty($q)){
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> 
         	<a href="account_manage.php?tab=add" class="btn btn-light editproject">Add New Account</a> 
-            <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a> 
+            <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
+            <a class="btn print-btn" href="account_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a>
     	</div> 
     </div> 
 </div>
@@ -51,9 +52,10 @@ if(!empty($q)){
                 <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
-                <th width="30%">Title</th>
-                <th width="20%">Account Type</th>
-                <th width="20%" class="text-right">Balance</th>
+                <th width="20%">Title</th>
+                <th width="20%">Title Urdu</th>
+                <th width="15%">Account Type</th>
+                <th width="10%" class="text-right">Balance</th>
                 <th width="10%" class="text-center">Status</th>
                 <th width="10%" class="text-center">Actions</th>
             </tr>
@@ -73,6 +75,7 @@ if(!empty($q)){
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
                         <td><?php echo unslash($r["title"]); ?></td>
+                        <td><span class="nastaleeq"><?php echo unslash($r["title_urdu"]); ?></span></td>
                         <td><?php echo getAccountType(unslash($r["type"])); ?></td>
                         <td class="text-right"><?php echo get_account_balance(unslash($r["id"])); ?></td>
                         <td class="text-center">
@@ -110,14 +113,14 @@ if(!empty($q)){
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="3" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "account", $sql, $pageNum)?></td>
+                    <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "account", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="7"  class="no-record">No Result Found</td>
+                    <td colspan="8"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

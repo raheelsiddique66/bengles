@@ -28,11 +28,15 @@ else{
   	<div class="form-group">
     	<div class="row">
             <div class="col-sm-2 control-label">
-                <label class="form-label" for="customer_id">Customer Name <span class="manadatory">*</span></label>
+                <label class="form-label" for="customer_id">Customer Name</label>
             </div>
             <div class="col-sm-10">
                 <select name="customer_id" title="Choose Option">
+<<<<<<< HEAD
                 <option value="0">All Customer</option>
+=======
+                    <option value="0">All Customer</option>
+>>>>>>> e65b70d97b0c6a1ea8b92013e2e502764304887d
                     <?php
                     $res=doquery("select * from customer where status=1 order by customer_name", $dblink);
                     if(numrows($res)>0){

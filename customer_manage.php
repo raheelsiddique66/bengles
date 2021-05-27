@@ -6,7 +6,11 @@ include("include/paging.php");
 define("APP_START", 1);
 $filename = 'customer_manage.php';
 include("include/admin_type_access.php");
+<<<<<<< HEAD
 $tab_array=array("list", "add", "edit", "status", "delete", "bulk_action", "report", "print", "balance_report");
+=======
+$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action", "report", "print", "balance_report", "customer_dashboard");
+>>>>>>> e65b70d97b0c6a1ea8b92013e2e502764304887d
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -75,9 +79,18 @@ switch($tab){
 	case 'print':
 		include("modules/customer/print_do.php");
 	break;
+<<<<<<< HEAD
 	case 'balance_report':
         include("modules/customer/balance_report.php");
     break;
+=======
+    case 'balance_report':
+        include("modules/customer/balance_report.php");
+    break;
+    case 'customer_dashboard':
+        include("modules/customer/customer_dashboard_do.php");
+    break;
+>>>>>>> e65b70d97b0c6a1ea8b92013e2e502764304887d
 }
 ?>
 <?php include("include/header.php");?>
@@ -97,6 +110,9 @@ switch($tab){
 				case 'report':
 					include("modules/customer/report.php");
 				break;
+                case 'customer_dashboard':
+                    include("modules/customer/customer_dashboard.php");
+                break;
             }
           ?>
     	</div>
