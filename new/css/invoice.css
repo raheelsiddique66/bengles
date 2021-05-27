@@ -1,0 +1,90 @@
+@charset "utf-8";
+/* CSS Document */
+body{font-size:14px; margin:0; font-family:Arial, Helvetica, sans-serif;}
+.wrapper{ max-width:9.27in; margin: 0 auto; padding:0;}
+.clear:after { 
+  content: "";
+  clear: both;
+  display: table;
+}
+p{
+	font-size:12px;
+}
+.content{
+	width:100%;
+	margin:0 auto;
+}
+.number {
+    margin: 12px 0 12px;
+}
+.logo {width: auto;}
+.phone {
+	float: right;
+	text-align:right;
+}
+.phone p {
+    font-size: 14px;
+    line-height: 22px;
+    margin: 10px 0;
+    font-weight: 600;
+}
+.logo h1{ text-transform:uppercase; margin:10px 0 0; font-size:32px;text-align: center;}
+.logo img {
+	height: auto;
+	max-width: 100%;
+	width:240px;
+}
+.logo p {
+	margin: 0;
+	line-height: 18px;
+	font-weight: 600;
+}
+.sale_tax{
+	text-align: center;
+}
+.sale_tax h1{
+	text-transform:uppercase;
+	color:#000;
+	font-size:22px;
+	text-align: left;
+	margin: 0px 0 10px;
+}
+.invoice_number{
+	float:right;
+	text-align: right;
+}
+.order_number{
+	float:left;
+	text-transform:uppercase;
+}
+.order_number p {
+    margin: 0;
+    line-height: 19px;
+	font-size: 12px;
+	text-align: left;
+}
+.detail_box{
+	float: left;
+	
+}
+.detail_box h3{
+	text-transform: uppercase;
+    color:#000;
+    font-size: 22px;
+	margin: 0px 0 10px;
+}
+.detail_box p{
+	font-size: 12px;
+    margin: 0;
+    line-height: 19px;
+}
+table {width: 100%;border-collapse: collapse;}
+td, th { border: solid 1px #000; padding: 6px 10px; text-align: left;}
+th{text-transform:uppercase;}
+td.no-border { border: 0;}
+td strong{ font-size:12px; font-weight:bold;}
+.text-center{ text-align:center;}
+.text-right{ text-align:right;}
+@media print{
+
+}
