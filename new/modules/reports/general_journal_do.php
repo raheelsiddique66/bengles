@@ -33,8 +33,11 @@ if( !empty( $account_id ) ) {
 	$account = dofetch( doquery( "select * from account where id='".$account_id."'", $dblink ) );
 }
 else {
-	$account = dofetch( doquery( "select * from account where is_petty_cash='1'", $dblink ) );
+	$accounts = doquery( "select * from account where is_petty_cash='1'", $dblink );
+if( numrows( $accounts ) > 0 ) {
+$account = dofetch( $accounts );
 	$account_id = $account[ "id" ];
+}
 }
 
 $order_by = "date";

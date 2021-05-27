@@ -51,7 +51,8 @@ if(!empty($q)){
                 <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
-                <th width="40%">Title</th>
+                <th width="30%">Title</th>
+                <th width="30%">Title In Urdu</th>
                 <th width="10%" class="text-center">Status</th>
                 <th width="10%" class="text-center">Actions</th>
             </tr>
@@ -71,6 +72,7 @@ if(!empty($q)){
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
                         <td><?php echo unslash($r["title"]); ?></td>
+                        <td><span class="nastaleeq"><?php echo unslash($r["title_urdu"]); ?></span></td>
                         <td class="text-center">
                             <a href="expense_category_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                                 <?php
@@ -106,14 +108,14 @@ if(!empty($q)){
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="2" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "expense_category", $sql, $pageNum)?></td>
+                    <td colspan="3" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "expense_category", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="5"  class="no-record">No Result Found</td>
+                    <td colspan="6"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

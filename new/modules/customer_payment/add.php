@@ -11,6 +11,7 @@ else{
 	$account_id="";
 	$details="";
 	$machine_id="";
+	$claim="";
 }
 ?>
 <div class="page-header">
@@ -100,7 +101,16 @@ else{
             </div>
         </div>
   	</div>
-    
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-2 control-label">
+                <label class="form-label" for="claim">Claim</label>
+            </div>
+            <div class="col-sm-10">
+                <input type="text" title="Enter Claim" value="<?php echo $claim; ?>" name="claim" id="claim" class="form-control" >
+            </div>
+        </div>
+    </div>
     <div class="form-group">
     	<div class="row">
             <div class="col-sm-2 control-label">

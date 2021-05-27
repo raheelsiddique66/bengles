@@ -1,6 +1,7 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$rs = doquery( $sql, $dblink );
+$sql1="select * from customer where 1 $extra and status = 1 order by customer_name";
+$rs = doquery( $sql1, $dblink );
 $total_balance = 0;
 ?>
 <style>

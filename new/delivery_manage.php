@@ -62,7 +62,7 @@ if(isset($_SESSION["delivery"]["list"]["machine_id"]))
 	$machine_id=$_SESSION["delivery"]["list"]["machine_id"];
 else
 	$machine_id="";
-if($tab!=="report_total" && $tab!=="current_report"){
+if($tab!=="report_total"){
 if($machine_id!=""){
 	$extra.=" and c.machine_id='".$machine_id."'";
 	$is_search=true;
@@ -81,7 +81,8 @@ if(!empty($q)){
 	$is_search=true;
 }
 //$sql = "SELECT * FROM `delivery` WHERE 1 $extra order by customer_id";
-$sql = "SELECT a.* FROM `delivery` a left join customer b on a.customer_id = b.id left join delivery_items c on a.id = c.delivery_id WHERE 1 $extra group by delivery_id order by a.date desc, a.gatepass_id desc";
+$sql = "SELECT a.* FROM `delivery` a left join customer b on a.customer_id = b.id left join delivery_items c on a.id = c.delivery_id WHERE 1 $extra group by c.delivery_id order by a.date desc, a.gatepass_id desc";
+//$sql = "SELECT a.* FROM `delivery` a left join customer b on a.customer_id = b.id left join delivery_items c on a.id = c.delivery_id WHERE 1 $extra group by delivery_id order by gatepass_id desc";
 switch($tab){
 	case 'addedit':
 		include("modules/delivery/addedit_do.php");
@@ -105,7 +106,7 @@ switch($tab){
 	case 'report_total':
 		include("modules/delivery/report_total.php");
 	break;
-	case 'current_report':
+    case 'current_report':
         include("modules/delivery/current_report.php");
     break;
 }

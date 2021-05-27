@@ -9,6 +9,8 @@ else{
     $address="";
     $customer_name_urdu="";
     $balance="";
+    $machine_id="";
+    $sortorder="";
 }
 ?>
 <div class="page-header">
@@ -21,9 +23,6 @@ else{
   	</div>
 </div>
 <form class="form-horizontal form-horizontal-left" role="form" action="customer_manage.php?tab=add" method="post" enctype="multipart/form-data" name="frmAdd"  onSubmit="return checkFields();">
-    <?php
-        $i=0;
-    ?>
     <div class="form-group">
         <div class="row">
         	<div class="col-sm-2 control-label">
@@ -31,6 +30,28 @@ else{
             </div>
             <div class="col-sm-10">
                 <input type="text" title="Enter Name" value="<?php echo $customer_name; ?>" name="customer_name" id="customer_name" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-2 control-label">
+                <label class="form-label" for="machine_id">Machine</label>
+            </div>
+            <div class="col-sm-10">
+                <select name="machine_id" title="Choose Option">
+                    <option value="0">All Machine</option>
+                    <?php
+                    $res=doquery("select * from machine where status=1 order by title", $dblink);
+                    if(numrows($res)>0){
+                        while($rec=dofetch($res)){
+                            ?>
+                            <option value="<?php echo $rec["id"]?>"<?php echo($machine_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"]); ?></option>
+                            <?php
+                        }
+                    }
+                    ?>
+                </select>
             </div>
         </div>
     </div>
@@ -71,6 +92,16 @@ else{
             </div>
             <div class="col-sm-10">
                 <input type="text" title="Enter Balance" value="<?php echo $balance; ?>" name="balance" id="balance" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-2 control-label">
+                <label class="form-label" for="sortorder">Sortorder </label>
+            </div>
+            <div class="col-sm-10">
+                <input type="text" title="Enter Sortorder" value="<?php echo $sortorder; ?>" name="sortorder" id="sortorder" class="form-control" />
             </div>
         </div>
     </div>

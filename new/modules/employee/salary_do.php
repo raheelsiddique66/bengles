@@ -90,6 +90,7 @@ if(isset($_POST["action"])){
                     $employees[] = array(
                         "id" => $r[ "id" ],
                         "name" => unslash($r[ "name" ]),
+                        "name_in_urdu" => unslash($r[ "name_in_urdu" ]),
                         "father_name" => unslash($r[ "father_name" ]),
                         "attendance" => $e_dates,
                         "salary" => (int)$salary,

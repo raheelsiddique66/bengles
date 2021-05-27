@@ -25,7 +25,7 @@ if(!defined("APP_START")) die("No Direct Access");
         <tbody>
         <tr ng-repeat="employee in employees">
             <td class="text-center">{{ $index+1 }}</td>
-            <td>{{employee.name}} {{ employee.father_name }}</td>
+            <td><span class="nastaleeq">{{employee.name_in_urdu}}</span> {{ employee.father_name }}</td>
             <td data-ng-repeat="date in dates" class="text-center" data-ng-class="{'greyed': employee.attendance[date.value]=='A'||employee.attendance[date.value]=='F'}">{{ employee.attendance[date.value] }}</td>
             <td class="text-right">{{ get_total($index).total_absent }}</td>
             <td class="text-right">{{ employee.salary }}</td>
@@ -39,8 +39,7 @@ if(!defined("APP_START")) die("No Direct Access");
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td colspan="{{ dates.length+3 }}" class="text-right">Total</td>
-            <td class="text-right">{{ total_salary() }}</td>
+            <td colspan="{{ dates.length+4 }}" class="text-right">Total</td>
             <td class="text-right">{{ total_hours() }}</td>
             <td class="text-right">{{ total_hours_amount()|currency:'':0 }}</td>
             <td class="text-right">{{ sum(employees, 'calculated_salary')-(salary_type!="0"?total_hours_amount():0)|currency:'':0 }}</td>
