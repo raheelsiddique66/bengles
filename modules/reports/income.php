@@ -86,11 +86,6 @@ if( empty( $extra ) ) {
 				//echo $r1["quantity"]."<br>";
 			}
 		}
-<<<<<<< HEAD
-=======
-
-
->>>>>>> e65b70d97b0c6a1ea8b92013e2e502764304887d
 		?>
         <tr class="">
             <th class="text-right">Income from <?php echo $date_from?> to <?php echo $date_to?></th>
@@ -99,9 +94,9 @@ if( empty( $extra ) ) {
 		<tr class="">
 			<th class="text-right">Salary from <?php echo $date_from?> to <?php echo $date_to?></th>
 			<th class="text-right" >Rs. <?php
-				$rs = dofetch( doquery( "select sum(calculated_salary) from employee_salary where date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'", $dblink ) );
-				echo curr_format( $rs[ "sum(calculated_salary)" ] );
-				$salary_total += $rs[ "sum(calculated_salary)" ];
+				$rs = dofetch( doquery( "select sum(amount) from employee_payment where date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'", $dblink ) );
+				echo curr_format( $rs[ "sum(amount)" ] );
+				$salary_total += $rs[ "sum(amount)" ];
 			?></th>
 		</tr>
         <?php

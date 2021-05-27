@@ -5,7 +5,6 @@ if(isset($_SESSION["employee_manage"]["add"])){
 }
 else{
     $name="";
-    $name_in_urdu="";
     $father_name="";
     $phone_number="";
     $salary_type="";
@@ -24,6 +23,9 @@ else{
   	</div>
 </div>
 <form class="form-horizontal form-horizontal-left" role="form" action="employee_manage.php?tab=add" method="post" enctype="multipart/form-data" name="frmAdd"  onSubmit="return checkFields();">
+    <?php
+        $i=0;
+    ?>
     <div class="form-group">
         <div class="row">
         	<div class="col-sm-2 control-label">
@@ -31,16 +33,6 @@ else{
             </div>
             <div class="col-sm-10">
                 <input type="text" title="Enter Name" value="<?php echo $name; ?>" name="name" id="name" class="form-control" />
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="row">
-        	<div class="col-sm-2 control-label">
-            	<label class="form-label" for="name_in_urdu">Name In Urdu</label>
-            </div>
-            <div class="col-sm-10">
-                <input type="text" title="Enter Name in Urdu" value="<?php echo $name_in_urdu; ?>" name="name_in_urdu" id="name_in_urdu" class="form-control nastaleeq" />
             </div>
         </div>
     </div>

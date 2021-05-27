@@ -11,10 +11,7 @@ if(!defined("APP_START")) die("No Direct Access");
             <a class="btn print-btn" href="delivery_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a>
             <a href="delivery_manage.php?tab=report_total" class="btn btn-light editproject">Report Total</a>
             <a href="delivery_manage.php?tab=current_report" class="btn btn-light editproject">Current Report</a>
-<<<<<<< HEAD
 
-=======
->>>>>>> e65b70d97b0c6a1ea8b92013e2e502764304887d
         </div>
   	</div>
 </div>
@@ -79,7 +76,7 @@ if(!defined("APP_START")) die("No Direct Access");
                     <label for="select_all"></label></div></th>
                 <th width="10%">Date</th>
                 <th width="10%">Gatepass</th>
-                <th width="12%" class="text-right">Customer</th>
+                <th width="12%">Customer</th>
                 <th width="8%">Claim</th>
                 <th width="10%">Labour</th>
                 <th width="30%">Items</th>
@@ -95,12 +92,12 @@ if(!defined("APP_START")) die("No Direct Access");
                 $colors = [];
                 $rs2 = doquery("select * from color order by sortorder", $dblink);
                 while($r2=dofetch($rs2)){
-                    $colors[$r2["id"]] = unslash($r2["title_urdu"]);
+                    $colors[$r2["id"]] = unslash($r2["title"]);
                 }
                 $designs = [];
                 $rs3 = doquery("select * from design order by sortorder", $dblink);
                 while($r3=dofetch($rs3)){
-                    $designs[$r3["id"]] = unslash($r3["title_urdu"]);
+                    $designs[$r3["id"]] = unslash($r3["title"]);
                 }
                 $sizes = [];
                 $rs4 = doquery("select * from size order by sortorder", $dblink);
@@ -118,16 +115,16 @@ if(!defined("APP_START")) die("No Direct Access");
                         </td>
                         <td><?php echo date_convert($r["date"]); ?></td>
                         <td><?php echo $r["gatepass_id"]?></td>
-                        <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo get_field( unslash($r["customer_id"]), "customer", "customer_name_urdu" ); ?></span></td>
-                        <td><?php echo unslash($r["claim"]); ?></td>
+                        <td><?php echo get_field( unslash($r["customer_id"]), "customer", "customer_name" ); ?></td>
+                        <td><?php echo  unslash($r["claim"]); ?></td>
                         <td><?php echo get_field( unslash($r["labour_id"]), "labour", "name" ); ?></td>
                         <td>
                             <table class="table table-hover list">
                                 <thead>
                                 <tr>
                                     <td>Machine</td>
-                                    <td class="text-right">Design</td>
-                                    <td class="text-right">Color</td>
+                                    <td>Design</td>
+                                    <td>Color</td>
                                     <?php
                                     foreach($sizes as $size){
                                         ?>
@@ -154,8 +151,8 @@ if(!defined("APP_START")) die("No Direct Access");
                                         ?>
                                         <tr>
                                             <td><?php echo get_field($r1["machine_id"], "machine", "title" ); ?></td>
-                                            <td class="nastaleeq"><?php echo !empty($designs[$r1["design_id"]])?$designs[$r1["design_id"]]:''?></td>
-                                            <td class="nastaleeq"><?php echo $colors[$r1["color_id"]]?></td>
+                                            <td><?php echo $designs[$r1["design_id"]]?></td>
+                                            <td><?php echo $colors[$r1["color_id"]]?></td>
                                             <?php
                                             $quantities = [];
                                             $t = 0;

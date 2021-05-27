@@ -189,7 +189,6 @@ if(isset($_POST["action"])){
 					doquery( "insert into delivery (date, customer_id, claim, labour_id, gatepass_id) VALUES ('".slash(date_dbconvert($delivery->date))."', '".slash($delivery->customer_id)."', '".slash($delivery->claim)."', '".slash($delivery->labour_id)."', '".slash($delivery->gatepass_id)."')", $dblink );
 					$delivery_id = inserted_id();
 				}
-<<<<<<< HEAD
 				// if( !empty( $delivery->payment_account_id ) ) {
 				// 	$update = false;
 				// 	if( !empty( $delivery->customer_payment_id ) ) {
@@ -207,25 +206,6 @@ if(isset($_POST["action"])){
 				// 		doquery( "update delivery set customer_payment_id = '".$delivery->customer_payment_id."' where id='".$delivery_id."'", $dblink );
 				// 	}
 				// }
-=======
-//				if( !empty( $delivery->payment_account_id ) ) {
-//					$update = false;
-//					if( !empty( $delivery->customer_payment_id ) ) {
-//						$customer_payment = doquery( "select id from customer_payment where id='".$delivery->customer_payment_id."'", $dblink );
-//						if( numrows( $customer_payment ) > 0 ) {
-//							$update = true;
-//						}
-//					}
-//					if( $update ) {
-//						doquery( "update customer_payment set customer_id = '".slash( $delivery->customer_id )."', amount = '".slash( $delivery->payment_amount )."', account_id = '".slash( $delivery->payment_account_id )."' where id = '".$delivery->customer_payment_id."'", $dblink );
-//					}
-//					else {
-//						doquery( "insert into customer_payment(customer_id, datetime_added, amount, account_id, details) values( '".slash( $delivery->customer_id )."', NOW(), '".slash( $delivery->payment_amount )."', '".slash( $delivery->payment_account_id )."', 'Payment against Delivery #".$delivery->gatepass_id."' )", $dblink );
-//						$delivery->customer_payment_id = inserted_id();
-//						doquery( "update delivery set customer_payment_id = '".$delivery->customer_payment_id."' where id='".$delivery_id."'", $dblink );
-//					}
-//				}
->>>>>>> e65b70d97b0c6a1ea8b92013e2e502764304887d
 				$delivery_item_ids = array();
 				foreach( $delivery->delivery_items as $delivery_item) {
 					foreach($delivery_item->quantity as $size_id => $quantity){

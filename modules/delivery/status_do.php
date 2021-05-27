@@ -10,7 +10,7 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
 			doquery( "update customer_payment set status='".$status."' where id = '".$rec[ "customer_payment_id" ]."'", $dblink );
 		}
 	}
-	doquery("update delivery set status='".$status."' where id='".$id."' ",$dblink);
+	doquery("update delivery set status='".$status." where id='".$id."'",$dblink);
 	header("Location: delivery_manage.php");
 	die;
 }

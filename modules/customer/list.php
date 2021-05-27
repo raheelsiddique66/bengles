@@ -1,9 +1,5 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-<<<<<<< HEAD
-=======
-
->>>>>>> e65b70d97b0c6a1ea8b92013e2e502764304887d
 ?>
 <div class="page-header">
 	<h1 class="title">Customer</h1>
@@ -13,11 +9,7 @@ if(!defined("APP_START")) die("No Direct Access");
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> 
         	<a href="customer_manage.php?tab=add" class="btn btn-light editproject">Add New Customer</a> 
-<<<<<<< HEAD
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a> 
-=======
-            <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
->>>>>>> e65b70d97b0c6a1ea8b92013e2e502764304887d
             <a class="btn print-btn" href="customer_manage.php?tab=balance_report"><i class="fa fa-print" aria-hidden="true"></i></a>
     	</div> 
     </div> 
@@ -68,22 +60,14 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th width="20%">Customer Name In Urdu</th>
                 <th width="10%">Phone</th>
                 <th width="10%">Balance</th>
-<<<<<<< HEAD
                 <!-- <th width="10%">Sortorder</th> -->
-=======
-                <th width="10%">Sortorder</th>
->>>>>>> e65b70d97b0c6a1ea8b92013e2e502764304887d
                 <th width="5%" class="text-center">Status</th>
                 <th width="5%" class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
             <?php 
-<<<<<<< HEAD
             $sql="select * from customer where 1 $extra order by customer_name";
-=======
-
->>>>>>> e65b70d97b0c6a1ea8b92013e2e502764304887d
             $rs=show_page($rows, $pageNum, $sql);
             if(numrows($rs)>0){
                 $sn=1;
@@ -100,11 +84,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td><span class="nastaleeq"><?php echo unslash($r["customer_name_urdu"]); ?></span></td>
                         <td><?php echo unslash($r["phone"]); ?></td>
                         <td><?php echo get_customer_balance($r['id'], date_dbconvert($date));?></td>
-<<<<<<< HEAD
                         <!-- <td><?php // echo unslash($r["sortorder"]); ?></td> -->
-=======
-                        <td><?php echo unslash($r["sortorder"]); ?></td>
->>>>>>> e65b70d97b0c6a1ea8b92013e2e502764304887d
                         <td class="text-center">
                             <a href="customer_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
                                 <?php
@@ -122,7 +102,6 @@ if(!defined("APP_START")) die("No Direct Access");
                             </a>
                         </td>
                         <td class="text-center">
-<!--                            <a href="customer_manage.php?tab=customer_dashboard&client_id=--><?php //echo $r['id'];?><!--" class="download-icon"><i class="fa fa-download" aria-hidden="true"></i></a>-->
                             <a href="customer_manage.php?tab=report&id=<?php echo $r['id'];?>" class="download-icon"><i class="fa fa-download" aria-hidden="true"></i></a>&nbsp;&nbsp;
                             <a href="customer_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
                             <a onclick="return confirm('Are you sure you want to delete')" href="customer_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
@@ -133,11 +112,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 }
                 ?>
                 <tr>
-<<<<<<< HEAD
                     <td colspan="5" class="actions">
-=======
-                    <td colspan="6" class="actions">
->>>>>>> e65b70d97b0c6a1ea8b92013e2e502764304887d
                         <select name="bulk_action" class="" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
                             <option value="delete">Delete</option>
@@ -146,11 +121,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-<<<<<<< HEAD
                     <td colspan="5" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "customer", $sql, $pageNum)?></td>
-=======
-                    <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "customer", $sql, $pageNum)?></td>
->>>>>>> e65b70d97b0c6a1ea8b92013e2e502764304887d
                 </tr>
                 <?php	
             }

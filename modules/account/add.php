@@ -5,7 +5,6 @@ if(isset($_SESSION["account_manage"]["add"])){
 }
 else{
 	$title="";
-	$title_urdu="";
 	$description="";
 	$balance="";
 	$is_petty_cash="";
@@ -32,16 +31,6 @@ else{
             </div>
             <div class="col-sm-10">
                 <input type="text" title="Enter Title" value="<?php echo $title; ?>" name="title" id="title" class="form-control" />
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="row">
-            <div class="col-sm-2 control-label">
-                <label class="form-label" for="title">Title In Urdu</label>
-            </div>
-            <div class="col-sm-10">
-                <input type="text" title="Enter Title in Urdu" value="<?php echo $title_urdu; ?>" name="title_urdu" id="title_urdu" class="form-control nastaleeq" />
             </div>
         </div>
     </div>

@@ -4,12 +4,12 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
 	$colors = [];
     $rs2 = doquery("select * from color order by sortorder", $dblink);
     while($r2=dofetch($rs2)){
-        $colors[$r2["id"]] = unslash($r2["title_urdu"]);
+        $colors[$r2["id"]] = unslash($r2["title"]);
     }
     $designs = [];
     $rs3 = doquery("select * from design order by sortorder", $dblink);
     while($r3=dofetch($rs3)){
-        $designs[$r3["id"]] = unslash($r3["title_urdu"]);
+        $designs[$r3["id"]] = unslash($r3["title"]);
     }
     $sizes = [];
     $rs4 = doquery("select * from size order by sortorder", $dblink);
@@ -31,7 +31,6 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
     font-style: normal;
 
 }
-.nastaleeq{font-family: 'NafeesRegular'; direction:rtl; unicode-bidi: embed; text-align:right; font-size: 14px;  }
 .clearfix:after {
 	content: "";
 	display: table;
@@ -195,13 +194,13 @@ footer {
     <div id="receipt" style="width: 160px">Gatepass No: <strong><?php echo $delivery["gatepass_id"]; ?></div>
     <div class="contentbox">
         <p>Date: <strong style="float:right"><?php echo date_convert($delivery["date"]); ?></strong></p>
-        <p>Customer: <span class="nastaleeq"><strong style="float:right"><?php echo get_field($delivery["customer_id"], "customer", "customer_name_urdu" ); ?></strong></span></p>
+		<p>Customer: <strong style="float:right"><?php echo get_field($delivery["customer_id"], "customer", "customer_name" ); ?></strong></p>
 		<p>Labour: <strong style="float:right"><?php echo get_field( unslash($delivery["labour_id"]), "labour", "name" ); ?></strong></p>
         <table class="table table-hover list">
             <thead>
             <tr>
-                <td style="text-align: right">Color</td>
-                <td style="text-align: right">Design</td>
+                <td>Color</td>
+                <td>Design</td>
                 <?php
                 foreach($sizes as $size){
                     ?>
@@ -227,8 +226,8 @@ footer {
 					$price += $r1["unit_price"];
                     ?>
                     <tr>
-                        <td class="nastaleeq"><?php echo $colors[$r1["color_id"]]?></td>
-                        <td class="nastaleeq"><?php echo $designs[$r1["design_id"]]?></td>
+                        <td><?php echo $colors[$r1["color_id"]]?></td>
+                        <td><?php echo $designs[$r1["design_id"]]?></td>
                         <?php
                         $quantities = [];
                         $t = 0;

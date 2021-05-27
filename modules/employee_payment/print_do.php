@@ -17,7 +17,7 @@ body {
 th, td {
     border: solid 1px #000;
     padding: 5px 5px;
-    font-size: 14px;
+    font-size: 11px;
 	vertical-align:top;
 }
 table table th, table table td{
@@ -25,19 +25,18 @@ table table th, table table td{
 }
 table {
     border-collapse:  collapse;
-	max-width:900px;
+	max-width:1200px;
 	margin:0 auto;
 }
 .text-center{ text-align:center}
 .text-right{ text-align:right}
-.nastaleeq{font-family: 'NafeesRegular'; direction:rtl; unicode-bidi: embed; text-align:right; font-size: 18px;  }
 </style>
 <table width="100%" cellspacing="0" cellpadding="0">
 <tr class="head">
 	<th colspan="9">
     	<h1><?php echo get_config( 'site_title' )?></h1>
     	<h2>Employee Payment List</h2>
-        <p style="font-size: 22px;background: #187bd0;padding: 5px;">
+        <p>
             <?php
                 echo "List of";
                 if( !empty( $date_from ) || !empty( $date_to ) ){
@@ -58,9 +57,9 @@ table {
 </tr>
 <tr>
     <th width="5%" align="center">S.no</th>
-    <th width="10%">Date</th>
-    <th width="20%">Employee Name</th>
-    <th width="15%">Account</th>
+    <th width="20%">Date</th>
+    <th width="30%">Employee Name</th>
+    <th width="20%">Account</th>
     <th width="10%" align="right">Amount</th>
 </tr>
 <?php
@@ -72,7 +71,7 @@ if( numrows( $rs ) > 0 ) {
 		<tr>
         	<td align="center"><?php echo $sn++?></td>
             <td><?php echo date_convert($r["date"]); ?></td>
-            <td class="nastaleeq"><?php echo get_field($r["employee_id"], "employees", "name"); ?></td>
+            <td><?php echo get_field($r["employee_id"], "employees", "name"); ?></td>
             <td><?php echo get_field($r["account_id"], "account", "title"); ?></td>
             <td align="right"><?php echo unslash($r["amount"]); ?></td>
         </tr>

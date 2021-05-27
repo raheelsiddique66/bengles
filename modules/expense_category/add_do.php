@@ -6,7 +6,7 @@ if(isset($_POST["expense_category_add"])){
 	if(empty($title))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="INSERT INTO expense_category (title, title_urdu) VALUES ('".slash($title)."', '".slash($title_urdu)."')";
+		$sql="INSERT INTO expense_category (title) VALUES ('".slash($title)."')";
 		doquery($sql,$dblink);
 		unset($_SESSION["expense_category_manage"]["add"]);
 		header('Location: expense_category_manage.php?tab=list&msg='.url_encode("Sucessfully Added"));

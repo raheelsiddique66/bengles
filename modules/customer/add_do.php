@@ -6,7 +6,7 @@ if(isset($_POST["customer_add"])){
 	if(empty($customer_name))
 		$err="Fields with (*) are Mandatory.<br />";
 	if($err==""){
-		$sql="INSERT INTO customer (customer_name, phone, address, customer_name_urdu, balance, machine_id, sortorder) VALUES ('".slash($customer_name)."', '".slash($phone)."', '".slash($address)."', '".slash($customer_name_urdu)."', '".slash($balance)."', '".slash($machine_id)."', '".slash($sortorder)."')";
+		$sql="INSERT INTO customer (customer_name, phone, address, customer_name_urdu, balance) VALUES ('".slash($customer_name)."', '".slash($phone)."', '".slash($address)."', '".slash($customer_name_urdu)."', '".slash($balance)."')";
 		doquery($sql,$dblink);
 		unset($_SESSION["customer_manage"]["add"]);
 		header('Location: customer_manage.php?tab=list&msg='.url_encode("Sucessfully Added"));

@@ -32,60 +32,42 @@ table {
 <tr class="head">
 	<th colspan="6">
     	<?php echo get_config( 'fees_chalan_header' )?>
-    	<h2>Transaction List</h2>
-        <p style="font-size: 22px;background: #187bd0;padding: 5px;">
+    	<h2>Project Payment List</h2>
+        <p>
         	<?php
 			echo "List of";
-            if( !empty( $date_from ) || !empty( $date_to ) ){
-                echo "<br />Date";
-            }
-            if( !empty( $date_from ) ){
-                echo " from ".$date_from;
-            }
-            if( !empty( $date_to ) ){
-                echo " to ".$date_to."<br>";
-            }
-			if( !empty( $account_id ) ){
-				echo " To: ".get_field($account_id, "account","title");
+			if( !empty( $project_id ) ){
+				echo " Project: ".get_field($project_id, "project","title");
 			}
-            if( !empty( $reference_id ) ){
-                echo " From: ".get_field($reference_id, "account","title");
-            }
 			?>
         </p>
     </th>
 </tr>
 <tr>
-    <th width="10%" align="right">Ammount</th>
-    <th width="30%">Details</th>
-    <th width="10%">Account From</th>
-    <th width="10%">Account To</th>
-    <th width="15%">Date/Time</th>
     <th width="5%" align="center">S.no</th>
+    <th width="5%" align="center">ID</th>
+    <th>Project Name</th>
+    <th>Datetime</th>
+    <th align="right">Amount</th>
+    <th>Paid By</th>
 </tr>
 <?php
-$total = 0;
 if( numrows( $rs ) > 0 ) {
 	$sn = 1;
 	while( $r = dofetch( $rs ) ) {
-	    $total = $r["amount"];
 		?>
 		<tr>
-            <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
-            <td><?php echo slash($r["details"]); ?></td>
-            <td><?php if($r["reference_id"]==0) echo "Default"; else echo get_field($r["reference_id"], "account","title");?></td>
-            <td><?php if($r["account_id"]==0) echo "Cash"; else echo get_field($r["account_id"], "account","title");?></td>
+        	<td align="center"><?php echo $sn++?></td>
+           	<td align="center"><?php echo $r["id"]?></td>
+            <td><?php echo unslash( $r[ "title" ] );?></td>
             <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
-            <td align="center"><?php echo $sn++?></td>
+            <td align="right"><?php echo curr_format(unslash($r["amount"])); ?></td>
+            <td><?php echo get_field( unslash($r["account_id"]), "account", "title" ); ?></td>
         </tr>
 		<?php
 	}
 }
 ?>
-    <tr>
-        <th align="right"><?php echo curr_format($total)?></th>
-        <th align="right" colspan="5">ٹوٹل</th>
-    </tr>
 </table>
 <?php
 die;

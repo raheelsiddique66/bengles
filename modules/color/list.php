@@ -24,8 +24,7 @@ if(!empty($q)){
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> 
         	<a href="color_manage.php?tab=add" class="btn btn-light editproject">Add New Color</a> 
-            <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
-            <a class="btn print-btn" href="color_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a>
+            <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a> 
     	</div> 
     </div> 
 </div>

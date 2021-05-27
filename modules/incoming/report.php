@@ -4,12 +4,12 @@ $rs = doquery( $sql, $dblink );
 $colors = [];
 $rs2 = doquery("select * from color order by sortorder", $dblink);
 while($r2=dofetch($rs2)){
-	$colors[$r2["id"]] = unslash($r2["title_urdu"]);
+	$colors[$r2["id"]] = unslash($r2["title"]);
 }
 $designs = [];
 $rs3 = doquery("select * from design order by sortorder", $dblink);
 while($r3=dofetch($rs3)){
-	$designs[$r3["id"]] = unslash($r3["title_urdu"]);
+	$designs[$r3["id"]] = unslash($r3["title"]);
 }
 $sizes = [];
 $rs4 = doquery("select * from size order by sortorder", $dblink);
@@ -22,14 +22,6 @@ foreach($sizes as $size_id => $size){
 }
 ?>
 <style>
-@font-face {
-    font-family: 'NafeesRegular';
-    src: url('fonts/NafeesRegular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-
-}
-.nastaleeq{font-family: 'NafeesRegular'; direction:rtl; unicode-bidi: embed; text-align:right; font-size: 18px;  }
 h1, h2, h3, p {
     margin: 0 0 10px;
 }
@@ -77,11 +69,9 @@ table {
 			if( !empty( $date_to ) ){
 				echo " to ".$date_to."<br>";
 			}
-            if( !empty( $customer_id ) ){
-                ?>
-                Customer <span class="nastaleeq"><?php echo get_field($customer_id, "customer", "customer_name_urdu" )."<br>";?></span>
-                <?php
-            }
+			if( !empty( $customer_id ) ){
+				echo " Customer ".get_field($customer_id, "customer", "customer_name" )."<br>";
+			}
 			if( !empty( $machine_id ) ){
 				echo " Machine ".get_field($machine_id, "machine", "title" )."<br>";
 			}
@@ -96,7 +86,7 @@ table {
     <th width="2%" align="center" rowspan="2">S.no</th>
 	<th width="8%" rowspan="2">Date</th>
 	<?php if(empty( $customer_id ) ){?>
-	<th width="10%" rowspan="2" class="text-right">Customer</th>
+	<th width="10%" rowspan="2">Customer</th>
 	<?php }?>
     <th width="6%" rowspan="2">Gatepass</th>
 	<th width="6%" rowspan="2">Labour</th>
@@ -104,8 +94,8 @@ table {
 </tr>
 <tr>
     <td>Machine</td>
-    <td class="text-right">Design</td>
-	<td class="text-right">Color</td>
+    <td>Design</td>
+	<td>Color</td>
 	<?php
 	foreach($sizes as $size){
 		?>
@@ -126,7 +116,7 @@ if( numrows( $rs ) > 0 ) {
         	<td align="center"><?php echo $sn?></td>
 			<td><?php echo date_convert($r["date"]); ?></td>
 			<?php if(empty( $customer_id ) ){?>
-            <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo get_field($r["customer_id"], "customer", "customer_name_urdu" ); ?></span></td>
+			<td><?php echo get_field($r["customer_id"], "customer", "customer_name" ); ?></td>
 			<?php }?>
 			<td align="center"><?php echo $r["gatepass_id"]; ?></td>
 			<td><?php echo get_field($r["labour_id"], "labour", "name" ); ?></td>
@@ -152,8 +142,8 @@ if( numrows( $rs ) > 0 ) {
 							}
 							?>
                             <td><?php echo get_field($r1["machine_id"], "machine", "title" ); ?></td>
-                            <td class="nastaleeq"><?php echo !empty($designs[$r1["design_id"]])?$designs[$r1["design_id"]]:''?></td>
-                            <td class="nastaleeq"><?php echo $colors[$r1["color_id"]]?></td>
+                            <td><?php echo $designs[$r1["design_id"]]?></td>
+                            <td><?php echo $colors[$r1["color_id"]]?></td>
 							<?php
 							$quantities = [];
 							$t = 0;

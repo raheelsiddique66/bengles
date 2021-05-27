@@ -55,6 +55,7 @@ if($customer_id!=""){
 	$extra.=" and customer_id='".$customer_id."'";
 	$is_search=true;
 }
+if($tab!=="report_total"){
 if(isset($_GET["machine_id"])){
 	$machine_id=slash($_GET["machine_id"]);
 	$_SESSION["incoming"]["list"]["machine_id"]=$machine_id;
@@ -63,11 +64,10 @@ if(isset($_SESSION["incoming"]["list"]["machine_id"]))
 	$machine_id=$_SESSION["incoming"]["list"]["machine_id"];
 else
 	$machine_id="";
-if($tab!=="report_total"){
-    if($machine_id!=""){
-        $extra.=" and c.machine_id='".$machine_id."'";
-        $is_search=true;
-    }
+if($machine_id!=""){
+	$extra.=" and c.machine_id='".$machine_id."'";
+	$is_search=true;
+}
 }
 if(isset($_GET["q"])){
 	$_SESSION["incoming"]["list"]["q"] = slash( $_GET["q"] );
@@ -81,11 +81,7 @@ if(!empty($q)){
 	$extra.=" and (gatepass_id = '".$q."' or a.id = '".$q."')";
 	$is_search=true;
 }
-<<<<<<< HEAD
 $sql = "SELECT a.* FROM `incoming` a left join customer b on a.customer_id = b.id left join incoming_items c on a.id = c.incoming_id WHERE 1 $extra group by incoming_id order by a.date desc, a.gatepass_id desc";
-=======
-$sql = "SELECT a.* FROM `incoming` a left join customer b on a.customer_id = b.id left join incoming_items c on a.id = c.incoming_id WHERE 1 $extra group by incoming_id order by date desc, gatepass_id desc";
->>>>>>> e65b70d97b0c6a1ea8b92013e2e502764304887d
 switch($tab){
 	case 'addedit':
 		include("modules/incoming/addedit_do.php");
