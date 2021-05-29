@@ -21,13 +21,15 @@ $page="index"
     <div class="container-widget row">
         <div class="col-md-12">
             <?php
-            $res=doquery("Select * from menu where parent_id=0 order by sortorder ASC",$dblink);
+
+            $res=doquery("select * from menu a inner join menu_2_admin_type b on a.id = b.menu_id where parent_id=0 and admin_type_id='".$_SESSION["logged_in_admin"]["admin_type_id"]."' order by sortorder",$dblink);
             if(numrows($res)>0){
                 while($rec=dofetch($res)){
                     ?>
                     <h2 class="title"><?php echo $rec["title"]?></h2>
                     <?php
-                    $res1=doquery("Select * from menu where parent_id=".$rec["id"]." order by sortorder ASC",$dblink);
+
+                    $res1=doquery("select * from menu a inner join menu_2_admin_type b on a.id = b.menu_id where parent_id='".$rec["id"]."' and admin_type_id='".$_SESSION["logged_in_admin"]["admin_type_id"]."' order by sortorder",$dblink);
                     if(numrows($res1)>0){
                         ?>
                         <ul class="menu-boxes clearfix">
