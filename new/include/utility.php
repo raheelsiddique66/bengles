@@ -1,6 +1,45 @@
 <?php
 error_reporting(E_ALL);
 date_default_timezone_set('Asia/Karachi');
+$log_file = 'last_sync.log';
+if( file_exists( $log_file ) ) {
+    $ts = file_get_contents( $log_file );
+}
+else {
+    $ts = '0000-00-00 00:00:00';
+}
+if(time() - strtotime($ts) > 1800){
+    $sql = '';
+    $tables = array( "admin", "admin_type", "account", "item", "transaction", "transaction_item", "transaction_two", "transaction_two_item");
+    foreach( $tables as $table ) {
+        $rs = doquery( "select * from ".$table." where ts >= '".$ts."'", $dblink );
+        if( numrows( $rs ) > 0 ) {
+            while( $r = dofetch( $rs ) ) {
+                $insert = $update = array();
+                foreach( $r as $k => $v ){
+                    if(!is_numeric($k)) {
+                        $insert[] = "'".$v."'";
+                        $update[] = $k."='".$v."'";
+                    }
+                }
+                $sql .= "INSERT INTO ".$table." VALUES(".implode(", ", $insert).") ON DUPLICATE KEY UPDATE ".implode(", ", $update).";";
+            }
+        }
+    }
+    //echo $sql; die;
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL,"");
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS,
+        "sql=".urlencode($sql));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $server_output = curl_exec ($ch);
+    curl_close ($ch);
+    if($server_output=='success'){
+        file_put_contents( $log_file, date( "Y-m-d H:i:s" ) );
+    }
+}
 /*--------------Site Configuration--------------*/
 function get_config($var){
 	global $dblink;
