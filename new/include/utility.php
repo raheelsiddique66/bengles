@@ -10,7 +10,7 @@ else {
 }
 if(time() - strtotime($ts) > 1800){
     $sql = '';
-    $tables = array( "admin", "admin_type", "account", "item", "transaction", "transaction_item", "transaction_two", "transaction_two_item");
+    $tables = array( "account", "admin", "admin_type", "color", "customer", "customer_payment", "delivery", "delivery_items", "design", "employees", "employee_attendance", "employee_payment", "employee_salary", "expense", "expense_category", "incoming", "incoming_items", "invoice", "labour", "machine", "size", "transaction", "washing", "washing_items" );
     foreach( $tables as $table ) {
         $rs = doquery( "select * from ".$table." where ts >= '".$ts."'", $dblink );
         if( numrows( $rs ) > 0 ) {
@@ -28,8 +28,7 @@ if(time() - strtotime($ts) > 1800){
     }
     //echo $sql; die;
     $ch = curl_init();
-
-    curl_setopt($ch, CURLOPT_URL,"");
+    curl_setopt($ch, CURLOPT_URL,"http://wamtengineers.com/clients/bengles/sync2.php");
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS,
         "sql=".urlencode($sql));
