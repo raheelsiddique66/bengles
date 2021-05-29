@@ -346,6 +346,7 @@ else
                             </tr>
                             <?php
                             $totals = [];
+                            $total_calculated = true;
                         }
                         $loop_customer_id = $customer["id"];
                     }
@@ -354,7 +355,7 @@ else
                 <tr>
                     <th class="text-right" colspan="<?php echo $colspan;?>">Grand Total</th>
                     <?php
-                    if($customer_id!=""){
+                    if(!isset($total_calculated)){
                         for($i = 0; $i < 3; $i++){
                             foreach($sizes as $size_id => $size){
                                 if(!isset($grand_totals[$i]["size_".$size_id])){
