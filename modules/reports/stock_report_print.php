@@ -304,6 +304,8 @@ table {
                 </tr>
                 <?php
             }
+        }
+    }
             ?>
   	</table>
 <style>
