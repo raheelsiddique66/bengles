@@ -47,9 +47,9 @@ table {
                 Customer:  <span class="nastaleeq"><?php echo $q."<br>";?></span>
                 <?php
             }
-            if( !empty( $machine_id ) ){
-                echo " Machine: ".get_field($machine_id, "machine", "title" )."<br>";
-            }
+//            if( !empty( $machine_id ) ){
+//                echo " Machine: ".get_field($machine_id, "machine", "title" )."<br>";
+//            }
             if( !empty( $date ) ){
                 echo " Date ".$date;
             }
