@@ -16,7 +16,7 @@ else {
         background-color: #fff;
         border: solid 1px;
         transform: translate(-50%,-50%);
-        z-index: 999;
+        z-index: 9999;
     }
     .add_customer_link.design {
         position: absolute;
@@ -110,6 +110,7 @@ else {
             <button data-fancybox-close="" class="fancybox-close-small popup_close" title="Close" ng-click="togglePopupCustomer()"></button>
             <div style="padding: 20px;">
                 Customer Name: <span><input id="cursor_focus" type="text" placeholder="Enter Customer Name" ng-model="customer.customer_name"></span>
+                Customer Name urdu: <span><input id="cursor_focus" type="text" placeholder="Enter Customer Name" class="nastaleeq" ng-model="customer.customer_name_urdu"></span>
                 <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_customer()" title="Submit Customer"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
                 <br><br><div class="alert alert-danger" ng-show="box_errors.length > 0">
                     <p ng-repeat="error in box_errors">{{error}}</p>
@@ -120,7 +121,19 @@ else {
             <button data-fancybox-close="" class="fancybox-close-small popup_close" title="Close" ng-click="togglePopupDesign()"></button>
             <div style="padding: 20px;">
                 Design: <span><input id="cursor_focus" type="text" placeholder="Enter Design" ng-model="design.title"></span>
+                Design Urdu: <span><input id="cursor_focus" type="text" placeholder="Enter Design" class="nastaleeq" ng-model="design.title_urdu"></span>
                 <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_design()" title="Submit Design"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
+                <br><br><div class="alert alert-danger" ng-show="box_errors.length > 0">
+                    <p ng-repeat="error in box_errors">{{error}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="labour-add" ng-show="showPopupColor">
+            <button data-fancybox-close="" class="fancybox-close-small popup_close" title="Close" ng-click="togglePopupColor()"></button>
+            <div style="padding: 20px;">
+                Color: <span><input id="cursor_focus" type="text" placeholder="Enter Color" ng-model="color.title"></span>
+                Color Urdu: <span><input id="cursor_focus" type="text" placeholder="Enter Color" class="nastaleeq" ng-model="color.title_urdu"></span>
+                <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_color()" title="Submit Color"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
                 <br><br><div class="alert alert-danger" ng-show="box_errors.length > 0">
                     <p ng-repeat="error in box_errors">{{error}}</p>
                 </div>
@@ -163,7 +176,7 @@ else {
                                     <th width="2%" class="text-center" rowspan="2">S.no</th>
                                     <th width="10%" rowspan="2">Machine</th>
                                     <th width="10%" rowspan="2" style="position: relative">Design <a href="" class="add_customer_link design" ng-click="togglePopupDesign()">+</a></th>
-                                    <th width="10%" rowspan="2">Color</th>
+                                    <th width="10%" rowspan="2" style="position: relative">Color <a href="" class="add_customer_link design" ng-click="togglePopupColor()">+</a></th>
                                     <th class="text-center" width="40%" colspan="{{ sizes.length+1 }}">Sizes</th>
                                     <th class="text-right" width="5%">Extra</th>
                                     <th class="text-right" width="6%">Price</th>

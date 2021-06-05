@@ -271,13 +271,14 @@ if(isset($_POST["action"])){
                 $box_err[] = "Fields with * are mandatory";
             }
             if( count( $box_err ) == 0 ) {
-                doquery( "insert into customer (customer_name) VALUES ('".slash($customer->customer_name)."')", $dblink);
+                doquery( "insert into customer (customer_name, customer_name_urdu) VALUES ('".slash($customer->customer_name)."', '".slash($customer->customer_name_urdu)."')", $dblink);
                 $id = inserted_id();
                 $response = array(
                     "status" => 1,
                     "customer" => array(
                         "id" => $id,
                         "customer_name" => $customer->customer_name,
+                        "customer_name_urdu" => $customer->customer_name_urdu,
                     )
                 );
             }
@@ -295,13 +296,14 @@ if(isset($_POST["action"])){
                 $box_err[] = "Fields with * are mandatory";
             }
             if( count( $box_err ) == 0 ) {
-                doquery( "insert into design (title) VALUES ('".slash($design->title)."')", $dblink);
+                doquery( "insert into design (title, title_urdu) VALUES ('".slash($design->title)."', '".slash($design->title_urdu)."')", $dblink);
                 $id = inserted_id();
                 $response = array(
                     "status" => 1,
                     "design" => array(
                         "id" => $id,
                         "title" => $design->title,
+                        "title_urdu" => $design->title_urdu,
                     )
                 );
             }
@@ -312,6 +314,31 @@ if(isset($_POST["action"])){
                 );
             }
         break;
+        case "save_color":
+            $box_err = array();
+            $color = json_decode( $_POST[ "color" ] );
+            if( empty( $color->title ) ) {
+                $box_err[] = "Fields with * are mandatory";
+            }
+            if( count( $box_err ) == 0 ) {
+                doquery( "insert into color (title, title_urdu) VALUES ('".slash($color->title)."', '".slash($color->title_urdu)."')", $dblink);
+                $id = inserted_id();
+                $response = array(
+                    "status" => 1,
+                    "color" => array(
+                        "id" => $id,
+                        "title" => $color->title,
+                        "title_urdu" => $color->title_urdu,
+                    )
+                );
+            }
+            else {
+                $response = array(
+                    "status" => 0,
+                    "error" => $box_err
+                );
+            }
+            break;
 	}
 	echo json_encode( $response );
 	die;

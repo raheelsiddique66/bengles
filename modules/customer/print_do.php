@@ -1,41 +1,33 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
+$q="";
 $extra='';
 $is_search=false;
-if(isset($_GET["id"])){
-	$id=slash($_GET["id"]);
+if(isset($_GET["start_date"])){
+    $start_date=slash($_GET["start_date"]);
+    $_SESSION["customer_manage"]["report"][ "start_date" ]=$start_date;
 }
-else{
-	$id= '';
-}
-if(isset($_GET["date_from"])){
-	$date_from=slash($_GET["date_from"]);
-	$_SESSION["customer"]["report"]["date_from"]=$date_from;
-}
-if(isset($_SESSION["customer"]["report"]["date_from"]))
-	$date_from=$_SESSION["customer"]["report"]["date_from"];
+if(isset($_SESSION["customer_manage"]["report"][ "start_date" ]))
+    $start_date=$_SESSION["customer_manage"]["report"][ "start_date" ];
 else
-	$date_from=date( "01/m/Y h:i A" );
-	$is_search=true;
-if(isset($_GET["date_to"])){
-	$date_to=slash($_GET["date_to"]);
-	$_SESSION["customer"]["report"]["date_to"]=$date_to;
+    $start_date=date("01/m/Y");
+if(!empty($start_date)){
+    $extra.=" and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00'";
+    $is_search=true;
 }
-if(isset($_SESSION["customer"]["report"]["date_to"]))
-	$date_to=$_SESSION["customer"]["report"]["date_to"];
+if(isset($_GET["end_date"])){
+    $end_date=slash($_GET["end_date"]);
+    $_SESSION["customer_manage"]["report"][ "end_date" ]=$end_date;
+}
+if(isset($_SESSION["customer_manage"]["report"][ "end_date" ]))
+    $end_date=$_SESSION["customer_manage"]["report"][ "end_date" ];
 else
-	$date_to=date( "d/m/Y h:i A" );
-	$is_search=true;
-if($id){
-	$extra.=" and id='".$id."'";
-	$customers=doquery("select * from customer where 1 $extra",$dblink);
-	if(numrows($customers)>0){
-		$customer=dofetch($customers);
-	}
-	else {
-		return;
-	}
+    $end_date=date("d/m/Y");
+if(!empty($end_date)){
+    $extra.=" and datetime_added<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59'";
+    $is_search=true;
 }
+
 ?>
 <style>
 h1, h2, h3, p {
@@ -66,7 +58,6 @@ table {
 <table width="100%" cellspacing="0" cellpadding="0">
 <tr class="head">
 	<th colspan="9">
-    	<?php echo get_config( 'fees_chalan_header' )?>
     	<h2>Customer Ledger</h2>
         <p>
         	<?php
@@ -80,9 +71,7 @@ table {
 			if( !empty( $date_to ) ){
 				echo " to ".$date_to;
 			}
-            if( !empty( $id ) ){
-				echo " Customer: ".get_field($id, "customer","customer_name");
-			}
+
 			?>
         </p>
     </th>
@@ -90,13 +79,14 @@ table {
 <tr>
     <th width="5%" align="center">S.no</th>
     <th>Date</th>
-    <th>Transaction</th>                
+    <th>Transaction</th>
+    <th class="right">Quantity</th>
     <th align="right">Amount</th>
     <th align="right">Balance</th>
 </tr>
 <?php 
 if( !empty( $id ) ){
-	$balance = get_customer_balance( $customer[ "id" ], datetime_dbconvert( $date_to ) );
+	$balance = get_customer_balance( $customer[ "id" ], date_dbconvert( $date_to ) );
 	$sn=1;
 	?>
 	<tr>
@@ -107,7 +97,7 @@ if( !empty( $id ) ){
 		<td align="right"><?php echo curr_format($balance); ?></td>
 	</tr>
 	<?php
-	$sql="select concat( 'Sale #', id) as transaction, date, net_price as amount from sales where customer_id = '".$customer[ "id" ]."' and date >='".datetime_dbconvert( $date_from )."' and date <='".datetime_dbconvert( $date_to )."' union select concat( 'Sale Return #', id) as transaction, date, -net_price as amount from sales_return where customer_id = '".$customer["id"]."' and date >='".datetime_dbconvert( $date_from )."' and date <='".datetime_dbconvert( $date_to )."' union select 'Payment', datetime as date, -amount from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime >='".datetime_dbconvert( $date_from )."' and datetime <='".datetime_dbconvert( $date_to )."' order by date desc";
+    $sql="select concat( 'Delivery # ', a.gatepass_id, ' ', c.title, ' ', d.title) as transaction, date as datetime_added, unit_price * sum(quantity) as amount, sum(quantity) as quantity from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id left join design d on b.design_id = d.id where customer_id = '".$customer[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' group by a.id union select 'Payment', datetime_added as datetime_added, -amount, '' from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' order by datetime_added desc";
 	$rs=doquery($sql,$dblink);
 	if(numrows($rs)>0){
 		while($r=dofetch($rs)){
@@ -116,6 +106,7 @@ if( !empty( $id ) ){
 				<td align="center"><?php echo $sn;?></td>
 				<td><?php echo datetime_convert($r["date"]); ?></td>
 				<td><?php echo unslash($r["transaction"]); ?></td>
+                <td align="right"><?php echo $r["quantity"]; ?></td>
 				<td align="right"><?php echo curr_format($r["amount"]); ?></td>
 				<td align="right"><?php echo curr_format($balance); ?></td>
 			</tr>

@@ -23,21 +23,36 @@ angular.module('incoming', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
         };
 		$scope.customer = {
 			id: "",
-			customer_name: ""
+			customer_name: "",
+			customer_name_urdu: ""
 		};
 
 		$scope.customer_placeholder = {
 			id: "",
-			customer_name: ""
+			customer_name: "",
+			customer_name_urdu: ""
 		};
 		$scope.design = {
 			id: "",
-			title: ""
+			title: "",
+			title_urdu: ""
 		};
 
 		$scope.design_placeholder = {
 			id: "",
-			title: ""
+			title: "",
+			title_urdu: ""
+		};
+		$scope.color = {
+			id: "",
+			title: "",
+			title_urdu: ""
+		};
+
+		$scope.color_placeholder = {
+			id: "",
+			title: "",
+			title_urdu: ""
 		};
 		$scope.incoming = {
 			id: 0,
@@ -223,6 +238,24 @@ angular.module('incoming', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 				});
 			}
 		}
+		$scope.save_color = function () {
+			$scope.box_errors = [];
+			if( $scope.processing == false ){
+				$scope.processing = true;
+				data = {action: 'save_color', color: JSON.stringify( $scope.color )};
+				$scope.wctAJAX( data, function( response ){
+					$scope.processing = false;
+					if( response.status == 1 ) {
+						$scope.colors.push(response.color);
+						$scope.showPopupColor = !$scope.showPopupColor;
+						$scope.color = angular.copy( $scope.color_placeholder );
+					}
+					else{
+						$scope.box_errors = response.error;
+					}
+				});
+			}
+		}
         $scope.togglePopup = function() {
             $scope.showPopup = !$scope.showPopup;
             setTimeout(function(){focus();}, 100);
@@ -233,6 +266,10 @@ angular.module('incoming', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		}
 		$scope.togglePopupDesign = function() {
 			$scope.showPopupDesign = !$scope.showPopupDesign;
+			setTimeout(function(){focus();}, 100);
+		}
+		$scope.togglePopupColor = function() {
+			$scope.showPopupColor = !$scope.showPopupColor;
 			setTimeout(function(){focus();}, 100);
 		}
 		

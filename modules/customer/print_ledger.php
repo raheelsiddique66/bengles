@@ -1,5 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
+$customer=dofetch(doquery("select * from customer where id = '".$_GET["id"]."' order by customer_name", $dblink));
 $q="";
 $extra='';
 $is_search=false;
@@ -28,55 +29,67 @@ if(!empty($end_date)){
 	$is_search=true;
 }
 ?>
-<div class="page-header">
-	<h1 class="title"><?php echo $customer["customer_name"]?></h1>
-  	<ol class="breadcrumb">
-    	<li class="active"><?php echo $customer["phone"]?></li>
-  	</ol>
-  	<div class="right">
-    	<div class="btn-group" role="group" aria-label="..."> 
-        	<a href="customer_manage.php?tab=list" class="btn btn-light editproject">Back to List</a> 
-            <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
-            <a class="btn print-btn" href="customer_manage.php?tab=print_ledger&id=<?php echo $customer['id'];?>"><i class="fa fa-print" aria-hidden="true"></i></a>
-        </div>
-  	</div>
-</div>
-<ul class="topstats clearfix search_filter"<?php if($is_search) echo ' style="display: block"';?>>
-	<li class="col-xs-12 col-lg-12 col-sm-12">
-        <div class="clearfix">
-        	<form class="form-horizontal" action="" method="get">
-                <input type="hidden" name="tab" value="report" />
-                <input type="hidden" name="id" value="<?php echo $customer["id"]?>" />
-                <div class="col-md-3">
-                    <input type="text" title="Enter Date From" name="start_date" id="start_date" placeholder="" class="form-control date-picker"  value="<?php echo $start_date?>" autocomplete="off" />
-                </div>
-                <div class="col-md-3">
-                    <input type="text" title="Enter Date To" name="end_date" id="end_date" placeholder="" class="form-control date-picker"  value="<?php echo $end_date?>" autocomplete="off" />
-                </div>
-                
-                <div class="col-sm-2 text-left">
-                    <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
-                    <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
-                </div>
-          	</form>
-        </div>
-  	</li>
-</ul>
-<div class="panel-body table-responsive">
-	<table class="table table-hover list">
-    	<thead>
-            <tr>
-                <th width="5%" class="text-center">S.no</th>
-                <th>Date</th>
-                <th>Transaction</th>
-                <th class="text-right">Quantity</th>
-                <th class="text-right">Amount</th>
-                <th class="text-right">Balance</th>
-            </tr>
-    	</thead>
-    	<tbody>
-            <?php 
-           
+<style>
+    h1, h2, h3, p {
+        margin: 0 0 10px;
+    }
+
+    body {
+        margin:  0;
+        font-family:  Arial;
+        font-size:  11px;
+    }
+    .head th, .head td{ border:0;}
+    th, td {
+        border: solid 1px #000;
+        padding: 5px 5px;
+        font-size: 11px;
+        vertical-align:top;
+    }
+    table table th, table table td{
+        padding:3px;
+    }
+    table {
+        border-collapse:collapse;
+        max-width:1200px;
+        margin:0 auto;
+    }
+</style>
+<table width="100%" cellspacing="0" cellpadding="0">
+<tr class="head">
+	<th colspan="10">
+    	<h1><?php echo get_config( 'site_title' )?></h1>
+    	<h2>Customer Ledger</h2>
+        <p style="font-size: 22px;background: #187bd0;padding: 5px;">
+        	<?php
+			echo "List of";
+            if( !empty( $start_date ) || !empty( $end_date ) ){
+                echo "<br />Date";
+            }
+            if( !empty( $start_date ) ){
+                echo " from ".$start_date;
+            }
+            if( !empty( $end_date ) ){
+                echo " to ".$end_date."<br>";
+            }
+            if( !empty( $customer_id ) ){
+                ?>
+                Customer:  <span class="nastaleeq"><?php echo get_field($customer_id, "customer", "customer_name_urdu" )."<br>";?></span>
+                <?php
+            }
+			?>
+        </p>
+    </th>
+</tr>
+<tr>
+    <th width="5%" class="text-center">S.no</th>
+    <th>Date</th>
+    <th>Transaction</th>
+    <th align="right">Quantity</th>
+    <th align="right">Amount</th>
+    <th align="right">Balance</th>
+</tr>
+<?php
             $sql="select sum(amount) as amount from (select concat( 'Delivery #', a.gatepass_id) as transaction, unit_price * quantity as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' union select concat( 'Payment #', id) as transaction, -amount from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59') as transactions ";
 			$balance=dofetch(doquery($sql,$dblink));
 			$balance = get_customer_balance($customer['id'], date_dbconvert($start_date));
@@ -84,33 +97,28 @@ if(!empty($end_date)){
             $rs=show_page($rows, $pageNum, $sql);
             ?>
 			<tr>
-                <td class="text-right" colspan="4"><strong>Opening Balance</strong></td>
-                <th class="text-right"><?php echo curr_format($balance); ?></th>
+                <td align="right" colspan="5"><strong>Opening Balance</strong></td>
+                <th align="right"><?php echo curr_format($balance); ?></th>
             </tr>
 			<?php
 			if(numrows($rs)>0){
                 $sn=1;
-                while($r=dofetch($rs)){             
+                while($r=dofetch($rs)){
 					$balance+=$r["amount"];
                     ?>
                     <tr>
-                        <td class="text-center"><?php echo $sn;?></td>
+                        <td align="center"><?php echo $sn;?></td>
                         <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
                         <td><?php echo unslash($r["transaction"]); ?></td>
-                        <td class="text-right"><?php echo $r["quantity"]; ?></td>
-                        <td class="text-right"><?php echo curr_format($r["amount"]); ?></td>
-                        <td class="text-right"><?php echo curr_format($balance); ?></td>
+                        <td align="right"><?php echo $r["quantity"]; ?></td>
+                        <td align="right"><?php echo curr_format($r["amount"]); ?></td>
+                        <td align="right"><?php echo curr_format($balance); ?></td>
                     </tr>
-                    <?php 
+                    <?php
                     $sn++;
                 }
-                ?>
-                <tr>
-                    <td colspan="6" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "customer", $sql, $pageNum)?></td>
-                </tr>
-                <?php	
             }
-            else{	
+            else{
                 ?>
                 <tr>
                     <td colspan="6"  class="no-record">No Result Found</td>
@@ -118,6 +126,7 @@ if(!empty($end_date)){
                 <?php
             }
             ?>
-    	</tbody>
-  	</table>
-</div>
+
+</table>
+<?php
+die;
