@@ -30,7 +30,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         if(numrows($res)>=0){
                             while($rec=dofetch($res)){
                                 ?>
-                                <option value="<?php echo $rec["id"]?>" <?php echo in_array($rec["id"], $machine_id)?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                                <option value="<?php echo $rec["id"]?>" <?php echo $machine_id?in_array($rec["id"], $machine_id)?"selected":"":"";?>><?php echo unslash($rec["title"])?></option>
                                 <?php
                             }
                         }
