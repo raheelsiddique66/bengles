@@ -129,7 +129,13 @@ table {
             </th>
         </tr>
         <?php
-        $size_id = 0;
+        $colors = [];
+        $rs = doquery("select * from color order by sortorder", $dblink);
+        if(numrows($rs)>0){
+            while($r = dofetch($rs)){
+                $sizes[$r["id"]] = unslash( $r["title"] );
+            }
+        }
         $sizes = [];
         $rs = doquery("select * from size order by sortorder", $dblink);
         if(numrows($rs)>0){
@@ -173,7 +179,7 @@ table {
     <tbody>
     <?php
     $customers = [];
-    $records = doquery("select customer.customer_name, design.title as design, color.title as color, size.title as size, combined.* from (select a.date, a.gatepass_id, a.customer_id, design_id, color_id, size_id, 0 as type, sum(quantity) as incoming, 0 as outgoing from incoming a inner join incoming_items b on a.id = b.incoming_id where 1 $extra group by date, customer_id, design_id, color_id union select a.date, a.gatepass_id, a.customer_id, design_id, color_id, size_id, 1 as type, 0 as incoming, sum(quantity) as outgoing from delivery a inner join delivery_items b on a.id = b.delivery_id where 1 $extra group by ".($report_type!=1?'date, ':'')."customer_id, design_id, color_id) as combined inner join customer on combined.customer_id = customer.id inner join design on combined.design_id = design.id inner join color on combined.color_id = color.id inner join size on combined.size_id = size.id order by customer_name, date, color_id, design_id, size_id", $dblink);
+    $records = doquery("select customer.customer_name, design.title as design, color.title as color, size.title as size, combined.* from (select a.date, a.gatepass_id, a.customer_id, design_id, color_id, size_id, 0 as type, sum(quantity) as incoming, 0 as outgoing from incoming a inner join incoming_items b on a.id = b.incoming_id where 1 $extra group by ".($report_type!=1?'date, ':'')."customer_id, design_id, color_id, size_id union select a.date, a.gatepass_id, a.customer_id, design_id, color_id, size_id, 1 as type, 0 as incoming, sum(quantity) as outgoing from delivery a inner join delivery_items b on a.id = b.delivery_id where 1 $extra group by ".($report_type!=1?'date, ':'')."customer_id, design_id, color_id, size_id) as combined inner join customer on combined.customer_id = customer.id inner join design on combined.design_id = design.id inner join color on combined.color_id = color.id inner join size on combined.size_id = size.id order by customer_name, date, color_id, design_id, size_id", $dblink);
     if(numrows($records) > 0){
         while($record = dofetch($records)){
             $key1 = $record["customer_id"]."_".$record["date"];
@@ -303,6 +309,7 @@ table {
                     </tr>
                     <?php
                     $totals = [];
+                    $total_calculated = true;
                 }
                 $loop_customer_id = $customer["id"];
             }
@@ -311,7 +318,7 @@ table {
         <tr>
             <th class="text-right" colspan="<?php echo $colspan;?>">Grand Total</th>
             <?php
-            if($customer_id!=""){
+            if(!isset($total_calculated)){
                 for($i = 0; $i < 3; $i++){
                     foreach($sizes as $size_id => $size){
                         if(!isset($grand_totals[$i]["size_".$size_id])){
