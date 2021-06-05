@@ -30,14 +30,16 @@ if(!empty($q)){
 }
 if(isset($_GET["machine_id"])){
     $machine_id=slash($_GET["machine_id"]);
+//    print_r($machine_id);die;
     $_SESSION["customer_manage"]["list"]["machine_id"]=$machine_id;
 }
 if(isset($_SESSION["customer_manage"]["list"]["machine_id"]))
     $machine_id=$_SESSION["customer_manage"]["list"]["machine_id"];
 else
     $machine_id='';
-if($machine_id!=""){
-    $extra.=" and machine_id='".$machine_id."'";
+if(!empty($machine_id) && !empty($machine_id[0])){
+//    print_r($machine_id);die;
+    $extra.=" and machine_id in (".implode(",",$machine_id).")";
     $is_search=true;
 }
 if( isset($_GET["date"]) ){

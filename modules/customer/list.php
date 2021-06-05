@@ -18,19 +18,19 @@ if(!defined("APP_START")) die("No Direct Access");
 <ul class="topstats clearfix search_filter"<?php if($is_search) echo ' style="display: block"';?>>
     <li class="col-xs-12 col-lg-12 col-sm-12">
     	<div>
-        	<form class="form-horizontal" action="" method="get">
+        	<form class="form-horizontal" action="" enctype="multipart/form-data" method="get">
                 <div class="col-sm-2">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
                 </div>
                 <div class="col-sm-3 col-xs-8">
-                    <select name="machine_id" id="machine_id" class="form-control">
+                    <select name="machine_id[]" id="machine_id" multiple="multiple" class="form-control select_multiple">
                         <option value=""<?php echo ($machine_id=="")? " selected":"";?>>Select Machine</option>
                         <?php
                         $res=doquery("select * from machine order by title",$dblink);
                         if(numrows($res)>=0){
                             while($rec=dofetch($res)){
                                 ?>
-                                <option value="<?php echo $rec["id"]?>" <?php echo($machine_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                                <option value="<?php echo $rec["id"]?>" <?php echo in_array($rec["id"], $machine_id)?"selected":"";?>><?php echo unslash($rec["title"])?></option>
                                 <?php
                             }
                         }
