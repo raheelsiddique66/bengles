@@ -1200,7 +1200,10 @@ function get_account_balance( $account_id, $datetime = "", $project_id = "" ){
 	$balance = $balance + $balance_transactions[ "balance" ];
 	$expense =  doquery( "select sum(amount) as total from expense where status=1 and account_id = '".$account_id."' and datetime_added<='".$datetime."'", $dblink  );
     $expense = dofetch($expense);
-	$balance -= $expense[ "total" ];
+    $balance -= $expense[ "total" ];
+    $payment =  doquery( "select sum(amount) as total from customer_payment where status=1 and account_id = '".$account_id."' and datetime_added<='".$datetime."'", $dblink  );
+    $payment = dofetch($payment);
+    $balance += $payment[ "total" ];
 	return $balance;
 }
 function get_account_of_type( $type ){

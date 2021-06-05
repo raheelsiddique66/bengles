@@ -114,15 +114,15 @@ if(isset($_POST["action"])){
 					"payment_account_id" => "",
 					"payment_amount" => 0,
 				);
-				if( !empty( $r[ "customer_payment_id" ] ) ) {
-					$customer_payment = doquery( "select * from customer_payment where id = '".$r[ "customer_payment_id" ]."'", $dblink );
-					if( numrows( $customer_payment ) > 0 ) {
-						$customer_payment = dofetch( $customer_payment );
-						$delivery[ "customer_payment_id" ] = $customer_payment[ "id" ];
-						$delivery[ "payment_account_id" ] = $customer_payment[ "account_id" ];
-						$delivery[ "payment_amount" ] = $customer_payment[ "amount" ];
-					}
-				}
+//				if( !empty( $r[ "customer_payment_id" ] ) ) {
+//					$customer_payment = doquery( "select * from customer_payment where id = '".$r[ "customer_payment_id" ]."'", $dblink );
+//					if( numrows( $customer_payment ) > 0 ) {
+//						$customer_payment = dofetch( $customer_payment );
+//						$delivery[ "customer_payment_id" ] = $customer_payment[ "id" ];
+//						$delivery[ "payment_account_id" ] = $customer_payment[ "account_id" ];
+//						$delivery[ "payment_amount" ] = $customer_payment[ "amount" ];
+//					}
+//				}
 				$delivery_items = array();
 				$rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from delivery_items where delivery_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
 				if( numrows( $rs1 ) > 0 ) {

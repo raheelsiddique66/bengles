@@ -129,6 +129,7 @@ table {
             </th>
         </tr>
         <?php
+        $size_id = 0;
         $sizes = [];
         $rs = doquery("select * from size order by sortorder", $dblink);
         if(numrows($rs)>0){

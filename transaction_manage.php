@@ -51,7 +51,7 @@ if(isset($_SESSION["transaction"]["list"]["reference_id"]))
 else
     $reference_id="";
 if($reference_id!=""){
-    $acount_extra[]="reference_id='".$reference_id."'";
+    $extra.= " and reference_id='".$reference_id."'";
     $is_search=true;
 }
 if(isset($_GET["account_id"])){
@@ -63,11 +63,8 @@ if(isset($_SESSION["transaction"]["list"]["account_id"]))
 else
     $account_id="";
 if($account_id!=""){
-    $acount_extra[]="account_id='".$account_id."'";
+    $extra.= " and account_id='".$account_id."'";
     $is_search=true;
-}
-if( count($acount_extra) > 0 ){
-    $extra.=" and (".implode(" or ", $acount_extra ).")";
 }
 $sql="select * from transaction where 1 $extra order by datetime_added desc";
 switch($tab){

@@ -68,7 +68,7 @@ $total = 0;
 if( numrows( $rs ) > 0 ) {
 	$sn = 1;
 	while( $r = dofetch( $rs ) ) {
-	    $total = $r["amount"];
+	    $total += $r["amount"];
 		?>
 		<tr>
             <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
