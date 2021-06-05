@@ -114,7 +114,7 @@ else{
     <div class="form-group">
     	<div class="row">
             <div class="col-sm-2 control-label">
-                <label class="form-label" for="account_id">Paid By </label>
+                <label class="form-label" for="account_id">Paid To </label>
             </div>
             <div class="col-sm-10">
                 <select name="account_id" title="Choose Option">

@@ -33,6 +33,9 @@ if(isset($_SESSION["reports"]["stock_report"]["color_id"]))
 	$color_id=$_SESSION["reports"]["stock_report"]["color_id"];
 else
     $color_id="";
+if($color_id!=""){
+    $extra.=" and color_id='".$color_id."'";
+}
 if(isset($_GET["design_id"])){
     $_SESSION["reports"]["stock_report"]["design_id"]=slash($_GET["design_id"]);
 }
@@ -40,6 +43,9 @@ if(isset($_SESSION["reports"]["stock_report"]["design_id"]))
     $design_id=$_SESSION["reports"]["stock_report"]["design_id"];
 else
     $design_id="";
+if($design_id!=""){
+    $extra.=" and design_id='".$design_id."'";
+}
 if(isset($_GET["machine_id"])){
     $_SESSION["reports"]["stock_report"]["machine_id"]=slash($_GET["machine_id"]);
 }

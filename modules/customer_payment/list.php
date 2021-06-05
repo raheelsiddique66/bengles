@@ -96,7 +96,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th class="text-right">Discount</th>
                 <th class="text-right">Amount</th>
                 <th class="text-right">Claim</th>
-                <th>Paid By</th>
+                <th>Paid To</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Actions</th>
             </tr>
