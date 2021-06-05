@@ -1291,7 +1291,12 @@ function get_customer_total_balance( $machine_id = [], $dt = 0 ){
 //        $machine_id = 0;
 //    }
     $total = 0;
-    $customers = doquery( "select id, balance from customer where machine_id in (".implode(",",$machine_id).") ", $dblink );
+    if(!empty($machine_id) && !empty($machine_id[0])){
+        $customers = doquery( "select id, balance from customer where machine_id in (".implode(",",$machine_id).") ", $dblink );
+    }
+    else{
+        $customers = doquery( "select id, balance from customer", $dblink );
+    }
     if( numrows( $customers ) > 0 ) {
         while($customer = dofetch( $customers )) {
             // $sql = "select sum(amount) as amount from (select concat( 'Delivery #', a.id) as transaction, unit_price*quantity as amount from delivery a left join delivery_items b on a.id = b.delivery_id where date <='" . $dt . "' and customer_id = '".$customer["id"]."' union select concat( 'Payment #', id) as transaction, -amount-discount as amount from customer_payment where datetime_added <='" . $dt . "' and customer_id = '".$customer["id"]."') as transactions";
