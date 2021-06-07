@@ -262,7 +262,7 @@ footer {
             ?>
         </table>
     </div>
-    <div id="signcompny">Software developed by wamtSol http://wamtsol.com/ - 0346 3891 662</div> 
+<!--    <div id="signcompny">Software developed by wamtSol http://wamtsol.com/ - 0346 3891 662</div> -->
 </div>
 </body>
 </html>

@@ -197,12 +197,12 @@ else
                     <th width="5%" rowspan="2">Date</th>
                 <?php }?>
                 <?php if(empty($_GET["customer_id"])){?>
-                <th width="11%" rowspan="2" class="text-right">Customer</th>
+                <th width="14%" rowspan="2" class="text-right">Customer</th>
                 <?php }?>
                 <th width="10%" colspan="3" class="text-center">Item</th>
-                <th width="24%" colspan="<?php echo $colspan?>" class="text-center">Received</th>
-                <th width="24%" colspan="<?php echo $colspan?>" class="text-center">Sent</th>
-                <th width="24%" colspan="<?php echo $colspan?>" class="text-center">Balance</th>
+                <th width="23%" colspan="<?php echo $colspan?>" class="text-center">Received</th>
+                <th width="23%" colspan="<?php echo $colspan?>" class="text-center">Sent</th>
+                <th width="23%" colspan="<?php echo $colspan?>" class="text-center">Balance</th>
             </tr>
             <tr>
                 <td align="right">Design</td>
