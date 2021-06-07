@@ -197,7 +197,7 @@ else
                     <th width="5%" rowspan="2">Date</th>
                 <?php }?>
                 <?php if(empty($_GET["customer_id"])){?>
-                <th width="11%" rowspan="2">Customer</th>
+                <th width="11%" rowspan="2" class="text-right">Customer</th>
                 <?php }?>
                 <th width="10%" colspan="3" class="text-center">Item</th>
                 <th width="24%" colspan="<?php echo $colspan?>" class="text-center">Received</th>
@@ -225,14 +225,14 @@ else
     	<tbody>
             <?php
             $customers = [];
-            $records = doquery("select customer.customer_name, design.title as design, color.title as color, size.title as size, combined.* from (select a.date, a.gatepass_id, a.customer_id, design_id, color_id, size_id, 0 as type, sum(quantity) as incoming, 0 as outgoing from incoming a inner join incoming_items b on a.id = b.incoming_id where 1 $extra group by ".($report_type!=1?'date, ':'')."customer_id, design_id, color_id, size_id union select a.date, a.gatepass_id, a.customer_id, design_id, color_id, size_id, 1 as type, 0 as incoming, sum(quantity) as outgoing from delivery a inner join delivery_items b on a.id = b.delivery_id where 1 $extra group by ".($report_type!=1?'date, ':'')."customer_id, design_id, color_id, size_id) as combined inner join customer on combined.customer_id = customer.id inner join design on combined.design_id = design.id inner join color on combined.color_id = color.id inner join size on combined.size_id = size.id order by customer_name, date, color_id, design_id, size_id", $dblink);
+            $records = doquery("select customer.customer_name, customer.customer_name_urdu, design.title as design, color.title as color, size.title as size, combined.* from (select a.date, a.gatepass_id, a.customer_id, design_id, color_id, size_id, 0 as type, sum(quantity) as incoming, 0 as outgoing from incoming a inner join incoming_items b on a.id = b.incoming_id where 1 $extra group by ".($report_type!=1?'date, ':'')."customer_id, design_id, color_id, size_id union select a.date, a.gatepass_id, a.customer_id, design_id, color_id, size_id, 1 as type, 0 as incoming, sum(quantity) as outgoing from delivery a inner join delivery_items b on a.id = b.delivery_id where 1 $extra group by ".($report_type!=1?'date, ':'')."customer_id, design_id, color_id, size_id) as combined inner join customer on combined.customer_id = customer.id inner join design on combined.design_id = design.id inner join color on combined.color_id = color.id inner join size on combined.size_id = size.id order by customer_name, date, color_id, design_id, size_id", $dblink);
             if(numrows($records) > 0){
                 while($record = dofetch($records)){
                     $key1 = $record["customer_id"]."_".$record["date"];
                     if(!isset($customers[$key1])){
                         $customers[$key1] = [
                                 "id" => $record["customer_id"],
-                                "name" => unslash($record["customer_name"]),
+                                "name" => unslash($record["customer_name_urdu"]),
                             "date" => $record["date"],
                             "gatepass_id" => $record["gatepass_id"],
                             "design" => unslash($record["design"]),
@@ -272,7 +272,7 @@ else
                             <td><?php echo date_convert($customer["date"]); ?></td>
                         <?php } ?>
                         <?php if(empty($customer_id)){?>
-                            <td><?php echo $customer["name"]; ?></td>
+                            <td class="nastaleeq"><?php echo $customer["name"]; ?></td>
                             <?php
                         }
                         ?>
