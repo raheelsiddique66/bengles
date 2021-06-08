@@ -69,6 +69,13 @@ angular.module('salary', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angular
 			}
 			return sum;
 		}
+		$scope.total_salary = function(){
+			sum = 0;
+			for(i = 0; i < $scope.employees.length; i++){
+				sum += $scope.employees[i].salary;
+			}
+			return sum;
+		}
 		$scope.wctAJAX = function( wctData, wctCallback ) {
 			wctData.tab = 'salary';
 			wctRequest = {

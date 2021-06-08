@@ -39,7 +39,8 @@ if(!defined("APP_START")) die("No Direct Access");
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td colspan="{{ dates.length+4 }}" class="text-right">Total</td>
+            <td colspan="{{ dates.length+3 }}" class="text-right">Total</td>
+            <td class="text-right">{{ total_salary()|currency:'':0 }}</td>
             <td class="text-right">{{ total_hours() }}</td>
             <td class="text-right">{{ total_hours_amount()|currency:'':0 }}</td>
             <td class="text-right">{{ sum(employees, 'calculated_salary')-(salary_type!="0"?total_hours_amount():0)|currency:'':0 }}</td>
