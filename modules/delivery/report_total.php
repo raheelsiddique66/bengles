@@ -172,7 +172,7 @@ if( numrows( $rs ) > 0 ) {
                 }
             }
             ?>
-            <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo unslash($r["customer_name_urdu"]); ?></span></td>
+            <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo unslash($r["customer_name"]); ?></span></td>
         	<td align="center"><?php echo $sn?></td>
         </tr>
 		<?php
