@@ -66,7 +66,8 @@ if(isset($_POST["action"])){
 				$washing = array(
 					"id" => $r[ "id" ],
 					"date" => date_convert( $r[ "date" ] ),
-					"customer_id" => unslash( $r[ "customer_id" ] )
+					"customer_id" => unslash( $r[ "customer_id" ] ),
+					"gatepass_id" => $r[ "gatepass_id" ],
 				);
 				$washing_items = array();
 				$rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from washing_items where washing_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
@@ -111,11 +112,11 @@ if(isset($_POST["action"])){
 			}
 			if( count( $err ) == 0 ) {
 				if( !empty( $washing->id ) ) {
-					doquery( "update washing set `date`='".slash(date_dbconvert($washing->date))."', `customer_id`='".slash($washing->customer_id)."' where id='".$washing->id."'", $dblink );
+					doquery( "update washing set `date`='".slash(date_dbconvert($washing->date))."', `customer_id`='".slash($washing->customer_id)."', `gatepass_id`='".slash($washing->gatepass_id)."' where id='".$washing->id."'", $dblink );
 					$washing_id = $washing->id;
 				}
 				else {
-					doquery( "insert into washing (date, customer_id) VALUES ('".slash(date_dbconvert($washing->date))."', '".slash($washing->customer_id)."')", $dblink );
+					doquery( "insert into washing (date, customer_id, gatepass_id) VALUES ('".slash(date_dbconvert($washing->date))."', '".slash($washing->customer_id)."', '".slash($washing->gatepass_id)."')", $dblink );
 					$washing_id = inserted_id();
 				}
 				$washing_item_ids = array();

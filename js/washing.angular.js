@@ -12,6 +12,7 @@ angular.module('washing', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angula
 			id: 0,
 			date: '',
 			customer_id: '0',
+			gatepass_id: '0',
 			washing_items: [],
 		};
 		$scope.washing_item = {

@@ -6,7 +6,7 @@ include("include/paging.php");
 define("APP_START", 1);
 $filename = 'washing_manage.php';
 include("include/admin_type_access.php");
-$tab_array=array("list", "status", "delete", "bulk_action", "report", "addedit");
+$tab_array=array("list", "status", "delete", "bulk_action", "report", "addedit", "print_receipt");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -63,10 +63,10 @@ if(isset($_SESSION["washing"]["list"]["q"])) {
 	$q="";
 }
 if(!empty($q)){
-	$extra.=" and (id like '%".$q."%')";
+	$extra.=" and (gatepass_id like '%".$q."%')";
 	$is_search=true;
 }
-$sql = "SELECT * FROM `washing` WHERE 1 $extra  order by customer_id DESC";
+$sql = "SELECT a.* FROM `washing` a left join customer b on a.customer_id = b.id WHERE 1 $extra  order by a.date desc, a.gatepass_id desc";
 switch($tab){
 	case 'addedit':
 		include("modules/washing/addedit_do.php");
@@ -84,6 +84,9 @@ switch($tab){
 		include("modules/washing/report.php");
 		die;
 	break;
+    case 'print_receipt':
+        include("modules/washing/print_receipt.php");
+        break;
 }
 ?>
 <?php include("include/header.php");?>

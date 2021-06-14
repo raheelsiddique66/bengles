@@ -51,6 +51,16 @@ else {
         <div class="form-group">
             <div class="row">
                 <div class="col-sm-2 control-label">
+                    <label class="form-label" for="washing.gatepass_id">Gatepass ID</label>
+                </div>
+                <div class="col-sm-10">
+                    <input ng-model="washing.gatepass_id" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-2 control-label">
                     <label class="form-label">Washing Items <span class="manadatory">*</span></label>
                 </div>
                 <div class="col-sm-10">

@@ -58,6 +58,7 @@ if(!defined("APP_START")) die("No Direct Access");
                     <label for="select_all"></label></div></th>
                 <th width="5%">ID</th>
                 <th width="15%">Date</th>
+                <th width="10%">Gatepass</th>
                 <th width="20%">Customer</th>
                 <th width="20%">Items</th>
                 <th class="text-center" width="5%">Status</th>
@@ -94,6 +95,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         </td>
                         <td><?php echo $r["id"]; ?></td>
                         <td><?php echo date_convert($r["date"]); ?></td>
+                        <td><?php echo $r["gatepass_id"]?></td>
                         <td><?php echo get_field( unslash($r["customer_id"]), "customer", "customer_name" ); ?></td>
                         <td>
                             <table class="table table-hover list">
@@ -180,6 +182,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td class="text-center">
                             <a href="washing_manage.php?tab=addedit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
                             <a onclick="return confirm('Are you sure you want to delete')" href="washing_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
+                            <a href="washing_manage.php?tab=print_receipt&id=<?php echo $r['id'];?>"><img title="Print Record" alt="Edit" src="images/view.png"></a>
                         </td>
                     </tr>
                     <?php
@@ -196,14 +199,14 @@ if(!defined("APP_START")) die("No Direct Access");
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="3" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "washing", $sql, $pageNum)?></td>
+                    <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "washing", $sql, $pageNum)?></td>
                 </tr>
                 <?php
             }
             else{
                 ?>
                 <tr>
-                    <td colspan="8"  class="no-record">No Result Found</td>
+                    <td colspan="9"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }
