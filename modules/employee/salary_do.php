@@ -50,7 +50,7 @@ if(isset($_POST["action"])){
                 );
                 $currentdate = strtotime('+1 day', $currentdate);
             }
-            $rs = doquery( "select * from employees where status=1 and machine_id = '".$machine_id."' and (salary_type='".$salary_type."'".($salary_type==""?" or salary_type='0'":"").") order by name", $dblink );
+            $rs = die( "select * from employees where status=1 and machine_id = '".$machine_id."' and (salary_type='".$salary_type."'".($salary_type==""?" or salary_type='0'":"").") order by name" );
             $employees = array();
             if( numrows( $rs ) > 0 ) {
                 while( $r = dofetch( $rs ) ) {
