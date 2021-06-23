@@ -25,7 +25,7 @@ if(!defined("APP_START")) die("No Direct Access");
         <tbody>
         <tr ng-repeat="employee in employees">
             <td class="text-center">{{ $index+1 }}</td>
-            <td><span class="nastaleeq">{{employee.name_in_urdu}}</span> </td>
+            <td><span class="nastaleeq">{{employee.name}}</span> </td>
             <td data-ng-repeat="date in dates" class="text-center" data-ng-class="{'greyed': employee.attendance[date.value]=='A'||employee.attendance[date.value]=='F'}">{{ employee.attendance[date.value] }}</td>
             <td class="text-right">{{ get_total($index).total_absent }}</td>
             <td class="text-right">{{ employee.salary }}</td>
