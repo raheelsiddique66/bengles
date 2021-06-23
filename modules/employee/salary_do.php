@@ -54,7 +54,6 @@ if(isset($_POST["action"])){
             $employees = array();
             if( numrows( $rs ) > 0 ) {
                 while( $r = dofetch( $rs ) ) {
-                    print_r($r);die;
                     $e_dates = [];
                     foreach($dates as $date){
                         $ch = doquery("select attendance from employee_attendance where employee_id='".$r["id"]."' and date='".date("Y-m-d", strtotime($date["value"]))."'", $dblink);
