@@ -4,7 +4,7 @@ include("include/utility.php");
 include("include/session.php");
 include("include/paging.php");
 define("APP_START", 1);
-$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action", "print");
+$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action", "print", "combine_print");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -95,6 +95,9 @@ switch($tab){
 	break;
 	case 'print':
 		include("modules/invoice/print.php");
+	break;
+	case 'combine_print':
+		include("modules/invoice/combine_print.php");
 	break;
 }
 ?>

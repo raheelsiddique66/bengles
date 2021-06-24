@@ -39,6 +39,9 @@ if(isset($_GET["action"]) && $_GET["action"]!=""){
 			header("Location: invoice_manage.php?tab=list&msg=".url_encode("Records Status Off."));
 			die;
 		}
+		if($bulk_action=="invoice"){
+			header("Location: invoice_manage.php?tab=combine_print&ids=".$_GET["Ids"]);
+		}
 	}
 	else{
 		header("Location: invoice_manage.php?tab=list&err=".url_encode($err));

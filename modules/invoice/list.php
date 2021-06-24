@@ -133,6 +133,7 @@ if(!defined("APP_START")) die("No Direct Access");
                             <option value="delete">Delete</option>
                             <option value="statuson">Set Status On</option>
                             <option value="statusof">Set Status Off</option>
+                            <option value="invoice">Invoice</option>
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
