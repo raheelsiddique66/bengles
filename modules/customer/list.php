@@ -59,7 +59,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th width="20%">Customer Name</th>
                 <th width="10%">Machine</th>
                 <th width="20%">Customer Name In Urdu</th>
-                <th width="10%">Phone</th>
+                <th width="10%">Date</th>
                 <th width="10%">Balance</th>
                 <th width="10%">Sortorder</th>
                 <th width="5%" class="text-center">Status</th>

@@ -57,10 +57,10 @@ if(!defined("APP_START")) die("No Direct Access");
     <div class="form-group">
         <div class="row">
         	<div class="col-sm-2 control-label">
-            	<label class="form-label" for="phone">Phone </label>
+            	<label class="form-label" for="phone">Date </label>
             </div>
             <div class="col-sm-10">
-                <input type="text" title="Enter Phone #" value="<?php echo $phone; ?>" name="phone" id="phone" class="form-control" />
+                <input type="text" title="Enter Date" value="<?php echo $phone; ?>" name="phone" id="phone" class="form-control" />
             </div>
         </div>
     </div>

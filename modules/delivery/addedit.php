@@ -176,8 +176,8 @@ else {
                                     <th width="2%" class="text-center" rowspan="2">S.no</th>
                                     <th width="10%" rowspan="2">Machine</th>
                                     <th width="10%" rowspan="2" style="position: relative">Design <a href="" class="add_customer_link design" ng-click="togglePopupDesign()">+</a></th>
-                                    <th width="10%" rowspan="2" style="position: relative">Color <a href="" class="add_customer_link design" ng-click="togglePopupColor()">+</a></th>
-                                    <th class="text-center" width="40%" colspan="{{ sizes.length+1 }}">Sizes</th>
+                                    <th width="12%" rowspan="2" style="position: relative">Color <a href="" class="add_customer_link design" ng-click="togglePopupColor()">+</a></th>
+                                    <th class="text-center" width="30%" colspan="{{ sizes.length+1 }}">Sizes</th>
                                     <th class="text-right" width="5%">Extra</th>
                                     <th class="text-right" width="6%">Price</th>
                                     <th class="text-right" width="5%">Total</th>

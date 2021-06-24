@@ -46,7 +46,7 @@ if(isset($_POST["action"])){
 			$response = $labours;
 		break;
 		case "get_color":
-			$rs = doquery( "select * from color where status=1 order by sortorder", $dblink );
+			$rs = doquery( "select * from color where status=1 order by title", $dblink );
 			$colors = array();
 			if( numrows( $rs ) > 0 ) {
 				while( $r = dofetch( $rs ) ) {
