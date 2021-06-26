@@ -12,7 +12,7 @@ if(isset($_GET["ids"]) && !empty($_GET["ids"])){
             $customer_ids[] = $invoice["customer_id"];
         }
     }
-    $customer=dofetch(doquery("select * from customer where id='".slash($invoices[0]["customer_id"])."'", $dblink));
+    $customer=dofetch(doquery("select * from customer where id = '".$invoices[0]["customer_id"]."'", $dblink));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -99,7 +99,14 @@ if(isset($_GET["ids"]) && !empty($_GET["ids"])){
             $total_credit_discount = 0;
             $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id in (".implode(",", $customer_ids).") and date<'".date('Y-m-d',strtotime($invoices[0]["date_from"]))."' union select -sum(amount)-sum(discount) as amount from customer_payment where customer_id in (".implode(",", $customer_ids).") and datetime_added<='".date('Y-m-d',strtotime($invoices[0]["date_from"]))." 00:00:00') as transactions ";
             $balance=dofetch(doquery($sql,$dblink));
-            $balance = $customer["balance"]+$balance[ "amount" ];
+            $customer_balance=doquery("select * from customer where id in (".implode(",", $customer_ids).")", $dblink);
+            $balances = 0;
+            if(numrows($customer_balance)>0){
+                while($customer_bal = dofetch($customer_balance)){
+                    $balances +=  $customer_bal["balance"];
+                }
+            }
+            $balance = $balances+$balance[ "amount" ];
             ?>
             <tr>
                 <td class="text-right"><?php echo curr_format($balance) ?></td>
@@ -113,6 +120,7 @@ if(isset($_GET["ids"]) && !empty($_GET["ids"])){
                     $sn=1;
                     $accounts = [];
                     while($r=dofetch($rs)){   
+                        //print_r($r);
                         $total_quantity += $r["quantity"];
                         $total_claim += $r["claim"];
                         $total_debit += $r["debit"];
