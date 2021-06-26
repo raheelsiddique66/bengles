@@ -105,7 +105,7 @@ if(isset($_GET["ids"]) && !empty($_GET["ids"])){
             </tr>
                 <?php
                 $sql = "select date as datetime_added, gatepass_id, title_urdu, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit, 0 as discount, '' as details, 0 as claim from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id = '".$invoices[0][ "customer_id" ]."' and date>='".date('Y-m-d',strtotime($invoices[0]["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoices[count($invoices)-1]["date_to"]))." 23:59:59' group by delivery_id,color_id union select datetime_added as datetime_added, '', title_urdu, 0, 0, 0, amount as credit, discount as discount, details, claim from customer_payment a left join account c on a.account_id = c.id where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime($invoices[0]["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoices[count($invoices)-1]["date_to"]))." 23:59:59' order by datetime_added";
-                echo $sql;die;
+                //echo $sql;die;
                 $rs=doquery($sql,$dblink);
 			    if(numrows($rs)>0){
                     $sn=1;
