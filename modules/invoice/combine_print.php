@@ -147,7 +147,7 @@ if(isset($_GET["ids"]) && !empty($_GET["ids"])){
                 else{	
                     ?>
                     <tr>
-                        <td colspan="10"  class="no-record" style="color: #fff">No Result Found</td>
+                        <td colspan="11"  class="no-record" style="color: #fff">No Result Found</td>
                     </tr>
                     <?php
                 }
