@@ -3,11 +3,13 @@ if(!defined("APP_START")) die("No Direct Access");
 if(isset($_GET["ids"]) && !empty($_GET["ids"])){
     $invoices = [];
     $invoice_ids = [];
-    $rs=doquery("select * from invoice where id in ('".slash($_GET["ids"])."') order by datetime_added", $dblink);
+    $customer_ids = [];
+    $rs=doquery("select * from invoice where id in (".slash($_GET["ids"]).") order by datetime_added", $dblink);
     if(numrows($rs)>0){
         while($invoice=dofetch($rs)){
             $invoices[] = $invoice;
             $invoice_ids[] = $invoice["id"];
+            $customer_ids[] = $invoice["customer_id"];
         }
     }
     $customer=dofetch(doquery("select * from customer where id='".slash($invoices[0]["customer_id"])."'", $dblink));
@@ -95,7 +97,7 @@ if(isset($_GET["ids"]) && !empty($_GET["ids"])){
             $total_discount = 0;
             $balance = 0;
             $total_credit_discount = 0;
-            $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer[ "id" ]."' and date<'".date('Y-m-d',strtotime($invoices[0]["date_from"]))."' union select -sum(amount)-sum(discount) as amount from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added<='".date('Y-m-d',strtotime($invoices[0]["date_from"]))." 00:00:00') as transactions ";
+            $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id in (".implode(",", $customer_ids).") and date<'".date('Y-m-d',strtotime($invoices[0]["date_from"]))."' union select -sum(amount)-sum(discount) as amount from customer_payment where customer_id in (".implode(",", $customer_ids).") and datetime_added<='".date('Y-m-d',strtotime($invoices[0]["date_from"]))." 00:00:00') as transactions ";
             $balance=dofetch(doquery($sql,$dblink));
             $balance = $customer["balance"]+$balance[ "amount" ];
             ?>
@@ -104,7 +106,7 @@ if(isset($_GET["ids"]) && !empty($_GET["ids"])){
                 <td class="text-left" colspan="10"><strong class="nastaleeq">سابقہ</strong></td>
             </tr>
                 <?php
-                $sql = "select date as datetime_added, gatepass_id, title_urdu, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit, 0 as discount, '' as details, 0 as claim from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id = '".$invoices[0][ "customer_id" ]."' and date>='".date('Y-m-d',strtotime($invoices[0]["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoices[count($invoices)-1]["date_to"]))." 23:59:59' group by delivery_id,color_id union select datetime_added as datetime_added, '', title_urdu, 0, 0, 0, amount as credit, discount as discount, details, claim from customer_payment a left join account c on a.account_id = c.id where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime($invoices[0]["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoices[count($invoices)-1]["date_to"]))." 23:59:59' order by datetime_added";
+                $sql = "select date as datetime_added, gatepass_id, title_urdu, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit, 0 as discount, '' as details, 0 as claim from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id in (".implode(",", $customer_ids).") and date>='".date('Y-m-d',strtotime($invoices[0]["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoices[count($invoices)-1]["date_to"]))." 23:59:59' group by delivery_id,color_id union select datetime_added as datetime_added, '', title_urdu, 0, 0, 0, amount as credit, discount as discount, details, claim from customer_payment a left join account c on a.account_id = c.id where customer_id in (".implode(",", $customer_ids).") and datetime_added>='".date('Y-m-d',strtotime($invoices[0]["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoices[count($invoices)-1]["date_to"]))." 23:59:59' order by datetime_added";
                 //echo $sql;die;
                 $rs=doquery($sql,$dblink);
 			    if(numrows($rs)>0){
