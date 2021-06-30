@@ -37,10 +37,25 @@ if(!defined("APP_START")) die("No Direct Access");
                         ?>
                     </select>
                 </div>
+                <div class="col-sm-2 col-xs-8">
+                    <select name="color_id" id="color_id" class="form-control">
+                        <option value=""<?php echo ($color_id=="")? " selected":"";?>>Select Color</option>
+                        <?php
+                            $res=doquery("select * from color where status = 1 order by title",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($color_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                                <?php
+                                }
+                            }	
+                        ?>
+                    </select>
+                </div>
                 <div class="col-sm-2">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
                 </div>
-                <div class="col-sm-3 text-left">
+                <div class="col-sm-2 text-left">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />
                 </div>

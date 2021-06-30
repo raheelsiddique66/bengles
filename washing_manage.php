@@ -66,7 +66,19 @@ if(!empty($q)){
 	$extra.=" and (gatepass_id like '%".$q."%')";
 	$is_search=true;
 }
-$sql = "SELECT a.* FROM `washing` a left join customer b on a.customer_id = b.id WHERE 1 $extra  order by a.date desc, a.gatepass_id desc";
+if(isset($_GET["color_id"])){
+	$color_id=slash($_GET["color_id"]);
+	$_SESSION["washing"]["list"]["color_id"]=$color_id;
+}
+if(isset($_SESSION["washing"]["list"]["color_id"]))
+	$color_id=$_SESSION["washing"]["list"]["color_id"];
+else
+	$color_id="";
+if($color_id!=""){
+	$extra.=" and c.color_id='".$color_id."'";
+	$is_search=true;
+}
+$sql = "SELECT a.* FROM `washing` a left join customer b on a.customer_id = b.id left join washing_items c on a.id = c.washing_id WHERE 1 $extra  order by a.date desc, a.gatepass_id desc";
 switch($tab){
 	case 'addedit':
 		include("modules/washing/addedit_do.php");
