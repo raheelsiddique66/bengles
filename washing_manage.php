@@ -78,7 +78,7 @@ if($color_id!=""){
 	$extra.=" and c.color_id='".$color_id."'";
 	$is_search=true;
 }
-$sql = "SELECT a.* FROM `washing` a left join customer b on a.customer_id = b.id left join washing_items c on a.id = c.washing_id WHERE 1 $extra  order by a.date desc, a.gatepass_id desc group by delivery_id";
+$sql = "SELECT a.* FROM `washing` a left join customer b on a.customer_id = b.id left join washing_items c on a.id = c.washing_id WHERE 1 $extra group by c.delivery_id order by a.date desc, a.gatepass_id desc";
 switch($tab){
 	case 'addedit':
 		include("modules/washing/addedit_do.php");
