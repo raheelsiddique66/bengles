@@ -157,7 +157,7 @@ if(!defined("APP_START")) die("No Direct Access");
                                             ?>
                                             <td class="text-right color3-bg"><?php echo $t?></td>
                                         </tr>
-                                    <?php
+                                        <?php
                                     }
                                     ?>
                                     <tr>
