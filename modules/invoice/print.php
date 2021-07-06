@@ -78,7 +78,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                     <th width="5%" class="text-right nastaleeq">تعداد</th>
                     <th width="5%" class="text-right nastaleeq">وائرس</th>
                     <th width="10%" class="text-right nastaleeq">آئٹم</th>
-                    <th width="8%" class="text-right nastaleeq">گیٹ پاس</th>
+    <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="8%" class="text-right nastaleeq">گیٹ پاس</th><?php }?>
                     <th width="10%" class="text-right nastaleeq">تاریخ</th>
                     <th width="2%" class="text-center nastaleeq">سیریل</th>
                 </tr>
@@ -143,7 +143,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                             <td class="text-right"><?php echo $r["quantity"]?></td>
                             <td class="text-right"><?php echo $r["claim"]?></td>
                             <td class="nastaleeq"><?php echo unslash($r["title_urdu"]);?><span style="display: block;font-size: 12px;"><?php echo unslash($r["details"]);?></span></td>
-                            <td><?php echo $r["gatepass_id"]?></td>
+                    <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><td><?php echo $r["gatepass_id"]?></td><?php }?>
                             <td><?php echo date_convert($r["datetime_added"])?></td>
                             <td class="text-center"><?php echo $sn?></td>
                         </tr>
