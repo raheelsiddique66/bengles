@@ -73,7 +73,7 @@ if( numrows( $rs ) > 0 ) {
 		?>
 		<tr>
             <td><?php echo unslash($r["phone"]); ?></td>
-            <td style="font-size: 18px; text-align: right"><?php echo get_customer_balance($r['id'], date_dbconvert($date));?></td>
+            <td style="font-size: 18px; text-align: right"><?php echo curr_format(get_customer_balance($r['id'], date_dbconvert($date)));?></td>
             <td></td>
             <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
             <td class="nastaleeq"><?php echo unslash( $r[ "customer_name_urdu" ] );?></td>

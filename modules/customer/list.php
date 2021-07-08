@@ -84,7 +84,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td><?php if($r["machine_id"]==0) echo "All Machine"; else echo get_field($r["machine_id"], "machine","title");?></td>
                         <td><span class="nastaleeq"><?php echo unslash($r["customer_name_urdu"]); ?></span></td>
                         <td><?php echo unslash($r["phone"]); ?></td>
-                        <td><?php echo get_customer_balance($r['id'], date_dbconvert($date));?></td>
+                        <td><?php echo curr_format(get_customer_balance($r['id'], date_dbconvert($date)));?></td>
                         <td><?php echo unslash($r["sortorder"]); ?></td>
                         <td class="text-center">
                             <a href="customer_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">
