@@ -71,14 +71,14 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
         	<thead>
                 <tr>
                     <th width="12%" class="text-right nastaleeq"> ٹوٹل رقم</th>
-                    <th width="8%" class="text-right nastaleeq">کلیم/RF/ڈسکاؤنٹ/نقصان</th>
+                    <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="8%" class="text-right nastaleeq">کلیم/RF/ڈسکاؤنٹ/نقصان</th><?php }?>
                     <th width="8%" class="text-right nastaleeq">جمع</th>
                     <th width="8%" class="text-right nastaleeq">نام</th>
                     <th width="5%" class="text-right nastaleeq">ریٹ</th>
                     <th width="5%" class="text-right nastaleeq">تعداد</th>
                     <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="5%" class="text-right nastaleeq">وائرس</th><?php }?>
                     <th width="10%" class="text-right nastaleeq">آئٹم</th>
-    <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="8%" class="text-right nastaleeq">گیٹ پاس</th><?php }?>
+                    <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="8%" class="text-right nastaleeq">گیٹ پاس</th><?php }?>
                     <th width="10%" class="text-right nastaleeq">تاریخ</th>
                     <th width="2%" class="text-center nastaleeq">سیریل</th>
                 </tr>
@@ -136,7 +136,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                         ?>
                         <tr>
                             <td class="text-right"><?php echo curr_format($balance); ?></td>
-                            <td class="text-right"><?php echo curr_format($r["discount"])?></td>
+                            <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><td class="text-right"><?php echo curr_format($r["discount"])?></td><?php }?>
                             <td class="text-right"><?php echo curr_format($r["credit"])?></td>
                             <td class="text-right"><?php echo curr_format($r["debit"])?></td>
                             <td class="text-right"><?php echo curr_format($r["unit_price"])?></td>
