@@ -143,7 +143,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                             <td class="text-right"><?php echo $r["quantity"]?></td>
                             <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><td class="text-right"><?php echo $r["claim"]?></td><?php }?>
                             <td class="nastaleeq"><?php echo unslash($r["title_urdu"]);?><span style="display: block;font-size: 12px;"><?php echo unslash($r["details"]);?></span></td>
-                    <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><td><?php echo $r["gatepass_id"]?></td><?php }?>
+                            <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><td><?php echo $r["gatepass_id"]?></td><?php }?>
                             <td><?php echo date_convert($r["datetime_added"])?></td>
                             <td class="text-center"><?php echo $sn?></td>
                         </tr>
@@ -161,7 +161,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                 ?>
                 <tr>
                     <th class="text-right"><?php echo curr_format($balance)?></th>
-                    <th class="text-right"><?php echo curr_format($total_discount)?></th>
+            <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?> <th class="text-right"><?php echo curr_format($total_discount)?></th><?php }?>
                     <th class="text-right"><?php echo curr_format($total_credit)?></th>
                     <th class="text-right"><?php echo curr_format($total_debit)?></th>
                     <th class="text-right"></th>
@@ -173,13 +173,13 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
         </table>
         <div class="summary" style="padding-top: 20px">
             <?php
-    if(numrows($rs)>0){
-            foreach($accounts as $account){?>
-                <span class="nastaleeq"><?php echo unslash($account["title_urdu"]);?></span>
-                <?php
-                echo " (".$account["quantity"]."x".$account["rate"].") = ".curr_format($account["quantity"]*$account["rate"])."<br><br>";
-            }
-    }
+                if(numrows($rs)>0){
+                        foreach($accounts as $account){?>
+                            <span class="nastaleeq"><?php echo unslash($account["title_urdu"]);?></span>
+                            <?php
+                            echo " (".$account["quantity"]."x".$account["rate"].") = ".curr_format($account["quantity"]*$account["rate"])."<br><br>";
+                        }
+                }
             ?>
         </div>
     </div>
