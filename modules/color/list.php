@@ -75,7 +75,7 @@ if(!empty($q)){
                             <label for="<?php echo "rec_".$sn?>"></label></div>
                         </td>
                         <td><?php echo unslash($r["title"]); ?></td>
-                        <td><span class="nastaleeq"><?php echo unslash($r["title_urdu"]); ?></span></td>
+                        <td><span class="nastaleeq" style="font-weight: 700;"><?php echo unslash($r["title_urdu"]); ?></span></td>
                         <td><?php echo curr_format($r["rate"]);?></td>
                         <td class="text-center"><?php echo $r["sortorder"]; ?></td>
                         <td class="text-center">
