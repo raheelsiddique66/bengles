@@ -6,7 +6,7 @@ include("include/paging.php");
 define("APP_START", 1);
 $filename = 'customer_manage.php';
 include("include/admin_type_access.php");
-$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action", "report", "print", "print_ledger", "balance_report", "customer_dashboard");
+$tab_array=array("list", "add", "edit", "status", "delete", "bulk_action", "report", "print", "print_ledger", "balance_report", "customer_dashboard", "combine_print");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -86,6 +86,9 @@ switch($tab){
     case 'print_ledger':
         include("modules/customer/print_ledger.php");
     break;
+    case 'combine_print':
+		include("modules/customer/combine_print.php");
+	break;
 }
 ?>
 <?php include("include/header.php");?>
