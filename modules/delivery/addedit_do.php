@@ -338,6 +338,30 @@ if(isset($_POST["action"])){
                     "error" => $box_err
                 );
             }
+		break;
+		case "save_machine":
+            $box_err = array();
+            $machine = json_decode( $_POST[ "machine" ] );
+            if( empty( $machine->title ) ) {
+                $box_err[] = "Fields with * are mandatory";
+            }
+            if( count( $box_err ) == 0 ) {
+                doquery( "insert into machine (title) VALUES ('".slash($machine->title)."')", $dblink);
+                $id = inserted_id();
+                $response = array(
+                    "status" => 1,
+                    "machine" => array(
+                        "id" => $id,
+                        "title" => $machine->title,
+                    )
+                );
+            }
+            else {
+                $response = array(
+                    "status" => 0,
+                    "error" => $box_err
+                );
+            }
             break;
 	}
 	echo json_encode( $response );

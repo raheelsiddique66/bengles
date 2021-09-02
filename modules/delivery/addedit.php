@@ -139,6 +139,16 @@ else {
                 </div>
             </div>
         </div>
+        <div class="labour-add" ng-show="showPopupMachine">
+            <button data-fancybox-close="" class="fancybox-close-small popup_close" title="Close" ng-click="togglePopupMachine()"></button>
+            <div style="padding: 20px;">
+                Machine: <span><input id="cursor_focus" type="text" placeholder="Enter Machine" ng-model="machine.title"></span>
+                <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_machine()" title="Submit Machine"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
+                <br><br><div class="alert alert-danger" ng-show="box_errors.length > 0">
+                    <p ng-repeat="error in box_errors">{{error}}</p>
+                </div>
+            </div>
+        </div>
         <div class="form-group">
             <div class="row">
                 <div class="col-sm-2 control-label">
@@ -174,7 +184,7 @@ else {
                             <thead>
                                 <tr>
                                     <th width="2%" class="text-center" rowspan="2">S.no</th>
-                                    <th width="10%" rowspan="2">Machine</th>
+                                    <th width="10%" rowspan="2" style="position: relative">Machine <a href="" class="add_customer_link design" ng-click="togglePopupMachine()">+</a></th>
                                     <th width="10%" rowspan="2" style="position: relative">Design <a href="" class="add_customer_link design" ng-click="togglePopupDesign()">+</a></th>
                                     <th width="12%" rowspan="2" style="position: relative">Color <a href="" class="add_customer_link design" ng-click="togglePopupColor()">+</a></th>
                                     <th class="text-center" width="30%" colspan="{{ sizes.length+1 }}">Sizes</th>

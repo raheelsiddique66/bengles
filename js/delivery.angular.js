@@ -56,6 +56,14 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			title: "",
 			title_urdu: ""
 		};
+		$scope.machine = {
+			id: "",
+			title: "",
+		};
+		$scope.machine_placeholder = {
+			id: "",
+			title: "",
+		};
 		$scope.delivery = {
 			id: 0,
 			date: '',
@@ -298,6 +306,24 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 				});
 			}
 		}
+		$scope.save_machine = function () {
+			$scope.box_errors = [];
+			if( $scope.processing == false ){
+				$scope.processing = true;
+				data = {action: 'save_machine', machine: JSON.stringify( $scope.machine )};
+				$scope.wctAJAX( data, function( response ){
+					$scope.processing = false;
+					if( response.status == 1 ) {
+						$scope.machines.push(response.machine);
+						$scope.showPopupMachine = !$scope.showPopupMachine;
+						$scope.machine = angular.copy( $scope.machine_placeholder );
+					}
+					else{
+						$scope.box_errors = response.error;
+					}
+				});
+			}
+		}
         $scope.togglePopup = function() {
             $scope.showPopup = !$scope.showPopup;
 			setTimeout(function(){focus();}, 100);
@@ -312,6 +338,10 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		}
 		$scope.togglePopupColor = function() {
 			$scope.showPopupColor = !$scope.showPopupColor;
+			setTimeout(function(){focus();}, 100);
+		}
+		$scope.togglePopupMachine = function() {
+			$scope.showPopupMachine = !$scope.showPopupMachine;
 			setTimeout(function(){focus();}, 100);
 		}
 	}
