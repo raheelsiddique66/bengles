@@ -26,13 +26,15 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.customer = {
 			id: "",
 			customer_name: "",
-			customer_name_urdu: ""
+			customer_name_urdu: "",
+			machine_id: ""
 		};
 
 		$scope.customer_placeholder = {
 			id: "",
 			customer_name: "",
-			customer_name_urdu: ""
+			customer_name_urdu: "",
+			machine_id: ""
 		};
 		$scope.design = {
 			id: "",

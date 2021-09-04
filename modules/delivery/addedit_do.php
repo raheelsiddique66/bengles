@@ -271,7 +271,7 @@ if(isset($_POST["action"])){
                 $box_err[] = "Fields with * are mandatory";
             }
             if( count( $box_err ) == 0 ) {
-                doquery( "insert into customer (customer_name, customer_name_urdu) VALUES ('".slash($customer->customer_name)."', '".slash($customer->customer_name_urdu)."')", $dblink);
+                doquery( "insert into customer (customer_name, customer_name_urdu, machine_id) VALUES ('".slash($customer->customer_name)."', '".slash($customer->customer_name_urdu)."', '".slash($customer->machine_id)."')", $dblink);
                 $id = inserted_id();
                 $response = array(
                     "status" => 1,
@@ -279,6 +279,7 @@ if(isset($_POST["action"])){
                         "id" => $id,
                         "customer_name" => $customer->customer_name,
                         "customer_name_urdu" => $customer->customer_name_urdu,
+						"machine_id" => get_field($customer->machine_id, "machine", "title"),
                     )
                 );
             }

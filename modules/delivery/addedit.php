@@ -111,6 +111,10 @@ else {
             <div style="padding: 20px;">
                 Customer Name: <span><input id="cursor_focus" type="text" placeholder="Enter Customer Name" ng-model="customer.customer_name"></span>
                 Customer Name urdu: <span><input id="cursor_focus" type="text" placeholder="Enter Customer Name" class="nastaleeq" ng-model="customer.customer_name_urdu"></span>
+                Machine: <span><select title="Choose Option" ng-model="customer.machine_id">
+                                            <option value="0">Select Machine</option>
+                                            <option ng-repeat="machine in machines" value="{{ machine.id }}">{{ machine.title }}</option>
+                                        </select></span>
                 <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_customer()" title="Submit Customer"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
                 <br><br><div class="alert alert-danger" ng-show="box_errors.length > 0">
                     <p ng-repeat="error in box_errors">{{error}}</p>
