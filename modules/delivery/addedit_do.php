@@ -321,7 +321,7 @@ if(isset($_POST["action"])){
                 $box_err[] = "Fields with * are mandatory";
             }
             if( count( $box_err ) == 0 ) {
-                doquery( "insert into color (title, title_urdu) VALUES ('".slash($color->title)."', '".slash($color->title_urdu)."')", $dblink);
+                doquery( "insert into color (title, title_urdu, rate) VALUES ('".slash($color->title)."', '".slash($color->title_urdu)."', '".slash($color->rate)."')", $dblink);
                 $id = inserted_id();
                 $response = array(
                     "status" => 1,
@@ -329,6 +329,7 @@ if(isset($_POST["action"])){
                         "id" => $id,
                         "title" => $color->title,
                         "title_urdu" => $color->title_urdu,
+						"rate" => $color->rate,
                     )
                 );
             }

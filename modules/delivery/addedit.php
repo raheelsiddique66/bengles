@@ -133,6 +133,7 @@ else {
             <div style="padding: 20px;">
                 Color: <span><input id="cursor_focus" type="text" placeholder="Enter Color" ng-model="color.title"></span>
                 Color Urdu: <span><input id="cursor_focus" type="text" placeholder="Enter Color" class="nastaleeq" ng-model="color.title_urdu"></span>
+                Rate: <span><input id="cursor_focus" type="text" placeholder="Enter Rate" ng-model="color.rate"></span>
                 <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_color()" title="Submit Color"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
                 <br><br><div class="alert alert-danger" ng-show="box_errors.length > 0">
                     <p ng-repeat="error in box_errors">{{error}}</p>

@@ -48,13 +48,15 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.color = {
 			id: "",
 			title: "",
-			title_urdu: ""
+			title_urdu: "",
+			rate: ""
 		};
 
 		$scope.color_placeholder = {
 			id: "",
 			title: "",
-			title_urdu: ""
+			title_urdu: "",
+			rate: ""
 		};
 		$scope.machine = {
 			id: "",
