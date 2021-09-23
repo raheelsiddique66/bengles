@@ -219,7 +219,7 @@ else {
                                             </tr>
                                             <tr>
                                                 <th colspan="3" class="text-right">Total Items</th>
-                                                <th class="text-right" style="background: rgb(178, 219, 239);" ng-repeat="size in sizes">{{ getTotalQty(-1,size.id,$index) }}</th>
+                                                <th class="text-right" style="background: rgb(178, 219, 239);" ng-repeat="size in sizes">{{ getTotalQty(-1,size.id,$parent.$index) }}</th>
                                                 <th class="text-right" style="background: rgba(61, 165, 145, 0.89);color: #fff;">{{ getTotalQty(-1,-1,$index) }}</th>
                                                 <th class="text-right">&nbsp;</th>
                                                 <th class="text-right">Total</th>
