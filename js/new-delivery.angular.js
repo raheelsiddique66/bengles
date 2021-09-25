@@ -85,7 +85,7 @@ angular.module('customerdelivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap'
 		// 	"unit_price": 0
 		// };
 		
-		$scope.deliveries= [],
+		$scope.deliveries= [];
         
         $scope.delivery = {
             "id": 0,
@@ -286,7 +286,7 @@ angular.module('customerdelivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap'
 				$scope.wctAJAX( data, function( response ){
 					$scope.processing = false;
 					if( response.status == 1 ) {
-						window.location.href='delivery_manage.php?tab=addedit&id='+response.id;
+						window.location.href='delivery_manage.php?tab=new_delivery&id='+response.id;
 					}
 					else{
 						$scope.errors = response.error;
