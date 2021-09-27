@@ -164,7 +164,7 @@ if( numrows( $rs ) > 0 ) {
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
-							<td>&nbsp;</td>
+							
 							<?php 
 							if(empty($customer_id)){
 								?>
