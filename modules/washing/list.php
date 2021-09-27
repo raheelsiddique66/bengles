@@ -71,6 +71,21 @@ if(!defined("APP_START")) die("No Direct Access");
                 <div class="col-sm-2">
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
                 </div>
+                <div class="col-sm-2 col-xs-8">
+                    <select name="machine_id" id="machine_id" class="form-control">
+                        <option value=""<?php echo ($machine_id=="")? " selected":"";?>>Select Machine</option>
+                        <?php
+                            $res=doquery("select * from machine order by title",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                ?>
+                                <option value="<?php echo $rec["id"]?>" <?php echo($machine_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                                <?php
+                                }
+                            }	
+                        ?>
+                    </select>
+                </div>
                 <div class="col-sm-2 text-left">
                     <input type="button" class="btn btn-danger btn-l reset_search" value="Reset" alt="Reset Record" title="Reset Record" />
                     <input type="submit" class="btn btn-default btn-l" value="Search" alt="Search Record" title="Search Record" />

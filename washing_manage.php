@@ -90,7 +90,21 @@ if($design_id!=""){
 	$extra.=" and c.design_id='".$design_id."'";
 	$is_search=true;
 }
-$sql = "SELECT a.* FROM `washing` a left join customer b on a.customer_id = b.id left join washing_items c on a.id = c.washing_id WHERE 1 $extra group by c.washing_id order by a.date desc, a.gatepass_id desc";
+if(isset($_GET["machine_id"])){
+	$machine_id=slash($_GET["machine_id"]);
+	$_SESSION["washing"]["list"]["machine_id"]=$machine_id;
+}
+if(isset($_SESSION["washing"]["list"]["machine_id"]))
+	$machine_id=$_SESSION["washing"]["list"]["machine_id"];
+else
+	$machine_id="";
+if($tab!=="report_total"){
+    if($machine_id!=""){
+        $extra.=" and c.machine_id='".$machine_id."'";
+        $is_search=true;
+    }
+}
+$sql = "SELECT a.* FROM `washing` a left join customer b on a.customer_id = b.id left join washing_items c on a.id = c.washing_id WHERE 1 $extra group by a.id order by a.date desc, a.gatepass_id desc";
 switch($tab){
 	case 'addedit':
 		include("modules/washing/addedit_do.php");

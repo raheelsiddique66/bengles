@@ -1,6 +1,7 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$sql = "SELECT a.*, group_concat(a.id) as washing_ids FROM `washing` a left join customer b on a.customer_id = b.id  WHERE 1 $extra and b.status = 1 group by customer_id order by customer_name";
+//$sql = "SELECT a.*, group_concat(a.id) as washing_ids, b.customer_name, b.customer_name_urdu, b.id as customerid FROM customer b left join washing a on (a.customer_id = b.id $extra) left join washing_items c on a.id = c.washing_id ".(!empty($machine_id)?"where c.machine_id = '".$machine_id."'":"")." group by b.id order by customer_name";
+$sql = "SELECT a.*, group_concat(a.id) as washing_ids FROM `washing` a left join customer b on a.customer_id = b.id left join washing_items c on a.id = c.washing_id  WHERE 1 $extra and b.status = 1".(!empty($machine_id)?"where c.machine_id = '".$machine_id."'":"")." group by customer_id order by customer_name";
 $rs = doquery( $sql, $dblink );
 $colors = [];
 $rs2 = doquery("select a.* from color a inner join washing_items b on a.id = b.color_id ".(!empty($machine_id)?"where machine_id = '".$machine_id."'":"")." order by sortorder", $dblink);
@@ -102,9 +103,10 @@ table {
 </tr>
 </thead>
 <?php
+$grand_total_quantity = 0;
 if( numrows( $rs ) > 0 ) {
 	$sn = 1;
-    $grand_total_quantity = 0;
+    
 	while( $r = dofetch( $rs ) ) {
         $colors_washing = [];
         $total_quantity = 0;
