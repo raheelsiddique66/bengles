@@ -6,7 +6,7 @@ include("include/paging.php");
 define("APP_START", 1);
 $filename = 'washing_manage.php';
 include("include/admin_type_access.php");
-$tab_array=array("list", "status", "delete", "bulk_action", "report", "addedit", "print_receipt");
+$tab_array=array("list", "status", "delete", "bulk_action", "report", "addedit", "print_receipt", "report_total");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -78,6 +78,18 @@ if($color_id!=""){
 	$extra.=" and c.color_id='".$color_id."'";
 	$is_search=true;
 }
+if(isset($_GET["design_id"])){
+	$design_id=slash($_GET["design_id"]);
+	$_SESSION["washing"]["list"]["design_id"]=$design_id;
+}
+if(isset($_SESSION["washing"]["list"]["design_id"]))
+	$design_id=$_SESSION["washing"]["list"]["design_id"];
+else
+	$design_id="";
+if($design_id!=""){
+	$extra.=" and c.design_id='".$design_id."'";
+	$is_search=true;
+}
 $sql = "SELECT a.* FROM `washing` a left join customer b on a.customer_id = b.id left join washing_items c on a.id = c.washing_id WHERE 1 $extra group by c.washing_id order by a.date desc, a.gatepass_id desc";
 switch($tab){
 	case 'addedit':
@@ -98,7 +110,10 @@ switch($tab){
 	break;
     case 'print_receipt':
         include("modules/washing/print_receipt.php");
-        break;
+	break;
+	case 'report_total':
+		include("modules/washing/report_total.php");
+	break;
 }
 ?>
 <?php include("include/header.php");?>

@@ -58,6 +58,19 @@ if(isset($_POST["action"])){
 			}
 			$response = $designs;
 		break;
+		case "get_machines":
+			$rs = doquery( "select * from machine where status=1 order by title", $dblink );
+			$machines = array();
+			if( numrows( $rs ) > 0 ) {
+				while( $r = dofetch( $rs ) ) {
+					$machines[] = array(
+						"id" => $r[ "id" ],
+						"title" => unslash($r[ "title" ]),
+					);
+				}
+			}
+			$response = $machines;
+		break;
 		case "get_washing":
 			$id = slash( $_POST[ "id" ] );
 			$rs = doquery( "select * from washing where id='".$id."'", $dblink );
@@ -81,6 +94,7 @@ if(isset($_POST["action"])){
 						$washing_items[] = array(
 							"id" => $r1["id"],
 							"washing_id" => $r1[ "washing_id" ],
+							"machine_id" => $r1[ "machine_id" ],
 							"color_id" => $r1["color_id"],
 							"size_id" => $r1[ "size_id" ],
 							"design_id" => $r1[ "design_id" ],
@@ -124,9 +138,9 @@ if(isset($_POST["action"])){
 					foreach($washing_item->quantity as $size_id => $quantity){
 						$quantity = (int)$quantity;
 						if(!empty($quantity)){
-							$check = doquery("select * from washing_items where washing_id = '".$washing_id."' and color_id = '".$washing_item->color_id."' and design_id = '".$washing_item->design_id."' and size_id = '".$size_id."'",$dblink);
+							$check = doquery("select * from washing_items where washing_id = '".$washing_id."' and machine_id = '".$washing_item->machine_id."' and color_id = '".$washing_item->color_id."' and design_id = '".$washing_item->design_id."' and size_id = '".$size_id."'",$dblink);
 							if( numrows( $check ) == 0 ) {
-								doquery( "insert into washing_items( washing_id, color_id, size_id, design_id, quantity ) values( '".$washing_id."', '".$washing_item->color_id."', '".$size_id."', '".$washing_item->design_id."', '".$quantity."')", $dblink );
+								doquery( "insert into washing_items( washing_id, machine_id, color_id, size_id, design_id, quantity ) values( '".$washing_id."', '".$washing_item->machine_id."', '".$washing_item->color_id."', '".$size_id."', '".$washing_item->design_id."', '".$quantity."')", $dblink );
 								$washing_item_ids[] = inserted_id();
 							}
 							else {

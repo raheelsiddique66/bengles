@@ -4,6 +4,7 @@ angular.module('washing', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angula
 		$scope.colors = [];
 		$scope.sizes = [];
 		$scope.designs = [];
+		$scope.machines = [];
 		$scope.errors = [];
 		$scope.processing = false;
 		$scope.washing_id = 0;
@@ -18,6 +19,7 @@ angular.module('washing', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angula
 		$scope.washing_item = {
 			"color_id":"",
 			"design_id": "",
+			"machine_id": 0,
 			"quantity": [],
 		};
 		angular.element(document).ready(function () {
@@ -32,6 +34,9 @@ angular.module('washing', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angula
 			});
 			$scope.wctAJAX( {action: 'get_design'}, function( response ){
 				$scope.designs = response;
+			});
+			$scope.wctAJAX( {action: 'get_machines'}, function( response ){
+				$scope.machines = response;
 			});
 			if( $scope.washing_id > 0 ) {
 				$scope.wctAJAX( {action: 'get_washing', id: $scope.washing_id}, function( response ){

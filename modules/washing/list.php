@@ -9,6 +9,7 @@ if(!defined("APP_START")) die("No Direct Access");
         	<a href="washing_manage.php?tab=addedit" class="btn btn-light editproject">Add New Washing</a>
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
             <a class="btn print-btn" href="washing_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a>
+            <a href="washing_manage.php?tab=report_total" class="btn btn-light editproject">Report Total</a>
         </div>
   	</div>
 </div>
@@ -16,10 +17,10 @@ if(!defined("APP_START")) die("No Direct Access");
 	<li class="col-xs-12 col-lg-12 col-sm-12">
         <div>
         	<form class="form-horizontal" action="" method="get">
-                <div class="col-sm-2 margin-btm-5">
+                <div class="col-sm-1 margin-btm-5">
                     <input placeholder="Date From" type="text" title="Date From" value="<?php echo $date_from;?>" name="date_from" id="date_from" class="date-picker form-control" autocomplete="off" />
                 </div>
-                <div class="col-sm-2 margin-btm-5">
+                <div class="col-sm-1 margin-btm-5">
                     <input placeholder="Date To" type="text" title="Date To" value="<?php echo $date_to;?>" name="date_to" id="date_to" class="date-picker form-control" autocomplete="off" />
                 </div>
                 <div class="col-sm-2 col-xs-8">
@@ -47,6 +48,21 @@ if(!defined("APP_START")) die("No Direct Access");
                                 ?>
                                 <option value="<?php echo $rec["id"]?>" <?php echo($color_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
                                 <?php
+                                }
+                            }	
+                        ?>
+                    </select>
+                </div>
+                <div class="col-sm-2 col-xs-8">
+                    <select name="design_id" id="design_id" class="form-control">
+                        <option value=""<?php echo ($design_id=="")? " selected":"";?>>Select Design</option>
+                        <?php
+                            $res=doquery("select * from design where status = 1 order by title",$dblink);
+                            if(numrows($res)>=0){
+                                while($rec=dofetch($res)){
+                                    ?>
+                                    <option value="<?php echo $rec["id"]?>" <?php echo($design_id==$rec["id"])?"selected":"";?>><?php echo unslash($rec["title"])?></option>
+                                    <?php
                                 }
                             }	
                         ?>
@@ -116,6 +132,7 @@ if(!defined("APP_START")) die("No Direct Access");
                             <table class="table table-hover list">
                                 <thead>
                                 <tr>
+                                    <td>Machine</td>
                                     <td>Color</td>
                                     <td>Design</td>
                                     <?php
@@ -138,6 +155,7 @@ if(!defined("APP_START")) die("No Direct Access");
                                     while($r1=dofetch($rs1)){
                                         ?>
                                         <tr>
+                                            <td><?php echo get_field($r1["machine_id"], "machine", "title" ); ?></td>
                                             <td><?php echo $colors[$r1["color_id"]]?></td>
                                             <td><?php echo $designs[$r1["design_id"]]?></td>
                                             <?php
