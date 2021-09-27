@@ -88,9 +88,10 @@ table {
 	<th width="10%" rowspan="2">Customer</th>
 	<?php }?>
     <th width="3%" rowspan="2">Gatepass</th>
-    <th width="50%" colspan="<?php echo count($sizes)+3?>">Items</th>
+    <th width="50%" colspan="<?php echo count($sizes)+4?>">Items</th>
 </tr>
 <tr>
+	<td class="text-right">Machine</td>
     <td class="text-right">Design</td>
     <td class="text-right">Color</td>
 	<?php
@@ -129,12 +130,14 @@ if( numrows( $rs ) > 0 ) {
 								echo '</tr><tr>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
+								<td>&nbsp;</td>
 								<td>&nbsp;</td>';
 								if(empty($customer_id)){
 									echo '<td>&nbsp;</td>';
 								}
 							}
 							?>
+							<td><?php echo get_field($r1["machine_id"], "machine", "title" ); ?></td>
 							<td><?php echo $colors[$r1["color_id"]]?></td>
 							<td><?php echo $designs[$r1["design_id"]]?></td>
 							<?php
@@ -161,6 +164,7 @@ if( numrows( $rs ) > 0 ) {
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
+							<td>&nbsp;</td>
 							<?php 
 							if(empty($customer_id)){
 								?>
@@ -168,7 +172,7 @@ if( numrows( $rs ) > 0 ) {
 								<?php 
 							}
 							?>
-							<th colspan="2" class="text-right bg-grey">Total</th>
+							<th colspan="3" class="text-right bg-grey">Total</th>
 							<?php
 							$t = 0;
 							foreach($totals as $size_id => $total){
@@ -191,7 +195,7 @@ if( numrows( $rs ) > 0 ) {
 ?>
 <tr>
 	<td colspan="<?php if(empty($customer_id)) echo "4"; else echo "3";?>"></td>
-	<th colspan="2" class="text-right bg-grey">Grand Total</th>
+	<th colspan="3" class="text-right bg-grey">Grand Total</th>
 	<?php
 	$final_total = 0;
 	foreach($grand_totals as $total){

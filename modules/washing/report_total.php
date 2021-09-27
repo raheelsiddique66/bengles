@@ -69,6 +69,12 @@ table {
                 <?php
                 $all = false;
 			}
+            if( !empty( $machine_id ) ){
+			    ?>
+                Machine <span class="nastaleeq"><?php echo get_field($machine_id, "machine", "title" )."<br>";?></span>
+                <?php
+                $all = false;
+			}
 			if( !empty( $q ) ){
 				echo " Gatepass ID ".$q."<br>";
                 $all = false;
