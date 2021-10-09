@@ -1269,7 +1269,7 @@ function get_last_closing_date( $date = "" ){
 function get_customer_balance( $customer_id, $dt = 0 ){
 	global $dblink;
 	if( empty( $dt ) ) {
-		$dt = date( "Y-m-d" );
+		$dt = date( "Y-m-d H:i:s" );
 	}
 	$balance = 0;
 	$customer = doquery( "select balance from customer where id = '".$customer_id."'", $dblink );
@@ -1283,7 +1283,7 @@ function get_customer_balance( $customer_id, $dt = 0 ){
 	return $balance;
 }
 function get_customer_total_balance( $machine_id = [], $dt = 0 ){
-    global $dblink;
+    global $dblink, $extra;
     if( empty( $dt ) ) {
         $dt = date( "Y-m-d H:i:s" );
     }
@@ -1292,10 +1292,10 @@ function get_customer_total_balance( $machine_id = [], $dt = 0 ){
 //    }
     $total = 0;
     if(!empty($machine_id) && !empty($machine_id[0])){
-        $customers = doquery( "select id, balance from customer where machine_id in (".implode(",",$machine_id).") ", $dblink );
+        $customers = doquery( "select id, balance from customer where machine_id in (".implode(",",$machine_id).") $extra ", $dblink );
     }
     else{
-        $customers = doquery( "select id, balance from customer", $dblink );
+        $customers = doquery( "select id, balance from customer where 1 $extra", $dblink );
     }
     if( numrows( $customers ) > 0 ) {
         while($customer = dofetch( $customers )) {
