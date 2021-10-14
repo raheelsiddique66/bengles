@@ -1295,7 +1295,7 @@ function get_customer_total_balance( $machine_id = [], $dt = 0 ){
         $customers = doquery( "select id, balance from customer where status = 1 and machine_id in (".implode(",",$machine_id).") $extra ", $dblink );
     }
     else{
-        $customers = doquery( "select id, balance from customer where status = 1 and $extra", $dblink );
+        $customers = doquery( "select id, balance from customer where status = 1 $extra", $dblink );
     }
     if( numrows( $customers ) > 0 ) {
         while($customer = dofetch( $customers )) {
