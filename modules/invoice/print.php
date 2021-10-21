@@ -30,7 +30,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
         }
         td, th {
             border: solid 1px #000;
-            padding: 6px 10px;
+            padding: 0px 10px;
             text-align: left;
             font-size: 22px;
         }
@@ -77,7 +77,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                     <th width="5%" class="text-right nastaleeq">ریٹ</th>
                     <th width="5%" class="text-right nastaleeq">تعداد</th>
                     <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="5%" class="text-right nastaleeq">وائرس</th><?php }?>
-                    <th width="10%" class="text-right nastaleeq">آئٹم</th>
+                    <th width="20%" class="text-right nastaleeq">آئٹم</th>
                     <th width="10%" class="text-right nastaleeq">پلانٹ</th>
                     <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="8%" class="text-right nastaleeq">گیٹ پاس</th><?php }?>
                     <th width="10%" class="text-right nastaleeq">تاریخ</th>
@@ -143,7 +143,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                             <td class="text-right"><?php echo curr_format($r["unit_price"])?></td>
                             <td class="text-right"><?php echo $r["quantity"]?></td>
                             <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><td class="text-right"><?php echo $r["claim"]?></td><?php }?>
-                            <td class="nastaleeq"><?php echo unslash($r["title_urdu"]);?><span style="display: block;font-size: 12px;"><?php echo unslash($r["details"]);?></span></td>
+                            <td class="nastaleeq" style="font-weight: bold;"><?php echo unslash($r["title_urdu"]);?><span style="display: block;font-size: 12px;"><?php echo unslash($r["details"]);?></span></td>
                             <td class="nastaleeq"><?php echo get_field($r["machine_id"], "machine", "title");?></td>
                             <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><td><?php echo $r["gatepass_id"]?></td><?php }?>
                             <td><?php echo date_convert($r["datetime_added"])?></td>
@@ -163,7 +163,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                 ?>
                 <tr>
                     <th class="text-right"><?php echo curr_format($balance)?></th>
-            <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?> <th class="text-right"><?php echo curr_format($total_discount)?></th><?php }?>
+                    <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?> <th class="text-right"><?php echo curr_format($total_discount)?></th><?php }?>
                     <th class="text-right"><?php echo curr_format($total_credit)?></th>
                     <th class="text-right"><?php echo curr_format($total_debit)?></th>
                     <th class="text-right"></th>

@@ -77,7 +77,7 @@ table {
                 $all = false;
 			}
 			if($all){
-			    echo " All Customers";
+			    echo " All Customers"."<br>";
             }
             if( !empty( $date_from ) || !empty( $date_to ) ){
                 echo "<br />Date";
@@ -87,6 +87,12 @@ table {
             }
             if( !empty( $date_to ) ){
                 echo " to ".$date_to."<br>";
+            }
+            if( !empty( $machine_id ) ){
+                ?>
+               <?php echo get_field($machine_id, "machine", "title" )." :";?> <span class="nastaleeq"> پلانٹ </span>
+                <?php
+               
             }
 			?>
         </p>
