@@ -78,6 +78,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                     <th width="5%" class="text-right nastaleeq">تعداد</th>
                     <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="5%" class="text-right nastaleeq">وائرس</th><?php }?>
                     <th width="10%" class="text-right nastaleeq">آئٹم</th>
+                    <th width="10%" class="text-right nastaleeq">پلانٹ</th>
                     <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="8%" class="text-right nastaleeq">گیٹ پاس</th><?php }?>
                     <th width="10%" class="text-right nastaleeq">تاریخ</th>
                     <th width="2%" class="text-center nastaleeq">سیریل</th>
@@ -99,10 +100,10 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
             ?>
             <tr>
                 <td class="text-right"><?php echo curr_format($balance) ?></td>
-                <td class="text-left" colspan="9"><strong class="nastaleeq">سابقہ</strong></td>
+                <td class="text-left" colspan="10"><strong class="nastaleeq">سابقہ</strong></td>
             </tr>
                 <?php
-                $sql = "select date as datetime_added, gatepass_id, title_urdu, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit, 0 as discount, '' as details, 0 as claim from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and b.machine_id='".$invoice["machine_id"]."'":"")." and date>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' group by delivery_id,color_id union select datetime_added as datetime_added, '', title_urdu, 0, 0, 0, amount as credit, discount as discount, details, claim from customer_payment a left join account c on a.account_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and a.machine_id='".$invoice["machine_id"]."'":"")." and datetime_added>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' order by datetime_added";
+                $sql = "select date as datetime_added, gatepass_id, title_urdu, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit, 0 as discount, '' as details, 0 as claim, b.machine_id from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and b.machine_id='".$invoice["machine_id"]."'":"")." and date>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' group by delivery_id,color_id union select datetime_added as datetime_added, '', title_urdu, 0, 0, 0, amount as credit, discount as discount, details, claim, '' from customer_payment a left join account c on a.account_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and a.machine_id='".$invoice["machine_id"]."'":"")." and datetime_added>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' order by datetime_added";
                 //echo $sql;die;
                 $rs=doquery($sql,$dblink);
 
@@ -143,6 +144,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                             <td class="text-right"><?php echo $r["quantity"]?></td>
                             <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><td class="text-right"><?php echo $r["claim"]?></td><?php }?>
                             <td class="nastaleeq"><?php echo unslash($r["title_urdu"]);?><span style="display: block;font-size: 12px;"><?php echo unslash($r["details"]);?></span></td>
+                            <td class="nastaleeq"><?php echo get_field($r["machine_id"], "machine", "title");?></td>
                             <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><td><?php echo $r["gatepass_id"]?></td><?php }?>
                             <td><?php echo date_convert($r["datetime_added"])?></td>
                             <td class="text-center"><?php echo $sn?></td>
@@ -154,7 +156,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                 else{	
                     ?>
                     <tr>
-                        <td colspan="10"  class="no-record" style="color: #fff">No Result Found</td>
+                        <td colspan="11"  class="no-record" style="color: #fff">No Result Found</td>
                     </tr>
                     <?php
                 }
@@ -167,7 +169,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                     <th class="text-right"></th>
                     <th class="text-right"><?php echo $total_quantity?></th>
                     <th class="text-right"><?php echo $total_claim?></th>
-                    <th class="text-left" colspan="4"><span class="nastaleeq">ٹوٹل</span></th>
+                    <th class="text-left" colspan="5"><span class="nastaleeq">ٹوٹل</span></th>
                 </tr>
             </tbody>
         </table>
