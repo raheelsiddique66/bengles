@@ -87,6 +87,7 @@ if(!empty($end_date)){
     <th>Transaction</th>
     <th align="right">Quantity</th>
     <th align="right">Amount</th>
+    <th align="right">Discount</th>
     <th align="right">Balance</th>
 </tr>
 <?php
@@ -94,7 +95,7 @@ if(!empty($end_date)){
 			$balance=dofetch(doquery($sql,$dblink));
 			$balance = get_customer_balance($customer['id'], date_dbconvert($start_date));
 			//$sql="select concat( 'Delivery # ', a.gatepass_id, ' - ', c.title, ' - ', d.title) as transaction, date as datetime_added, unit_price * sum(quantity) as amount, sum(quantity) as quantity from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id left join design d on b.design_id = d.id where customer_id = '".$customer[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' group by a.id union select 'Payment', datetime_added as datetime_added, -amount, '' from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' order by datetime_added desc";
-            $sql="select concat( 'Delivery # ', a.gatepass_id, ' - ', c.title, ' - ', d.title, ' - ', b.unit_price) as transaction, date as datetime_added, unit_price * sum(quantity) as amount, sum(quantity) as quantity from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id left join design d on b.design_id = d.id where customer_id = '".$customer[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' group by a.id union select 'Payment', datetime_added as datetime_added, -amount, '' from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' order by datetime_added desc";
+            $sql="select concat( 'Delivery # ', a.gatepass_id, ' - ', c.title, ' - ', d.title, ' - ', e.title, ' - ', b.unit_price) as transaction, date as datetime_added, unit_price * sum(quantity) as amount, sum(quantity) as quantity, 0 as discount from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id left join design d on b.design_id = d.id left join machine e on b.machine_id = e.id where customer_id = '".$customer[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' group by a.id union select 'Payment', datetime_added as datetime_added, -amount, '', discount from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' order by datetime_added asc";
             $rs=show_page($rows, $pageNum, $sql);
             ?>
 			<tr>
@@ -113,6 +114,7 @@ if(!empty($end_date)){
                         <td><?php echo unslash($r["transaction"]); ?></td>
                         <td align="right"><?php echo $r["quantity"]; ?></td>
                         <td align="right"><?php echo curr_format($r["amount"]); ?></td>
+                        <td align="right"><?php echo curr_format($r["discount"]); ?></td>
                         <td align="right"><?php echo curr_format($balance); ?></td>
                     </tr>
                     <?php
@@ -122,7 +124,7 @@ if(!empty($end_date)){
             else{
                 ?>
                 <tr>
-                    <td colspan="6"  class="no-record">No Result Found</td>
+                    <td colspan="7"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }

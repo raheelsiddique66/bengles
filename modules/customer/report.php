@@ -71,6 +71,7 @@ if(!empty($end_date)){
                 <th>Transaction</th>
                 <th class="text-right">Quantity</th>
                 <th class="text-right">Amount</th>
+                <th class="text-right">Discount</th>
                 <th class="text-right">Balance</th>
             </tr>
     	</thead>
@@ -80,7 +81,7 @@ if(!empty($end_date)){
             $sql="select sum(amount) as amount from (select concat( 'Delivery #', a.gatepass_id) as transaction, unit_price * quantity as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' union select concat( 'Payment #', id) as transaction, -amount from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59') as transactions ";
 			$balance=dofetch(doquery($sql,$dblink));
 			$balance = get_customer_balance($customer['id'], date_dbconvert($start_date));
-			$sql="select concat( 'Delivery # ', a.gatepass_id, ' - ', c.title, ' - ', d.title, ' - ', b.unit_price) as transaction, date as datetime_added, unit_price * sum(quantity) as amount, sum(quantity) as quantity from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id left join design d on b.design_id = d.id where customer_id = '".$customer[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' group by a.id union select 'Payment', datetime_added as datetime_added, -amount, '' from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' order by datetime_added desc";
+			$sql="select concat( 'Delivery # ', a.gatepass_id, ' - ', c.title, ' - ', d.title, ' - ', e.title, ' - ', b.unit_price) as transaction, date as datetime_added, unit_price * sum(quantity) as amount, sum(quantity) as quantity, 0 as discount from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id left join design d on b.design_id = d.id left join machine e on b.machine_id = e.id where customer_id = '".$customer[ "id" ]."' and date>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and date<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' group by a.id union select 'Payment', datetime_added as datetime_added, -amount, '', discount from customer_payment where customer_id = '".$customer[ "id" ]."' and datetime_added>='".date('Y-m-d',strtotime(date_dbconvert($start_date)))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime(date_dbconvert($end_date)))." 23:59:59' order by datetime_added asc";
             $rs=show_page($rows, $pageNum, $sql);
             ?>
 			<tr>
@@ -99,6 +100,7 @@ if(!empty($end_date)){
                         <td><?php echo unslash($r["transaction"]); ?></td>
                         <td class="text-right"><?php echo $r["quantity"]; ?></td>
                         <td class="text-right"><?php echo curr_format($r["amount"]); ?></td>
+                        <td class="text-right"><?php echo curr_format($r["discount"]); ?></td>
                         <td class="text-right"><?php echo curr_format($balance); ?></td>
                     </tr>
                     <?php 
@@ -106,14 +108,14 @@ if(!empty($end_date)){
                 }
                 ?>
                 <tr>
-                    <td colspan="6" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "customer", $sql, $pageNum)?></td>
+                    <td colspan="7" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "customer", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }
             else{	
                 ?>
                 <tr>
-                    <td colspan="6"  class="no-record">No Result Found</td>
+                    <td colspan="7"  class="no-record">No Result Found</td>
                 </tr>
                 <?php
             }
