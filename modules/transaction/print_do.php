@@ -56,12 +56,12 @@ table {
     </th>
 </tr>
 <tr>
-    <th width="10%" align="right">Ammount</th>
-    <th width="30%">Details</th>
-    <th width="10%">Account From</th>
-    <th width="10%">Account To</th>
-    <th width="15%">Date/Time</th>
     <th width="5%" align="center">S.no</th>
+    <th width="15%">Date/Time</th>
+    <th width="10%">Account To</th>
+    <th width="10%">Account From</th>
+    <th width="30%">Details</th>
+    <th width="10%" align="right">Ammount</th>
 </tr>
 <?php
 $total = 0;
@@ -71,20 +71,21 @@ if( numrows( $rs ) > 0 ) {
 	    $total += $r["amount"];
 		?>
 		<tr>
-            <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
-            <td><?php echo slash($r["details"]); ?></td>
-            <td><?php if($r["reference_id"]==0) echo "Default"; else echo get_field($r["reference_id"], "account","title");?></td>
-            <td><?php if($r["account_id"]==0) echo "Cash"; else echo get_field($r["account_id"], "account","title");?></td>
-            <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
             <td align="center"><?php echo $sn++?></td>
+            <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
+            <td><?php if($r["account_id"]==0) echo "Cash"; else echo get_field($r["account_id"], "account","title");?></td>
+            <td><?php if($r["reference_id"]==0) echo "Default"; else echo get_field($r["reference_id"], "account","title");?></td>
+            <td><?php echo slash($r["details"]); ?></td>
+            <td align="right"><?php echo curr_format(unslash($r["amount"])); ?></td>
         </tr>
 		<?php
 	}
 }
 ?>
     <tr>
+        <th align="right" colspan="5">Total</th>
         <th align="right"><?php echo curr_format($total)?></th>
-        <th align="right" colspan="5">ٹوٹل</th>
+        
     </tr>
 </table>
 <?php

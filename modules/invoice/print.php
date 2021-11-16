@@ -34,6 +34,11 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
             text-align: left;
             font-size: 22px;
         }
+        .contact p{
+            text-align: center;
+    margin: 20px 0px;
+    font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -183,6 +188,9 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                         }
                 }
             ?>
+        </div>
+        <div class="contact">
+            <?php echo get_config('address_phone');?>
         </div>
     </div>
 </div>
