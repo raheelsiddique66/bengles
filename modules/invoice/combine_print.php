@@ -82,6 +82,7 @@ if(isset($_GET["ids"]) && !empty($_GET["ids"])){
                     <th width="5%" class="text-right nastaleeq">تعداد</th>
                     <th width="5%" class="text-right nastaleeq">وائرس</th>
                     <th width="10%" class="text-right nastaleeq">آئٹم</th>
+                    <th width="10%" class="text-right nastaleeq">پلانٹ</th>
                     <th width="8%" class="text-right nastaleeq">گیٹ پاس</th>
                     <th width="10%" class="text-right nastaleeq">تاریخ</th>
                     <th width="2%" class="text-center nastaleeq">سیریل</th>
@@ -113,7 +114,7 @@ if(isset($_GET["ids"]) && !empty($_GET["ids"])){
                 <td class="text-left" colspan="10"><strong class="nastaleeq">سابقہ</strong></td>
             </tr>
                 <?php
-                $sql = "select date as datetime_added, gatepass_id, title_urdu, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit, 0 as discount, '' as details, 0 as claim from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id in (".implode(",", $customer_ids).") and date>='".date('Y-m-d',strtotime($invoices[0]["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoices[count($invoices)-1]["date_to"]))." 23:59:59' group by delivery_id,color_id union select datetime_added as datetime_added, '', title_urdu, 0, 0, 0, amount as credit, discount as discount, details, claim from customer_payment a left join account c on a.account_id = c.id where customer_id in (".implode(",", $customer_ids).") and datetime_added>='".date('Y-m-d',strtotime($invoices[0]["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoices[count($invoices)-1]["date_to"]))." 23:59:59' order by datetime_added";
+                $sql = "select date as datetime_added, gatepass_id, title_urdu, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit, 0 as discount, '' as details, 0 as claim, b.machine_id from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id in (".implode(",", $customer_ids).") and date>='".date('Y-m-d',strtotime($invoices[0]["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoices[count($invoices)-1]["date_to"]))." 23:59:59' group by delivery_id,color_id union select datetime_added as datetime_added, '', title_urdu, 0, 0, 0, amount as credit, discount as discount, details, claim, a.machine_id from customer_payment a left join account c on a.account_id = c.id where customer_id in (".implode(",", $customer_ids).") and datetime_added>='".date('Y-m-d',strtotime($invoices[0]["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoices[count($invoices)-1]["date_to"]))." 23:59:59' order by datetime_added";
                 //echo $sql;die;
                 $rs=doquery($sql,$dblink);
 			    if(numrows($rs)>0){
@@ -146,6 +147,7 @@ if(isset($_GET["ids"]) && !empty($_GET["ids"])){
                             <td class="text-right"><?php echo $r["quantity"]?></td>
                             <td class="text-right"><?php echo $r["claim"]?></td>
                             <td class="nastaleeq"><?php echo unslash($r["title_urdu"]);?><span style="display: block;font-size: 12px;"><?php echo unslash($r["details"]);?></span></td>
+                            <td class="nastaleeq"><?php echo get_field($r["machine_id"], "machine", "title");?></td>
                             <td><?php echo $r["gatepass_id"]?></td>
                             <td><?php echo date_convert($r["datetime_added"])?></td>
                             <td class="text-center"><?php echo $sn?></td>
@@ -157,7 +159,7 @@ if(isset($_GET["ids"]) && !empty($_GET["ids"])){
                 else{	
                     ?>
                     <tr>
-                        <td colspan="11"  class="no-record" style="color: #fff">No Result Found</td>
+                        <td colspan="12"  class="no-record" style="color: #fff">No Result Found</td>
                     </tr>
                     <?php
                 }
