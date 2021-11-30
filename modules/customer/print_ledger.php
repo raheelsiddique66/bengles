@@ -103,10 +103,15 @@ if(!empty($end_date)){
                 <th align="right"><?php echo curr_format($balance); ?></th>
             </tr>
 			<?php
+            $total_quantity = $total_amount = $total_discount = $total_balance = 0;
 			if(numrows($rs)>0){
                 $sn=1;
                 while($r=dofetch($rs)){
 					$balance+=$r["amount"];
+                    $total_quantity+=$r["quantity"];
+                    $total_amount+=$r["amount"];
+                    $total_discount+=$r["discount"];
+                    $total_balance+=$balance;
                     ?>
                     <tr>
                         <td align="center"><?php echo $sn;?></td>
@@ -120,6 +125,15 @@ if(!empty($end_date)){
                     <?php
                     $sn++;
                 }
+                ?>
+                <tr>
+                    <th colspan="3">Total</th>
+                    <th><?php echo $total_quantity;?></th>
+                    <th><?php echo curr_format($total_amount);?></th>
+                    <th><?php echo curr_format($total_discount);?></th>
+                    <th><?php echo curr_format($total_balance);?></th>
+                </tr>
+                <?php
             }
             else{
                 ?>
