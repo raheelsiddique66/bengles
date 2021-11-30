@@ -127,11 +127,11 @@ if(!empty($end_date)){
                 }
                 ?>
                 <tr>
-                    <th colspan="3">Total</th>
-                    <th><?php echo $total_quantity;?></th>
-                    <th><?php echo curr_format($total_amount);?></th>
-                    <th><?php echo curr_format($total_discount);?></th>
-                    <th><?php echo curr_format($total_balance);?></th>
+                    <th colspan="3" align="right">Total</th>
+                    <th align="right"><?php echo $total_quantity;?></th>
+                    <th align="right"><?php echo curr_format($total_amount);?></th>
+                    <th align="right"><?php echo curr_format($total_discount);?></th>
+                    <th align="right"><?php echo curr_format($total_balance);?></th>
                 </tr>
                 <?php
             }
