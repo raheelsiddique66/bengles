@@ -98,10 +98,12 @@ table {
         //$q=dofetch(doquery("select sum(quantity) as quantity from delivery a left join delivery_items b on a.id = b.delivery_id where status = 1 and date>='".date('Y-m-d',strtotime(date_dbconvert($date_from)))."' and date<='".date('Y-m-d',strtotime(date_dbconvert($date_to)))."'",$dblink));
 		//$payment_total += $unit_price*$q["quantity"];
 	?>
+    <?php if($_SERVER['SERVER_NAME'] != 'star.burhanpk.com'){?>
     <tr>
         <th align="right">Income from <?php echo $date_from?> to <?php echo $date_to?></th>
         <th align="right">Rs. <?php echo curr_format($payment_total)?></th>
     </tr>
+    <?php }?>
     <tr>
         <th align="right">Salary from <?php echo $date_from?> to <?php echo $date_to?></th>
         <th align="right">Rs. <?php
@@ -131,10 +133,12 @@ table {
         <th align="right">Total Expense</th>
         <th align="right">Rs. <?php echo curr_format($total+$salary_total)?></th>
     </tr>
+    <?php if($_SERVER['SERVER_NAME'] != 'star.burhanpk.com'){?>
     <tr>
         <th align="right">Net Income</th>
         <th align="right">Rs. <?php echo curr_format($payment_total-$salary_total-$total)?></th>
     </tr>	
+    <?php }?>
 </table>
 <?php
 die;
