@@ -104,6 +104,7 @@ table {
         <th align="right">Rs. <?php echo curr_format($payment_total)?></th>
     </tr>
     <?php }?>
+    <?php if($_SERVER['SERVER_NAME'] != 'star.burhanpk.com'){?>
     <tr>
         <th align="right">Salary from <?php echo $date_from?> to <?php echo $date_to?></th>
         <th align="right">Rs. <?php
@@ -112,6 +113,7 @@ table {
             $salary_total += $rs[ "sum(amount)" ];
         ?></th>
     </tr>
+    <?php }?>
     <?php
     $total = 0;
     $rs = doquery( "select title, sum(amount) as total from expense a left join expense_category b on a.expense_category_id = b.id where a.status=1 $extra group by expense_category_id", $dblink );
