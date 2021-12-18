@@ -76,12 +76,12 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
         	<thead>
                 <tr>
                     <th width="12%" class="text-right nastaleeq"> ٹوٹل رقم</th>
-                    <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="8%" class="text-right nastaleeq">کلیم/RF/ڈسکاؤنٹ/نقصان</th><?php }?>
+                    <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="8%" class="text-right nastaleeq">کلیم/RF</th><?php }?>
                     <th width="8%" class="text-right nastaleeq">جمع</th>
                     <th width="8%" class="text-right nastaleeq">نام</th>
                     <th width="5%" class="text-right nastaleeq">ریٹ</th>
                     <th width="5%" class="text-right nastaleeq">تعداد</th>
-                    <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com' || $_SERVER['SERVER_NAME'] != 'starnew.burhanpk.com'){?><th width="5%" class="text-right nastaleeq">وائرس</th><?php }?>
+                    <?php if($_SERVER['SERVER_NAME'] != 'starnew.burhanpk.com'){?><th width="5%" class="text-right nastaleeq">وائرس</th><?php }?>
                     <th width="20%" class="text-right nastaleeq">آئٹم</th>
                     <?php if($_SERVER['SERVER_NAME'] != 'starnew.burhanpk.com'){?><th width="10%" class="text-right nastaleeq">پلانٹ</th><?php }?>
                     <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="8%" class="text-right nastaleeq">گیٹ پاس</th><?php }?>
@@ -147,7 +147,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                             <td class="text-right"><?php echo curr_format($r["debit"])?></td>
                             <td class="text-right"><?php echo curr_format($r["unit_price"])?></td>
                             <td class="text-right"><?php echo $r["quantity"]?></td>
-                            <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com' || $_SERVER['SERVER_NAME'] != 'starnew.burhanpk.com'){?><td class="text-right"><?php echo $r["claim"]?></td><?php }?>
+                            <?php if($_SERVER['SERVER_NAME'] != 'starnew.burhanpk.com'){?><td class="text-right"><?php echo $r["claim"]?></td><?php }?>
                             <td class="nastaleeq" style="font-weight: bold;"><?php echo unslash($r["title_urdu"]);?><span style="display: block;font-size: 12px;"><?php echo unslash($r["details"]);?></span></td>
                             <?php if($_SERVER['SERVER_NAME'] != 'starnew.burhanpk.com'){?><td class="nastaleeq"><?php echo get_field($r["machine_id"], "machine", "title");?></td><?php }?>
                             <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><td><?php echo $r["gatepass_id"]?></td><?php }?>
