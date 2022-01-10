@@ -47,7 +47,7 @@ else {
         cursor: pointer;
     }
 </style>
-<div ng-app="delivery" ng-controller="vendorDeliveryController" id="vendorDeliveryController">
+<div ng-app="vendor_delivery" ng-controller="vendorDeliveryController" id="vendorDeliveryController">
     <div style="display:none">{{vendor_delivery_id=<?php echo $id?>}}</div>
     <div class="page-header">
         <h1 class="title">{{get_action()}} Vendor Delivery</h1>
