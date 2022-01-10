@@ -62,9 +62,9 @@ table {
 <table width="100%" cellspacing="0" cellpadding="0">
 <thead>
 <tr class="head">
-	<th colspan="18">
+	<th colspan="19">
     	<h1><?php echo get_config( 'site_title' )?></h1>
-    	<h2>Vendor Outgoing List</h2>
+    	<h2>Vendor Delivery List</h2>
         <p>
         	<?php
 			echo "List of";
@@ -99,8 +99,9 @@ table {
 	<th width="10%" rowspan="2" class="text-right">Vendor</th>
 	<?php }?>
     <th width="6%" rowspan="2">Gatepass</th>
+	<th width="6%" rowspan="2">Claim</th>
 	<th width="6%" rowspan="2">Labour</th>
-	<th width="50%" colspan="<?php echo count($sizes)+4?>">Items</th>
+	<th width="60%" colspan="<?php echo count($sizes)+6?>">Items</th>
 </tr>
 <tr>
     <td>Machine</td>
@@ -114,12 +115,16 @@ table {
 	}
 	?>
 	<th class="bg-grey text-center">Total</th>
+	<th class="text-center">Price</th>
+	<th class="bg-grey text-center">Total Price</th>
 </tr>
 </thead>
 <?php
+
 if( numrows( $rs ) > 0 ) {
-	
 	$sn = 1;
+	$grand_price = 0;
+	$grand_total_price = 0;
 	while( $r = dofetch( $rs ) ) {
 		?>
 		<tr>
@@ -129,19 +134,24 @@ if( numrows( $rs ) > 0 ) {
             <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo get_field($r["vendor_id"], "vendor", "vendor_name_urdu" ); ?></span></td>
 			<?php }?>
 			<td align="center"><?php echo $r["gatepass_id"]; ?></td>
+			<td><?php echo unslash($r["claim"]); ?></td>
 			<td><?php echo get_field($r["labour_id"], "labour", "name" ); ?></td>
 					<?php
-					$rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from vendor_outgoing_items where vendor_outgoing_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
+					$rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from vendor_delivery_items where vendor_delivery_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
 					if(numrows($rs1)>0){
+						$price = 0;
+						$total_price = 0;
 						$totals = [];
 						foreach($sizes as $size_id => $size){
 							$totals[$size_id] = 0;
 						}
 						$cnt = 0;
 						while($r1=dofetch($rs1)){
+							$price += $r1["unit_price"];
 							$cnt++;
 							if($cnt>1){
 								echo '</tr><tr>
+								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
@@ -168,13 +178,17 @@ if( numrows( $rs ) > 0 ) {
 								<td class="text-right"><?php echo isset($quantities[$size_id])?$quantities[$size_id]:"--";?></td>
 								<?php
 							}
+							$total_price +=  $t * $r1["unit_price"];
 							?>
 							<th class="text-right bg-grey"><?php echo $t?></th>
+							<td class="text-right color3-bg"><?php echo curr_format($r1["unit_price"])?></td>
+							<th class="text-right bg-grey"><?php echo $t * $r1["unit_price"]?></th>
 							<?php
 						}
 						?>
 						</tr>
 						<tr>
+							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
@@ -196,8 +210,12 @@ if( numrows( $rs ) > 0 ) {
 								<th class="text-right bg-grey"><?php echo $total?></th>
 								<?php
 							}
+							$grand_price += $price;
+							$grand_total_price += $total_price;
 							?>
 							<th class="text-right bg-grey"><?php echo $t?></th>
+							<th class="text-right bg-grey"></th>
+                            <th class="text-right bg-grey"><?php echo $total_price?></th>
 						<?php
 					}
 					?>
@@ -208,7 +226,7 @@ if( numrows( $rs ) > 0 ) {
 }
 ?>
 <tr>
-	<td colspan="<?php if(empty($vendor_id)) echo "5"; else echo "4";?>"></td>
+	<td colspan="<?php if(empty($vendor_id)) echo "6"; else echo "5";?>"></td>
 	<th colspan="3" class="text-right bg-grey">Grand Total</th>
 	<?php
 	$final_total = 0;
@@ -220,6 +238,9 @@ if( numrows( $rs ) > 0 ) {
 	}
 	?>
 	<th class="text-right bg-grey"><?php echo $final_total?></th>
+	<th class="text-right bg-grey"></th>
+	<th class="text-right bg-grey"></th>
+	<th class="text-right bg-grey"><?php echo $grand_total_price?></th>
 </tr>
 </table>
 <?php

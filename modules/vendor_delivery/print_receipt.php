@@ -1,7 +1,7 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
 if(isset($_GET["id"]) && !empty($_GET["id"])){
-    $colors = [];
+	$colors = [];
     $rs2 = doquery("select * from color order by sortorder", $dblink);
     while($r2=dofetch($rs2)){
         $colors[$r2["id"]] = unslash($r2["title_urdu"]);
@@ -16,7 +16,7 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
     while($r4=dofetch($rs4)){
         $sizes[$r4["id"]] = unslash($r4["title"]);
     }
-	$vendor_outgoing=dofetch(doquery("select * from vendor_outgoing where id='".slash($_GET["id"])."'", $dblink));
+	$vendor_delivery=dofetch(doquery("select * from vendor_delivery where id='".slash($_GET["id"])."'", $dblink));
 	?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +38,7 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
 	clear: both;
 }
 #main {
-width:95mm;
+width:106mm;
 border:0;
 }
 a {
@@ -192,11 +192,11 @@ footer {
     	<?php $reciept_logo=get_config("reciept_logo"); if(empty($reciept_logo)) echo $site_title; else { ?><img src="<?php echo $file_upload_root;?>config/<?php echo $reciept_logo?>" /><?php }?>
     </div>
     <span class="address"><?php echo get_config("address_phone")?></span>
-    <div id="receipt" style="width: 160px">Gatepass No: <strong><?php echo $vendor_outgoing["gatepass_id"]; ?></div>
+    <div id="receipt" style="width: 160px">Gatepass No: <strong><?php echo $vendor_delivery["gatepass_id"]; ?></div>
     <div class="contentbox">
-        <p>Date: <strong style="float:right"><?php echo date_convert($vendor_outgoing["date"]); ?></strong></p>
-        <p class="">Vendor: <span class="nastaleeq"><strong style="float:right"><?php echo get_field($vendor_outgoing["vendor_id"], "vendor", "vendor_name_urdu" ); ?></strong></span></p>
-		<p>Labour: <strong style="float:right"><?php echo get_field( unslash($vendor_outgoing["labour_id"]), "labour", "name" ); ?></strong></p>
+        <p>Date: <strong style="float:right"><?php echo date_convert($vendor_delivery["date"]); ?></strong></p>
+        <p>Vendor: <span class="nastaleeq"><strong style="float:right"><?php echo get_field($vendor_delivery["vendor_id"], "vendor", "vendor_name_urdu" ); ?></strong></span></p>
+		<p>Labour: <strong style="float:right"><?php echo get_field( unslash($vendor_delivery["labour_id"]), "labour", "name" ); ?></strong></p>
         <table class="table table-hover list">
             <thead>
             <tr>
@@ -210,16 +210,21 @@ footer {
                 }
                 ?>
                 <th class="color3-bg text-center">Total</th>
+				<th class="color3-bg text-center">Price</th>
+                <th class="color3-bg text-center">Total</th>
             </tr>
             </thead>
             <?php
-            $rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from vendor_outgoing_items where vendor_outgoing_id='".$vendor_outgoing[ "id" ]."' group by color_id,design_id", $dblink );
+            $rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from vendor_delivery_items where vendor_delivery_id='".$vendor_delivery[ "id" ]."' group by color_id,design_id", $dblink );
             if(numrows($rs1)>0){
+				$price = 0;
+				$total_price = 0;
                 $totals = [];
                 foreach($sizes as $size_id => $size){
                     $totals[$size_id] = 0;
                 }
                 while($r1=dofetch($rs1)){
+					$price += $r1["unit_price"];
                     ?>
                     <tr>
                         <td class="nastaleeq"><?php echo $colors[$r1["color_id"]]?></td>
@@ -237,9 +242,12 @@ footer {
                             ?>
                             <td class="text-right"><?php echo isset($quantities[$size_id])?$quantities[$size_id]:"--";?></td>
                             <?php
-                        }
+						}
+						$total_price +=  $t * $r1["unit_price"];
                         ?>
                         <td class="text-right color3-bg"><?php echo $t?></td>
+						<td class="text-right color3-bg"><?php echo $r1["unit_price"]?></td>
+                        <td class="text-right color3-bg"><?php echo $t * $r1["unit_price"]?></td>
                     </tr>
                     <?php
                 }
@@ -256,6 +264,8 @@ footer {
                     }
                     ?>
                     <td class="text-right color3-bg"><?php echo $t?></td>
+					<td class="text-right color3-bg"><?php echo $price?></td>
+                    <td class="text-right color3-bg"><?php echo $total_price?></td>
                 </tr>
                 <?php
             }

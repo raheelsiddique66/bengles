@@ -24,9 +24,6 @@ $is_search=true;
         <li class="col-xs-12 col-lg-12 col-sm-12">
             <div>
                 <form class="form-horizontal" action="" method="get">
-<!--                    <div class="col-sm-3">-->
-<!--                      <input type="text" title="Enter String" value="" name="q" id="search" class="form-control">-->
-<!--                    </div>-->
                     <div class="col-sm-3 col-xs-8">
                         <select data-ng-model="vendor_id" class="form-control" chosen>
                             <option value="0">Select Vendor</option>
