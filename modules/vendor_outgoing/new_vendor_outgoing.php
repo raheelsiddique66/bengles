@@ -99,12 +99,12 @@ else {
                 </div>
             </div>
         </div>
-        <div class="labour-add" ng-show="showPopupCustomer">
-            <button data-fancybox-close="" class="fancybox-close-small popup_close" title="Close" ng-click="togglePopupCustomer()"></button>
+        <div class="labour-add" ng-show="showPopupVendor">
+            <button data-fancybox-close="" class="fancybox-close-small popup_close" title="Close" ng-click="togglePopupVendor()"></button>
             <div style="padding: 20px;">
-                Customer Name: <span><input id="cursor_focus" type="text" placeholder="Enter Customer Name" ng-model="customer.customer_name"></span>
-                Customer Name urdu: <span><input id="cursor_focus" type="text" placeholder="Enter Customer Name" class="nastaleeq" ng-model="customer.customer_name_urdu"></span>
-                <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_customer()" title="Submit Customer"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
+                Vendor Name: <span><input id="cursor_focus" type="text" placeholder="Enter Vendor Name" ng-model="vendor.vendor_name"></span>
+                Vendor Name urdu: <span><input id="cursor_focus" type="text" placeholder="Enter Vendor Name" class="nastaleeq" ng-model="vendor.vendor_name_urdu"></span>
+                <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_vendor()" title="Submit Vendor"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
                 <br><br><div class="alert alert-danger" ng-show="box_errors.length > 0">
                     <p ng-repeat="error in box_errors">{{error}}</p>
                 </div>
@@ -143,7 +143,7 @@ else {
                             <thead>
                                 <tr>
                                     <th width="2%" class="text-center">S.no</th>
-                                    <th width="10%">Customer</th>
+                                    <th width="10%">Vendor</th>
                                     <th width="80%">Items</th>
                                     <th class="text-center" width="5%">Actions</th>
                                 </tr>
@@ -155,13 +155,13 @@ else {
                                     <td>
                                         <table class="table table-hover list">
                                             <tr>
-                                                <th>Customer</th>
+                                                <th>Vendor</th>
                                                 <td style="position:relative">
-                                                    <select id="customer_id" ng-model="vendor_outgoing.customer_id" chosen>
-                                                        <option value="0" selected="false">Select Customer</option>
-                                                        <option ng-repeat="customer in customers" value="{{ customer.id }}">{{ customer.customer_name }}</option>
+                                                    <select id="vendor_id" ng-model="vendor_outgoing.vendor_id" chosen>
+                                                        <option value="0" selected="false">Select Vendor</option>
+                                                        <option ng-repeat="vendor in vendors" value="{{ vendor.id }}">{{ vendor.vendor_name }}</option>
                                                     </select>
-                                                    <a href="" class="add_customer_link" ng-click="togglePopupCustomer()">+</a>
+                                                    <a href="" class="add_customer_link" ng-click="togglePopupVendor()">+</a>
                                                 </td>
                                             </tr>
                                             <tr>

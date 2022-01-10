@@ -193,7 +193,7 @@ angular.module('vendoroutgoing', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 
 				$scope.wctAJAX( data, function( response ){
 					$scope.processing = false;
 					if( response.status == 1 ) {
-						window.location.href='vendor_outgoing_manage.php?tab=new_delivery&id='+response.id;
+						window.location.href='vendor_outgoing_manage.php?tab=new_vendor_outgoing&id='+response.id;
 					}
 					else{
 						$scope.errors = response.error;
