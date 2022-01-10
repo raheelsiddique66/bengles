@@ -48,7 +48,7 @@ else {
     }
 </style>
 <div ng-app="vendor_outgoing" ng-controller="vendorOutgoingController" id="vendorOutgoingController">
-    <div style="display:none">{{vendor_id=<?php echo $id?>}}</div>
+    <div style="display:none">{{vendor_outgoing_id=<?php echo $id?>}}</div>
     <div class="page-header">
         <h1 class="title">{{get_action()}} Vendor Outgoing</h1>
         <ol class="breadcrumb">

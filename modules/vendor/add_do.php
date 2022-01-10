@@ -9,7 +9,7 @@ if(isset($_POST["vendor_add"])){
 		$sql="INSERT INTO vendor (vendor_name, phone, address, vendor_name_urdu, balance, machine_id, sortorder) VALUES ('".slash($vendor_name)."', '".slash($phone)."', '".slash($address)."', '".slash($vendor_name_urdu)."', '".slash($balance)."', '".slash($machine_id)."', '".slash($sortorder)."')";
 		doquery($sql,$dblink);
 		unset($_SESSION["vendor_manage"]["add"]);
-		header('Location: vendor_manage.php?tab=list&msg='.url_encode("Sucessfully Added"));
+		header('Location: vendor_manage.php?tab=list&msg='.url_encode("Successfully Added"));
 		die;
 	}
 	else{

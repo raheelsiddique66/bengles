@@ -25,7 +25,7 @@ if(isset($_SESSION["vendor_manage"]["list"]["q"]))
 else
     $q="";
 if(!empty($q)){
-    $extra.=" and customer_name like '%".$q."%'";
+    $extra.=" and vendor_name like '%".$q."%'";
     $is_search=true;
 }
 if(isset($_GET["machine_id"])){

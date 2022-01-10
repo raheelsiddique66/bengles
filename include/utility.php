@@ -1292,7 +1292,6 @@ function get_vendor_balance( $vendor_id, $dt = 0 ){
     if( numrows( $vendor ) > 0 ) {
         $vendor = dofetch( $vendor );
         $sql="select sum(amount) as amount from (select b.id, 0 as type, unit_price*quantity as amount from vendor_delivery a left join vendor_delivery_items b on a.id = b.vendor_delivery_id where vendor_id = '".$vendor_id."' and date <='".$dt."' and a.status = 1 union select vendor_payment.id, 1 as type, -amount-discount as amount from vendor_payment where vendor_id = '".$vendor_id."' and datetime_added <='".$dt." 00:00:00') as transactions";
-        //echo $sql;
         $balance=dofetch(doquery($sql,$dblink));
         $balance = $vendor["balance"] + $balance[ "amount" ];
     }
@@ -1330,9 +1329,6 @@ function get_vendor_total_balance( $machine_id = [], $dt = 0 ){
     if( empty( $dt ) ) {
         $dt = date( "Y-m-d H:i:s" );
     }
-//    if( empty( $machine_id ) ) {
-//        $machine_id = 0;
-//    }
     $total = 0;
     if(!empty($machine_id) && !empty($machine_id[0])){
         $vendors = doquery( "select id, balance from vendor where status = 1 and machine_id in (".implode(",",$machine_id).") $extra ", $dblink );
@@ -1342,7 +1338,6 @@ function get_vendor_total_balance( $machine_id = [], $dt = 0 ){
     }
     if( numrows( $vendors ) > 0 ) {
         while($vendor = dofetch( $vendors )) {
-            // $sql = "select sum(amount) as amount from (select concat( 'Delivery #', a.id) as transaction, unit_price*quantity as amount from vendor_delivery a left join vendor_delivery_items b on a.id = b.vendor_delivery_id where date <='" . $dt . "' and vendor_id = '".$vendor["id"]."' union select concat( 'Payment #', id) as transaction, -amount-discount as amount from vendor_payment where datetime_added <='" . $dt . "' and vendor_id = '".$vendor["id"]."') as transactions";
             $sql="select sum(amount) as amount from (select b.id, 0 as type, unit_price*quantity as amount from vendor_delivery a left join vendor_delivery_items b on a.id = b.vendor_delivery_id where vendor_id = '".$vendor["id"]."' and date <='".$dt."' and a.status = 1 union select vendor_payment.id, 1 as type, -amount-discount as amount from vendor_payment where vendor_id = '".$vendor["id"]."' and datetime_added <='".$dt." 00:00:00') as transactions";
             $balance = dofetch(doquery($sql, $dblink));
             $balance = $vendor["balance"] + $balance["amount"];
