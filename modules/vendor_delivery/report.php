@@ -239,7 +239,6 @@ if( numrows( $rs ) > 0 ) {
 	?>
 	<th class="text-right bg-grey"><?php echo $final_total?></th>
 	<th class="text-right bg-grey"></th>
-	<th class="text-right bg-grey"></th>
 	<th class="text-right bg-grey"><?php echo $grand_total_price?></th>
 </tr>
 </table>
