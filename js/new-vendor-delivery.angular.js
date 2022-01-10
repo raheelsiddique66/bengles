@@ -69,22 +69,6 @@ angular.module('vendordelivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 
 			id: "",
 			title: "",
 		};
-		// $scope.vendor_delivery = {
-		// 	id: 0,
-		// 	date: '',
-		// 	vendor_id: 0,
-		// 	gatepass_id: '',
-		// 	vendor_delivery_items: [],
-		// };
-		// $scope.vendor_delivery_item = {
-		// 	"color_id":"5",
-		// 	"design_id": "",
-		// 	"machine_id": "7",
-		// 	"quantity": [],
-		// 	"extra": 0,
-		// 	"unit_price": 0
-		// };
-		
 		$scope.deliveries= [];
         
         $scope.vendor_delivery = {
@@ -134,17 +118,10 @@ angular.module('vendordelivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 
 					if($scope.deliveries.length == 0) {
 						$scope.deliveries.push( angular.copy( $scope.vendor_delivery ) );
 						$scope.deliveries[0].vendor_delivery_items.push( angular.copy( $scope.vendor_delivery_item ) );
-						//$scope.add(-1);
-						//$scope.add_item(-1);
-						//$scope.deliveries[0].vendor_delivery_items.push( angular.copy( $scope.vendor_delivery_item ) );
 					}
 					setTimeout(function(){init_date_picker();}, 100);
 				});
 			};
-			// $scope.wctAJAX( {action: 'get_vendor_delivery', date: $scope.vendor_delivery.date}, function( response ){
-			// 	$scope.vendor_delivery = response;
-			// });
-			// $scope.vendor_delivery.vendor_delivery_items.push( angular.copy( $scope.vendor_delivery_item ) );
 		});
 		
 		$scope.get_action = function(){
@@ -155,22 +132,7 @@ angular.module('vendordelivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 
 				return 'Add New';
 			}
 		}
-		// $scope.add = function( position ){
-        //     $scope.deliver.deliveries.splice(position+1, 0, angular.copy( $scope.vendor_delivery ) );
-		// 	$scope.deliver.deliveries[position+1].vendor_delivery_items.push( angular.copy( $scope.vendor_delivery_item ) );
-        //    $scope.update_grand_total(position);
-        // }
 
-        // $scope.remove = function( position ){
-        //     if( $scope.deliver.deliveries.length > 1 ){
-        //         $scope.deliver.deliveries.splice( position, 1 );
-        //     }
-        //     else {
-        //         $scope.deliver.deliveries = [];
-        //         $scope.deliver.deliveries.push( angular.copy( $scope.vendor_delivery ) );
-        //     }
-        //     $scope.update_grand_total(position);
-        // }
 		$scope.add_item = function( position, parent ){
             $scope.deliveries[parent].vendor_delivery_items.splice(position+1, 0, angular.copy( $scope.vendor_delivery_item ) );
         }
@@ -231,17 +193,15 @@ angular.module('vendordelivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 
 		}
 		$scope.getTotalQty = function( index, size_id, parent ){
 			var total = 0;
-			//for(var a = 0; a < $scope.deliveries.length; a++){
-				for(var i = 0; i < $scope.deliveries[parent].vendor_delivery_items.length; i++){
-					if( index == -1 || index == i ){
-						for( var j = 0; j < $scope.sizes.length; j++ ){
-							if( ( size_id == -1 || size_id == $scope.sizes[j].id ) && $scope.deliveries[parent].vendor_delivery_items[i].quantity[$scope.sizes[j].id] ){
-								total += Number($scope.deliveries[parent].vendor_delivery_items[i].quantity[$scope.sizes[j].id]);
-							}
+			for(var i = 0; i < $scope.deliveries[parent].vendor_delivery_items.length; i++){
+				if( index == -1 || index == i ){
+					for( var j = 0; j < $scope.sizes.length; j++ ){
+						if( ( size_id == -1 || size_id == $scope.sizes[j].id ) && $scope.deliveries[parent].vendor_delivery_items[i].quantity[$scope.sizes[j].id] ){
+							total += Number($scope.deliveries[parent].vendor_delivery_items[i].quantity[$scope.sizes[j].id]);
 						}
 					}
 				}
-			//}
+			}
 			return total;
 		}
         $scope.update_grand_total = function(){
@@ -277,7 +237,6 @@ angular.module('vendordelivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 
 			});
 		}
 		$scope.save_vendor_delivery = function () {
-            //console.log($scope.vendor_outgoing.vendor_outgoing_items);
 			$scope.errors = [];
 			if( $scope.processing == false ){
 				$scope.processing = true;

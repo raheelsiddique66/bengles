@@ -102,17 +102,6 @@ angular.module('vendoroutgoing', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 
 					setTimeout(function(){init_date_picker();}, 100);
 				});
 			};
-			// if( $scope.vendor_outgoing_id > 0 ) {
-			// 	$scope.wctAJAX( {action: 'get_vendor_outgoing', id: $scope.vendor_outgoing_id}, function( response ){
-			// 		$scope.vendor_outgoing = response;
-			// 	});
-			// }
-			// else {
-			// 	$scope.wctAJAX( {action: 'get_date'}, function( response ){
-            //         $scope.vendor_outgoing.date = JSON.parse( response );
-            //     });
-			// 	$scope.vendor_outgoing.vendor_outgoing_items.push( angular.copy( $scope.vendor_outgoing_item ) );
-			// }
 		});
 		
 		$scope.get_action = function(){
@@ -196,7 +185,6 @@ angular.module('vendoroutgoing', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 
 			});
 		}
 		$scope.save_vendor_outgoing = function () {
-            //console.log($scope.vendor_outgoing.vendor_outgoing_items);
 			$scope.errors = [];
 			if( $scope.processing == false ){
 				$scope.processing = true;

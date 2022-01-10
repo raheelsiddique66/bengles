@@ -86,7 +86,6 @@ angular.module('vendorDashboard', ['ngAnimate', 'angularMoment', 'ui.bootstrap',
 			});
 		}
 		$scope.save_record = function () {
-			//console.log($scope.incoming.incoming_items);
 			$scope.errors = [];
 			if( $scope.processing == false ){
 				$scope.processing = true;

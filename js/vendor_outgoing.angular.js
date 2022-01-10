@@ -167,7 +167,6 @@ angular.module('vendor_outgoing', ['ngAnimate', 'angularMoment', 'ui.bootstrap',
 			});
 		}
 		$scope.save_vendor_outgoing = function () {
-            //console.log($scope.vendor_outgoing.vendor_outgoing_items);
 			$scope.errors = [];
 			if( $scope.processing == false ){
 				$scope.processing = true;

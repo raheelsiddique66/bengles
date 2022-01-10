@@ -221,7 +221,6 @@ angular.module('vendor_delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap',
 			});
 		}
 		$scope.save_vendor_delivery = function () {
-            //console.log($scope.vendor.vendor_outgoing_items);
 			$scope.errors = [];
 			if( $scope.processing == false ){
 				$scope.processing = true;
