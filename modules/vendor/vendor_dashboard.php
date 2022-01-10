@@ -140,7 +140,7 @@ $is_search=true;
             </div>
             <div class="col-md-9">
                 <div id="total-sale">
-                    <h2 class="total-heading" style="margin-top:0">Incoming</h2>
+                    <h2 class="total-heading" style="margin-top:0">Vendor Outgoing</h2>
                     <div class="clearfix">
                         <div class="col-md-12">
                             <div class="panel-body table-responsive">
@@ -154,22 +154,22 @@ $is_search=true;
                                         <th>ITEMS</th>
                                         <th width="5%" class="text-right">Actions</th>
                                     </tr>
-                                    <tr data-ng-repeat="incoming in incomings">
+                                    <tr data-ng-repeat="vendor_outgoing in vendor_outgoings">
                                         <td class="text-center">{{ $index+1 }}</td>
-                                        <td>{{ incoming.date }}</td>
-                                        <td>{{ incoming.gatepass_id }}</td>
-                                        <td>{{ incoming.vendor_name }}</td>
-                                        <td>{{ incoming.labour }}</td>
+                                        <td>{{ vendor_outgoing.date }}</td>
+                                        <td>{{ vendor_outgoing.gatepass_id }}</td>
+                                        <td>{{ vendor_outgoing.vendor_name }}</td>
+                                        <td>{{ vendor_outgoing.labour }}</td>
                                         <td></td>
-                                        <td class="text-right"><a href="incoming_manage.php?tab=addedit&id={{ incoming.id }}" class="fancybox_iframe"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;</td>
+                                        <td class="text-right"><a href="vendor_outgoing_manage.php?tab=addedit&id={{ vendor_outgoing.id }}" class="fancybox_iframe"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;</td>
                                     </tr>
-                                    <tr data-ng-if="incomings.length==0">
+                                    <tr data-ng-if="vendor_outgoings.length==0">
                                         <th colspan="7">{{ msg }}</th>
                                     </tr>
                                 </table>
                                 <div class="fancybox-btn">
-                                    <a href="incoming_manage.php?vendor_id={{ vendor_id }}" class="btn fancybox_iframe btn-default btn-l">View All Incoming</a>
-                                    <a href="incoming_manage.php?tab=addedit" class="btn f-iframe btn-danger btn-l">Add Incoming</a>
+                                    <a href="vendor_outgoing_manage.php?vendor_id={{ vendor_id }}" class="btn fancybox_iframe btn-default btn-l">View All Vendor Outgoing</a>
+                                    <a href="vendor_outgoing_manage.php?tab=addedit" class="btn f-iframe btn-danger btn-l">Add Vendor Outgoing</a>
                                 </div>
                             </div>
                         </div>

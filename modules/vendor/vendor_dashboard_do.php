@@ -25,10 +25,10 @@ if(isset($_POST["action"])){
             extract($_POST);
             $_SESSION["manage_vendor"]["vendor_id"] = $vendor_id;
             $rs = doquery( "SELECT a.*, b.vendor_name FROM `vendor_outgoing` a left join vendor b on a.vendor_id = b.id left join vendor_outgoing_items c on a.id = c.vendor_outgoing_id ".(!empty($vendor_id)?"where vendor_id = '".$vendor_id."'":"")." group by vendor_outgoing_id order by gatepass_id desc limit 0, 10", $dblink );
-            $incomings = array();
+            $vendor_outgoings = array();
             if( numrows( $rs ) > 0 ) {
                 while( $r = dofetch( $rs ) ) {
-                    $incomings[] = array(
+                    $vendor_outgoings[] = array(
                         "id" => $r[ "id" ],
                         "gatepass_id" => unslash($r[ "gatepass_id" ]),
                         "date" => date_convert($r[ "date" ]),
@@ -36,8 +36,8 @@ if(isset($_POST["action"])){
                         "vendor_name" => $r["vendor_name"],
                         "labour" => get_field($r[ "labour_id" ], "labour", "name")
                     );
-                    $incoming_items = array();
-                    $rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from incoming_items where incoming_id='".$r[ "id" ]."'  group by color_id,design_id", $dblink );
+                    $vendor_outgoing_items = array();
+                    $rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from vendor_outgoing_items where vendor_outgoing_id='".$r[ "id" ]."'  group by color_id,design_id", $dblink );
                     if(numrows($rs1)>0){
                         while($r1=dofetch($rs1)){
                             $quantities = [];
@@ -45,9 +45,9 @@ if(isset($_POST["action"])){
                                 $size = explode("x", $size);
                                 $quantities[$size[0]] = $size[1];
                             }
-                            $incoming_items[] = array(
+                            $vendor_outgoing_items[] = array(
                                 "id" => $r1["id"],
-                                "incoming_id" => $r1[ "incoming_id" ],
+                                "vendor_outgoing_id" => $r1[ "vendor_outgoing_id" ],
                                 "machine_id" => $r1[ "machine_id" ],
                                 "color_id" => $r1["color_id"],
                                 "size_id" => $r1[ "size_id" ],
@@ -59,7 +59,7 @@ if(isset($_POST["action"])){
                 }
                 $response = array(
                     "status" => true,
-                    "incoming" => $incomings
+                    "vendor_outgoing" => $vendor_outgoings
                 );
             }
             else{
@@ -74,10 +74,10 @@ if(isset($_POST["action"])){
             extract($_POST);
             $_SESSION["manage_vendor"]["vendor_id"] = $vendor_id;
             $rs = doquery( "SELECT a.*, b.vendor_name FROM `vendor_delivery` a left join vendor b on a.vendor_id = b.id left join vendor_delivery_items c on a.id = c.vendor_delivery_id ".(!empty($vendor_id)?"where vendor_id = '".$vendor_id."'":"")." group by vendor_delivery_id order by gatepass_id desc limit 0, 10", $dblink );
-            $delivery = array();
+            $vendor_delivery = array();
             if( numrows( $rs ) > 0 ) {
                 while( $r = dofetch( $rs ) ) {
-                    $delivery[] = array(
+                    $vendor_delivery[] = array(
                         "id" => $r[ "id" ],
                         "gatepass_id" => unslash($r[ "gatepass_id" ]),
                         "date" => date_convert($r[ "date" ]),
@@ -85,8 +85,8 @@ if(isset($_POST["action"])){
                         "vendor_name" => $r["vendor_name"],
                         "labour" => get_field($r[ "labour_id" ], "labour", "name")
                     );
-                    $delivery_items = array();
-                    $rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from delivery_items where delivery_id='".$r[ "id" ]."'  group by color_id,design_id", $dblink );
+                    $vendor_delivery_items = array();
+                    $rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from vendor_delivery_items where vendor_delivery_id='".$r[ "id" ]."'  group by color_id,design_id", $dblink );
                     if(numrows($rs1)>0){
                         while($r1=dofetch($rs1)){
                             $quantities = [];
@@ -94,9 +94,9 @@ if(isset($_POST["action"])){
                                 $size = explode("x", $size);
                                 $quantities[$size[0]] = $size[1];
                             }
-                            $delivery_items[] = array(
+                            $vendor_delivery_items[] = array(
                                 "id" => $r1["id"],
-                                "delivery_id" => $r1[ "delivery_id" ],
+                                "vendor_delivery_id" => $r1[ "vendor_delivery_id" ],
                                 "machine_id" => $r1[ "machine_id" ],
                                 "color_id" => $r1["color_id"],
                                 "size_id" => $r1[ "size_id" ],
@@ -108,7 +108,7 @@ if(isset($_POST["action"])){
                 }
                 $response = array(
                     "status" => true,
-                    "delivery" => $delivery
+                    "vendor_delivery" => $vendor_delivery
                 );
             }
             else{

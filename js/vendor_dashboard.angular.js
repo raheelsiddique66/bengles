@@ -1,6 +1,6 @@
 angular.module('vendorDashboard', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angularjs-datetime-picker', 'localytics.directives']).controller('vendorDashboardController',
 	function ($scope, $http, $interval, $filter, $timeout) {
-		$scope.incomings = [];
+		$scope.vendor_outgoings = [];
 		$scope.deliveries = [];
 		$scope.washing = [];
 		$scope.vendors = [];
@@ -23,17 +23,17 @@ angular.module('vendorDashboard', ['ngAnimate', 'angularMoment', 'ui.bootstrap',
 			});
 		});
 		$scope.get_records = function(){
-			$scope.wctAJAX( {action: 'get_incoming', vendor_id: $scope.vendor_id}, function( response ){
+			$scope.wctAJAX( {action: 'get_vendor_outgoing', vendor_id: $scope.vendor_id}, function( response ){
 				if(response.status==1){
-					$scope.incomings = response.incoming;
+					$scope.vendor_outgoings = response.vendor_outgoing;
 				}
 				else{
 					$scope.msg = response.msg;
 				}
 			});
-			$scope.wctAJAX( {action: 'get_delivery', vendor_id: $scope.vendor_id}, function( response ){
+			$scope.wctAJAX( {action: 'get_vendor_delivery', vendor_id: $scope.vendor_id}, function( response ){
 				if(response.status==1){
-					$scope.deliveries = response.delivery;
+					$scope.deliveries = response.vendor_delivery;
 				}
 				else{
 					$scope.msg = response.msg;
