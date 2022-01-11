@@ -138,7 +138,7 @@ else {
                     <label class="form-label" for="labour_id">Labour </label>
                 </div>
                 <div class="col-sm-10">
-                    <select id="labour_id" ng-model="vendor_outgoing.labour_id" chosen>
+                    <select id="labour_id" ng-model="vendor_outgoing.labour_id">
                         <option value="0" selected="false">Select Labour</option>
                         <option ng-repeat="labour in labours" value="{{ labour.id }}">{{ labour.name }}</option>
                     </select>
@@ -183,19 +183,19 @@ else {
                                 <tr ng-repeat="vendor_outgoing_item in vendor_outgoing.vendor_outgoing_items">
                                     <td class="text-center serial_number">{{ $index+1 }}</td>
                                     <td>
-                                        <select title="Choose Option" ng-model="vendor_outgoing.vendor_outgoing_items[$index].machine_id">
-                                            <option value="0">Select Machine</option>
+                                        <select title="Choose Option" ng-model="vendor_outgoing.vendor_outgoing_items[$index].machine_id" chosen>
+                                            <option value="">Select Machine</option>
                                             <option ng-repeat="machine in machines" value="{{ machine.id }}">{{ machine.title }}</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <select title="Choose Option" ng-model="vendor_outgoing.vendor_outgoing_items[$index].design_id">
+                                        <select title="Choose Option" ng-model="vendor_outgoing.vendor_outgoing_items[$index].design_id" chosen>
                                             <option value="">Select Design</option>
                                             <option ng-repeat="design in designs" value="{{ design.id }}">{{ design.title }}</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <select title="Choose Option" ng-model="vendor_outgoing.vendor_outgoing_items[$index].color_id">
+                                        <select title="Choose Option" ng-model="vendor_outgoing.vendor_outgoing_items[$index].color_id" chosen>
                                             <option value="">Select Color</option>
                                             <option ng-repeat="color in colors" value="{{ color.id }}">{{ color.title }}</option>
                                         </select>

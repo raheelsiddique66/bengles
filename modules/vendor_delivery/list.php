@@ -29,7 +29,7 @@ if(!defined("APP_START")) die("No Direct Access");
                   <input type="text" title="Enter String" value="<?php echo $q;?>" name="q" id="search" class="form-control" >  
                 </div>
                 <div class="col-sm-2 col-xs-8">
-                    <select name="vendor_id" id="vendor_id" class="form-control">
+                    <select name="vendor_id" id="vendor_id" class="form-control select_multiple">
                         <option value=""<?php echo ($vendor_id=="")? " selected":"";?>>Select Vendor</option>
                         <?php
                             $res=doquery("select * from vendor order by vendor_name",$dblink);
@@ -44,7 +44,7 @@ if(!defined("APP_START")) die("No Direct Access");
                     </select>
                 </div>
                 <div class="col-sm-2 col-xs-8">
-                    <select name="machine_id" id="machine_id" class="form-control">
+                    <select name="machine_id" id="machine_id" class="form-control select_multiple">
                         <option value=""<?php echo ($machine_id=="")? " selected":"";?>>Select Machine</option>
                         <?php
                             $res=doquery("select * from machine order by title",$dblink);

@@ -65,7 +65,7 @@ angular.module('vendor_outgoing', ['ngAnimate', 'angularMoment', 'ui.bootstrap',
 		$scope.vendor_outgoing_item = {
 			"color_id":"",
 			"design_id": "",
-			"machine_id": 0,
+			"machine_id": "",
 			"quantity": [],
 		};
 		angular.element(document).ready(function () {

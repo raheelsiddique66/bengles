@@ -191,19 +191,19 @@ else {
                                             </tr>
                                             <tr ng-repeat="vendor_delivery_item in vendor_delivery.vendor_delivery_items">
                                                 <td>
-                                                    <select title="Choose Option" ng-model="vendor_delivery_item.machine_id">
-                                                        <option value="0">Select Machine</option>
+                                                    <select title="Choose Option" ng-model="vendor_delivery_item.machine_id" chosen>
+                                                        <option value="">Select Machine</option>
                                                         <option ng-repeat="machine in machines" value="{{ machine.id }}">{{ machine.title }}</option>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select title="Choose Option" ng-model="vendor_delivery_item.design_id">
+                                                    <select title="Choose Option" ng-model="vendor_delivery_item.design_id" chosen>
                                                         <option value="">Select Design</option>
                                                         <option ng-repeat="design in designs" value="{{ design.id }}">{{ design.title }}</option>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select title="Choose Option" ng-model="vendor_delivery_item.color_id" ng-change='update_color_rate( $index, $parent.$index )'>
+                                                    <select title="Choose Option" ng-model="vendor_delivery_item.color_id" ng-change='update_color_rate( $index, $parent.$index )' chosen>
                                                         <option value="">Select Color</option>
                                                         <option ng-repeat="color in colors" value="{{ color.id }}">{{ color.title }}</option>
                                                     </select>

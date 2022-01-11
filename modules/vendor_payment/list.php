@@ -19,7 +19,7 @@ if(!defined("APP_START")) die("No Direct Access");
         <div>
         	<form class="form-horizontal" action="" method="get">
             	<div class="col-sm-2">
-                	<select name="vendor_id" id="vendor_id" class="custom_select">
+                	<select name="vendor_id" id="vendor_id" class="custom_select select_multiple">
                         <option value=""<?php echo ($vendor_id=="")? " selected":"";?>>Select vendor</option>
                         <?php
                             $res=doquery("select * from vendor order by vendor_name ",$dblink);
@@ -34,7 +34,7 @@ if(!defined("APP_START")) die("No Direct Access");
                     </select>
                 </div>
                 <div class="col-sm-2">
-                    <select name="machine_id" id="machine_id" class="custom_select">
+                    <select name="machine_id" id="machine_id" class="custom_select select_multiple">
                         <option value=""<?php echo ($machine_id=="")? " selected":"";?>>All Machine</option>
                         <?php
                         $res=doquery("select * from machine where status = 1 order by title",$dblink);
@@ -49,7 +49,7 @@ if(!defined("APP_START")) die("No Direct Access");
                     </select>
                 </div>
                 <div class="col-sm-2">
-                	<select name="account_id" id="account_id" class="custom_select">
+                	<select name="account_id" id="account_id" class="custom_select select_multiple">
                         <option value=""<?php echo ($account_id=="")? " selected":"";?>>Select Account</option>
                         <?php
                             $res=doquery("select * from account where status = 1 order by title ",$dblink);

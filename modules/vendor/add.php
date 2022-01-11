@@ -39,7 +39,7 @@ else{
                 <label class="form-label" for="machine_id">Machine</label>
             </div>
             <div class="col-sm-10">
-                <select name="machine_id" title="Choose Option">
+                <select name="machine_id" title="Choose Option" class="select_multiple">
                     <option value="0">All Machine</option>
                     <?php
                     $res=doquery("select * from machine where status=1 order by title", $dblink);
