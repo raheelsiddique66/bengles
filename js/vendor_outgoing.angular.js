@@ -57,9 +57,9 @@ angular.module('vendor_outgoing', ['ngAnimate', 'angularMoment', 'ui.bootstrap',
 		$scope.vendor_outgoing = {
 			id: 0,
 			date: '',
-			vendor_id: '0',
+			vendor_id: 0,
 			gatepass_id: '',
-			labour_id: '',
+			labour_id: 0,
 			vendor_outgoing_items: [],
 		};
 		$scope.vendor_outgoing_item = {

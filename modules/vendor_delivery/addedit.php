@@ -79,7 +79,7 @@ else {
                 </div>
                 <div class="col-sm-10">
                     <select id="vendor_id" ng-model="vendor_delivery.vendor_id" chosen>
-                        <option value="0" selected="false">Select Vendor</option>
+                        <option value="0">Select Vendor</option>
                         <option ng-repeat="vendor in vendors" value="{{ vendor.id }}">{{ vendor.vendor_name }}</option>
                     </select>
                     <a href="" class="add_customer_link" ng-click="togglePopupVendor()">+</a>
@@ -161,7 +161,7 @@ else {
                 </div>
                 <div class="col-sm-10">
                     <select id="labour_id" ng-model="vendor_delivery.labour_id" chosen>
-                        <option value="0" selected="false">Select Labour</option>
+                        <option value="0">Select Labour</option>
                         <option ng-repeat="labour in labours" value="{{ labour.id }}">{{ labour.name }}</option>
                     </select>
                     <a href="" class="add_customer_link" ng-click="togglePopup()">+</a>

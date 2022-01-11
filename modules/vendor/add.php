@@ -26,7 +26,7 @@ else{
     <div class="form-group">
         <div class="row">
         	<div class="col-sm-2 control-label">
-            	<label class="form-label" for="title">Vendor Name </label>
+            	<label class="form-label" for="title">Vendor Name *</label>
             </div>
             <div class="col-sm-10">
                 <input type="text" title="Enter Name" value="<?php echo $vendor_name; ?>" name="vendor_name" id="vendor_name" class="form-control" />
