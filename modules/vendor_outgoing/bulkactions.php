@@ -19,7 +19,7 @@ if(isset($_GET["action"]) && $_GET["action"]!=""){
                 doquery("delete from vendor_outgoing_items where vendor_outgoing_id='".$id[$i]."'",$dblink);
                 $i++;
             }
-			header("Location: vendor_outgoing_manage.php?tab=list&msg=".url_encode("Records Deleted.".$i));
+			header("Location: vendor_outgoing_manage.php?tab=list&msg=".url_encode("Records Deleted."));
 			die;
 		}
 		if($bulk_action=="statuson"){
