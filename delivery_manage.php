@@ -6,7 +6,7 @@ include("include/paging.php");
 define("APP_START", 1);
 $filename = 'delivery_manage.php';
 include("include/admin_type_access.php");
-$tab_array=array("list", "status", "delete", "bulk_action", "report", "addedit", "print_receipt", "report_total", "current_report", "new_delivery");
+$tab_array=array("list", "status", "delete", "bulk_action", "report", "addedit", "print_receipt", "report_total", "current_report", "new_delivery", "individual_report");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -111,6 +111,9 @@ switch($tab){
     break;
 	case 'new_delivery':
         include("modules/delivery/new_delivery_do.php");
+    break;
+	case 'individual_report':
+        include("modules/delivery/individual_report.php");
     break;
 }
 ?>

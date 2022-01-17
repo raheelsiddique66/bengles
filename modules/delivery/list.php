@@ -12,6 +12,7 @@ if(!defined("APP_START")) die("No Direct Access");
             <a class="btn print-btn" href="delivery_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a>
             <a href="delivery_manage.php?tab=report_total" class="btn btn-light editproject">Report Total</a>
             <a href="delivery_manage.php?tab=current_report" class="btn btn-light editproject">Current Report</a>
+            <a href="delivery_manage.php?tab=individual_report" class="btn btn-light editproject">Individual Report</a>
         </div>
   	</div>
 </div>
