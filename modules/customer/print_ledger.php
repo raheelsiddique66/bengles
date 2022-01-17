@@ -131,7 +131,7 @@ if(!empty($end_date)){
                     <th align="right"><?php echo $total_quantity;?></th>
                     <th align="right"><?php echo curr_format($total_amount);?></th>
                     <th align="right"><?php echo curr_format($total_discount);?></th>
-                    <th align="right"><?php echo curr_format($total_balance);?></th>
+                    <th align="right"><?php echo curr_format($balance);?></th>
                 </tr>
                 <?php
             }
