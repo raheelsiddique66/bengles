@@ -183,19 +183,19 @@ else {
                                 <tr ng-repeat="vendor_outgoing_item in vendor_outgoing.vendor_outgoing_items">
                                     <td class="text-center serial_number">{{ $index+1 }}</td>
                                     <td>
-                                        <select title="Choose Option" ng-model="vendor_outgoing.vendor_outgoing_items[$index].machine_id" chosen>
+                                        <select title="Choose Option" ng-model="vendor_outgoing.vendor_outgoing_items[$index].machine_id">
                                             <option value="">Select Machine</option>
                                             <option ng-repeat="machine in machines" value="{{ machine.id }}">{{ machine.title }}</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <select title="Choose Option" ng-model="vendor_outgoing.vendor_outgoing_items[$index].design_id" chosen>
+                                        <select title="Choose Option" ng-model="vendor_outgoing.vendor_outgoing_items[$index].design_id">
                                             <option value="">Select Design</option>
                                             <option ng-repeat="design in designs" value="{{ design.id }}">{{ design.title }}</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <select title="Choose Option" ng-model="vendor_outgoing.vendor_outgoing_items[$index].color_id" chosen>
+                                        <select title="Choose Option" ng-model="vendor_outgoing.vendor_outgoing_items[$index].color_id">
                                             <option value="">Select Color</option>
                                             <option ng-repeat="color in colors" value="{{ color.id }}">{{ color.title }}</option>
                                         </select>
