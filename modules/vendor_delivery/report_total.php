@@ -96,7 +96,7 @@ table {
     <th width="10%">Payment</th>
     <th width="10%">Previous Amount</th>
     <th width="10%">Amount</th>
-    <th width="10%" class="nastaleeq"> وائرس</th>
+    <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com'){?><th width="10%" class="nastaleeq"> وائرس</th><?php }?>
     <th width="10%">Total</th>
     <?php
     foreach($colors as $color_id => $color){
@@ -158,7 +158,7 @@ if( numrows( $rs ) > 0 ) {
             <th class="text-right"><?php echo curr_format($income)?></th>
             <th class="text-right"><?php echo curr_format($balance)?></th>
             <th class="text-right"><?php echo curr_format($total_amount)?></th>
-            <th class="text-right"><?php echo unslash($claim)?></th>
+            <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com'){?><th class="text-right"><?php echo unslash($claim)?></th><?php }?>
             <th class="text-right"><?php echo curr_format($total_quantity)?></th>
             <?php
 
@@ -184,7 +184,7 @@ if( numrows( $rs ) > 0 ) {
     <th class="text-right"><?php echo curr_format($total_income)?></th>
     <th class="text-right"><?php echo curr_format($total_balance)?></th>
     <th class="text-right"><?php echo curr_format($grand_total_amount)?></th>
-    <th class="text-right"><?php echo curr_format($total_claim)?></th>
+    <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com'){?><th class="text-right"><?php echo curr_format($total_claim)?></th><?php }?>
     <th class="text-right"><?php echo curr_format($grand_total_quantity)?></th>
 
     <?php

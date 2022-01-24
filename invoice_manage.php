@@ -76,7 +76,7 @@ if(!empty($q)){
 	$extra.=" and a.id like '%".$q."%'";
 	$is_search=true;
 }
-$sql="select a.*, b.customer_name from invoice a inner join customer b on a.customer_id = b.id where 1 ".$extra." order by b.customer_name";
+$sql="select a.*, b.customer_name, b.phone from invoice a inner join customer b on a.customer_id = b.id where 1 ".$extra." order by b.customer_name";
 switch($tab){
 	case 'add':
 		include("modules/invoice/add_do.php");

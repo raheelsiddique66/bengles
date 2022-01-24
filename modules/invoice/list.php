@@ -80,7 +80,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th width="10%">Date From</th>
                 <th width="10%">Date To</th>
                 <th class="text-center" width="5%">Status</th>
-                <th class="text-center" width="10%">Actions</th>
+                <th class="text-center" width="15%">Actions</th>
             </tr>
     	</thead>
     	<tbody>
@@ -120,6 +120,7 @@ if(!defined("APP_START")) die("No Direct Access");
                             <a href="invoice_manage.php?tab=print&id=<?php echo $r['id'];?>" class="download-icon"><i class="fa fa-download" aria-hidden="true"></i></a>&nbsp;&nbsp;
                             <a href="invoice_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
                             <a onclick="return confirm('Are you sure you want to delete')" href="invoice_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
+                            <a href="https://wa.me/<?php echo $r["phone"];?>?text=" target="_blank" class="download-icon"><i class="fa fa-whatsapp"></i></a>&nbsp;&nbsp;
                         </td>
                     </tr>
                     <?php 
