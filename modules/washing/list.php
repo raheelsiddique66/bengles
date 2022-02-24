@@ -6,6 +6,7 @@ if(!defined("APP_START")) die("No Direct Access");
 	<h1 class="title">Manage Washing</h1>
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="...">
+            <a href="washing_manage.php?tab=new_washing" class="btn btn-light editproject">Multiple Washing</a>
         	<a href="washing_manage.php?tab=addedit" class="btn btn-light editproject">Add New Washing</a>
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
             <a class="btn print-btn" href="washing_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a>
