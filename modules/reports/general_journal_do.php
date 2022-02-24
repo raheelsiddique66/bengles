@@ -6,26 +6,31 @@ if(isset($_GET["date_from"])){
 	$date_from=slash($_GET["date_from"]);
 	$_SESSION["reports"]["general_journal"]["date_from"]=$date_from;
 }
-if(isset($_SESSION["reports"]["general_journal"]["date_from"]))
+if(isset($_SESSION["reports"]["general_journal"]["date_from"])){
 	$date_from=$_SESSION["reports"]["general_journal"]["date_from"];
-else
+}
+else{
 	$date_from=date("01/m/Y");
+}
 if(isset($_GET["date_to"])){
 	$date_to=slash($_GET["date_to"]);
 	$_SESSION["reports"]["general_journal"]["date_to"]=$date_to;
 }
 if(isset($_SESSION["reports"]["general_journal"]["date_to"]))
 	$date_to=$_SESSION["reports"]["general_journal"]["date_to"];
-else
+else{
 	$date_to=date("d/m/Y");
+}
 if(isset($_GET["account_id"])){
 	$account_id=slash($_GET["account_id"]);
 	$_SESSION["reports"]["general_journal"]["account_id"]=$account_id;
 }
-if(isset($_SESSION["reports"]["general_journal"]["account_id"]))
+if(isset($_SESSION["reports"]["general_journal"]["account_id"])){
 	$account_id=$_SESSION["reports"]["general_journal"]["account_id"];
-else
+}
+else{
 	$account_id="";
+}
 if( !empty( $date_from ) && !empty( $date_from ) ) {
 	$extra.=" and date BETWEEN '".date('Y-m-d',strtotime(date_dbconvert($date_from)))." 00:00:00' AND '".date('Y-m-d',strtotime(date_dbconvert($date_to)))." 23:59:59'";
 }
@@ -34,12 +39,11 @@ if( !empty( $account_id ) ) {
 }
 else {
 	$accounts = doquery( "select * from account where is_petty_cash='1'", $dblink );
-if( numrows( $accounts ) > 0 ) {
-$account = dofetch( $accounts );
-	$account_id = $account[ "id" ];
+	if( numrows( $accounts ) > 0 ) {
+	$account = dofetch( $accounts );
+		$account_id = $account[ "id" ];
+	}
 }
-}
-
 $order_by = "date";
 $order = "desc";
 if( isset($_GET["order_by"]) ){
