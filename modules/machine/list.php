@@ -17,13 +17,13 @@ if(!empty($q)){
 }
 ?>
 <div class="page-header">
-	<h1 class="title">Machine</h1>
+	<h1 class="title">Plant</h1>
   	<ol class="breadcrumb">
-    	<li class="active">Manage Machines</li>
+    	<li class="active">Manage Plant</li>
   	</ol>
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> 
-        	<a href="machine_manage.php?tab=add" class="btn btn-light editproject">Add New Machine</a>
+        	<a href="machine_manage.php?tab=add" class="btn btn-light editproject">Add New Plant</a>
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a> 
     	</div> 
     </div> 
@@ -106,7 +106,7 @@ if(!empty($q)){
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
-                    <td colspan="3" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "color", $sql, $pageNum)?></td>
+                    <td colspan="3" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "machine", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
             }

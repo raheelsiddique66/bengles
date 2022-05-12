@@ -175,7 +175,7 @@ else {
                                     <td>
                                         <table class="table table-hover list items-deliver">
                                             <tr>
-                                                <th width="10%" rowspan="2">Machine</th>
+                                                <th width="10%" rowspan="2">Plant</th>
                                                 <th width="10%" rowspan="2" style="position: relative">Design <a href="" class="add_customer_link design" ng-click="togglePopupDesign()">+</a></th>
                                                 <th width="10%" rowspan="2" style="position: relative">Color <a href="" class="add_customer_link design" ng-click="togglePopupColor()">+</a></th>
                                                 <th class="text-center" width="64%" colspan="{{ sizes.length+1 }}">Sizes</th>
@@ -188,7 +188,7 @@ else {
                                             <tr ng-repeat="incoming_item in incoming.incoming_items">
                                                 <td>
                                                     <select title="Choose Option" ng-model="incoming_item.machine_id">
-                                                        <option value="0">Select Machine</option>
+                                                        <option value="0">Select Plant</option>
                                                         <option ng-repeat="machine in machines" value="{{ machine.id }}">{{ machine.title }}</option>
                                                     </select>
                                                 </td>

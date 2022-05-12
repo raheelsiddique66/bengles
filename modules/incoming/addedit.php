@@ -168,7 +168,7 @@ else {
                             <thead>
                                 <tr>
                                     <th width="2%" class="text-center" rowspan="2">S.no</th>
-                                    <th width="10%" rowspan="2">Machine</th>
+                                    <th width="10%" rowspan="2">Plant</th>
                                     <th width="10%" rowspan="2" style="position: relative">Design <a href="" class="add_customer_link design" ng-click="togglePopupDesign()">+</a></th>
                                     <th width="10%" rowspan="2" style="position: relative">Color <a href="" class="add_customer_link design" ng-click="togglePopupColor()">+</a></th>
                                     <th class="text-center" width="64%" colspan="{{ sizes.length+1 }}">Sizes</th>
@@ -184,7 +184,7 @@ else {
                                     <td class="text-center serial_number">{{ $index+1 }}</td>
                                     <td>
                                         <select title="Choose Option" ng-model="incoming.incoming_items[$index].machine_id">
-                                            <option value="0">Select Machine</option>
+                                            <option value="0">Select Plant</option>
                                             <option ng-repeat="machine in machines" value="{{ machine.id }}">{{ machine.title }}</option>
                                         </select>
                                     </td>

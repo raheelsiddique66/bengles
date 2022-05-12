@@ -2,9 +2,9 @@
 if(!defined("APP_START")) die("No Direct Access");
 ?>
 <div class="page-header">
-	<h1 class="title">Edit Customer</h1>
+	<h1 class="title">Edit Account Receivable</h1>
   	<ol class="breadcrumb">
-    	<li class="active">Manage Customer</li>
+    	<li class="active">Manage Account Receivable</li>
   	</ol>
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> <a href="customer_manage.php" class="btn btn-light editproject">Back to List</a> </div>
@@ -15,7 +15,7 @@ if(!defined("APP_START")) die("No Direct Access");
     <div class="form-group">
         <div class="row">
         	<div class="col-sm-2 control-label">
-            	<label class="form-label" for="title">Customer Name </label>
+            	<label class="form-label" for="title">Account Receivable Name </label>
             </div>
             <div class="col-sm-10">
                 <input type="text" title="Enter Name" value="<?php echo $customer_name; ?>" name="customer_name" id="customer_name" class="form-control" />
@@ -25,11 +25,11 @@ if(!defined("APP_START")) die("No Direct Access");
     <div class="form-group">
         <div class="row">
             <div class="col-sm-2 control-label">
-                <label class="form-label" for="machine_id">Machine</label>
+                <label class="form-label" for="machine_id">Plant</label>
             </div>
             <div class="col-sm-10">
                 <select name="machine_id" title="Choose Option">
-                    <option value="0">All Machine</option>
+                    <option value="0">All Plant</option>
                     <?php
                     $res=doquery("select * from machine where status=1 order by title", $dblink);
                     if(numrows($res)>0){
@@ -47,17 +47,17 @@ if(!defined("APP_START")) die("No Direct Access");
     <div class="form-group">
         <div class="row">
         	<div class="col-sm-2 control-label">
-            	<label class="form-label" for="title">Customer Name In Urdu</label>
+            	<label class="form-label" for="title">Account Receivable In Urdu</label>
             </div>
             <div class="col-sm-10">
-                <input type="text" title="Enter Customer in Urdu" value="<?php echo $customer_name_urdu; ?>" name="customer_name_urdu" id="customer_name_urdu" class="form-control nastaleeq" />
+                <input type="text" title="Enter Account Receivable in Urdu" value="<?php echo $customer_name_urdu; ?>" name="customer_name_urdu" id="customer_name_urdu" class="form-control nastaleeq" />
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="row">
         	<div class="col-sm-2 control-label">
-            	<label class="form-label" for="phone">Phone Number </label>
+            	<label class="form-label" for="phone">Date </label>
             </div>
             <div class="col-sm-10">
                 <input type="text" title="Enter Date" value="<?php echo $phone; ?>" name="phone" id="phone" class="form-control" />

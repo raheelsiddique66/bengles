@@ -59,7 +59,7 @@ if(!empty($end_date)){
 <tr class="head">
 	<th colspan="10">
     	<h1><?php echo get_config( 'site_title' )?></h1>
-    	<h2>Customer Ledger</h2>
+    	<h2>Account Receivable Ledger</h2>
         <p style="font-size: 22px;background: #187bd0;padding: 5px;">
         	<?php
 			echo "List of";
@@ -74,7 +74,7 @@ if(!empty($end_date)){
             }
             if( !empty( $customer["id"] ) ){
                 ?>
-                Customer:  <span class="nastaleeq"><?php echo get_field($customer["id"], "customer", "customer_name_urdu" )."<br>";?></span>
+                Account Receivable:  <span class="nastaleeq"><?php echo get_field($customer["id"], "customer", "customer_name_urdu" )."<br>";?></span>
                 <?php
             }
 			?>

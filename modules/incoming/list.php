@@ -1,12 +1,11 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-
 ?>
 <div class="page-header">
 	<h1 class="title">Manage Incoming</h1>
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="...">
-            <a href="incoming_manage.php?tab=new_incoming" class="btn btn-light editproject">Multiple Incoming</a>
+            <?php if($_SESSION["logged_in_admin"]["admin_type_id"]==1){ ?><a href="incoming_manage.php?tab=new_incoming" class="btn btn-light editproject">Multiple Incoming</a><?php } ?>
         	<a href="incoming_manage.php?tab=addedit" class="btn btn-light editproject">Add New Incoming</a>
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
             <a class="btn print-btn" href="incoming_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a>
@@ -44,7 +43,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 </div>
                 <div class="col-sm-2 col-xs-8">
                     <select name="machine_id" id="machine_id" class="form-control">
-                        <option value=""<?php echo ($machine_id=="")? " selected":"";?>>Select Machine</option>
+                        <option value=""<?php echo ($machine_id=="")? " selected":"";?>>Select Plant</option>
                         <?php
                             $res=doquery("select * from machine order by title",$dblink);
                             if(numrows($res)>=0){
@@ -118,7 +117,7 @@ if(!defined("APP_START")) die("No Direct Access");
                             <table class="table table-hover list">
                                 <thead>
                                 <tr>
-                                    <td>Machine</td>
+                                    <td>Plant</td>
                                     <td class="text-right">Design</td>
                                     <td class="text-right">Color</td>
                                     <?php

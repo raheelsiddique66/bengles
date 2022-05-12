@@ -63,13 +63,13 @@ else {
 <div ng-app="customerdelivery" ng-controller="customerdeliveryController" id="customerdeliveryController">
     <div style="display:none">{{delivery_id=<?php echo $id?>}}</div>
     <div class="page-header">
-        <h1 class="title">{{get_action()}} Delivery</h1>
+        <h1 class="title">{{get_action()}} Sale</h1>
         <ol class="breadcrumb">
-            <li class="active">Manage Delivery</li>
+            <li class="active">Manage Sale</li>
         </ol>
         <div class="right">
             <div class="btn-group" role="group" aria-label="..."> 
-                <a href="delivery_manage.php?tab=addedit" class="btn btn-light editproject">Add New Delivery</a>
+                <a href="delivery_manage.php?tab=addedit" class="btn btn-light editproject">Add New Sale</a>
                 <a href="delivery_manage.php" class="btn btn-light editproject">Back to List</a> 
             </div>
         </div>
@@ -90,8 +90,8 @@ else {
             <div style="padding: 20px;">
                 Customer Name: <span><input id="cursor_focus" type="text" placeholder="Enter Customer Name" ng-model="customer.customer_name"></span>
                 Customer Name urdu: <span><input id="cursor_focus" type="text" placeholder="Enter Customer Name" class="nastaleeq" ng-model="customer.customer_name_urdu"></span>
-                Machine: <span><select title="Choose Option" ng-model="customer.machine_id">
-                                            <option value="0">Select Machine</option>
+                Plant: <span><select title="Choose Option" ng-model="customer.machine_id">
+                                            <option value="0">Select Plant</option>
                                             <option ng-repeat="machine in machines" value="{{ machine.id }}">{{ machine.title }}</option>
                                         </select></span>
                 <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_customer()" title="Submit Customer"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
@@ -126,7 +126,7 @@ else {
         <div class="labour-add" ng-show="showPopupMachine">
             <button data-fancybox-close="" class="fancybox-close-small popup_close" title="Close" ng-click="togglePopupMachine()"></button>
             <div style="padding: 20px;">
-                Machine: <span><input id="cursor_focus" type="text" placeholder="Enter Machine" ng-model="machine.title"></span>
+            Plant: <span><input id="cursor_focus" type="text" placeholder="Enter Machine" ng-model="machine.title"></span>
                 <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_machine()" title="Submit Machine"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
                 <br><br><div class="alert alert-danger" ng-show="box_errors.length > 0">
                     <p ng-repeat="error in box_errors">{{error}}</p>
@@ -136,7 +136,7 @@ else {
         <div class="form-group">
             <div class="row">
                 <div class="col-sm-1 control-label">
-                    <label class="form-label">Delivery Items <span class="manadatory">*</span></label>
+                    <label class="form-label">Sale Items <span class="manadatory">*</span></label>
                 </div>
                 <div class="col-sm-11">
                     <div class="panel-body table-responsive">
@@ -176,7 +176,7 @@ else {
                                     <td>
                                         <table class="table table-hover list items-deliver">
                                             <tr>
-                                                <th width="10%" rowspan="2" style="position: relative">Machine <a href="" class="add_customer_link design" ng-click="togglePopupMachine()">+</a></th>
+                                                <th width="10%" rowspan="2" style="position: relative">Plant <a href="" class="add_customer_link design" ng-click="togglePopupMachine()">+</a></th>
                                                 <th width="10%" rowspan="2" style="position: relative">Design <a href="" class="add_customer_link design" ng-click="togglePopupDesign()">+</a></th>
                                                 <th width="12%" rowspan="2" style="position: relative">Color <a href="" class="add_customer_link design" ng-click="togglePopupColor()">+</a></th>
                                                 <th class="text-center" width="20%" colspan="{{ sizes.length+1 }}">Sizes</th>
@@ -192,7 +192,7 @@ else {
                                             <tr ng-repeat="delivery_item in delivery.delivery_items">
                                                 <td>
                                                     <select title="Choose Option" ng-model="delivery_item.machine_id">
-                                                        <option value="0">Select Machine</option>
+                                                        <option value="0">Select Plant</option>
                                                         <option ng-repeat="machine in machines" value="{{ machine.id }}">{{ machine.title }}</option>
                                                     </select>
                                                 </td>

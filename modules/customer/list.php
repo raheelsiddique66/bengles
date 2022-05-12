@@ -3,13 +3,13 @@ if(!defined("APP_START")) die("No Direct Access");
 
 ?>
 <div class="page-header">
-	<h1 class="title">Customer</h1>
+	<h1 class="title">Account Receivable</h1>
   	<ol class="breadcrumb">
-    	<li class="active">Manage Customer</li>
+    	<li class="active">Manage Account Receivable</li>
   	</ol>
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> 
-        	<a href="customer_manage.php?tab=add" class="btn btn-light editproject">Add New Customer</a> 
+        	<a href="customer_manage.php?tab=add" class="btn btn-light editproject">Add New Account Receivable</a> 
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
             <a class="btn print-btn" href="customer_manage.php?tab=balance_report"><i class="fa fa-print" aria-hidden="true"></i></a>
     	</div> 
@@ -24,7 +24,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 </div>
                 <div class="col-sm-3 col-xs-8">
                     <select name="machine_id[]" id="machine_id" multiple="multiple" class="form-control select_multiple">
-                        <option value=""<?php echo ($machine_id=="")? " selected":"";?>>Select Machine</option>
+                        <option value=""<?php echo ($machine_id=="")? " selected":"";?>>Select Plant</option>
                         <?php
                         $res=doquery("select * from machine order by title",$dblink);
                         if(numrows($res)>=0){
@@ -56,10 +56,10 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
-                <th width="20%">Customer Name</th>
-                <th width="10%">Machine</th>
-                <th width="20%">Customer Name In Urdu</th>
-                <th width="10%">Phone Number</th>
+                <th width="20%">Account Receivable</th>
+                <th width="10%">Plant</th>
+                <th width="20%">Account Receivable In Urdu</th>
+                <th width="10%">Date</th>
                 <th width="10%">Balance</th>
                 <th width="10%">Sortorder</th>
                 <th width="5%" class="text-center">Status</th>

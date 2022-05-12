@@ -83,7 +83,7 @@ table {
                 <?php
             }
 			if( !empty( $machine_id ) ){
-				echo " Machine ".get_field($machine_id, "machine", "title" )."<br>";
+				echo " Plant ".get_field($machine_id, "machine", "title" )."<br>";
 			}
 			if( !empty( $q ) ){
 				echo "Gatepass ID ".$q."<br>";
@@ -103,7 +103,7 @@ table {
 	<th width="50%" colspan="<?php echo count($sizes)+4?>">Items</th>
 </tr>
 <tr>
-    <td>Machine</td>
+    <td>Plant</td>
     <td class="text-right">Design</td>
 	<td class="text-right">Color</td>
 	<?php

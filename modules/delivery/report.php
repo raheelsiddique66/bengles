@@ -64,7 +64,7 @@ table {
 <tr class="head">
 	<th colspan="19">
     	<h1><?php echo get_config( 'site_title' )?></h1>
-    	<h2>Delivery List</h2>
+    	<h2>Sale List</h2>
         <p>
         	<?php
 			echo "List of";
@@ -83,7 +83,7 @@ table {
                 <?php
             }
 			if( !empty( $machine_id ) ){
-				echo " Machine ".get_field($machine_id, "machine", "title" )."<br>";
+				echo " Plant ".get_field($machine_id, "machine", "title" )."<br>";
 			}
 			if( !empty( $q ) ){
 				echo "Gatepass ID ".$q."<br>";
@@ -104,7 +104,7 @@ table {
 	<th width="60%" colspan="<?php echo count($sizes)+6?>">Items</th>
 </tr>
 <tr>
-    <td>Machine</td>
+    <td>Plant</td>
     <td class="text-right">Design</td>
 	<td class="text-right">Color</td>
 	<?php

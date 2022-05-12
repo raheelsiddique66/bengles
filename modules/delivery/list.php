@@ -3,11 +3,11 @@ if(!defined("APP_START")) die("No Direct Access");
 
 ?>
 <div class="page-header">
-	<h1 class="title">Manage Delivery</h1>
+	<h1 class="title">Manage Sale</h1>
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="...">
-            <a href="delivery_manage.php?tab=new_delivery" class="btn btn-light editproject">Multiple Delivery</a>
-            <a href="delivery_manage.php?tab=addedit" class="btn btn-light editproject">Add New Delivery</a>
+            <a href="delivery_manage.php?tab=new_delivery" class="btn btn-light editproject">Multiple Sale</a>
+            <a href="delivery_manage.php?tab=addedit" class="btn btn-light editproject">Add New Sale</a>
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
             <a class="btn print-btn" href="delivery_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a>
             <a href="delivery_manage.php?tab=report_total" class="btn btn-light editproject">Report Total</a>
@@ -46,7 +46,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 </div>
                 <div class="col-sm-2 col-xs-8">
                     <select name="machine_id" id="machine_id" class="form-control">
-                        <option value=""<?php echo ($machine_id=="")? " selected":"";?>>Select Machine</option>
+                        <option value=""<?php echo ($machine_id=="")? " selected":"";?>>Select Plant</option>
                         <?php
                             $res=doquery("select * from machine order by title",$dblink);
                             if(numrows($res)>=0){
@@ -123,7 +123,7 @@ if(!defined("APP_START")) die("No Direct Access");
                             <table class="table table-hover list">
                                 <thead>
                                 <tr>
-                                    <td>Machine</td>
+                                    <td>Plant</td>
                                     <td class="text-right">Design</td>
                                     <td class="text-right">Color</td>
                                     <?php

@@ -58,7 +58,7 @@ table {
 <table width="100%" cellspacing="0" cellpadding="0">
 <tr class="head">
 	<th colspan="9">
-    	<h2>Customer Ledger</h2>
+    	<h2>Account Receivable Ledger</h2>
         <p>
         	<?php
 			echo "List of";
@@ -135,7 +135,7 @@ if( !empty( $id ) ){
 else {
 	?>
 	<tr>
-		<td colspan="5"  class="no-record">Select Customer from above dropdown</td>
+		<td colspan="5"  class="no-record">Select Account Receivable from above dropdown</td>
 	</tr>
 	<?php
 }

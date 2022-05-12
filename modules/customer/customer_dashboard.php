@@ -9,9 +9,9 @@ $is_search=true;
 </style>
 <div ng-app="customerDashboard" ng-controller="customerDashboardController" id="customerDashboardController">
     <div class="page-header">
-        <h1 class="title">Customer Dashboard</h1>
+        <h1 class="title">Account Receivable Dashboard</h1>
         <ol class="breadcrumb">
-            <li class="active">Customer</li>
+            <li class="active">Account Receivable</li>
         </ol>
         <div class="right">
             <div class="btn-group" role="group" aria-label="...">
@@ -29,7 +29,7 @@ $is_search=true;
 <!--                    </div>-->
                     <div class="col-sm-3 col-xs-8">
                         <select data-ng-model="customer_id" class="form-control" chosen>
-                            <option value="0">Select Customer</option>
+                            <option value="0">Select Account Receivable</option>
                             <option ng-repeat="customer in customers" value="{{ customer.id }}">{{ customer.customer_name }}</option>
                         </select>
                     </div>

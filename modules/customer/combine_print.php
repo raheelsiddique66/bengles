@@ -43,13 +43,13 @@ table {
 <tr class="head">
 	<th colspan="8">
     	<h1><?php echo get_config( 'site_title' )?></h1>
-    	<h2>Customer List</h2>
+    	<h2>Account Receivable List</h2>
         <p>
         	<?php
 			echo "List of";
             if( !empty( $q ) ){
                 ?>
-                Customer:  <span class="nastaleeq"><?php echo $q."<br>";?></span>
+                Account Receivable:  <span class="nastaleeq"><?php echo $q."<br>";?></span>
                 <?php
             }
 //            if( !empty( $machine_id ) ){
@@ -66,8 +66,8 @@ table {
     <th width="10%">Remarks</th>
     <th width="10%" style="font-size: 18px">Balance</th>
     <th width="10%">Phone</th>
-    <th width="10%">Machine</th>
-    <th width="20%">Customer</th>
+    <th width="10%">Plant</th>
+    <th width="20%">Account Receivable</th>
     <th width="2%" class="text-center nastaleeq">سیریل</th>
 </tr>
 <?php
