@@ -64,6 +64,19 @@ if(isset($_POST["action"])){
 			}
 			$response = $colors;
 		break;
+		case "get_color_field":
+			$rs = doquery( "select * from color_field where status=1 order by title", $dblink );
+			$color_fields = array();
+			if( numrows( $rs ) > 0 ) {
+				while( $r = dofetch( $rs ) ) {
+					$color_fields[] = array(
+						"id" => $r[ "id" ],
+						"title" => unslash($r[ "title" ]),
+					);
+				}
+			}
+			$response = $color_fields;
+		break;
 		case "get_size":
 			$rs = doquery( "select * from size where status=1 order by sortorder", $dblink );
 			$sizes = array();
@@ -116,7 +129,7 @@ if(isset($_POST["action"])){
 						"customer_id" => unslash( $r[ "customer_id" ] ),
 						"delivery_items" => array()
 					);
-					$rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from delivery_items where delivery_id='".$r[ "id" ]."' group by color_id,design_id", $dblink );
+					$rs1 = doquery( "select *, group_concat(concat(size_id, 'x', quantity)) as sizes from delivery_items where delivery_id='".$r[ "id" ]."' group by color_id,design_id,color_field_id", $dblink );
 					if( numrows( $rs1 ) > 0 ) {
 						while( $r1 = dofetch( $rs1 ) ) {
 							$quantities = [];
@@ -128,6 +141,7 @@ if(isset($_POST["action"])){
 								"id" => $r1["id"],
 								"delivery_id" => $r1[ "delivery_id" ],
 								"color_id" => $r1["color_id"],
+								"color_field_id" => $r1["color_field_id"],
 								"size_id" => $r1[ "size_id" ],
 								"design_id" => $r1[ "design_id" ],
 								"machine_id" => $r1[ "machine_id" ],
@@ -142,6 +156,7 @@ if(isset($_POST["action"])){
 							"id" => "",
 							"delivery_id" => "",
 							"color_id" => "",
+							"color_field_id" => "",
 							"size_id" => "",
 							"design_id" => "",
 							"machine_id" => "0",
@@ -193,9 +208,9 @@ if(isset($_POST["action"])){
 						foreach($delivery_item->quantity as $size_id => $quantity){
 							$quantity = (int)$quantity;
 							if(!empty($quantity)){
-								$check = doquery("select * from delivery_items where delivery_id = '".$delivery_id."' and color_id = '".$delivery_item->color_id."' and design_id = '".$delivery_item->design_id."' and machine_id = '".$delivery_item->machine_id."' and size_id = '".$size_id."'",$dblink);
+								$check = doquery("select * from delivery_items where delivery_id = '".$delivery_id."' and color_id = '".$delivery_item->color_id."' and color_field_id = '".$delivery_item->color_field_id."' and design_id = '".$delivery_item->design_id."' and machine_id = '".$delivery_item->machine_id."' and size_id = '".$size_id."'",$dblink);
 								if( numrows( $check ) == 0 ) {
-									doquery( "insert into delivery_items( delivery_id, color_id, size_id, design_id, machine_id, quantity, extra, unit_price ) values( '".$delivery_id."', '".$delivery_item->color_id."', '".$size_id."', '".$delivery_item->design_id."', '".$delivery_item->machine_id."', '".$quantity."', '".$delivery_item->extra."', '".$delivery_item->unit_price."')", $dblink );
+									doquery( "insert into delivery_items( delivery_id, color_id, color_field_id, size_id, design_id, machine_id, quantity, extra, unit_price ) values( '".$delivery_id."', '".$delivery_item->color_id."', '".$delivery_item->color_field_id."', '".$size_id."', '".$delivery_item->design_id."', '".$delivery_item->machine_id."', '".$quantity."', '".$delivery_item->extra."', '".$delivery_item->unit_price."')", $dblink );
 									$delivery_item_ids[] = inserted_id();
 								}
 								else {
@@ -314,6 +329,31 @@ if(isset($_POST["action"])){
                         "title" => $color->title,
                         "title_urdu" => $color->title_urdu,
 						"rate" => $color->rate,
+                    )
+                );
+            }
+            else {
+                $response = array(
+                    "status" => 0,
+                    "error" => $box_err
+                );
+            }
+		break;
+		case "save_color_field":
+            $box_err = array();
+            $color_field = json_decode( $_POST[ "color_field" ] );
+            if( empty( $color_field->title ) ) {
+                $box_err[] = "Fields with * are mandatory";
+            }
+            if( count( $box_err ) == 0 ) {
+                doquery( "insert into color_field (title, title_urdu) VALUES ('".slash($color_field->title)."', '".slash($color_field->title_urdu)."')", $dblink);
+                $id = inserted_id();
+                $response = array(
+                    "status" => 1,
+                    "color_field" => array(
+                        "id" => $id,
+                        "title" => $color_field->title,
+                        "title_urdu" => $color_field->title_urdu,
                     )
                 );
             }

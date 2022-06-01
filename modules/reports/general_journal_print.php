@@ -69,9 +69,12 @@ table {
             <td align="right"><?php echo curr_format( $balance )?></td>
         </tr>
 		<?php
+        $total_debit = $total_credit = 0;
 		if( numrows( $rs ) > 0 ) {
 		$sn = 1;
-        	while($r=dofetch($rs)){             
+        	while($r=dofetch($rs)){ 
+                $total_debit += $r["debit"];
+                $total_credit += $r["credit"];       
 				?>
 				<tr>
 					<td align="center"><?php echo $sn;?></td>
@@ -91,6 +94,12 @@ table {
                 <td></td>
                 <td></td>
                 <td align="right"><?php echo curr_format( $balance )?></td>
+            </tr>
+            <tr>
+                <th colspan="3" class="text-right">Total</th>
+                <th class="text-right"><?php echo $total_debit?></th>
+                <th class="text-right"><?php echo $total_credit?></th>
+                <th></th>
             </tr>
             <?php
 		}

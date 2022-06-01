@@ -61,6 +61,8 @@ $(document).ready(function(){
 <script type="text/javascript" src="js/vendor_delivery.angular.js"></script>
 <script type="text/javascript" src="js/new-vendor-delivery.angular.js"></script>
 <script type="text/javascript" src="js/new-washing.angular.js"></script>
+<script type="text/javascript" src="js/production.angular.js"></script>
+<script type="text/javascript" src="js/new-production.angular.js"></script>
 <script src="js/jquery.UrduEditor.js" type="text/javascript"></script> 
 <script>
 $(document).ready(function() {

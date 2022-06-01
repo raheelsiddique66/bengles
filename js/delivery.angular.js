@@ -3,6 +3,7 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		$scope.customers = [];
 		$scope.labours = [];
 		$scope.colors = [];
+		$scope.color_fields = [];
 		$scope.sizes = [];
 		$scope.designs = [];
 		$scope.machines = [];
@@ -60,6 +61,17 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			title_urdu: "",
 			rate: ""
 		};
+		$scope.color_field = {
+			id: "",
+			title: "",
+			title_urdu: "",
+		};
+
+		$scope.color_field_placeholder = {
+			id: "",
+			title: "",
+			title_urdu: "",
+		};
 		$scope.machine = {
 			id: "",
 			title: "",
@@ -84,6 +96,7 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			"color_id":"5",
 			"design_id": "",
 			"machine_id": "7",
+			"color_field_id":"",
 			"quantity": [],
 			"extra": 0,
 			"unit_price": 0
@@ -97,6 +110,9 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 			});
 			$scope.wctAJAX( {action: 'get_color'}, function( response ){
 				$scope.colors = response;
+			});
+			$scope.wctAJAX( {action: 'get_color_field'}, function( response ){
+				$scope.color_fields = response;
 			});
 			$scope.wctAJAX( {action: 'get_size'}, function( response ){
 				$scope.sizes = response;
@@ -310,6 +326,24 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 				});
 			}
 		}
+		$scope.save_color_field = function () {
+			$scope.box_errors = [];
+			if( $scope.processing == false ){
+				$scope.processing = true;
+				data = {action: 'save_color_field', color_field: JSON.stringify( $scope.color_field )};
+				$scope.wctAJAX( data, function( response ){
+					$scope.processing = false;
+					if( response.status == 1 ) {
+						$scope.color_fields.push(response.color_field);
+						$scope.showPopupColorField = !$scope.showPopupColorField;
+						$scope.color_field = angular.copy( $scope.color_field_placeholder );
+					}
+					else{
+						$scope.box_errors = response.error;
+					}
+				});
+			}
+		}
 		$scope.save_machine = function () {
 			$scope.box_errors = [];
 			if( $scope.processing == false ){
@@ -346,6 +380,10 @@ angular.module('delivery', ['ngAnimate', 'angularMoment', 'ui.bootstrap', 'angul
 		}
 		$scope.togglePopupMachine = function() {
 			$scope.showPopupMachine = !$scope.showPopupMachine;
+			setTimeout(function(){focus();}, 100);
+		}
+		$scope.togglePopupColorField = function() {
+			$scope.showPopupColorField = !$scope.showPopupColorField;
 			setTimeout(function(){focus();}, 100);
 		}
 	}

@@ -144,6 +144,17 @@ else {
                 </div>
             </div>
         </div>
+        <div class="labour-add" ng-show="showPopupColorField">
+            <button data-fancybox-close="" class="fancybox-close-small popup_close" title="Close" ng-click="togglePopupColorField()"></button>
+            <div style="padding: 20px;">
+                Color Field: <span><input id="cursor_focus" type="text" placeholder="Enter Color" ng-model="color_field.title"></span>
+                Color Field Urdu: <span><input id="cursor_focus" type="text" placeholder="Enter Color" class="nastaleeq" ng-model="color_field.title_urdu"></span>
+                <br><br><button ng-disabled="processing" type="submit" class="btn btn-default btn-l" ng-click="save_color_field()" title="Submit Color"> <i class="fa fa-spin fa-gear" ng-show="processing"></i>Add</button>
+                <br><br><div class="alert alert-danger" ng-show="box_errors.length > 0">
+                    <p ng-repeat="error in box_errors">{{error}}</p>
+                </div>
+            </div>
+        </div>
         <div class="labour-add" ng-show="showPopupMachine">
             <button data-fancybox-close="" class="fancybox-close-small popup_close" title="Close" ng-click="togglePopupMachine()"></button>
             <div style="padding: 20px;">
@@ -192,6 +203,7 @@ else {
                                     <th width="10%" rowspan="2" style="position: relative">Plant <a href="" class="add_customer_link design" ng-click="togglePopupMachine()">+</a></th>
                                     <th width="10%" rowspan="2" style="position: relative">Design <a href="" class="add_customer_link design" ng-click="togglePopupDesign()">+</a></th>
                                     <th width="12%" rowspan="2" style="position: relative">Color <a href="" class="add_customer_link design" ng-click="togglePopupColor()">+</a></th>
+                                    <th width="12%" rowspan="2" style="position: relative">Color Field <a href="" class="add_customer_link design" ng-click="togglePopupColorField()">+</a></th>
                                     <th class="text-center" width="30%" colspan="{{ sizes.length+1 }}">Sizes</th>
                                     <th class="text-right" width="5%">Extra</th>
                                     <th class="text-right" width="6%">Price</th>
@@ -224,6 +236,12 @@ else {
                                             <option ng-repeat="color in colors" value="{{ color.id }}">{{ color.title }}</option>
                                         </select>
                                     </td>
+                                    <td>
+                                        <select title="Choose Option" ng-model="delivery.delivery_items[$index].color_field_id">
+                                            <option value="">Select Color Field</option>
+                                            <option ng-repeat="color_field in color_fields" value="{{ color_field.id }}">{{ color_field.title }}</option>
+                                        </select>
+                                    </td>
                                     <td class="text-right" ng-repeat="size in sizes"><input type="text" ng-model="delivery.delivery_items[$parent.$index].quantity[size.id]" /></td>                        
                                     <th class="text-right" style="background: #c36868;color: #fff;">{{ getTotalQty($index,-1) }}</th>
                                     <td class="text-right"><input type="text" ng-model="delivery.delivery_items[$index].extra" /></td>
@@ -232,7 +250,7 @@ else {
                                     <td class="text-center"><a href="" ng-click="add( $index )">Add</a> - <a href="" ng-click="remove( $index )">Delete</a></td>
                                 </tr>
                                 <tr>
-                                    <th colspan="4" class="text-right">Total Items</th>
+                                    <th colspan="5" class="text-right">Total Items</th>
                                     <th class="text-right" style="background: rgb(178, 219, 239);" ng-repeat="size in sizes">{{ getTotalQty(-1,size.id) }}</th>
                                     <th class="text-right" style="background: rgba(61, 165, 145, 0.89);color: #fff;">{{ getTotalQty(-1,-1) }}</th>
                                     <th class="text-right">&nbsp;</th>
