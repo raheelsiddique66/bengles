@@ -200,7 +200,7 @@ if( numrows( $rs ) > 0 ) {
     <th class="text-right"><?php echo curr_format($grand_total_amount+$total_balance-$total_income-$total_discount)?></th>
     <th class="text-right"><?php echo curr_format($total_discount)?></th>
     <th class="text-right"><?php echo curr_format($total_income)?></th>
-    <th></th>
+    <th><?php echo curr_format($total_balance+$grand_total_amount)?></th>
     <th class="text-right"><?php echo curr_format($total_balance)?></th>
     <th class="text-right"><?php echo curr_format($grand_total_amount)?></th>
     <th class="text-right"><?php echo curr_format($grand_total_quantity)?></th>

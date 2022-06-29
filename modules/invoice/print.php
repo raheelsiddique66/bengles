@@ -81,9 +81,9 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                     <th width="8%" class="text-right nastaleeq">نام</th>
                     <th width="5%" class="text-right nastaleeq">ریٹ</th>
                     <th width="5%" class="text-right nastaleeq">تعداد</th>
-                    <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com'){?><th width="5%" class="text-right nastaleeq">وائرس</th><?php }?>
+                    <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com' && $_SERVER['SERVER_NAME'] != 'goldenglass2022.burhanpk.com' && $_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="5%" class="text-right nastaleeq">وائرس</th><?php }?>
                     <th width="20%" class="text-right nastaleeq">آئٹم</th>
-                    <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com'){?><th width="10%" class="text-right nastaleeq">پلانٹ</th><?php }?>
+                    <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com' && $_SERVER['SERVER_NAME'] != 'goldenglass2022.burhanpk.com' && $_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="10%" class="text-right nastaleeq">پلانٹ</th><?php }?>
                     <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="8%" class="text-right nastaleeq">گیٹ پاس</th><?php }?>
                     <th width="10%" class="text-right nastaleeq">تاریخ</th>
                     <th width="2%" class="text-center nastaleeq">سیریل</th>
@@ -147,9 +147,9 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                             <td class="text-right"><?php echo curr_format($r["debit"])?></td>
                             <td class="text-right"><?php echo curr_format($r["unit_price"])?></td>
                             <td class="text-right"><?php echo $r["quantity"]?></td>
-                            <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com'){?><td class="text-right"><?php echo $r["claim"]?></td><?php }?>
+                            <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com' && $_SERVER['SERVER_NAME'] != 'goldenglass2022.burhanpk.com' && $_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><td class="text-right"><?php echo $r["claim"]?></td><?php }?>
                             <td class="nastaleeq" style="font-weight: bold;"><?php echo unslash($r["title_urdu"]);?><span style="display: block;font-size: 12px;"><?php echo unslash($r["details"]);?></span></td>
-                            <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com'){?><td class="nastaleeq"><?php echo get_field($r["machine_id"], "machine", "title");?></td><?php }?>
+                            <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com' && $_SERVER['SERVER_NAME'] != 'goldenglass2022.burhanpk.com' && $_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><td class="nastaleeq"><?php echo get_field($r["machine_id"], "machine", "title");?></td><?php }?>
                             <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><td><?php echo $r["gatepass_id"]?></td><?php }?>
                             <td><?php echo date_convert($r["datetime_added"])?></td>
                             <td class="text-center"><?php echo $sn?></td>

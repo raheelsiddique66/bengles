@@ -15,6 +15,14 @@ while($r2=dofetch($rs2)){
     }
 
 }
+$colors_field = [];
+$rs22 = doquery("select * from machine where status = 1 order by title", $dblink);
+while($r22=dofetch($rs22)){
+	
+        $colors_field[$r22["id"]] = unslash($r22["title"]);
+    
+
+}
 //$sql = "SELECT a.*, group_concat(a.id) as delivery_ids, b.balance, b.customer_name, b.customer_name_urdu, b.id as customerid FROM customer b left join delivery a on (a.customer_id = b.id $extra) left join delivery_items c on a.id = c.delivery_id ".(!empty($machine_id)?"where c.machine_id = '".$machine_id."'":"")." group by b.id order by customer_name";
 
 ?>
@@ -106,13 +114,12 @@ table {
     <th width="10%">Amount</th>
     <th width="10%">Total</th>
     <?php
-    foreach($colors as $color_id => $color){
-        foreach($color as $rate => $color_title) {
-            $colors_total[$color_id][$rate] = 0;
+    foreach($colors_field as $color_id => $color){
+        
             ?>
-            <th><span class="nastaleeq"><?php echo $color_title."<br>"?></span><?php echo "@".$rate ?></th>
+            <th><span class="nastaleeq"><?php echo $color."<br>"?></span></th>
             <?php
-        }
+        
     }
     ?>
     <th width="30%">Customer</th>
@@ -143,15 +150,17 @@ if( numrows( $rs ) > 0 ) {
         $colors_delivery = [];
         $total_quantity = $total_amount = 0;
         if(!empty($r["delivery_ids"])) {
-            $rs1 = doquery("select color_id, unit_price, sum(quantity), sum(quantity*unit_price) as total from delivery_items where delivery_id in (" . ($r["delivery_ids"]) . ")" . (!empty($machine_id) ? " and machine_id = '" . $machine_id . "'" : "") . " group by color_id,unit_price", $dblink);
+            $rs1 = doquery("select color_id, machine_id, color_field_id, unit_price, sum(quantity), sum(quantity*unit_price) as total from delivery_items where delivery_id in (" . ($r["delivery_ids"]) . ")" . (!empty($machine_id) ? " and machine_id = '" . $machine_id . "'" : "") . " group by color_id,unit_price,color_field_id,machine_id", $dblink);
             if (numrows($rs1) > 0) {
                 while ($r1 = dofetch($rs1)) {
-                    if (!isset($colors_delivery[$r1["color_id"]][$r1["unit_price"]])) {
-                        $colors_delivery[$r1["color_id"]][$r1["unit_price"]] = 0;
+                    if (!isset($colors_delivery[$r1["machine_id"]])) {
+                        $colors_delivery[$r1["machine_id"]] = 0;
                     }
-                    $colors_delivery[$r1["color_id"]][$r1["unit_price"]] = $r1["sum(quantity)"];
-                    $colors_total[$r1["color_id"]][$r1["unit_price"]] += $r1["sum(quantity)"];
-                    $total_quantity += $r1["sum(quantity)"];
+                    $colors_delivery[$r1["machine_id"]] += $r1["sum(quantity)"];
+                $colors_total[$r1["machine_id"]] += $r1["sum(quantity)"];
+                $total_quantity += $r1["sum(quantity)"];
+                    // $colors_delivery[$r1["color_field_id"]][$r1["unit_price"]] = $r1["sum(quantity)"];
+                    // $colors_total[$r1["color_id"]][$r1["unit_price"]] += $r1["sum(quantity)"];
                     $total_amount += $r1["total"];
                 }
             }
@@ -170,12 +179,12 @@ if( numrows( $rs ) > 0 ) {
             <th class="text-right"><?php echo curr_format($total_quantity)?></th>
             <?php
 
-            foreach($colors as $color_id => $color){
-                foreach($color as $rate => $color_title) {
+            foreach($colors_field as $color_id => $color){
+               
                     ?>
-                    <td class="text-right"><?php echo isset($colors_delivery[$color_id][$rate]) ? curr_format($colors_delivery[$color_id][$rate]) : 0 ?></td>
+                    <td class="text-right"><?php echo isset($colors_delivery[$color_id]) ? curr_format($colors_delivery[$color_id]) : 0 ?></td>
                     <?php
-                }
+                
             }
             ?>
             <td class="nastaleeq"><span style="margin-right: 10px;"><?php echo unslash($r["customer_name_urdu"]); ?></span></td>
@@ -197,12 +206,12 @@ if( numrows( $rs ) > 0 ) {
     <th class="text-right"><?php echo curr_format($grand_total_quantity)?></th>
 
     <?php
-    foreach($colors as $color_id => $color){
-        foreach($color as $rate => $color_title) {
+    foreach($colors_field as $color_id => $color){
+        
             ?>
-            <th class="text-right"><?php echo curr_format($colors_total[$color_id][$rate]) ?></th>
+            <th class="text-right"><?php echo curr_format($colors_total[$color_id]) ?></th>
             <?php
-        }
+        
     }
     ?>
     <th class="text-right">Grand Total</th>
