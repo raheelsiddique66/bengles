@@ -115,7 +115,6 @@ table {
     <th width="10%">Total</th>
     <?php
     foreach($colors_field as $color_id => $color){
-        
             ?>
             <th><span class="nastaleeq"><?php echo $color."<br>"?></span></th>
             <?php
@@ -148,6 +147,7 @@ if( numrows( $rs ) > 0 ) {
         $total_discount += $discount;
         $total_claim += $claim;
         $colors_delivery = [];
+    //    $colors_total = [];
         $total_quantity = $total_amount = 0;
         if(!empty($r["delivery_ids"])) {
             $rs1 = doquery("select color_id, color_field_id, unit_price, sum(quantity), sum(quantity*unit_price) as total from delivery_items where delivery_id in (" . ($r["delivery_ids"]) . ")" . (!empty($machine_id) ? " and machine_id = '" . $machine_id . "'" : "") . " group by color_id,unit_price,color_field_id", $dblink);
@@ -155,8 +155,9 @@ if( numrows( $rs ) > 0 ) {
                 while ($r1 = dofetch($rs1)) {
                     if (!isset($colors_delivery[$r1["color_field_id"]])) {
                         $colors_delivery[$r1["color_field_id"]] = 0;
+                        // $colors_total[$r1["color_field_id"]] = 0;
                     }
-                    $colors_delivery[$r1["color_field_id"]] += $r1["sum(quantity)"];
+                    $colors_delivery[$r1["color_field_id"]] = $r1["sum(quantity)"];
                 $colors_total[$r1["color_field_id"]] += $r1["sum(quantity)"];
                 $total_quantity += $r1["sum(quantity)"];
                     // $colors_delivery[$r1["color_field_id"]][$r1["unit_price"]] = $r1["sum(quantity)"];
@@ -179,10 +180,10 @@ if( numrows( $rs ) > 0 ) {
             <th class="text-right"><?php echo curr_format($total_quantity)?></th>
             <?php
 
-            foreach($colors_field as $color_id => $color){
-               
+            foreach($colors_field as $color_field_id => $color){
+               //print_r($color_field_id);
                     ?>
-                    <td class="text-right"><?php echo isset($colors_delivery[$color_id]) ? curr_format($colors_delivery[$color_id]) : 0 ?></td>
+                    <td class="text-right"><?php echo isset($colors_delivery[$color_field_id]) ? curr_format($colors_delivery[$color_field_id]) : 0 ?></td>
                     <?php
                 
             }
@@ -206,10 +207,10 @@ if( numrows( $rs ) > 0 ) {
     <th class="text-right"><?php echo curr_format($grand_total_quantity)?></th>
 
     <?php
-    foreach($colors_field as $color_id => $color){
+    foreach($colors_field as $color_field_id => $color){
         
             ?>
-            <th class="text-right"><?php echo curr_format($colors_total[$color_id]) ?></th>
+            <th class="text-right"><?php echo curr_format($colors_total[$color_field_id]) ?></th>
             <?php
         
     }

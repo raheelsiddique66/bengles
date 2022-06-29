@@ -6,7 +6,7 @@ include("include/paging.php");
 define("APP_START", 1);
 $filename = 'delivery_manage.php';
 include("include/admin_type_access.php");
-$tab_array=array("list", "status", "delete", "bulk_action", "report", "addedit", "print_receipt", "report_total", "current_report", "new_delivery", "individual_report", "report_total_color", "report_total_machine");
+$tab_array=array("list", "status", "delete", "bulk_action", "report", "addedit", "print_receipt", "report_total", "current_report", "new_delivery", "individual_report", "report_total_color", "report_total_machine", "report_total_plant");
 if(isset($_REQUEST["tab"]) && in_array($_REQUEST["tab"], $tab_array)){
 	$tab=$_REQUEST["tab"];
 }
@@ -62,7 +62,7 @@ if(isset($_SESSION["delivery"]["list"]["machine_id"]))
 	$machine_id=$_SESSION["delivery"]["list"]["machine_id"];
 else
 	$machine_id="";
-if($tab!=="report_total" && $tab!=="current_report" && $tab!=="individual_report"){
+if($tab!=="report_total" && $tab!=="current_report" && $tab!=="individual_report" && $tab!=="report_total_color" && $tab!=="report_total_machine" && $tab!=="report_total_plant"){
 if($machine_id!=""){
 	$extra.=" and c.machine_id='".$machine_id."'";
 	$is_search=true;
@@ -120,6 +120,9 @@ switch($tab){
     break;
 	case 'report_total_machine':
         include("modules/delivery/report_total_machine.php");
+    break;
+	case 'report_total_plant':
+        include("modules/delivery/report_total_plant.php");
     break;
 }
 ?>

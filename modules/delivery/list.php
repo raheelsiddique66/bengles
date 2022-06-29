@@ -6,6 +6,7 @@ if(!defined("APP_START")) die("No Direct Access");
 	<h1 class="title">Manage Sale</h1>
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="...">
+            <a href="delivery_manage.php?tab=report_total_plant" class="btn btn-light editproject">Report Total Plant</a>
             <a href="delivery_manage.php?tab=report_total_machine" class="btn btn-light editproject">Report Total Machine</a>
             <a href="delivery_manage.php?tab=report_total_color" class="btn btn-light editproject">Report Total New</a>
             <a href="delivery_manage.php?tab=new_delivery" class="btn btn-light editproject">Multiple Sale</a>
