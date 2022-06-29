@@ -1,6 +1,6 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$sql = "SELECT a.*, group_concat(a.id) as delivery_ids, b.title, b.id as machineid, d.customer_name FROM machine b left join delivery_items c on b.id = c.machine_id left join delivery a on (a.id = c.delivery_id $extra) left join customer d on a.customer_id = d.id ".(!empty($machine_id)?"where c.machine_id = '".$machine_id."'":"")." group by b.id order by title";
+$sql = "SELECT a.*, group_concat(a.id) as delivery_ids, b.title, b.id as machineid, d.customer_name FROM machine b left join delivery_items c on b.id = c.machine_id left join delivery a on a.id = c.delivery_id $extra left join customer d on a.customer_id = d.id ".(!empty($machine_id)?"where c.machine_id = '".$machine_id."'":"")." group by b.id order by title";
 $rs = doquery( $sql, $dblink );
 $colors_field = [];
 $rs22 = doquery("select * from color_field where status = 1 order by sortorder", $dblink);
