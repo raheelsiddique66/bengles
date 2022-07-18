@@ -136,6 +136,7 @@ if( numrows( $rs ) > 0 ) {
     $total_claim = 0;
     $cus_balance = 0;
 	while( $r = dofetch( $rs ) ) {
+        // echo $r["delivery_ids"];
 	    $balance = get_customer_balance($r["customerid"], date_dbconvert($date_from));
         $sql="select sum(amount) as amount, sum(discount) as discount, sum(claim) as claim from customer_payment where customer_id = '".$r[ "customerid" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added>='".date_dbconvert($date_from)."' and datetime_added<='".date_dbconvert($date_to)."'";
         $income1=dofetch(doquery($sql,$dblink));

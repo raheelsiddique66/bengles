@@ -1,7 +1,8 @@
 <?php
 if(!defined("APP_START")) die("No Direct Access");
-$sql = "SELECT a.*, group_concat(a.id) as delivery_ids, b.title, b.id as machineid, d.customer_name FROM machine b left join delivery_items c on b.id = c.machine_id left join delivery a on a.id = c.delivery_id $extra left join customer d on a.customer_id = d.id ".(!empty($machine_id)?"where c.machine_id = '".$machine_id."'":"")." group by b.id order by title";
-$rs = doquery( $sql, $dblink );
+$sql1 = "SELECT a.*, group_concat(a.id) as delivery_ids, group_concat(d.id) as cus_ids, b.title, b.id as machineid, d.customer_name FROM machine b left join delivery_items c on b.id = c.machine_id left join delivery a on a.id = c.delivery_id $extra left join customer d on a.customer_id = d.id ".(!empty($machine_id)?"where c.machine_id = '".$machine_id."'":"")." group by b.id order by b.title";
+// echo "SELECT a.*, group_concat(a.id) as delivery_ids, group_concat(d.id) as cus_ids, b.title, b.id as machineid, d.customer_name FROM machine b left join delivery_items c on b.id = c.machine_id left join delivery a on a.id = c.delivery_id $extra left join customer d on a.customer_id = d.id ".(!empty($machine_id)?"where c.machine_id = '".$machine_id."'":"")." group by c.machine_id order by b.title";die;
+$rs = doquery( $sql1, $dblink );
 $colors_field = [];
 $rs22 = doquery("select * from color_field where status = 1 order by sortorder", $dblink);
 while($r22=dofetch($rs22)){
@@ -107,12 +108,11 @@ if( numrows( $rs ) > 0 ) {
     $grand_total_quantity = 0;
 	$grand_total_amount = 0;
 	while( $r = dofetch( $rs ) ) {
-        //echo $r["delivery_ids"];die;
         $colors_delivery = [];
-        // $colors_total = [];
         $total_quantity = $total_amount = 0;
         if(!empty($r["delivery_ids"])) {
-            $rs1 = doquery("select color_id, color_field_id, unit_price, sum(quantity), sum(quantity*unit_price) as total from delivery_items where delivery_id in (" . ($r["delivery_ids"]) . ")" . (!empty($machine_id) ? " and machine_id = '" . $machine_id . "'" : "") . " group by color_field_id", $dblink);
+            $rs1 = doquery("select color_field_id, unit_price, sum(quantity), sum(quantity*unit_price) as total, b.customer_id as cusid from delivery_items a left join delivery b on a.delivery_id = b.id left join customer c on b.customer_id = c.id where delivery_id in (" . ($r["delivery_ids"]) . ") and customer_id in (" . ($r["cus_ids"]) . ")" . (!empty($machine_id) ? " and a.machine_id = '" . $machine_id . "'" : "") . " group by color_field_id", $dblink);
+            // echo "select color_id, color_field_id, unit_price, sum(quantity), sum(quantity*unit_price) as total, c.id as cusid from delivery_items a left join delivery b on a.delivery_id = b.id left join customer c on b.customer_id = c.id where delivery_id in (" . ($r["delivery_ids"]) . ") and customer_id in (" . ($r["cus_ids"]) . ")" . (!empty($machine_id) ? " and a.machine_id = '" . $machine_id . "'" : "") . " group by color_field_id";die;
             if (numrows($rs1) > 0) {
                 while ($r1 = dofetch($rs1)) {
                     if (!isset($colors_delivery[$r1["color_field_id"]])) {
