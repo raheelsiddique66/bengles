@@ -99,6 +99,9 @@ table {
 <tr>
     <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com' && $_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="10%" class="nastaleeq"> وائرس</th><?php }?>
     <th width="10%">New Balance</th>
+    <th width="10%">Package</th>
+    <th width="10%">Virus</th>
+    <th width="10%">Extra Discount</th>
     <th width="10%">Discount</th>
     <th width="10%">Payment</th>
     <th width="10%">Total Amount</th>
@@ -128,18 +131,27 @@ if( numrows( $rs ) > 0 ) {
     $total_income = 0;
     $total_discount = 0;
     $total_claim = 0;
+    $total_extra_discount = 0;
+    $total_virus = 0;
+    $total_package = 0;
     $cus_balance = 0;
 	while( $r = dofetch( $rs ) ) {
 	    $balance = get_customer_balance($r["customerid"], date_dbconvert($date_from));
-        $sql="select sum(amount) as amount, sum(discount) as discount, sum(claim) as claim from customer_payment where customer_id = '".$r[ "customerid" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added>='".date_dbconvert($date_from)."' and datetime_added<='".date_dbconvert($date_to)."'";
+        $sql="select sum(amount) as amount, sum(discount) as discount, sum(claim) as claim, sum(extra_discount) as extra_discount, sum(virus) as virus, sum(package) as package from customer_payment where customer_id = '".$r[ "customerid" ]."'".(!empty($machine_id)?" and machine_id = '".$machine_id."'":"")." and datetime_added>='".date_dbconvert($date_from)."' and datetime_added<='".date_dbconvert($date_to)."'";
         $income1=dofetch(doquery($sql,$dblink));
         $income = $income1[ "amount" ];
         $discount = $income1[ "discount" ];
         $claim = $income1[ "claim" ];
+        $extra_discount = $income1[ "extra_discount" ];
+        $virus = $income1[ "virus" ];
+        $package = $income1[ "package" ];
         $total_balance += $balance;
         $total_income += $income;
         $total_discount += $discount;
         $total_claim += $claim;
+        $total_extra_discount += $extra_discount;
+        $total_virus += $virus;
+        $total_package += $package;
         $colors_delivery = [];
         $total_quantity = $total_amount = 0;
         if(!empty($r["delivery_ids"])) {
@@ -162,6 +174,9 @@ if( numrows( $rs ) > 0 ) {
 		<tr>
             <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com' && $_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th class="text-right"><?php echo unslash($claim)?></th><?php }?>
             <th class="text-right"><?php echo curr_format($total_amount+$balance-$income-$discount)?></th>
+            <th class="text-right"><?php echo curr_format($extra_discount)?></th>
+            <th class="text-right"><?php echo curr_format($virus)?></th>
+            <th class="text-right"><?php echo curr_format($package)?></th>
             <th class="text-right"><?php echo curr_format($discount)?></th>
             <th class="text-right"><?php echo curr_format($income)?></th>
             <th class="text-right"><?php echo curr_format($balance+$total_amount)?></th>
@@ -189,6 +204,9 @@ if( numrows( $rs ) > 0 ) {
 <tr class="total_col">
     <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com' && $_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th class="text-right"><?php echo curr_format($total_claim)?></th><?php }?>
     <th class="text-right"><?php echo curr_format($grand_total_amount+$total_balance-$total_income-$total_discount)?></th>
+    <th class="text-right"><?php echo curr_format($total_extra_discount)?></th>
+    <th class="text-right"><?php echo curr_format($total_virus)?></th>
+    <th class="text-right"><?php echo curr_format($total_package)?></th>
     <th class="text-right"><?php echo curr_format($total_discount)?></th>
     <th class="text-right"><?php echo curr_format($total_income)?></th>
     <th><?php echo curr_format($total_balance+$grand_total_amount)?></th>

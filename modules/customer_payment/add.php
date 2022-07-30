@@ -12,6 +12,9 @@ else{
 	$details="";
 	$machine_id="";
 	$claim="";
+    $extra_discount="";
+    $virus="";
+    $package="";
 }
 ?>
 <div class="page-header">
@@ -108,6 +111,36 @@ else{
             </div>
             <div class="col-sm-10">
                 <input type="text" title="Enter Claim" value="<?php echo $claim; ?>" name="claim" id="claim" class="form-control" >
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-2 control-label">
+                <label class="form-label" for="extra_discount">Extra Discount</label>
+            </div>
+            <div class="col-sm-10">
+                <input type="text" title="Enter Extra Discount" value="<?php echo $extra_discount; ?>" name="extra_discount" id="extra_discount" class="form-control" >
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-2 control-label">
+                <label class="form-label" for="virus">Virus</label>
+            </div>
+            <div class="col-sm-10">
+                <input type="text" title="Enter Virus" value="<?php echo $virus; ?>" name="virus" id="virus" class="form-control" >
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-2 control-label">
+                <label class="form-label" for="package">Package</label>
+            </div>
+            <div class="col-sm-10">
+                <input type="text" title="Enter Package" value="<?php echo $package; ?>" name="package" id="package" class="form-control" >
             </div>
         </div>
     </div>
