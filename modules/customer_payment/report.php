@@ -2,6 +2,9 @@
 if(!defined("APP_START")) die("No Direct Access");
 $rs = doquery( $sql, $dblink );
 $total_amount = $total_discount = $total_claim = 0;
+$total_extra_discount = 0;
+$total_virus = 0;
+$total_package = 0;
 ?>
 <style>
 h1, h2, h3, p {
@@ -69,6 +72,9 @@ table {
     <th width="10%">Paid By</th>
     <th class="text-right nastaleeq" width="10%">وائرس/تعداد</th>
     <th class="text-right nastaleeq" width="10%">رقم</th>
+    <th class="text-right nastaleeq" width="10%">پیکج</th>
+    <th class="text-right nastaleeq" width="10%">وائرس</th>
+    <th class="text-right nastaleeq" width="10%"> اضافی ڈسکاؤنٹ </th>
     <th class="text-right nastaleeq" width="10%">ڈسکاؤنٹ</th>
     <th class="nastaleeq text-center" width="10%">حوالہ نمبر</th>
     <th class="nastaleeq" width="12%">تاریخ</th>
@@ -84,11 +90,17 @@ if( numrows( $rs ) > 0 ) {
         $total_claim += $r["claim"];
         $total_amount += $r["amount"];
         $total_discount += $r["discount"];
+        $total_extra_discount += $r["extra_discount"];
+        $total_virus += $r["virus"];
+        $total_package += $r["package"];
 		?>
 		<tr>
             <td class="nastaleeq"><?php echo get_field( unslash($r["account_id"]), "account", "title_urdu" ); ?></td>
             <td class="text-right"><?php echo unslash($r["claim"]); ?></td>
             <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
+            <td class="text-right"><?php echo curr_format(unslash($r["package"])); ?></td>
+            <td class="text-right"><?php echo curr_format(unslash($r["virus"])); ?></td>
+            <td class="text-right"><?php echo curr_format(unslash($r["extra_discount"])); ?></td>
             <td class="text-right"><?php echo curr_format(unslash($r["discount"])); ?></td>
             <td><?php echo unslash($r["details"]); ?></td>
             <td><?php echo datetime_convert($r["datetime_added"]); ?></td>
@@ -105,6 +117,9 @@ if( numrows( $rs ) > 0 ) {
 <th></th>
 <th align="right" style="background-color:#dad55e;padding: 10px 5px;vertical-align: middle;font-weight: 900;font-size: 22px;"><?php echo curr_format($total_claim)?></th>
 <th align="right" style="background-color:#dad55e;padding: 10px 5px;vertical-align: middle;font-weight: 900;font-size: 22px;"><?php echo curr_format($total_amount)?></th>
+<th align="right" style="background-color:#dad55e;padding: 10px 5px;vertical-align: middle;font-weight: 900;font-size: 22px;"><?php echo curr_format($total_package)?></th>
+<th align="right" style="background-color:#dad55e;padding: 10px 5px;vertical-align: middle;font-weight: 900;font-size: 22px;"><?php echo curr_format($total_virus)?></th>
+<th align="right" style="background-color:#dad55e;padding: 10px 5px;vertical-align: middle;font-weight: 900;font-size: 22px;"><?php echo curr_format($total_extra_discount)?></th>
 <th align="right" style="background-color:#dad55e;padding: 10px 5px;vertical-align: middle;font-weight: 900;font-size: 22px;"><?php echo curr_format($total_discount)?></th>
 <th align="left" colspan="6" style="vertical-align: middle;font-weight: 900;font-size: 22px;">ٹوٹل</th>
 </tr>

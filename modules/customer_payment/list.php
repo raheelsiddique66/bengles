@@ -84,8 +84,8 @@ if(!defined("APP_START")) die("No Direct Access");
 	<table class="table table-hover list">
     	<thead>
             <tr>
-                <th width="5%" class="text-center">S.no</th>
-                <th class="text-center" width="5%"><div class="checkbox checkbox-primary">
+                <th width="2%" class="text-center">S.no</th>
+                <th class="text-center" width="3%"><div class="checkbox checkbox-primary">
                     <input type="checkbox" id="select_all" value="0" title="Select All Records">
                     <label for="select_all"></label></div></th>
                 <th width="5%" class="text-center">ID</th>
@@ -95,6 +95,9 @@ if(!defined("APP_START")) die("No Direct Access");
                 <th>Reference No</th>
                 <th class="text-right">Discount</th>
                 <th class="text-right">Amount</th>
+                <th class="text-right">Extra Discount</th>
+                <th class="text-right">Virus</th>
+                <th class="text-right">Package</th>
                 <th class="text-right">Claim</th>
                 <th>Paid To</th>
                 <th class="text-center">Status</th>
@@ -121,6 +124,9 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td><?php echo unslash($r["details"]); ?></td>
                         <td class="text-right"><?php echo curr_format(unslash($r["discount"])); ?></td>
                         <td class="text-right"><?php echo curr_format(unslash($r["amount"])); ?></td>
+                        <td class="text-right"><?php echo curr_format(unslash($r["extra_discount"])); ?></td>
+                        <td class="text-right"><?php echo curr_format(unslash($r["virus"])); ?></td>
+                        <td class="text-right"><?php echo curr_format(unslash($r["package"])); ?></td>
                         <td class="text-right"><?php echo unslash($r["claim"]); ?></td>
                         <td><?php echo get_field( unslash($r["account_id"]), "account", "title" ); ?></td>
                         <td class="text-center"><a href="customer_payment_manage.php?id=<?php echo $r['id'];?>&tab=status&s=<?php echo ($r["status"]==0)?1:0;?>">

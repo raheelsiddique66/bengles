@@ -173,10 +173,10 @@ if( numrows( $rs ) > 0 ) {
         ?>
 		<tr>
             <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com' && $_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th class="text-right"><?php echo unslash($claim)?></th><?php }?>
-            <th class="text-right"><?php echo curr_format($total_amount+$balance-$income-$discount)?></th>
-            <th class="text-right"><?php echo curr_format($extra_discount)?></th>
-            <th class="text-right"><?php echo curr_format($virus)?></th>
+            <th class="text-right"><?php echo curr_format($total_amount+$balance-$income-$discount-$package-$virus-$extra_discount)?></th>
             <th class="text-right"><?php echo curr_format($package)?></th>
+            <th class="text-right"><?php echo curr_format($virus)?></th>
+            <th class="text-right"><?php echo curr_format($extra_discount)?></th>
             <th class="text-right"><?php echo curr_format($discount)?></th>
             <th class="text-right"><?php echo curr_format($income)?></th>
             <th class="text-right"><?php echo curr_format($balance+$total_amount)?></th>
@@ -203,10 +203,10 @@ if( numrows( $rs ) > 0 ) {
 ?>
 <tr class="total_col">
     <?php if($_SERVER['SERVER_NAME'] != 'goldenglass.burhanpk.com' && $_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th class="text-right"><?php echo curr_format($total_claim)?></th><?php }?>
-    <th class="text-right"><?php echo curr_format($grand_total_amount+$total_balance-$total_income-$total_discount)?></th>
-    <th class="text-right"><?php echo curr_format($total_extra_discount)?></th>
-    <th class="text-right"><?php echo curr_format($total_virus)?></th>
+    <th class="text-right"><?php echo curr_format($grand_total_amount+$total_balance-$total_income-$total_discount-$total_package-$total_virus-$total_extra_discount)?></th>
     <th class="text-right"><?php echo curr_format($total_package)?></th>
+    <th class="text-right"><?php echo curr_format($total_virus)?></th>
+    <th class="text-right"><?php echo curr_format($total_extra_discount)?></th>
     <th class="text-right"><?php echo curr_format($total_discount)?></th>
     <th class="text-right"><?php echo curr_format($total_income)?></th>
     <th><?php echo curr_format($total_balance+$grand_total_amount)?></th>

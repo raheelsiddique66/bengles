@@ -26,7 +26,8 @@ else{
 	$date_from = "";
 }
 if( !empty($date_from) ){
-	$extra.=" and date>='".date("Y/m/d", strtotime(date_dbconvert($date_from)))."'";
+	$extra.=" and date>='".date("Y-m-d", strtotime(date_dbconvert($date_from)))."'";
+// 	$extra.=" and date>='".date_dbconvert($date_from)."'";
 	$is_search=true;
 }
 if( isset($_GET["date_to"]) ){
@@ -66,6 +67,7 @@ if($tab!=="report_total" && $tab!=="current_report" && $tab!=="individual_report
 if($machine_id!=""){
 	$extra.=" and c.machine_id='".$machine_id."'";
 	$is_search=true;
+	$new = $total_qty = $total_amount = 0;
 }
 }
 if(isset($_GET["q"])){

@@ -155,8 +155,8 @@ if( numrows( $rs ) > 0 ) {
         $grand_total_amount += $record["total"];
         ?>
 		<tr>
-            <th class="text-right"><?php echo curr_format($record["quantity"])?></th>
             <th class="text-right"><?php echo curr_format($record["total"])?></th>
+            <th class="text-right"><?php echo curr_format($record["quantity"])?></th>
             <?php
 
             foreach($colors_field as $color_field_id => $color){
