@@ -76,7 +76,12 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
         	<thead>
                 <tr>
                     <th width="12%" class="text-right nastaleeq"> ٹوٹل رقم</th>
-                    <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><th width="8%" class="text-right nastaleeq">کلیم/RF</th><?php }?>
+                    <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?>
+                    <th width="12%" class="text-right nastaleeq"> پیکج</th>
+                    <th width="12%" class="text-right nastaleeq"> وائرس رقم</th>
+                    <th width="12%" class="text-right nastaleeq"> اضافی رعایت</th>
+                    <th width="8%" class="text-right nastaleeq">کلیم/RF</th>
+                    <?php }?>
                     <th width="8%" class="text-right nastaleeq">جمع</th>
                     <th width="8%" class="text-right nastaleeq">نام</th>
                     <th width="5%" class="text-right nastaleeq">ریٹ</th>
@@ -98,6 +103,9 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
             $total_balance = 0;
             $total_discount = 0;
             $balance = 0;
+            $total_extra_discount = 0;
+            $total_virus = 0;
+            $total_package = 0;
             $total_credit_discount = 0;
             $sql="select sum(amount) as amount from (select sum(unit_price * quantity) as amount from delivery a left join delivery_items b on a.id = b.delivery_id where customer_id = '".$customer[ "id" ]."'".($invoice["machine_id"]>0?" and b.machine_id='".$invoice["machine_id"]."'":"")." and date<'".date('Y-m-d',strtotime($invoice["date_from"]))."' union select -sum(amount)-sum(discount) as amount from customer_payment where customer_id = '".$customer[ "id" ]."'".($invoice["machine_id"]>0?" and machine_id='".$invoice["machine_id"]."'":"")." and datetime_added<='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00') as transactions ";
             $balance=dofetch(doquery($sql,$dblink));
@@ -108,7 +116,7 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                 <td class="text-left" colspan="10"><strong class="nastaleeq">سابقہ</strong></td>
             </tr>
                 <?php
-                $sql = "select date as datetime_added, gatepass_id, title_urdu, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit, 0 as discount, '' as details, 0 as claim, b.machine_id from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and b.machine_id='".$invoice["machine_id"]."'":"")." and date>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' group by delivery_id,color_id union select datetime_added as datetime_added, '', title_urdu, 0, 0, 0, amount as credit, discount as discount, details, claim, a.machine_id from customer_payment a left join account c on a.account_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and a.machine_id='".$invoice["machine_id"]."'":"")." and datetime_added>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' order by datetime_added";
+                $sql = "select date as datetime_added, gatepass_id, title_urdu, sum(quantity) as quantity, unit_price, unit_price*sum(quantity) as debit, 0 as credit, 0 as discount, 0 as extra_discount, 0 as virus, 0 as package, '' as details, 0 as claim, b.machine_id from delivery a left join delivery_items b on a.id = b.delivery_id left join color c on b.color_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and b.machine_id='".$invoice["machine_id"]."'":"")." and date>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and date<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' group by delivery_id,color_id union select datetime_added as datetime_added, '', title_urdu, 0, 0, 0, amount as credit, discount as discount, extra_discount as extra_discount, virus as virus, package as package, details, claim, a.machine_id from customer_payment a left join account c on a.account_id = c.id where customer_id = '".$invoice[ "customer_id" ]."'".($invoice["machine_id"]>0?" and a.machine_id='".$invoice["machine_id"]."'":"")." and datetime_added>='".date('Y-m-d',strtotime($invoice["date_from"]))." 00:00:00' and datetime_added<'".date('Y-m-d',strtotime($invoice["date_to"]))." 23:59:59' order by datetime_added";
                 //echo $sql;die;
                 $rs=doquery($sql,$dblink);
 
@@ -122,14 +130,18 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                     <?php
                     $accounts = [];
                     while($r=dofetch($rs)){   
+                        // print_r($r);
                         $total_quantity += $r["quantity"];
                         $total_claim += $r["claim"];
                         $total_debit += $r["debit"];
                         $total_credit += $r["credit"];
                         $total_discount += $r["discount"];
+                        $total_extra_discount += $r["extra_discount"];
+                        $total_virus += $r["virus"];
+                        $total_package += $r["package"];
                         $total_credit_discount = $r["credit"]-$r["discount"];
 //                        echo $total_credit_discount;
-                        $balance += $r["debit"]-$r["credit"]-$r["discount"];
+                        $balance += $r["debit"]-$r["credit"]-$r["discount"]-$r["extra_discount"]-$r["virus"]-$r["package"];
 
                         if(!isset($accounts[$r["title_urdu"].$r["unit_price"]])){
                             $accounts[$r["title_urdu"].$r["unit_price"]] = [
@@ -142,7 +154,12 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                         ?>
                         <tr>
                             <td class="text-right"><?php echo curr_format($balance); ?></td>
-                            <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?><td class="text-right"><?php echo curr_format($r["discount"])?></td><?php }?>
+                            <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?>
+                            <td class="text-right"><?php echo curr_format($r["package"])?></td>
+                            <td class="text-right"><?php echo curr_format($r["virus"])?></td>
+                            <td class="text-right"><?php echo curr_format($r["extra_discount"])?></td>
+                            <td class="text-right"><?php echo curr_format($r["discount"])?></td>
+                            <?php }?>
                             <td class="text-right"><?php echo curr_format($r["credit"])?></td>
                             <td class="text-right"><?php echo curr_format($r["debit"])?></td>
                             <td class="text-right"><?php echo curr_format($r["unit_price"])?></td>
@@ -161,14 +178,19 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
                 else{	
                     ?>
                     <tr>
-                        <td colspan="11"  class="no-record" style="color: #fff">No Result Found</td>
+                        <td colspan="14"  class="no-record" style="color: #fff">No Result Found</td>
                     </tr>
                     <?php
                 }
                 ?>
                 <tr>
                     <th class="text-right"><?php echo curr_format($balance)?></th>
-                    <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?> <th class="text-right"><?php echo curr_format($total_discount)?></th><?php }?>
+                    <?php if($_SERVER['SERVER_NAME'] != 'jibran.burhanpk.com'){?>
+                    <th class="text-right"><?php echo curr_format($total_package)?></th>
+                    <th class="text-right"><?php echo curr_format($total_virus)?></th>
+                    <th class="text-right"><?php echo curr_format($total_extra_discount)?></th>
+                    <th class="text-right"><?php echo curr_format($total_discount)?></th>
+                    <?php }?>
                     <th class="text-right"><?php echo curr_format($total_credit)?></th>
                     <th class="text-right"><?php echo curr_format($total_debit)?></th>
                     <th class="text-right"></th>
