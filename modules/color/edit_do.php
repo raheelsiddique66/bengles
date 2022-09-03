@@ -19,6 +19,11 @@ if(isset($_POST["color_edit"])){
 		die;
 	}
 }
+if(isset($_POST["update_rate"])){
+	doquery("Update delivery_items set `unit_price`='".slash($_POST["rate"])."' where color_id='".slash($_POST["id"])."'",$dblink);
+	doquery("Update color set `rate`='".slash($_POST["rate"])."' where id='".slash($_POST["id"])."'",$dblink);
+	header("Location: color_manage.php");
+}
 /*----------------------------------------------------------------------------------*/
 if(isset($_GET["id"]) && $_GET["id"]!=""){
 	$rs=doquery("select * from color where id='".slash($_GET["id"])."'",$dblink);

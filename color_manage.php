@@ -33,6 +33,9 @@ switch($tab){
     case 'report':
         include("modules/color/report.php");
     break;
+	// case 'update_rate':
+    //     include("modules/color/update_rate.php");
+    // break;
 }
 ?>
 <?php include("include/header.php");?>
