@@ -74,6 +74,7 @@ if(!defined("APP_START")) die("No Direct Access");
             </div>
         </div>
     </div>
+    <?php if($site_url!='http://idreesandatif.burhanpk.com'){?>
     <div class="form-group">
         <div class="row">
         	<div class="col-sm-2 control-label">
@@ -84,6 +85,11 @@ if(!defined("APP_START")) die("No Direct Access");
             </div>
         </div>
     </div>
+    <?php } else{
+        ?>
+        <input type="hidden" title="Enter Balance" value="0" name="balance" id="balance" class="form-control" />
+        <?php
+    }?>
     <div class="form-group">
         <div class="row">
             <div class="col-sm-2 control-label">

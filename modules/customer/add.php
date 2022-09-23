@@ -8,7 +8,7 @@ else{
     $phone="";
     $address="";
     $customer_name_urdu="";
-    $balance="";
+    $balance=0;
     $machine_id="";
     $sortorder="";
 }
@@ -85,6 +85,7 @@ else{
             </div>
         </div>
     </div>
+    <?php if($site_url!='http://idreesandatif.burhanpk.com'){?>
     <div class="form-group">
         <div class="row">
         	<div class="col-sm-2 control-label">
@@ -95,6 +96,11 @@ else{
             </div>
         </div>
     </div>
+    <?php } else{
+        ?>
+        <input type="hidden" title="Enter Balance" value="0" name="balance" id="balance" class="form-control" />
+        <?php
+    }?>
     <div class="form-group">
         <div class="row">
             <div class="col-sm-2 control-label">
