@@ -59,7 +59,7 @@ if(!defined("APP_START")) die("No Direct Access");
             </div>
             <div class="col-sm-10">
                 <input type="submit" value="Update" class="btn btn-default btn-l" name="color_edit" title="Update Record" />
-                <input type="submit" value="Update Previous Rate" class="btn btn-info btn-l" name="update_rate" title="Update Previous Rate" />
+                <?php if($site_url!='http://idreesandatif.burhanpk.com'){?><input type="submit" value="Update Previous Rate" class="btn btn-info btn-l" name="update_rate" title="Update Previous Rate" /><?php }?>
             </div>
         </div>
   	</div>

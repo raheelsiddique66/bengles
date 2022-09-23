@@ -6,13 +6,15 @@ if(!defined("APP_START")) die("No Direct Access");
 	<h1 class="title">Manage Sale</h1>
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="...">
+            <?php if($site_url!='http://idreesandatif.burhanpk.com'){?>
             <a href="delivery_manage.php?tab=report_total_plant" class="btn btn-light editproject">Report Total Plant</a>
             <a href="delivery_manage.php?tab=report_total_machine" class="btn btn-light editproject">Report Total Machine</a>
             <a href="delivery_manage.php?tab=report_total_color" class="btn btn-light editproject">Report Total New</a>
             <a href="delivery_manage.php?tab=new_delivery" class="btn btn-light editproject">Multiple Sale</a>
+            <?php }?>
             <a href="delivery_manage.php?tab=addedit" class="btn btn-light editproject">Add New Sale</a>
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
-            <a class="btn print-btn" href="delivery_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a>
+            <?php if($site_url!='http://idreesandatif.burhanpk.com'){?><a class="btn print-btn" href="delivery_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a><?php }?>
             <a href="delivery_manage.php?tab=report_total" class="btn btn-light editproject">Report Total</a>
             <a href="delivery_manage.php?tab=current_report" class="btn btn-light editproject">Current Report</a>
             <a href="delivery_manage.php?tab=individual_report" class="btn btn-light editproject">Individual Report</a>

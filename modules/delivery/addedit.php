@@ -82,7 +82,7 @@ else {
                         <option value="0" selected="false">Select Customer</option>
                         <option ng-repeat="customer in customers" value="{{ customer.id }}">{{ customer.customer_name }}</option>
                     </select>
-                    <a href="" class="add_customer_link" ng-click="togglePopupCustomer()">+</a>
+                    <?php if($site_url!='http://idreesandatif.burhanpk.com'){?><a href="" class="add_customer_link" ng-click="togglePopupCustomer()">+</a><?php }?>
                 </div>
             </div>
         </div>
@@ -175,7 +175,7 @@ else {
                         <option value="0" selected="false">Select Labour</option>
                         <option ng-repeat="labour in labours" value="{{ labour.id }}">{{ labour.name }}</option>
                     </select>
-                    <a href="" class="add_customer_link" ng-click="togglePopup()">+</a>
+                    <?php if($site_url!='http://idreesandatif.burhanpk.com'){?><a href="" class="add_customer_link" ng-click="togglePopup()">+</a><?php }?>
                 </div>
             </div>
         </div>
@@ -200,10 +200,10 @@ else {
                             <thead>
                                 <tr>
                                     <th width="2%" class="text-center" rowspan="2">S.no</th>
-                                    <th width="10%" rowspan="2" style="position: relative">Plant <a href="" class="add_customer_link design" ng-click="togglePopupMachine()">+</a></th>
-                                    <th width="10%" rowspan="2" style="position: relative">Design <a href="" class="add_customer_link design" ng-click="togglePopupDesign()">+</a></th>
-                                    <th width="12%" rowspan="2" style="position: relative">Color <a href="" class="add_customer_link design" ng-click="togglePopupColor()">+</a></th>
-                                    <th width="12%" rowspan="2" style="position: relative">Color Field <a href="" class="add_customer_link design" ng-click="togglePopupColorField()">+</a></th>
+                                    <th width="10%" rowspan="2" style="position: relative">Plant <?php if($site_url!='http://idreesandatif.burhanpk.com'){?><a href="" class="add_customer_link design" ng-click="togglePopupMachine()">+</a><?php }?></th>
+                                    <th width="10%" rowspan="2" style="position: relative">Design <?php if($site_url!='http://idreesandatif.burhanpk.com'){?><a href="" class="add_customer_link design" ng-click="togglePopupDesign()">+</a><?php }?></th>
+                                    <th width="12%" rowspan="2" style="position: relative">Color <?php if($site_url!='http://idreesandatif.burhanpk.com'){?><a href="" class="add_customer_link design" ng-click="togglePopupColor()">+</a><?php }?></th>
+                                    <?php if($site_url!='http://idreesandatif.burhanpk.com'){?><th width="12%" rowspan="2" style="position: relative">Color Field <a href="" class="add_customer_link design" ng-click="togglePopupColorField()">+</a></th><?php }?>
                                     <th class="text-center" width="30%" colspan="{{ sizes.length+1 }}">Sizes</th>
                                     <th class="text-right" width="5%">Extra</th>
                                     <th class="text-right" width="6%">Price</th>
@@ -236,12 +236,14 @@ else {
                                             <option ng-repeat="color in colors" value="{{ color.id }}">{{ color.title }}</option>
                                         </select>
                                     </td>
+                                    <?php if($site_url!='http://idreesandatif.burhanpk.com'){?>
                                     <td>
                                         <select title="Choose Option" ng-model="delivery.delivery_items[$index].color_field_id">
                                             <option value="">Select Color Field</option>
                                             <option ng-repeat="color_field in color_fields" value="{{ color_field.id }}">{{ color_field.title }}</option>
                                         </select>
                                     </td>
+                                    <?php }?>
                                     <td class="text-right" ng-repeat="size in sizes"><input type="text" ng-model="delivery.delivery_items[$parent.$index].quantity[size.id]" /></td>                        
                                     <th class="text-right" style="background: #c36868;color: #fff;">{{ getTotalQty($index,-1) }}</th>
                                     <td class="text-right"><input type="text" ng-model="delivery.delivery_items[$index].extra" /></td>
@@ -250,7 +252,7 @@ else {
                                     <td class="text-center"><a href="" ng-click="add( $index )">Add</a> - <a href="" ng-click="remove( $index )">Delete</a></td>
                                 </tr>
                                 <tr>
-                                    <th colspan="5" class="text-right">Total Items</th>
+                                    <th colspan="<?php if($site_url!='http://idreesandatif.burhanpk.com'){?>5<?php } else{ echo "4";}?>" class="text-right">Total Items</th>
                                     <th class="text-right" style="background: rgb(178, 219, 239);" ng-repeat="size in sizes">{{ getTotalQty(-1,size.id) }}</th>
                                     <th class="text-right" style="background: rgba(61, 165, 145, 0.89);color: #fff;">{{ getTotalQty(-1,-1) }}</th>
                                     <th class="text-right">&nbsp;</th>

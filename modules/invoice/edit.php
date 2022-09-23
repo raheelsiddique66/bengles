@@ -19,7 +19,7 @@ if(!defined("APP_START")) die("No Direct Access");
             </div>
             <div class="col-sm-10">
                 <select name="customer_id" title="Choose Option">
-                    <option value="0">Select Customer</option>
+                <?php if($site_url!='http://idreesandatif.burhanpk.com'){?><option value="0">Select Customer</option><?php }?>
                     <?php
                     $res=doquery("select * from customer where status=1 order by customer_name", $dblink);
                     if(numrows($res)>0){

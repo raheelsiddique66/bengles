@@ -120,7 +120,7 @@ if(!defined("APP_START")) die("No Direct Access");
                             <a href="invoice_manage.php?tab=print&id=<?php echo $r['id'];?>" class="download-icon"><i class="fa fa-download" aria-hidden="true"></i></a>&nbsp;&nbsp;
                             <a href="invoice_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
                             <a onclick="return confirm('Are you sure you want to delete')" href="invoice_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
-                            <a href="https://wa.me/<?php echo $r["phone"];?>?text=" target="_blank" class="download-icon"><i class="fa fa-whatsapp"></i></a>&nbsp;&nbsp;
+                            <?php if($site_url!='http://idreesandatif.burhanpk.com'){?><a href="https://wa.me/<?php echo $r["phone"];?>?text=" target="_blank" class="download-icon"><i class="fa fa-whatsapp"></i></a>&nbsp;&nbsp;<?php }?>
                         </td>
                     </tr>
                     <?php 
@@ -129,6 +129,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 ?>
                 <tr>
                     <td colspan="5" class="actions">
+                    <?php if($site_url!='http://idreesandatif.burhanpk.com'){?>
                         <select name="bulk_action" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
                             <option value="delete">Delete</option>
@@ -137,6 +138,7 @@ if(!defined("APP_START")) die("No Direct Access");
                             <option value="invoice">Invoice</option>
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
+                        <?php }?>
                     </td>
                     <td colspan="5" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "invoice", $sql, $pageNum)?></td>
                 </tr>

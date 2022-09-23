@@ -5,10 +5,10 @@ if(!defined("APP_START")) die("No Direct Access");
 	<h1 class="title">Manage Incoming</h1>
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="...">
-            <?php if($_SESSION["logged_in_admin"]["admin_type_id"]==1){ ?><a href="incoming_manage.php?tab=new_incoming" class="btn btn-light editproject">Multiple Incoming</a><?php } ?>
+            <?php if($_SESSION["logged_in_admin"]["admin_type_id"]==1 && $site_url!='http://idreesandatif.burhanpk.com'){ ?><a href="incoming_manage.php?tab=new_incoming" class="btn btn-light editproject">Multiple Incoming</a><?php } ?>
         	<a href="incoming_manage.php?tab=addedit" class="btn btn-light editproject">Add New Incoming</a>
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a>
-            <a class="btn print-btn" href="incoming_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a>
+            <?php if($site_url!='http://idreesandatif.burhanpk.com'){?><a class="btn print-btn" href="incoming_manage.php?tab=report"><i class="fa fa-print" aria-hidden="true"></i></a><?php }?>
             <a href="incoming_manage.php?tab=report_total" class="btn btn-light editproject">Report Total</a>
         </div>
   	</div>

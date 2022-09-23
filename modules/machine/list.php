@@ -23,7 +23,7 @@ if(!empty($q)){
   	</ol>
   	<div class="right">
     	<div class="btn-group" role="group" aria-label="..."> 
-        	<a href="machine_manage.php?tab=add" class="btn btn-light editproject">Add New Plant</a>
+        <?php if($site_url!='http://idreesandatif.burhanpk.com'){?><a href="machine_manage.php?tab=add" class="btn btn-light editproject">Add New Plant</a><?php }?>
             <a id="topstats" class="btn btn-light" href="#"><i class="fa fa-search"></i></a> 
     	</div> 
     </div> 

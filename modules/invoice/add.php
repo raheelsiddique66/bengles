@@ -32,7 +32,7 @@ else{
             </div>
             <div class="col-sm-10">
                 <select name="customer_id" title="Choose Option">
-                    <option value="0">All Customer</option>
+                <?php if($site_url!='http://idreesandatif.burhanpk.com'){?><option value="0">All Customer</option><?php }?>
                     <?php
                     $res=doquery("select * from customer where status=1 order by customer_name", $dblink);
                     if(numrows($res)>0){
@@ -54,7 +54,7 @@ else{
             </div>
             <div class="col-sm-10">
                 <select name="machine_id" title="Choose Option">
-                    <option value="0">All Machine</option>
+                    <option value="0">Select Machine</option>
                     <?php
                     $res=doquery("select * from machine where status=1 order by title", $dblink);
                     if(numrows($res)>0){
