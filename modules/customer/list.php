@@ -105,7 +105,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         <td class="text-center">
 <!--                            <a href="customer_manage.php?tab=customer_dashboard&client_id=--><?php //echo $r['id'];?><!--" class="download-icon"><i class="fa fa-download" aria-hidden="true"></i></a>-->
                             <a href="customer_manage.php?tab=report&id=<?php echo $r['id'];?>" class="download-icon"><i class="fa fa-download" aria-hidden="true"></i></a>&nbsp;&nbsp;
-                            <a href="customer_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;
+                            <?php if($site_url!='http://idreesandatif.burhanpk.com'){?><a href="customer_manage.php?tab=edit&id=<?php echo $r['id'];?>"><img title="Edit Record" alt="Edit" src="images/edit.png"></a>&nbsp;&nbsp;<?php }?>
                             <a onclick="return confirm('Are you sure you want to delete')" href="customer_manage.php?id=<?php echo $r['id'];?>&amp;tab=delete"><img title="Delete Record" alt="Delete" src="images/delete.png"></a>
                         </td>
                     </tr>  
@@ -114,6 +114,7 @@ if(!defined("APP_START")) die("No Direct Access");
                 }
                 ?>
                 <tr>
+                <?php if($site_url!='http://idreesandatif.burhanpk.com'){?>
                     <td colspan="6" class="actions">
                         <select name="bulk_action" class="" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
@@ -124,6 +125,7 @@ if(!defined("APP_START")) die("No Direct Access");
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
                     </td>
+                    <?php }?>
                     <td colspan="4" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "customer", $sql, $pageNum)?></td>
                 </tr>
                 <?php	
