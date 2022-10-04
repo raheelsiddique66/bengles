@@ -129,16 +129,18 @@ if(!defined("APP_START")) die("No Direct Access");
                 ?>
                 <tr>
                     <td colspan="5" class="actions">
-                    <?php if($site_url!='http://idreesandatif.burhanpk.com'){?>
+                    <?php // if($site_url!='http://idreesandatif.burhanpk.com'){?>
                         <select name="bulk_action" id="bulk_action" title="Choose Action">
                             <option value="null">Bulk Action</option>
+                            <?php if($site_url!='http://idreesandatif.burhanpk.com'){?>
                             <option value="delete">Delete</option>
                             <option value="statuson">Set Status On</option>
                             <option value="statusof">Set Status Off</option>
+                            <?php }?>
                             <option value="invoice">Invoice</option>
                         </select>
                         <input type="button" name="apply" value="Apply" id="apply_bulk_action" class="btn btn-light" title="Apply Action"  />
-                        <?php }?>
+                        <?php // }?>
                     </td>
                     <td colspan="5" class="paging" title="Paging" align="right"><?php echo pages_list($rows, "invoice", $sql, $pageNum)?></td>
                 </tr>
