@@ -27,6 +27,8 @@ $customers=doquery("select * from customer where id='".slash($invoice["customer_
         }
         .summary{
             text-align: right;
+            font-size: 22px;
+    font-weight: bold;
         }
         td, th {
             border: solid 1px #000;
