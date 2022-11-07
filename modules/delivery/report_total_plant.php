@@ -65,6 +65,12 @@ table {
         	<?php
 			echo "List of Sale of ";
 			$all = true;
+            if( !empty( $customer_id ) ){
+                ?>
+                Customer <span class="nastaleeq"><?php echo get_field($customer_id, "customer", "customer_name_urdu" )."<br>";?></span>
+                <?php
+                $all = false;
+            }
             if( !empty( $machine_id ) ){
                 ?>
                 Plant <span class="nastaleeq"><?php echo get_field($machine_id, "machine", "title" )."<br>";?></span>
